@@ -30,7 +30,7 @@ def run_pc_algorithm(
         ground_truth_path = "UFGroundTruth.txt"
 
     variable_names, data = load_dataset(dataset_path)
-    result = pc_algorithm(data, alpha=0.05, max_cond_set_size=4, variable_names=variable_names)
+    result = pc_algorithm(data, alpha=0.01, max_cond_set_size=2, variable_names=variable_names)
 
     output_lines = [summarize_graph(result, variable_names=variable_names)]
 
