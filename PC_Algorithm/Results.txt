@@ -1,449 +1,414 @@
-Ultra Processed Food Results (at alpha = 0.01, max_condition_set_size = 2) : 
+PC Algorithm - Results
+Generated from commit 2047fd4 by PC_Algorithm/main.py
+Headline parameters: alpha = 0.01, max_cond_set_size = 2
 
-Variables: X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14, X15, X16, X17
-Undirected skeleton:
-  X1 -> X2, X3, X4, X6, X14, X16, X17
-  X2 -> X1, X3, X5, X7, X8, X9, X12, X16, X17
-  X3 -> X1, X2, X4, X5, X6, X7, X10, X15, X16
-  X4 -> X1, X3, X6, X9, X12, X14, X17
-  X5 -> X2, X3, X6, X9, X10, X16, X17
-  X6 -> X1, X3, X4, X5, X7, X8, X10, X12, X13, X16
-  X7 -> X2, X3, X6, X9, X10, X13, X16
-  X8 -> X2, X6, X9, X11, X13, X15
-  X9 -> X2, X4, X5, X7, X8, X10, X11, X13, X14
-  X10 -> X3, X5, X6, X7, X9, X11, X12, X15
-  X11 -> X8, X9, X10, X12, X13, X14, X15
-  X12 -> X2, X4, X6, X10, X11, X14
-  X13 -> X6, X7, X8, X9, X11, X15, X16
-  X14 -> X1, X4, X9, X11, X12, X16, X17
-  X15 -> X3, X8, X10, X11, X13, X16, X17
-  X16 -> X1, X2, X3, X5, X6, X7, X13, X14, X15
-  X17 -> X1, X2, X4, X5, X14, X15
-Directed edges:
-  X1 -> X2
+Skeleton metrics score undirected adjacency recovery; orientation metrics
+score arrowheads only over edges present in both skeletons; SHD is the
+standard edge-level Structural Hamming Distance. See insight-report/ for
+why these are reported separately.
+
+
+==============================================================================
+Ultra Processed Food
+==============================================================================
+Dataset          : DatasetUF.csv  (23132 samples, 17 variables)
+Dropped columns  : timestamp=['DateTime']
+Parameters       : alpha = 0.01, max_cond_set_size = 2
+
+Ground truth: /Users/gyan/Documents/Root-Cause-Detection/PC_Algorithm/UFGroundTruth.txt
+  parsed as        : matrix (17x17)
+  aligned          : by_name
+  edges in file    : 83
+  edges usable     : 83
+
+Variables (17): X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14, X15, X16, X17
+Skeleton: 55 undirected edges (highest conditioning level reached: 2)
+  X1 -- X2, X3, X4, X6, X16, X17
+  X2 -- X1, X3, X7, X8, X9, X12, X16, X17
+  X3 -- X1, X2, X4, X5, X6, X7, X10, X15, X16
+  X4 -- X1, X3, X6, X14, X17
+  X5 -- X3, X6, X9, X16, X17
+  X6 -- X1, X3, X4, X5, X7, X8, X10, X13, X16
+  X7 -- X2, X3, X6, X9, X10, X13, X16
+  X8 -- X2, X6, X9, X13, X15
+  X9 -- X2, X5, X7, X8, X10, X11, X13, X14
+  X10 -- X3, X6, X7, X9, X11, X12, X15
+  X11 -- X9, X10, X12, X13, X14, X15
+  X12 -- X2, X10, X11, X14
+  X13 -- X6, X7, X8, X9, X11, X15
+  X14 -- X4, X9, X11, X12, X17
+  X15 -- X3, X8, X10, X11, X13, X16, X17
+  X16 -- X1, X2, X3, X5, X6, X7, X15
+  X17 -- X1, X2, X4, X5, X14, X15
+Oriented arcs (5):
   X1 -> X3
-  X1 -> X4
-  X1 -> X6
-  X1 -> X14
   X1 -> X16
   X1 -> X17
-  X2 -> X1
-  X2 -> X3
-  X2 -> X5
-  X2 -> X7
-  X2 -> X8
-  X2 -> X9
-  X2 -> X12
-  X2 -> X16
-  X2 -> X17
-  X3 -> X1
-  X3 -> X2
-  X3 -> X4
-  X3 -> X5
-  X3 -> X6
-  X3 -> X7
-  X3 -> X10
-  X3 -> X15
-  X3 -> X16
-  X4 -> X1
-  X4 -> X3
-  X4 -> X6
-  X4 -> X9
-  X4 -> X12
-  X4 -> X14
-  X4 -> X17
-  X5 -> X2
-  X5 -> X3
-  X5 -> X6
-  X5 -> X9
-  X5 -> X10
-  X5 -> X16
-  X5 -> X17
-  X6 -> X1
-  X6 -> X3
-  X6 -> X4
-  X6 -> X5
-  X6 -> X7
-  X6 -> X8
-  X6 -> X10
-  X6 -> X12
-  X6 -> X13
-  X6 -> X16
-  X7 -> X2
-  X7 -> X3
-  X7 -> X6
-  X7 -> X9
-  X7 -> X10
-  X7 -> X13
-  X7 -> X16
-  X8 -> X2
-  X8 -> X6
-  X8 -> X9
-  X8 -> X11
-  X8 -> X13
-  X8 -> X15
-  X9 -> X2
-  X9 -> X4
-  X9 -> X5
-  X9 -> X7
-  X9 -> X8
-  X9 -> X10
-  X9 -> X11
-  X9 -> X13
-  X9 -> X14
-  X10 -> X3
-  X10 -> X5
-  X10 -> X6
-  X10 -> X7
-  X10 -> X9
-  X10 -> X11
-  X10 -> X12
-  X10 -> X15
-  X11 -> X8
-  X11 -> X9
-  X11 -> X10
-  X11 -> X12
   X11 -> X13
-  X11 -> X14
-  X11 -> X15
-  X12 -> X2
-  X12 -> X4
-  X12 -> X6
-  X12 -> X10
-  X12 -> X11
-  X12 -> X14
-  X13 -> X6
-  X13 -> X7
-  X13 -> X8
-  X13 -> X9
-  X13 -> X15
-  X13 -> X16
-  X14 -> X1
-  X14 -> X4
-  X14 -> X9
-  X14 -> X11
-  X14 -> X12
-  X14 -> X16
-  X14 -> X17
-  X15 -> X3
-  X15 -> X8
-  X15 -> X10
-  X15 -> X11
-  X15 -> X13
-  X15 -> X16
-  X15 -> X17
-  X16 -> X2
   X16 -> X3
-  X16 -> X5
-  X16 -> X6
-  X16 -> X13
-  X16 -> X14
-  X16 -> X15
-  X17 -> X2
-  X17 -> X4
-  X17 -> X5
-  X17 -> X14
-  X17 -> X15
+Left undirected (1):
+  X12 -- X14
+Conflicting orientations (49) - colliders proposed both directions, edge left undirected:
+  X1 <-> X2
+  X1 <-> X4
+  X1 <-> X6
+  X2 <-> X3
+  X2 <-> X7
+  X2 <-> X8
+  X2 <-> X9
+  X2 <-> X12
+  X2 <-> X16
+  X2 <-> X17
+  X3 <-> X4
+  X3 <-> X5
+  X3 <-> X6
+  X3 <-> X7
+  X3 <-> X10
+  X3 <-> X15
+  X4 <-> X6
+  X4 <-> X14
+  X4 <-> X17
+  X5 <-> X6
+  X5 <-> X9
+  X5 <-> X16
+  X5 <-> X17
+  X6 <-> X7
+  X6 <-> X8
+  X6 <-> X10
+  X6 <-> X13
+  X6 <-> X16
+  X7 <-> X9
+  X7 <-> X10
+  X7 <-> X13
+  X7 <-> X16
+  X8 <-> X9
+  X8 <-> X13
+  X8 <-> X15
+  X9 <-> X10
+  X9 <-> X11
+  X9 <-> X13
+  X9 <-> X14
+  X10 <-> X11
+  X10 <-> X12
+  X10 <-> X15
+  X11 <-> X12
+  X11 <-> X14
+  X11 <-> X15
+  X13 <-> X15
+  X14 <-> X17
+  X15 <-> X16
+  X15 <-> X17
 
-(Ground truth parsed as: matrix, from UFGroundTruth.txt)
 Evaluation against ground truth:
-  Precision   : 0.2903
-  Recall_TPR  : 0.4337
-  F1          : 0.3478
-  FDR         : 0.7097
-  FPR         : 0.4656
-  SHD         : 135
-  TP          : 36
-  FP          : 88
-  FN          : 47
-  TN          : 101
+  Skeleton (undirected adjacency recovery):
+    Predicted_skeleton_edges    : 55
+    True_skeleton_edges         : 83
+    Skeleton_Precision          : 0.5455
+    Skeleton_Recall_TPR         : 0.3614
+    Skeleton_F1                 : 0.4348
+    Skeleton_FDR                : 0.4545
+    Skeleton_FPR                : 0.4717
+    Skeleton_TP                 : 30
+    Skeleton_FP                 : 25
+    Skeleton_FN                 : 53
+    Skeleton_TN                 : 28
+  Orientation (over edges in both skeletons):
+    Arrowhead_correct           : 3
+    Arrowhead_reversed          : 0
+    Arrowhead_left_undirected   : 1
+    Arrowhead_conflicting       : 26
+    Arrowhead_truth_bidirected  : 0
+    Arrowhead_Precision         : 1.0000
+    Arrowhead_Recall            : 0.0361
+  Structural Hamming Distance (edge-level):
+    SHD                         : 105
 
 
-Ultra Processed Food With Internal Machine Dependencies Results (at alpha = 0.01, max_condition_set_size = 2) : 
+==============================================================================
+Ultra Processed Food (with Internal Machine Dependencies)
+==============================================================================
+Dataset          : DatasetUF.csv  (23132 samples, 17 variables)
+Dropped columns  : timestamp=['DateTime']
+Parameters       : alpha = 0.01, max_cond_set_size = 2
 
-Variables: X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14, X15, X16, X17
-Undirected skeleton:
-  X1 -> X2, X3, X4, X6, X14, X16, X17
-  X2 -> X1, X3, X5, X7, X8, X9, X12, X16, X17
-  X3 -> X1, X2, X4, X5, X6, X7, X10, X15, X16
-  X4 -> X1, X3, X6, X9, X12, X14, X17
-  X5 -> X2, X3, X6, X9, X10, X16, X17
-  X6 -> X1, X3, X4, X5, X7, X8, X10, X12, X13, X16
-  X7 -> X2, X3, X6, X9, X10, X13, X16
-  X8 -> X2, X6, X9, X11, X13, X15
-  X9 -> X2, X4, X5, X7, X8, X10, X11, X13, X14
-  X10 -> X3, X5, X6, X7, X9, X11, X12, X15
-  X11 -> X8, X9, X10, X12, X13, X14, X15
-  X12 -> X2, X4, X6, X10, X11, X14
-  X13 -> X6, X7, X8, X9, X11, X15, X16
-  X14 -> X1, X4, X9, X11, X12, X16, X17
-  X15 -> X3, X8, X10, X11, X13, X16, X17
-  X16 -> X1, X2, X3, X5, X6, X7, X13, X14, X15
-  X17 -> X1, X2, X4, X5, X14, X15
-Directed edges:
-  X1 -> X2
+Ground truth: /Users/gyan/Documents/Root-Cause-Detection/PC_Algorithm/UFIMDGroundTruth.txt
+  parsed as        : matrix (17x17)
+  aligned          : by_name
+  edges in file    : 133
+  edges usable     : 133
+  reciprocal pairs : 25 (feedback loops - PC assumes acyclicity and cannot recover these)
+
+Variables (17): X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14, X15, X16, X17
+Skeleton: 55 undirected edges (highest conditioning level reached: 2)
+  X1 -- X2, X3, X4, X6, X16, X17
+  X2 -- X1, X3, X7, X8, X9, X12, X16, X17
+  X3 -- X1, X2, X4, X5, X6, X7, X10, X15, X16
+  X4 -- X1, X3, X6, X14, X17
+  X5 -- X3, X6, X9, X16, X17
+  X6 -- X1, X3, X4, X5, X7, X8, X10, X13, X16
+  X7 -- X2, X3, X6, X9, X10, X13, X16
+  X8 -- X2, X6, X9, X13, X15
+  X9 -- X2, X5, X7, X8, X10, X11, X13, X14
+  X10 -- X3, X6, X7, X9, X11, X12, X15
+  X11 -- X9, X10, X12, X13, X14, X15
+  X12 -- X2, X10, X11, X14
+  X13 -- X6, X7, X8, X9, X11, X15
+  X14 -- X4, X9, X11, X12, X17
+  X15 -- X3, X8, X10, X11, X13, X16, X17
+  X16 -- X1, X2, X3, X5, X6, X7, X15
+  X17 -- X1, X2, X4, X5, X14, X15
+Oriented arcs (5):
   X1 -> X3
-  X1 -> X4
-  X1 -> X6
-  X1 -> X14
   X1 -> X16
   X1 -> X17
-  X2 -> X1
-  X2 -> X3
-  X2 -> X5
-  X2 -> X7
-  X2 -> X8
-  X2 -> X9
-  X2 -> X12
-  X2 -> X16
-  X2 -> X17
-  X3 -> X1
-  X3 -> X2
-  X3 -> X4
-  X3 -> X5
-  X3 -> X6
-  X3 -> X7
-  X3 -> X10
-  X3 -> X15
-  X3 -> X16
-  X4 -> X1
-  X4 -> X3
-  X4 -> X6
-  X4 -> X9
-  X4 -> X12
-  X4 -> X14
-  X4 -> X17
-  X5 -> X2
-  X5 -> X3
-  X5 -> X6
-  X5 -> X9
-  X5 -> X10
-  X5 -> X16
-  X5 -> X17
-  X6 -> X1
-  X6 -> X3
-  X6 -> X4
-  X6 -> X5
-  X6 -> X7
-  X6 -> X8
-  X6 -> X10
-  X6 -> X12
-  X6 -> X13
-  X6 -> X16
-  X7 -> X2
-  X7 -> X3
-  X7 -> X6
-  X7 -> X9
-  X7 -> X10
-  X7 -> X13
-  X7 -> X16
-  X8 -> X2
-  X8 -> X6
-  X8 -> X9
-  X8 -> X11
-  X8 -> X13
-  X8 -> X15
-  X9 -> X2
-  X9 -> X4
-  X9 -> X5
-  X9 -> X7
-  X9 -> X8
-  X9 -> X10
-  X9 -> X11
-  X9 -> X13
-  X9 -> X14
-  X10 -> X3
-  X10 -> X5
-  X10 -> X6
-  X10 -> X7
-  X10 -> X9
-  X10 -> X11
-  X10 -> X12
-  X10 -> X15
-  X11 -> X8
-  X11 -> X9
-  X11 -> X10
-  X11 -> X12
   X11 -> X13
-  X11 -> X14
-  X11 -> X15
-  X12 -> X2
-  X12 -> X4
-  X12 -> X6
-  X12 -> X10
-  X12 -> X11
-  X12 -> X14
-  X13 -> X6
-  X13 -> X7
-  X13 -> X8
-  X13 -> X9
-  X13 -> X15
-  X13 -> X16
-  X14 -> X1
-  X14 -> X4
-  X14 -> X9
-  X14 -> X11
-  X14 -> X12
-  X14 -> X16
-  X14 -> X17
-  X15 -> X3
-  X15 -> X8
-  X15 -> X10
-  X15 -> X11
-  X15 -> X13
-  X15 -> X16
-  X15 -> X17
-  X16 -> X2
   X16 -> X3
-  X16 -> X5
-  X16 -> X6
-  X16 -> X13
-  X16 -> X14
-  X16 -> X15
-  X17 -> X2
-  X17 -> X4
-  X17 -> X5
-  X17 -> X14
-  X17 -> X15
+Left undirected (1):
+  X12 -- X14
+Conflicting orientations (49) - colliders proposed both directions, edge left undirected:
+  X1 <-> X2
+  X1 <-> X4
+  X1 <-> X6
+  X2 <-> X3
+  X2 <-> X7
+  X2 <-> X8
+  X2 <-> X9
+  X2 <-> X12
+  X2 <-> X16
+  X2 <-> X17
+  X3 <-> X4
+  X3 <-> X5
+  X3 <-> X6
+  X3 <-> X7
+  X3 <-> X10
+  X3 <-> X15
+  X4 <-> X6
+  X4 <-> X14
+  X4 <-> X17
+  X5 <-> X6
+  X5 <-> X9
+  X5 <-> X16
+  X5 <-> X17
+  X6 <-> X7
+  X6 <-> X8
+  X6 <-> X10
+  X6 <-> X13
+  X6 <-> X16
+  X7 <-> X9
+  X7 <-> X10
+  X7 <-> X13
+  X7 <-> X16
+  X8 <-> X9
+  X8 <-> X13
+  X8 <-> X15
+  X9 <-> X10
+  X9 <-> X11
+  X9 <-> X13
+  X9 <-> X14
+  X10 <-> X11
+  X10 <-> X12
+  X10 <-> X15
+  X11 <-> X12
+  X11 <-> X14
+  X11 <-> X15
+  X13 <-> X15
+  X14 <-> X17
+  X15 <-> X16
+  X15 <-> X17
 
-(Ground truth parsed as: matrix, from UFIMDGroundTruth.txt)
 Evaluation against ground truth:
-  Precision   : 0.5323
-  Recall_TPR  : 0.4962
-  F1          : 0.5136
-  FDR         : 0.4677
-  FPR         : 0.4173
-  SHD         : 125
-  TP          : 66
-  FP          : 58
-  FN          : 67
-  TN          : 81
+  Skeleton (undirected adjacency recovery):
+    Predicted_skeleton_edges    : 55
+    True_skeleton_edges         : 108
+    Skeleton_Precision          : 0.8000
+    Skeleton_Recall_TPR         : 0.4074
+    Skeleton_F1                 : 0.5399
+    Skeleton_FDR                : 0.2000
+    Skeleton_FPR                : 0.3929
+    Skeleton_TP                 : 44
+    Skeleton_FP                 : 11
+    Skeleton_FN                 : 64
+    Skeleton_TN                 : 17
+  Orientation (over edges in both skeletons):
+    Arrowhead_correct           : 3
+    Arrowhead_reversed          : 0
+    Arrowhead_left_undirected   : 1
+    Arrowhead_conflicting       : 26
+    Arrowhead_truth_bidirected  : 14
+    Arrowhead_Precision         : 1.0000
+    Arrowhead_Recall            : 0.0361
+  Structural Hamming Distance (edge-level):
+    SHD                         : 102
 
 
-Tennessee Eastmen Results (at alpha = 0.01, max_condition_set_size = 2) : 
+==============================================================================
+Tennessee Eastman
+==============================================================================
+Dataset          : datasetTE.csv  (1499 samples, 31 variables)
+Dropped columns  : index_like=['Unnamed: 0']
+Parameters       : alpha = 0.01, max_cond_set_size = 2
 
-Variables: Unnamed: 0, X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14, X15, X16, X17, X18, X19, X20, X21, X22, X23, X24, X25, X26, X28, X29, X30, X32, X33
-Undirected skeleton:
-  Unnamed: 0 -> X23, X24
-  X1 -> X25, X26
+Ground truth: /Users/gyan/Documents/Root-Cause-Detection/PC_Algorithm/TEGroundTruth.txt
+  parsed as        : matrix (33x33)
+  aligned          : by_name
+  edges in file    : 32
+  edges usable     : 28
+  unrecoverable    : 4 (variables absent from the dataset): X5->X27, X11->X27, X19->X31, X27->X20
+
+Variables (31): X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X11, X12, X13, X14, X15, X16, X17, X18, X19, X20, X21, X22, X23, X24, X25, X26, X28, X29, X30, X32, X33
+Skeleton: 35 undirected edges (highest conditioning level reached: 2)
+  X1 -- X25, X26
+  X2 -- X23
+  X3 -- X24
+  X4 -- X26
+  X5 -- X20
+  X6 -- X20, X21
+  X7 -- X13, X16
+  X8 -- X15
+  X9 -- X11, X22, X30, X32
+  X10 -- X28
+  X11 -- X9, X18, X22
+  X12 -- X29
+  X13 -- X7, X16
+  X14 -- X29
+  X15 -- X8, X30
+  X16 -- X7, X13, X26
+  X17 -- X30
+  X18 -- X11, X20, X29
+  X19 -- (none)
+  X20 -- X5, X6, X18, X22
+  X21 -- X6, X23, X24, X32
+  X22 -- X9, X11, X20, X33
+  X23 -- X2, X21, X24, X30
+  X24 -- X3, X21, X23
+  X25 -- X1, X26
+  X26 -- X1, X4, X16, X25
+  X28 -- X10
+  X29 -- X12, X14, X18, X30
+  X30 -- X9, X15, X17, X23, X29
+  X32 -- X9, X21
+  X33 -- X22
+Oriented arcs (20):
+  X1 -> X26
   X2 -> X23
   X3 -> X24
-  X4 -> X26
-  X5 -> X20
-  X6 -> X16, X20, X22
-  X7 -> X13, X16, X21
-  X8 -> X15, X16
-  X9 -> X11, X13, X22, X30, X32
-  X10 -> X28
-  X11 -> X9, X18, X22, X32
-  X12 -> X24, X29
-  X13 -> X7, X9, X16, X22
-  X14 -> X29
-  X15 -> X8, X18, X28, X30
-  X16 -> X6, X7, X8, X13, X26, X28
-  X17 -> X30
-  X18 -> X11, X15, X20, X26, X29
-  X19 -> (none)
-  X20 -> X5, X6, X18, X22, X29
-  X21 -> X7, X22, X23, X24, X28, X32
-  X22 -> X6, X9, X11, X13, X20, X21, X33
-  X23 -> Unnamed: 0, X2, X21, X24, X30
-  X24 -> Unnamed: 0, X3, X12, X21, X23
-  X25 -> X1, X26
-  X26 -> X1, X4, X16, X18, X25, X32
-  X28 -> X10, X15, X16, X21
-  X29 -> X12, X14, X18, X20, X30
-  X30 -> X9, X15, X17, X23, X29
-  X32 -> X9, X11, X21, X26
-  X33 -> X22
-Directed edges:
-  Unnamed: 0 -> X24
-  X1 -> X26
-  X3 -> X24
-  X6 -> X16
-  X6 -> X22
-  X7 -> X13
   X7 -> X16
-  X7 -> X21
   X8 -> X15
-  X8 -> X16
-  X9 -> X11
-  X9 -> X13
-  X9 -> X22
-  X9 -> X30
-  X11 -> X9
-  X11 -> X18
   X11 -> X22
-  X11 -> X32
-  X12 -> X24
   X12 -> X29
-  X13 -> X9
   X13 -> X16
-  X13 -> X22
-  X15 -> X8
-  X15 -> X18
-  X15 -> X28
-  X15 -> X30
-  X16 -> X6
-  X16 -> X7
-  X16 -> X8
-  X16 -> X13
-  X16 -> X26
-  X16 -> X28
   X17 -> X30
   X18 -> X11
-  X18 -> X15
   X18 -> X20
-  X18 -> X26
   X18 -> X29
-  X20 -> X6
-  X20 -> X22
-  X20 -> X29
-  X21 -> X7
-  X21 -> X22
-  X21 -> X23
-  X21 -> X24
-  X21 -> X28
-  X22 -> X6
-  X22 -> X9
-  X22 -> X13
-  X22 -> X20
-  X22 -> X21
-  X23 -> X21
-  X23 -> X30
-  X24 -> X12
-  X24 -> X21
+  X20 -> X5
   X24 -> X23
   X25 -> X26
-  X26 -> X16
-  X26 -> X18
-  X26 -> X32
-  X28 -> X15
-  X28 -> X16
-  X28 -> X21
-  X29 -> X12
-  X29 -> X18
-  X29 -> X20
-  X29 -> X30
-  X30 -> X9
-  X30 -> X15
-  X30 -> X23
-  X30 -> X29
+  X26 -> X4
+  X29 -> X14
   X32 -> X9
-  X32 -> X11
   X32 -> X21
-  X32 -> X26
   X33 -> X22
+Left undirected (3):
+  X1 -- X25
+  X7 -- X13
+  X10 -- X28
+Conflicting orientations (12) - colliders proposed both directions, edge left undirected:
+  X6 <-> X20
+  X6 <-> X21
+  X9 <-> X11
+  X9 <-> X22
+  X9 <-> X30
+  X15 <-> X30
+  X16 <-> X26
+  X20 <-> X22
+  X21 <-> X23
+  X21 <-> X24
+  X23 <-> X30
+  X29 <-> X30
 
-(Ground truth parsed as: edge_list, from TEGroundTruth.txt)
 Evaluation against ground truth:
-  Precision   : 0.0
-  Recall_TPR  : 0.0
-  F1          : 0.0
-  FDR         : 1.0
-  FPR         : 0.0776
-  SHD         : 77
-  TP          : 0
-  FP          : 77
-  FN          : 0
-  TN          : 915
+  Skeleton (undirected adjacency recovery):
+    Predicted_skeleton_edges    : 35
+    True_skeleton_edges         : 28
+    Skeleton_Precision          : 0.3143
+    Skeleton_Recall_TPR         : 0.3929
+    Skeleton_F1                 : 0.3492
+    Skeleton_FDR                : 0.6857
+    Skeleton_FPR                : 0.0549
+    Skeleton_TP                 : 11
+    Skeleton_FP                 : 24
+    Skeleton_FN                 : 17
+    Skeleton_TN                 : 413
+  Orientation (over edges in both skeletons):
+    Arrowhead_correct           : 4
+    Arrowhead_reversed          : 5
+    Arrowhead_left_undirected   : 2
+    Arrowhead_conflicting       : 0
+    Arrowhead_truth_bidirected  : 0
+    Arrowhead_Precision         : 0.4444
+    Arrowhead_Recall            : 0.1429
+  Structural Hamming Distance (edge-level):
+    SHD                         : 48
+
+
+==============================================================================
+Sensitivity analysis
+==============================================================================
+
+  Ultra Processed Food
+  -- alpha sweep (k = 2, no thinning) --
+    alpha=0.05      k=2     thin=1    n=23132  edges=57   P=0.544 R=0.373 F1=0.443 SHD=108
+    alpha=0.01      k=2     thin=1    n=23132  edges=55   P=0.545 R=0.361 F1=0.435 SHD=105
+    alpha=0.001     k=2     thin=1    n=23132  edges=51   P=0.588 R=0.361 F1=0.448 SHD=102
+    alpha=1e-05     k=2     thin=1    n=23132  edges=52   P=0.577 R=0.361 F1=0.444 SHD=103
+    alpha=1e-10     k=2     thin=1    n=23132  edges=50   P=0.560 R=0.337 F1=0.421 SHD=104
+  -- conditioning-set size sweep (alpha = 0.01) --
+    alpha=0.01      k=0     thin=1    n=23132  edges=128  P=0.602 R=0.928 F1=0.730 SHD=124
+    alpha=0.01      k=1     thin=1    n=23132  edges=92   P=0.576 R=0.639 F1=0.606 SHD=122
+    alpha=0.01      k=2     thin=1    n=23132  edges=55   P=0.545 R=0.361 F1=0.435 SHD=105
+    alpha=0.01      k=3     thin=1    n=23132  edges=49   P=0.551 R=0.325 F1=0.409 SHD=104
+    alpha=0.01      k=conv  thin=1    n=23132  edges=47   P=0.532 R=0.301 F1=0.385 SHD=104
+  -- time-thinning sweep (alpha = 0.01, k = 2) --
+    alpha=0.01      k=2     thin=1    n=23132  edges=55   P=0.545 R=0.361 F1=0.435 SHD=105
+    alpha=0.01      k=2     thin=5    n=4627   edges=48   P=0.562 R=0.325 F1=0.412 SHD=101
+    alpha=0.01      k=2     thin=20   n=1157   edges=41   P=0.512 R=0.253 F1=0.339 SHD=101
+    alpha=0.01      k=2     thin=50   n=463    edges=30   P=0.500 R=0.181 F1=0.265 SHD=96
+
+  Ultra Processed Food (with Internal Machine Dependencies)
+  -- alpha sweep (k = 2, no thinning) --
+    alpha=0.05      k=2     thin=1    n=23132  edges=57   P=0.789 R=0.417 F1=0.545 SHD=105
+    alpha=0.01      k=2     thin=1    n=23132  edges=55   P=0.800 R=0.407 F1=0.540 SHD=102
+    alpha=0.001     k=2     thin=1    n=23132  edges=51   P=0.824 R=0.389 F1=0.528 SHD=103
+    alpha=1e-05     k=2     thin=1    n=23132  edges=52   P=0.827 R=0.398 F1=0.537 SHD=102
+    alpha=1e-10     k=2     thin=1    n=23132  edges=50   P=0.820 R=0.380 F1=0.519 SHD=103
+  -- conditioning-set size sweep (alpha = 0.01) --
+    alpha=0.01      k=0     thin=1    n=23132  edges=128  P=0.789 R=0.935 F1=0.856 SHD=101
+    alpha=0.01      k=1     thin=1    n=23132  edges=92   P=0.804 R=0.685 F1=0.740 SHD=105
+    alpha=0.01      k=2     thin=1    n=23132  edges=55   P=0.800 R=0.407 F1=0.540 SHD=102
+    alpha=0.01      k=3     thin=1    n=23132  edges=49   P=0.816 R=0.370 F1=0.510 SHD=103
+    alpha=0.01      k=conv  thin=1    n=23132  edges=47   P=0.809 R=0.352 F1=0.490 SHD=103
+  -- time-thinning sweep (alpha = 0.01, k = 2) --
+    alpha=0.01      k=2     thin=1    n=23132  edges=55   P=0.800 R=0.407 F1=0.540 SHD=102
+    alpha=0.01      k=2     thin=5    n=4627   edges=48   P=0.812 R=0.361 F1=0.500 SHD=102
+    alpha=0.01      k=2     thin=20   n=1157   edges=41   P=0.829 R=0.315 F1=0.456 SHD=100
+    alpha=0.01      k=2     thin=50   n=463    edges=30   P=0.867 R=0.241 F1=0.377 SHD=99
+
+  Tennessee Eastman
+  -- alpha sweep (k = 2, no thinning) --
+    alpha=0.05      k=2     thin=1    n=1499   edges=43   P=0.256 R=0.393 F1=0.310 SHD=57
+    alpha=0.01      k=2     thin=1    n=1499   edges=35   P=0.314 R=0.393 F1=0.349 SHD=48
+    alpha=0.001     k=2     thin=1    n=1499   edges=32   P=0.344 R=0.393 F1=0.367 SHD=45
+    alpha=1e-05     k=2     thin=1    n=1499   edges=27   P=0.370 R=0.357 F1=0.364 SHD=43
+    alpha=1e-10     k=2     thin=1    n=1499   edges=25   P=0.360 R=0.321 F1=0.340 SHD=41
+  -- conditioning-set size sweep (alpha = 0.01) --
+    alpha=0.01      k=0     thin=1    n=1499   edges=217  P=0.088 R=0.679 F1=0.155 SHD=220
+    alpha=0.01      k=1     thin=1    n=1499   edges=54   P=0.259 R=0.500 F1=0.341 SHD=62
+    alpha=0.01      k=2     thin=1    n=1499   edges=35   P=0.314 R=0.393 F1=0.349 SHD=48
+    alpha=0.01      k=3     thin=1    n=1499   edges=35   P=0.314 R=0.393 F1=0.349 SHD=48
+    alpha=0.01      k=conv  thin=1    n=1499   edges=35   P=0.314 R=0.393 F1=0.349 SHD=48
+  -- time-thinning sweep (alpha = 0.01, k = 2) --
+    alpha=0.01      k=2     thin=1    n=1499   edges=35   P=0.314 R=0.393 F1=0.349 SHD=48
+    alpha=0.01      k=2     thin=5    n=300    edges=25   P=0.400 R=0.357 F1=0.377 SHD=40
+    alpha=0.01      k=2     thin=20   n=75     edges=17   P=0.353 R=0.214 F1=0.267 SHD=38
+    alpha=0.01      k=2     thin=50   n=30     edges=12   P=0.583 R=0.250 F1=0.350 SHD=32

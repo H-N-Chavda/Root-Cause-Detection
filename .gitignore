@@ -1,5 +1,9 @@
-.conda
-.__pycache__/
-.venv/
+# Python
+__pycache__/
+*.py[cod]
 .pytest_cache/
-.PC_Algorithm/__pycache__
+
+# Environments
+.conda
+.venv/
+venv/
