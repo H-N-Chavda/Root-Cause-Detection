@@ -1,0 +1,5 @@
+.conda
+.__pycache__/
+.venv/
+.pytest_cache/
+.PC_Algorithm/__pycache__
