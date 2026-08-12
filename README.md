@@ -106,17 +106,3 @@ cd PC_Algorithm
 ../.venv/bin/python main.py              # writes Results.txt
 ../.venv/bin/python -m pytest test_pc.py -q
 ```
-
-## Presentation
-
-A 20-slide deck covering the algorithm, its mathematics, and the Tennessee
-Eastman case walked end to end — preparation, graph construction, the recovered
-graph, its assessment, and next steps.
-
-```bash
-cd presentations
-../.venv/bin/python build_presentation.py    # writes PC_Algorithm.pptx
-```
-
-The build runs the analysis itself rather than carrying transcribed numbers, so
-the deck cannot fall out of step with the results.
