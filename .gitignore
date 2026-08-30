@@ -1,11 +1,29 @@
 # Python
 __pycache__/
 *.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Test and type-check caches
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
 
 # Environments
 .conda
 .venv/
 venv/
+
+# Editor and OS
 .claude
+.DS_Store
+
+# Working notes, kept out of the repository by request
 notes/
+
+# Generated output. data/ is read only; everything the package writes lands here.
+results/
+!results/.gitkeep

@@ -1,0 +1,93 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "causal-bench"
+version = "0.1.0"
+description = "PC causal discovery on the CIPCaD-Bench industrial process datasets"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+
+# Pinned to the versions present in the environment the pre-restructure test
+# suite passed on (2026-08-30). Loosen deliberately, not by drift.
+dependencies = [
+    "numpy==2.5.2",
+    "pandas==3.0.5",
+    "python-pptx==1.0.2",
+    "PyYAML==6.0.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.1.1",
+    "pytest-cov>=6.0",
+    "ruff>=0.9",
+    "mypy>=1.14",
+    "pre-commit>=4.0",
+]
+
+[project.scripts]
+causal-bench = "causal_bench.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "-q",
+    "--cov=causal_bench",
+    "--cov-report=term-missing",
+    "--cov-fail-under=75",
+]
+markers = [
+    "slow: touches a full dataset rather than a fixture slice",
+]
+
+[tool.coverage.run]
+source = ["causal_bench"]
+branch = true
+
+[tool.ruff]
+line-length = 92
+src = ["src", "tests"]
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "W"]
+# E731 (lambda assignment) is pre-existing in algorithms/pc.py, which the
+# restructure was required to move verbatim. Reported, not fixed.
+ignore = ["E731"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E402"]
+# `algorithms/pc.py` is the former PC_Algorithm/utils.py, moved verbatim under
+# a no-refactor constraint. Its 60 findings are all typing-modernisation
+# (typing.Dict -> dict, Optional[X] -> X | None) plus one long line -- reported,
+# deliberately not fixed. Real bug classes (F, B) still run against it.
+"src/causal_bench/algorithms/pc.py" = ["UP006", "UP035", "UP037", "UP045", "E501"]
+
+[tool.ruff.format]
+# Same reason: reformatting a verbatim move would bury it in whitespace noise.
+exclude = ["src/causal_bench/algorithms/pc.py", "tests/test_pc.py"]
+
+[tool.mypy]
+# No python_version pin: the installed numpy stubs use 3.12+ syntax, so mypy
+# must analyse under the interpreter actually running it.
+files = ["src", "tests"]
+ignore_missing_imports = true
+warn_unused_configs = true
+# Non-strict: the moved algorithm module is only partially annotated and
+# tightening it would mean editing it.
+disallow_untyped_defs = false
+check_untyped_defs = false
+
+# `algorithms/pc.py` is a verbatim move under a no-refactor constraint. It has 5
+# pre-existing mypy errors (2x unchecked `re.Match | None` .group at pc.py:638-639,
+# and 3x from the `Dict[str, object]` ground-truth `info` mapping at pc.py:655/691/693).
+# Reported, not fixed; lift this block when the freeze on that module lifts.
+[[tool.mypy.overrides]]
+module = "causal_bench.algorithms.pc"
+ignore_errors = true

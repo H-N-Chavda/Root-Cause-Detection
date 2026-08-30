@@ -1,114 +1,105 @@
-# Root-Cause Detection with the PC Algorithm
+# causal-bench
 
-Recovering causal structure from industrial process data, so that a detected
-fault can be traced back to the variable that caused it.
+A from-scratch implementation of the **PC (Peter–Clark)** constraint-based
+causal discovery algorithm, run against the three
+[CIPCaD-Bench](https://arxiv.org/abs/2208.01529) industrial process cases:
+Ultra-Processed Food (UF), UF with Internal Machine Dependencies (UFIMD), and
+Tennessee Eastman (TE).
 
-A causal graph is the middle stage of that objective:
-
-```
-process data  →  causal graph  →  fault detected  →  trace upstream  →  root cause
-                 ^^^^^^^^^^^^
-                 what this repository produces
-```
-
-## Method
-
-The PC (Peter–Clark) algorithm recovers a causal graph from observational data
-in two phases.
-
-**Phase 1 — skeleton.** Start from a complete graph and remove the edge between
-every pair of variables that some conditioning set renders conditionally
-independent. Under joint normality this reduces to a partial correlation of
-zero, tested with Fisher's z-transform:
-
-```
-z = ½ · √(n − |Z| − 3) · ln((1 + ρ̂) / (1 − ρ̂))        p = 2(1 − Φ(|z|))
-```
-
-The edge is removed when `p ≥ α`. The separating set is recorded for phase 2.
-
-**Phase 2 — orientation.** For every unshielded triple `a — b — c` where `b` is
-absent from the set that separated `a` and `c`, orient `a → b ← c`. Meek's rules
-then propagate the consequences, giving a CPDAG. Edges that remain undirected
-are genuinely undetermined by the data; where two triples imply opposite
-directions on one edge, no direction is claimed.
-
-Parameters: `α = 0.01`, conditioning sets up to size 2.
-
-## Datasets
-
-| Case | Variables | Samples | Reference graph |
-|---|---|---|---|
-| Ultra-processed food | 17 | 23,132 | 83 relationships |
-| …with internal machine dependencies | 17 | 23,132 | 133, including feedback loops |
-| Tennessee Eastman | 31 | 1,499 | 32 over 33 variables, 28 recoverable |
-
-The Tennessee reference graph covers two variables that are not present in the
-data, so its edges are aligned to the dataset by variable name and recall is
-scored against the 28 that are recoverable.
-
-## Results
-
-Skeleton recovery, at `α = 0.01` and conditioning size 2:
-
-| Case | Found | Precision | Recall | F1 | SHD |
-|---|---|---|---|---|---|
-| Ultra-processed food | 55 | 0.55 | 0.36 | 0.43 | 105 |
-| …with machine dependencies | 55 | 0.80 | 0.41 | 0.54 | 102 |
-| Tennessee Eastman | 35 | 0.31 | 0.39 | 0.35 | 48 |
-
-Skeleton and orientation are scored separately, since recovering *which*
-variables are related and *which way* the influence runs are different tasks.
-`SHD` is the edge-level structural Hamming distance.
-
-`Results.txt` carries the full output, including per-case orientation counts and
-sweeps over `α`, conditioning size and sample thinning.
-
-## Limitations
-
-- **The samples are not independent.** Both datasets are time series with
-  lag-one autocorrelation up to 0.98, so the effective sample size is far below
-  `n` and the tests are more confident than the evidence warrants. This is the
-  largest single constraint on the results, and the reason thinning the series
-  *improves* precision.
-- **Tennessee Eastman has converged** at conditioning size 2; the
-  ultra-processed-food cases have not, so their scores still depend on where the
-  search stops.
-- **PC assumes acyclicity**, so the feedback loops in the third reference graph
-  cannot be recovered by construction.
-- **No unmeasured confounders** are admitted, which a method such as FCI would
-  be needed for.
+The goal is root-cause analysis on continuous industrial process data: recover
+the causal graph over process variables from observational data alone, and score
+the recovery against the benchmark's published ground truth. The PC
+implementation is the subject under test, not a wrapper around a library.
 
 ## Layout
 
 ```
-PC_Algorithm/
-  utils.py                    loading, independence testing, PC, evaluation
-  main.py                     runs all three cases, writes Results.txt
-  test_pc.py                  test suite
-  Results.txt                 current output
-  *.csv, *GroundTruth.txt     datasets and reference graphs
-presentations/
-  build_presentation.py       generates PC_Algorithm.pptx, the main deck
-  theme.py content.py         visual system, and every figure in the main deck
-  analysis.py slides.py       analysis run at build time, slide definitions
-  build_review_answers.py     generates Review_Answers.pptx
-  review_answers.py           content and slides for that follow-up deck
-insight-report/               the audit behind the current shape of the code:
-                              findings (F1-F18), remediation plan, verification,
-                              and a full walkthrough of algorithm and results
-FEEDBACK_RESPONSE.md          answers to the week-1 review, with citations
-Research Papers/              background reading
+src/causal_bench/       the package
+  paths.py              every filesystem path; nothing else builds one
+  config.py             typed settings loaded from configs/
+  algorithms/pc.py      the PC implementation (skeleton, orientation, metrics)
+  io/                   dataset and ground-truth loaders
+  metrics/, eda/        placeholders for a later phase
+  utils/logging.py      logging setup
+  cli.py                the causal-bench entry point
+configs/default.yaml    alpha, conditioning-set cap, seed, cases, sweeps
+data/raw/               input CSVs           (read only)
+data/ground_truth/      adjacency matrices   (read only)
+results/                run output, git-ignored
+tests/                  pytest suite
+docs/                   DATA.md, feedback response, working notes, legacy output
+references/             papers, presentation build scripts, insight report
+notebooks/              empty
 ```
 
-## Running it
+`data/` is read only. Every generated file goes into a timestamped directory
+under `results/`.
+
+## Install
+
+Requires Python 3.11+ (developed on 3.14, see `.python-version`).
+
+```bash
+git clone <repo-url> && cd Root-Cause-Detection
+make install          # creates .venv, installs -e ".[dev]", sets up pre-commit
+```
+
+Equivalent by hand:
 
 ```bash
 python3 -m venv .venv
-.venv/bin/pip install -r PC_Algorithm/requirements.txt
-
-.venv/bin/python -m pytest PC_Algorithm/test_pc.py -q   # runs from any directory
-
-cd PC_Algorithm
-../.venv/bin/python main.py              # writes Results.txt
+.venv/bin/pip install -e ".[dev]"
 ```
+
+## Run
+
+```bash
+make run                        # all three cases plus the sensitivity sweeps
+.venv/bin/causal-bench          # the same thing directly
+```
+
+Useful flags:
+
+```bash
+causal-bench --no-sensitivity                    # headline cases only (~2s)
+causal-bench --dataset datasetTE.csv \
+             --ground-truth TEGroundTruth.txt    # one ad-hoc case
+causal-bench --config configs/default.yaml       # a different config
+causal-bench --output-dir /tmp/out               # a different results root
+causal-bench --dry-run                           # stdout only, writes nothing
+```
+
+Each run creates `results/run-<timestamp>/` containing `results.txt` (the
+report) and `run.log`. Progress goes to stderr; the report goes to stdout.
+
+Bare file names given to `--dataset` / `--ground-truth` resolve under
+`data/raw/` and `data/ground_truth/`. Paths can be overridden with the
+`CAUSAL_BENCH_ROOT`, `CAUSAL_BENCH_DATA_DIR`, `CAUSAL_BENCH_CONFIG_DIR` and
+`CAUSAL_BENCH_RESULTS_DIR` environment variables.
+
+Every tunable — significance level, maximum conditioning set size, seed, case
+list, sweep grids — lives in `configs/default.yaml`, not in the code.
+
+## Tests and checks
+
+```bash
+make test        # pytest with coverage (fails under 75%)
+make lint        # ruff check + ruff format --check
+make typecheck   # mypy, non-strict
+make check       # all three
+```
+
+Tests read fixture slices, not the full datasets; the one test that needs the
+complete Tennessee variable set is marked `slow`. Run `pytest -m "not slow"` to
+skip it.
+
+## Data
+
+Datasets and ground-truth graphs come from Menegozzo, Dall'Alba & Fiorini,
+*CIPCaD-Bench*, IEEE CASE 2022. See **[docs/DATA.md](docs/DATA.md)** for shapes,
+column names, separators, and the known problems — notably that the Tennessee
+ground truth is 33×33 while `datasetTE.csv` has only 31 columns.
+
+## License
+
+See [LICENSE](LICENSE).

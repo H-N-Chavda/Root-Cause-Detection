@@ -3,29 +3,23 @@
 The original single test asserted `adjacency[0] == {1, 2}` for a X -> Y -> Z
 chain, which is the *wrong* answer (X is independent of Z given Y). It therefore
 passed only because of the premature-termination bug in the skeleton search, and
-hid it. See insight-report/ finding F16.
+hid it. See docs/legacy/ finding F16.
 """
 
 import math
-from pathlib import Path
 
 import numpy as np
 import pytest
 
-from utils import (
+from causal_bench.algorithms.pc import (
     PCResult,
+    _p_value_for_partial_correlation,
     _partial_correlation,
     _partial_correlation_matrix,
-    _p_value_for_partial_correlation,
     compute_metrics,
-    load_dataset,
-    load_ground_truth,
     pc_algorithm,
 )
-
-# Datasets live beside this file; resolving from it keeps the suite runnable
-# from any working directory, not just PC_Algorithm/.
-DATA_DIR = Path(__file__).resolve().parent
+from causal_bench.io import load_dataset, load_ground_truth
 
 
 def _chain_data(n=500, seed=0):
@@ -181,14 +175,19 @@ def test_ground_truth_is_aligned_by_variable_name(tmp_path):
     assert matrix[0, 1] == 1
 
 
-def test_tennessee_ground_truth_alignment():
-    """The real Tennessee case: 33x33 truth, 31 variables, 4 edges unrecoverable."""
-    names, _, dropped = load_dataset(DATA_DIR / "datasetTE.csv")
+@pytest.mark.slow
+def test_tennessee_ground_truth_alignment(te_dataset_path, te_ground_truth_path):
+    """The real Tennessee case: 33x33 truth, 31 variables, 4 edges unrecoverable.
+
+    Reads the full CSV on purpose: the assertion is about the complete variable
+    set, so a slice would not test what it claims to.
+    """
+    names, _, dropped = load_dataset(te_dataset_path)
     assert dropped["index_like"] == ["Unnamed: 0"]  # F2
     assert len(names) == 31
     assert "Unnamed: 0" not in names
 
-    _, fmt, info = load_ground_truth(DATA_DIR / "TEGroundTruth.txt", names)
+    _, fmt, info = load_ground_truth(te_ground_truth_path, names)
     assert fmt == "matrix"
     assert info["alignment"] == "by_name"
     assert info["total_edges"] == 32

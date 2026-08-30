@@ -7,17 +7,14 @@ this in one module means the deck can never drift out of step with the results.
 
 import math
 import random
-import sys
-from pathlib import Path
 
-PC_DIR = Path(__file__).resolve().parent.parent / "PC_Algorithm"
-sys.path.insert(0, str(PC_DIR))
+import pandas as pd
+from causal_bench import paths
+from causal_bench.algorithms.pc import pc_algorithm
+from causal_bench.io import load_dataset, load_ground_truth
 
-import pandas as pd  # noqa: E402
-from utils import load_dataset, load_ground_truth, pc_algorithm  # noqa: E402
-
-DATASET = PC_DIR / "datasetTE.csv"
-GROUND_TRUTH = PC_DIR / "TEGroundTruth.txt"
+DATASET = paths.dataset_path("datasetTE.csv")
+GROUND_TRUTH = paths.ground_truth_path("TEGroundTruth.txt")
 ALPHA = 0.01
 MAX_COND = 2
 

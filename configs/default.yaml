@@ -1,0 +1,44 @@
+# Run parameters for causal_bench. Loaded and validated by causal_bench.config.
+#
+# These are the values the committed docs/legacy/Results.txt was generated with.
+# Changing them here changes the run; no module carries a numeric default of its
+# own except as a fallback for a key omitted from this file.
+
+run:
+  # Seed for every stochastic component. The PC implementation itself is
+  # deterministic; this exists so that any future resampling, bootstrapping or
+  # data thinning is reproducible from the config alone.
+  seed: 0
+  # Directory name prefix for the timestamped folder created under results/.
+  output_prefix: run
+
+algorithm:
+  # Significance level of the Fisher-z conditional independence test. An edge
+  # is deleted when some conditioning set yields p >= alpha.
+  alpha: 0.01
+  # Cap on the conditioning set size in the skeleton search.
+  # null runs the search to convergence (up to n_vars - 2).
+  max_cond_set_size: 2
+
+# Benchmark cases. `dataset` resolves under data/raw/, `ground_truth` under
+# data/ground_truth/; both may also be given as an explicit or absolute path.
+cases:
+  - name: Ultra Processed Food
+    dataset: DatasetUF.csv
+    ground_truth: UFGroundTruth.txt
+  - name: Ultra Processed Food (with Internal Machine Dependencies)
+    dataset: DatasetUF.csv
+    ground_truth: UFIMDGroundTruth.txt
+  - name: Tennessee Eastman
+    dataset: datasetTE.csv
+    ground_truth: TEGroundTruth.txt
+
+# Sensitivity analysis. Set enabled: false to skip it; it dominates runtime.
+sensitivity:
+  enabled: true
+  # Significance levels swept at max_cond_set_size = 2, no thinning.
+  alpha_sweep: [0.05, 0.01, 1.0e-3, 1.0e-5, 1.0e-10]
+  # Conditioning-set caps swept at the headline alpha. null = to convergence.
+  cond_sweep: [0, 1, 2, 3, null]
+  # Row-thinning factors, probing the i.i.d. assumption on autocorrelated data.
+  thin_sweep: [1, 5, 20, 50]

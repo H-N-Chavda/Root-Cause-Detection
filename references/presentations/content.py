@@ -1,6 +1,6 @@
 """Every number and string used in the deck, in one place.
 
-Values come from the analysis reported in PC_Algorithm/Results.txt. Keeping them
+Values come from the analysis reported in docs/legacy/Results.txt. Keeping them
 here means a re-run of the analysis needs edits in exactly one file, and no
 figure can drift between slides.
 """
