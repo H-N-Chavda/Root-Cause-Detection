@@ -25,5 +25,4 @@ venv/
 notes/
 
 # Generated output. data/ is read only; everything the package writes lands here.
-results/
 !results/.gitkeep

@@ -1,0 +1,5 @@
+algorithm,prior_knowledge,tau_max,target,shd,true_positives,false_positives,false_negatives,reversed_edges,unoriented_edges,n_predicted_edges,n_true_edges,undirected_weight,n_edges_lagged,runtime_seconds,completed,assumptions_met
+lste,none,3,gt_projected,30.0,0,0,30,0,0,0,30,0.5,0,1434.181,True,False
+lste,none,3,gt_projected_cpdag,30.0,0,0,30,0,0,0,30,0.5,0,1434.181,True,False
+lste,none,3,gt_induced,28.0,0,0,28,0,0,0,28,0.5,0,1434.181,True,False
+lste,none,3,gt_induced_cpdag,28.0,0,0,28,0,0,0,28,0.5,0,1434.181,True,False

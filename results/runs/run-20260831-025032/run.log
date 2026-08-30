@@ -1,0 +1,44 @@
+02:50:32 INFO    causal_bench.cli: starting discovery run
+02:50:32 INFO    causal_bench.cli: paths:
+  repo root   : /Users/gyan/Documents/Root-Cause-Detection
+  data        : /Users/gyan/Documents/Root-Cause-Detection/data
+  configs     : /Users/gyan/Documents/Root-Cause-Detection/configs
+  results     : /Users/gyan/Documents/Root-Cause-Detection/results
+02:50:32 INFO    causal_bench.discovery.runner: loaded datasetTE.csv: 1499 rows x 31 columns (dropped {'index_like': ['Unnamed: 0']})
+02:50:32 INFO    causal_bench.discovery.targets: targets: full 32 edges, induced 28, projected 30 (latents ['X27', 'X31']; projection adds [('X11', 'X20'), ('X5', 'X20')])
+02:50:32 INFO    causal_bench.discovery.runner: tau values [1, 2, 3] (EDA VAR order selection, swept over the full range 1..3 because the criteria disagree (AIC=3, BIC=1, HQIC=2, FPE=3))
+02:50:32 INFO    causal_bench.discovery.runner: standardize=True (EDA preprocessing advice: largest/smallest column standard deviation = 2525.2, above 10.0: an unscaled distance or kernel computation would be dominated by the widest variable)
+02:50:32 WARNING causal_bench.prior.knowledge: prior knowledge: 1 of 5 edges name variables absent from the data (X27) and were dropped
+02:50:32 INFO    causal_bench.discovery.runner: prior knowledge: 4/5 edges applicable
+02:50:32 INFO    causal_bench.discovery.runner: running pc
+02:50:35 INFO    causal_bench.algorithms.base: pc: completed in 2.7s (35 edges, assumptions_met=False)
+02:50:35 INFO    causal_bench.discovery.runner: running pc_pk
+02:50:37 INFO    causal_bench.algorithms.base: pc: completed in 2.0s (35 edges, assumptions_met=False)
+02:50:37 INFO    causal_bench.discovery.runner: running pc_manual
+02:50:37 INFO    causal_bench.algorithms.base: pc_manual: completed in 0.1s (35 edges, assumptions_met=False)
+02:50:37 INFO    causal_bench.discovery.runner: running pcmci_plus_tau1
+02:50:50 INFO    causal_bench.algorithms.base: pcmci_plus: completed in 13.2s (78 edges, assumptions_met=False)
+02:50:50 INFO    causal_bench.discovery.runner: running pcmci_plus_tau1_pk
+02:51:03 INFO    causal_bench.algorithms.base: pcmci_plus: completed in 13.0s (78 edges, assumptions_met=False)
+02:51:03 INFO    causal_bench.discovery.runner: running pcmci_plus_tau2
+02:51:19 INFO    causal_bench.algorithms.base: pcmci_plus: completed in 16.2s (100 edges, assumptions_met=False)
+02:51:20 INFO    causal_bench.discovery.runner: running pcmci_plus_tau2_pk
+02:51:36 INFO    causal_bench.algorithms.base: pcmci_plus: completed in 16.1s (100 edges, assumptions_met=False)
+02:51:36 INFO    causal_bench.discovery.runner: running pcmci_plus_tau3
+02:52:08 INFO    causal_bench.algorithms.base: pcmci_plus: completed in 32.6s (100 edges, assumptions_met=False)
+02:52:08 INFO    causal_bench.discovery.runner: running pcmci_plus_tau3_pk
+02:52:41 INFO    causal_bench.algorithms.base: pcmci_plus: completed in 32.6s (100 edges, assumptions_met=False)
+02:52:41 INFO    causal_bench.discovery.runner: running var_lingam_tau1 (with lag-0 bootstrap)
+02:54:42 INFO    causal_bench.algorithms.base: var_lingam: completed in 120.7s (339 edges, assumptions_met=False)
+02:54:42 INFO    causal_bench.discovery.runner: running var_lingam_tau1_pk
+02:55:02 INFO    causal_bench.algorithms.base: var_lingam: completed in 20.5s (339 edges, assumptions_met=False)
+02:55:02 INFO    causal_bench.discovery.runner: running var_lingam_tau2
+02:55:23 INFO    causal_bench.algorithms.base: var_lingam: completed in 20.9s (339 edges, assumptions_met=False)
+02:55:23 INFO    causal_bench.discovery.runner: running var_lingam_tau2_pk
+02:55:44 INFO    causal_bench.algorithms.base: var_lingam: completed in 21.2s (339 edges, assumptions_met=False)
+02:55:44 INFO    causal_bench.discovery.runner: running var_lingam_tau3
+02:56:06 INFO    causal_bench.algorithms.base: var_lingam: completed in 21.4s (339 edges, assumptions_met=False)
+02:56:06 INFO    causal_bench.discovery.runner: running var_lingam_tau3_pk
+02:56:27 INFO    causal_bench.algorithms.base: var_lingam: completed in 21.5s (339 edges, assumptions_met=False)
+02:56:30 INFO    causal_bench.discovery.figures: figures: 16 written
+02:56:30 INFO    causal_bench.discovery.runner: wrote /Users/gyan/Documents/Root-Cause-Detection/results/runs/run-20260831-025032/scores.csv, /Users/gyan/Documents/Root-Cause-Detection/results/runs/run-20260831-025032/RUN_REPORT.md and 15 graph(s) in 357.8s
