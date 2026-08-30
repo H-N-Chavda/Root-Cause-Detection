@@ -49,13 +49,24 @@ for a 2-cycle, so these are unrecoverable in principle. `compute_metrics` scores
 an undirected edge over such a pair as correct (SHD 0) and charges 1 for either
 a single orientation or a missing adjacency.
 
-**Both datasets are autocorrelated time series.** Lag-1 autocorrelation reaches
-0.96, which violates the i.i.d. assumption behind the Fisher-z test and makes
-nominal p-values anti-conservative. The test is not changed; the CLI's
-sensitivity sweep measures the effect by thinning rows (`sensitivity.thin_sweep`
-in `configs/default.yaml`).
+**The data is autocorrelated, which breaks the i.i.d. assumption behind the
+Fisher-z test.** Measured on `datasetTE.csv` (see
+[EDA_REPORT.md](EDA_REPORT.md)): lag-1 autocorrelation up to **0.981** (mean
+0.522 over 31 columns), Ljung-Box rejects independence for 27 of 31 columns, and
+the binding effective sample size is **36 of 1499 rows**. Nominal p-values are
+anti-conservative by that factor. The test is not changed; the benchmark's
+sensitivity sweep measures the effect by thinning rows
+(`sensitivity.thin_sweep` in `configs/default.yaml`). `UNVERIFIED` for
+`DatasetUF.csv` — the EDA has not been run on it yet.
 
 **Published baselines are not directly comparable.** The CIPCaD-Bench paper uses
 a direction-aware protocol in which an undirected edge counts as missing, so the
 skeleton precision/recall reported here is not the same quantity. `UNVERIFIED`
 for any comparison not made under that protocol.
+
+**Measured properties of `datasetTE.csv`.** Beyond the above: no missing values,
+no constant or duplicate columns, no duplicate rows; max |skewness| 0.252 and max
+|excess kurtosis| 0.359, so the marginals are close to Gaussian; correlation
+matrix condition number 3388 with 6 pairs above |r| = 0.9 (highest X10–X28 at
+0.998) and 9 variables with VIF above 10. The full set is in
+[EDA_REPORT.md](EDA_REPORT.md) and `results/eda/*/eda_report.json`.

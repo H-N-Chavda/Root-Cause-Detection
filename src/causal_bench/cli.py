@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+import shutil
 import subprocess
 import sys
 from collections.abc import Sequence
@@ -182,11 +183,10 @@ def run_all(config: Config) -> str:
     return report + "\n"
 
 
-def _build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
-        prog="causal-bench",
-        description="Run the PC causal discovery algorithm over the benchmark cases.",
-    )
+SUBCOMMANDS = ("run", "eda")
+
+
+def _add_common(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--config",
         type=Path,
@@ -195,20 +195,41 @@ def _build_parser() -> argparse.ArgumentParser:
         help=f"YAML config file (default: {paths.DEFAULT_CONFIG_PATH})",
     )
     parser.add_argument(
+        "--log-level",
+        default="INFO",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR"],
+        help="verbosity of progress logging (default: INFO)",
+    )
+
+
+def _build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="causal-bench",
+        description="Causal discovery benchmarking on continuous process data.",
+    )
+    subparsers = parser.add_subparsers(dest="command")
+
+    run_parser = subparsers.add_parser(
+        "run",
+        help="run the PC algorithm over the configured benchmark cases",
+        description="Run the PC causal discovery algorithm over the benchmark cases.",
+    )
+    _add_common(run_parser)
+    run_parser.add_argument(
         "--dataset",
         default=None,
         metavar="NAME",
         help="run a single ad-hoc case on this dataset instead of the configured "
         "cases; a bare name resolves under data/raw/. Requires --ground-truth.",
     )
-    parser.add_argument(
+    run_parser.add_argument(
         "--ground-truth",
         default=None,
         metavar="NAME",
         help="ground-truth file for --dataset; a bare name resolves under "
         "data/ground_truth/.",
     )
-    parser.add_argument(
+    run_parser.add_argument(
         "--output-dir",
         type=Path,
         default=None,
@@ -216,23 +237,83 @@ def _build_parser() -> argparse.ArgumentParser:
         help=f"parent directory for the timestamped run folder "
         f"(default: {paths.RESULTS_DIR})",
     )
-    parser.add_argument(
+    run_parser.add_argument(
         "--no-sensitivity",
         action="store_true",
         help="skip the sensitivity sweeps regardless of the config",
     )
-    parser.add_argument(
+    run_parser.add_argument(
         "--dry-run",
         action="store_true",
         help="print the report to stdout without creating a run directory",
     )
-    parser.add_argument(
-        "--log-level",
-        default="INFO",
-        choices=["DEBUG", "INFO", "WARNING", "ERROR"],
-        help="verbosity of progress logging (default: INFO)",
+
+    eda_parser = subparsers.add_parser(
+        "eda",
+        help="characterise a dataset and report which algorithms its properties support",
+        description="Exploratory data analysis: structure, distribution, linearity, "
+        "temporal structure, conditioning, and the resulting algorithm suitability.",
+    )
+    _add_common(eda_parser)
+    eda_parser.add_argument(
+        "--dataset",
+        required=True,
+        metavar="NAME",
+        help="dataset to characterise; a bare name resolves under data/raw/",
+    )
+    eda_parser.add_argument(
+        "--ground-truth",
+        default=None,
+        metavar="NAME",
+        help="optional ground-truth adjacency matrix, used only to reconcile the "
+        "node sets; a bare name resolves under data/ground_truth/",
+    )
+    eda_parser.add_argument(
+        "--out",
+        "--output-dir",
+        dest="out",
+        type=Path,
+        default=None,
+        metavar="DIR",
+        help=f"parent directory for the timestamped run folder "
+        f"(default: {paths.RESULTS_DIR / 'eda'})",
+    )
+    eda_parser.add_argument(
+        "--reference",
+        type=Path,
+        default=None,
+        metavar="PATH",
+        help="JSON file of independently computed reference values; every one is "
+        "checked and any mismatch is reported, never adopted",
+    )
+    eda_parser.add_argument(
+        "--no-figures",
+        action="store_true",
+        help="skip figure generation regardless of the config",
+    )
+    eda_parser.add_argument(
+        "--copy-to",
+        type=Path,
+        default=None,
+        metavar="PATH",
+        help="also write the markdown report here, for version control",
     )
     return parser
+
+
+def _normalise_argv(argv: Sequence[str] | None) -> list[str]:
+    """Defaults a bare invocation to the `run` subcommand.
+
+    `causal-bench --dataset ... --ground-truth ...` predates the subcommands and
+    still means "run the benchmark", so an argument list that does not start
+    with a known subcommand (or a help flag) gets `run` prepended.
+    """
+    args = list(sys.argv[1:] if argv is None else argv)
+    if args and args[0] in SUBCOMMANDS:
+        return args
+    if args and args[0] in ("-h", "--help"):
+        return args
+    return ["run", *args]
 
 
 def _apply_overrides(config: Config, args: argparse.Namespace) -> Config:
@@ -255,9 +336,7 @@ def _apply_overrides(config: Config, args: argparse.Namespace) -> Config:
     return config
 
 
-def main(argv: Sequence[str] | None = None) -> int:
-    args = _build_parser().parse_args(argv)
-
+def _run_benchmark(args: argparse.Namespace) -> int:
     run_dir: Path | None = None
     if not args.dry_run:
         run_dir = paths.new_run_dir(args.output_dir)
@@ -308,6 +387,101 @@ def main(argv: Sequence[str] | None = None) -> int:
     print("\n".join(summary))
     log.info("wrote %s", report_path)
     return 0
+
+
+def _run_eda(args: argparse.Namespace, argv: Sequence[str]) -> int:
+    from dataclasses import replace
+
+    from .eda import runner as eda_runner
+
+    base = args.out if args.out is not None else paths.RESULTS_DIR / "eda"
+    run_dir = paths.new_run_dir(base, prefix="eda")
+    configure_logging(
+        level=getattr(logging, args.log_level), log_file=run_dir / LOG_FILENAME
+    )
+
+    try:
+        config = Config.load(args.config)
+    except ConfigError as exc:
+        log.error("configuration error: %s", exc)
+        return 2
+
+    eda_config = config.eda
+    if args.no_figures:
+        eda_config = replace(eda_config, figures=replace(eda_config.figures, enabled=False))
+
+    try:
+        dataset_path = paths.dataset_path(args.dataset)
+        ground_truth_path = (
+            paths.ground_truth_path(args.ground_truth) if args.ground_truth else None
+        )
+    except FileNotFoundError as exc:
+        log.error("%s", exc)
+        return 2
+
+    log.info("starting EDA")
+    log.info("paths:\n%s", paths.describe())
+
+    try:
+        findings = eda_runner.run(
+            dataset_path=dataset_path,
+            cfg=eda_config,
+            out_dir=run_dir,
+            ground_truth_path=ground_truth_path,
+            reference_path=args.reference,
+            config_path=config.source,
+            command="causal-bench " + " ".join(argv),
+        )
+    except (FileNotFoundError, ValueError, KeyError) as exc:
+        log.error("eda failed: %s", exc)
+        return 1
+
+    markdown_path = run_dir / eda_runner.MARKDOWN_FILENAME
+    if args.copy_to:
+        args.copy_to.parent.mkdir(parents=True, exist_ok=True)
+        args.copy_to.write_text(markdown_path.read_text(), encoding="utf-8")
+        # The report links its figures by the relative path `figures/<name>`,
+        # so the directory has to travel with it or the copy renders broken.
+        source_figures = run_dir / eda_runner.FIGURES_DIRNAME
+        if source_figures.is_dir():
+            target_figures = args.copy_to.parent / eda_runner.FIGURES_DIRNAME
+            shutil.rmtree(target_figures, ignore_errors=True)
+            shutil.copytree(source_figures, target_figures)
+            log.info("copied figures to %s", target_figures)
+        log.info("copied report to %s", args.copy_to)
+
+    verification = findings.get("verification")
+    summary = [
+        "",
+        "EDA summary",
+        "-----------",
+        f"  dataset     : {dataset_path.name}",
+        f"  shape       : {findings['structure']['shape']['n_rows']} x "
+        f"{findings['structure']['shape']['n_columns']}",
+        f"  figures     : {len(findings['meta']['figures'])}",
+        f"  json        : {run_dir / eda_runner.JSON_FILENAME}",
+        f"  markdown    : {markdown_path}",
+        f"  log         : {run_dir / LOG_FILENAME}",
+    ]
+    if args.copy_to:
+        summary.append(f"  copied to   : {args.copy_to}")
+    if verification:
+        summary.append(
+            f"  reference   : {verification['n_match']}/{verification['n_checks']} "
+            f"checks match"
+        )
+    for entry in findings["suitability"]["recommendation"]["ranking"]:
+        summary.append(f"  {entry['algorithm']:<12}: {entry['verdict']}")
+    print("\n".join(summary))
+    return 0 if not verification or verification["n_mismatch"] == 0 else 0
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    normalised = _normalise_argv(argv)
+    args = _build_parser().parse_args(normalised)
+    if args.command == "eda":
+        return _run_eda(args, normalised)
+    return _run_benchmark(args)
 
 
 if __name__ == "__main__":

@@ -19,15 +19,17 @@ src/causal_bench/       the package
   config.py             typed settings loaded from configs/
   algorithms/pc.py      the PC implementation (skeleton, orientation, metrics)
   io/                   dataset and ground-truth loaders
-  metrics/, eda/        placeholders for a later phase
+  eda/                  exploratory data analysis (see below)
+  metrics/              placeholder for a later phase
   utils/logging.py      logging setup
   cli.py                the causal-bench entry point
-configs/default.yaml    alpha, conditioning-set cap, seed, cases, sweeps
+configs/default.yaml    alpha, conditioning-set cap, seed, cases, sweeps, EDA thresholds
+configs/reference/      independently computed values the EDA checks itself against
 data/raw/               input CSVs           (read only)
 data/ground_truth/      adjacency matrices   (read only)
 results/                run output, git-ignored
 tests/                  pytest suite
-docs/                   DATA.md, feedback response, working notes, legacy output
+docs/                   DATA.md, EDA_REPORT.md, feedback response, notes, legacy output
 references/             papers, presentation build scripts, insight report
 notebooks/              empty
 ```
@@ -80,10 +82,39 @@ Bare file names given to `--dataset` / `--ground-truth` resolve under
 Every tunable — significance level, maximum conditioning set size, seed, case
 list, sweep grids — lives in `configs/default.yaml`, not in the code.
 
+## Exploratory data analysis
+
+Before running an algorithm, characterise the data: the four methods this project
+benchmarks hold conflicting assumptions, so "which one applies here" is a
+measurement, not a preference.
+
+```bash
+make eda                                        # Tennessee Eastman, ~30s
+causal-bench eda --dataset DatasetUF.csv \
+                 --ground-truth UFGroundTruth.txt
+```
+
+Each run writes `results/eda/eda-<timestamp>/` containing `eda_report.json`
+(every number, machine readable), `EDA_REPORT.md`, and `figures/`. `--copy-to`
+also writes the markdown and its figures somewhere version controlled;
+`make eda` points it at `docs/`.
+
+Useful flags: `--reference <json>` checks the computed numbers against
+independently supplied values and reports any mismatch without adopting it;
+`--no-figures` skips plotting.
+
+The module is dataset agnostic — it takes a dataframe and a config, and knows
+nothing about any particular dataset. Every threshold that turns a number into a
+verdict lives in the `eda:` block of `configs/default.yaml` and is echoed into
+the JSON, so a report always carries the criteria it was judged by.
+
+The current findings for Tennessee Eastman are in
+**[docs/EDA_REPORT.md](docs/EDA_REPORT.md)**.
+
 ## Tests and checks
 
 ```bash
-make test        # pytest with coverage (fails under 75%)
+make test        # pytest with coverage (fails under 80%)
 make lint        # ruff check + ruff format --check
 make typecheck   # mypy, non-strict
 make check       # all three

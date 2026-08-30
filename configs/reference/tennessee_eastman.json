@@ -1,0 +1,26 @@
+{
+  "source": "independent pass over the same file, supplied with the Phase 2 task specification",
+  "note": "Checked, never adopted. A mismatch is evidence of a loader or estimator difference and is reported as such.",
+  "checks": [
+    {"label": "Data rows", "path": "structure.shape.n_rows", "expected": 1499, "tolerance": 0},
+    {"label": "Data columns", "path": "structure.shape.n_columns", "expected": 31, "tolerance": 0},
+    {"label": "Ground truth nodes", "path": "structure.ground_truth_reconciliation.n_ground_truth_nodes", "expected": 33, "tolerance": 0},
+    {"label": "Ground truth edges", "path": "structure.ground_truth_reconciliation.ground_truth_edges", "expected": 32, "tolerance": 0},
+    {"label": "Ground truth acyclic", "path": "structure.ground_truth_reconciliation.ground_truth_acyclic", "expected": true},
+    {"label": "Ground truth self-loops", "path": "structure.ground_truth_reconciliation.ground_truth_self_loops", "expected": 0, "tolerance": 0},
+    {"label": "Columns absent from data", "path": "structure.ground_truth_reconciliation.absent_from_data", "expected": ["X27", "X31"]},
+    {"label": "Max |skewness|", "path": "distribution.marginals.summary.max_abs_skewness", "expected": 0.25, "tolerance": 0.05},
+    {"label": "Max |excess kurtosis|", "path": "distribution.marginals.summary.max_abs_excess_kurtosis", "expected": 0.36, "tolerance": 0.05},
+    {"label": "Shapiro-Wilk rejections at 0.05", "path": "distribution.marginals.summary.rejections.shapiro_wilk", "expected": 6, "tolerance": 0},
+    {"label": "VAR(1) residual mean |excess kurtosis|", "path": "distribution.var_residuals.mean_abs_excess_kurtosis", "expected": 0.14, "tolerance": 0.03},
+    {"label": "ADF stationary at 0.05", "path": "temporal.stationarity.summary.n_adf_stationary", "expected": 30, "tolerance": 0},
+    {"label": "VAR order by BIC", "path": "temporal.lag_order.selected.bic", "expected": 1, "tolerance": 0},
+    {"label": "VAR order by HQIC", "path": "temporal.lag_order.selected.hqic", "expected": 2, "tolerance": 0},
+    {"label": "VAR order by AIC", "path": "temporal.lag_order.selected.aic", "expected": 3, "tolerance": 0},
+    {"label": "Correlation matrix condition number", "path": "conditioning.collinearity.condition_number", "expected": 3400, "tolerance": 400},
+    {"label": "Pairs above |r| = 0.9", "path": "conditioning.collinearity.n_pairs_above_report_threshold", "expected": 6, "tolerance": 0},
+    {"label": "Highest correlated pair, first variable", "path": "conditioning.collinearity.high_correlation_pairs[0].a", "expected": "X10"},
+    {"label": "Highest correlated pair, second variable", "path": "conditioning.collinearity.high_correlation_pairs[0].b", "expected": "X28"},
+    {"label": "Highest correlation", "path": "conditioning.collinearity.high_correlation_pairs[0].correlation", "expected": 0.998, "tolerance": 0.002}
+  ]
+}

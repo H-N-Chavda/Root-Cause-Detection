@@ -6,7 +6,7 @@ PKG     := src/causal_bench
 SRC     := src tests
 
 .DEFAULT_GOAL := help
-.PHONY: help venv install test lint format typecheck check run clean
+.PHONY: help venv install test lint format typecheck check run eda clean
 
 help:  ## Show this help
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -38,6 +38,13 @@ check: lint typecheck test  ## Lint, type-check and test
 
 run:  ## Run the full benchmark; output goes to results/<timestamp>/
 	$(VENV)/bin/causal-bench
+
+eda:  ## Characterise the Tennessee Eastman data; output goes to results/eda/
+	$(VENV)/bin/causal-bench eda \
+		--dataset datasetTE.csv \
+		--ground-truth TEGroundTruth.txt \
+		--reference configs/reference/tennessee_eastman.json \
+		--copy-to docs/EDA_REPORT.md
 
 clean:  ## Remove caches and build artefacts
 	rm -rf .pytest_cache .mypy_cache .ruff_cache .coverage htmlcov build dist

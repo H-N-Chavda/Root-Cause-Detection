@@ -9,7 +9,7 @@ way -- `Config.load()` returns a validated object or raises `ConfigError`.
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, is_dataclass
 from pathlib import Path
 from typing import Any
 
@@ -60,6 +60,37 @@ def _as_sequence(value: Any, where: str) -> Sequence[Any]:
     if not value:
         raise ConfigError(f"{where} must not be empty")
     return value
+
+
+def _num(
+    data: Mapping[str, Any],
+    key: str,
+    default: float,
+    where: str,
+    *,
+    integer: bool = False,
+    minimum: float | None = None,
+    maximum: float | None = None,
+) -> Any:
+    """One numeric key with a default, a type and an optional range.
+
+    The EDA block carries ~40 thresholds; hand-writing a validator for each
+    would bury the structure it is meant to document, so they share this.
+    """
+    value = data.get(key, default)
+    if isinstance(value, bool):
+        raise ConfigError(f"{where}.{key} must be a number, got a boolean")
+    if integer:
+        if not isinstance(value, int):
+            raise ConfigError(f"{where}.{key} must be an integer, got {value!r}")
+    elif not isinstance(value, (int, float)):
+        raise ConfigError(f"{where}.{key} must be a number, got {value!r}")
+    number = value if integer else float(value)
+    if minimum is not None and number < minimum:
+        raise ConfigError(f"{where}.{key} must be >= {minimum}, got {number}")
+    if maximum is not None and number > maximum:
+        raise ConfigError(f"{where}.{key} must be <= {maximum}, got {number}")
+    return number
 
 
 @dataclass(frozen=True)
@@ -170,6 +201,259 @@ class SensitivityConfig:
         )
 
 
+# ---------------------------------------------------------------------------
+# Exploratory data analysis
+#
+# One frozen dataclass per section of the `eda:` block in the YAML. Every
+# threshold that turns a measured number into a verdict lives here and is echoed
+# into eda_report.json, so a report always carries the criteria it was judged by.
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class StructureConfig:
+    near_constant_cv: float = 1e-6
+    min_unique: int = 10
+    discrete_unique_ratio: float = 0.05
+
+    @classmethod
+    def _from_mapping(cls, d: Mapping[str, Any]) -> StructureConfig:
+        w = "eda.structure"
+        return cls(
+            near_constant_cv=_num(d, "near_constant_cv", 1e-6, w, minimum=0.0),
+            min_unique=_num(d, "min_unique", 10, w, integer=True, minimum=1),
+            discrete_unique_ratio=_num(
+                d, "discrete_unique_ratio", 0.05, w, minimum=0.0, maximum=1.0
+            ),
+        )
+
+
+@dataclass(frozen=True)
+class DistributionConfig:
+    skew_threshold: float = 0.5
+    excess_kurtosis_threshold: float = 1.0
+    outlier_modified_z: float = 3.5
+    outlier_iqr_multiplier: float = 1.5
+
+    @classmethod
+    def _from_mapping(cls, d: Mapping[str, Any]) -> DistributionConfig:
+        w = "eda.distribution"
+        return cls(
+            skew_threshold=_num(d, "skew_threshold", 0.5, w, minimum=0.0),
+            excess_kurtosis_threshold=_num(
+                d, "excess_kurtosis_threshold", 1.0, w, minimum=0.0
+            ),
+            outlier_modified_z=_num(d, "outlier_modified_z", 3.5, w, minimum=0.0),
+            outlier_iqr_multiplier=_num(d, "outlier_iqr_multiplier", 1.5, w, minimum=0.0),
+        )
+
+
+@dataclass(frozen=True)
+class NonGaussianityConfig:
+    var_lag: int = 1
+    abs_excess_kurtosis_threshold: float = 1.0
+    negentropy_threshold: float = 0.01
+    min_fraction_nongaussian: float = 0.5
+
+    @classmethod
+    def _from_mapping(cls, d: Mapping[str, Any]) -> NonGaussianityConfig:
+        w = "eda.nongaussianity"
+        return cls(
+            var_lag=_num(d, "var_lag", 1, w, integer=True, minimum=1),
+            abs_excess_kurtosis_threshold=_num(
+                d, "abs_excess_kurtosis_threshold", 1.0, w, minimum=0.0
+            ),
+            negentropy_threshold=_num(d, "negentropy_threshold", 0.01, w, minimum=0.0),
+            min_fraction_nongaussian=_num(
+                d, "min_fraction_nongaussian", 0.5, w, minimum=0.0, maximum=1.0
+            ),
+        )
+
+
+@dataclass(frozen=True)
+class LinearityConfig:
+    dcor_pearson_gap: float = 0.10
+    top_pairs: int = 5
+    mi_n_neighbors: int = 3
+    test_fraction: float = 0.3
+    r2_gap_threshold: float = 0.05
+    gbt_n_estimators: int = 200
+    gbt_max_depth: int = 3
+    gbt_learning_rate: float = 0.05
+
+    @classmethod
+    def _from_mapping(cls, d: Mapping[str, Any]) -> LinearityConfig:
+        w = "eda.linearity"
+        return cls(
+            dcor_pearson_gap=_num(d, "dcor_pearson_gap", 0.10, w, minimum=0.0),
+            top_pairs=_num(d, "top_pairs", 5, w, integer=True, minimum=1),
+            mi_n_neighbors=_num(d, "mi_n_neighbors", 3, w, integer=True, minimum=1),
+            test_fraction=_num(d, "test_fraction", 0.3, w, minimum=0.05, maximum=0.95),
+            r2_gap_threshold=_num(d, "r2_gap_threshold", 0.05, w, minimum=0.0),
+            gbt_n_estimators=_num(d, "gbt_n_estimators", 200, w, integer=True, minimum=1),
+            gbt_max_depth=_num(d, "gbt_max_depth", 3, w, integer=True, minimum=1),
+            gbt_learning_rate=_num(
+                d, "gbt_learning_rate", 0.05, w, minimum=1e-6, maximum=1.0
+            ),
+        )
+
+
+@dataclass(frozen=True)
+class TemporalConfig:
+    max_lag: int = 50
+    var_max_lag: int = 10
+    ljung_box_lags: int = 20
+    regime_shift_sd_threshold: float = 0.5
+    changepoint_min_size: int = 100
+    changepoint_max_breaks: int = 5
+    changepoint_penalty: float = 50.0
+    xcorr_max_lag: int = 50
+
+    @classmethod
+    def _from_mapping(cls, d: Mapping[str, Any]) -> TemporalConfig:
+        w = "eda.temporal"
+        return cls(
+            max_lag=_num(d, "max_lag", 50, w, integer=True, minimum=1),
+            var_max_lag=_num(d, "var_max_lag", 10, w, integer=True, minimum=1),
+            ljung_box_lags=_num(d, "ljung_box_lags", 20, w, integer=True, minimum=1),
+            regime_shift_sd_threshold=_num(
+                d, "regime_shift_sd_threshold", 0.5, w, minimum=0.0
+            ),
+            changepoint_min_size=_num(
+                d, "changepoint_min_size", 100, w, integer=True, minimum=2
+            ),
+            changepoint_max_breaks=_num(
+                d, "changepoint_max_breaks", 5, w, integer=True, minimum=0
+            ),
+            changepoint_penalty=_num(d, "changepoint_penalty", 50.0, w, minimum=0.0),
+            xcorr_max_lag=_num(d, "xcorr_max_lag", 50, w, integer=True, minimum=1),
+        )
+
+
+@dataclass(frozen=True)
+class ConditioningConfig:
+    high_corr_threshold: float = 0.95
+    report_corr_threshold: float = 0.90
+    vif_threshold: float = 10.0
+    condition_number_threshold: float = 1000.0
+    samples_per_parameter: int = 10
+
+    @classmethod
+    def _from_mapping(cls, d: Mapping[str, Any]) -> ConditioningConfig:
+        w = "eda.conditioning"
+        high = _num(d, "high_corr_threshold", 0.95, w, minimum=0.0, maximum=1.0)
+        report = _num(d, "report_corr_threshold", 0.90, w, minimum=0.0, maximum=1.0)
+        if report > high:
+            raise ConfigError(
+                f"{w}.report_corr_threshold ({report}) must not exceed "
+                f"{w}.high_corr_threshold ({high})"
+            )
+        return cls(
+            high_corr_threshold=high,
+            report_corr_threshold=report,
+            vif_threshold=_num(d, "vif_threshold", 10.0, w, minimum=1.0),
+            condition_number_threshold=_num(
+                d, "condition_number_threshold", 1000.0, w, minimum=1.0
+            ),
+            samples_per_parameter=_num(
+                d, "samples_per_parameter", 10, w, integer=True, minimum=1
+            ),
+        )
+
+
+@dataclass(frozen=True)
+class ScalingConfig:
+    magnitude_ratio_threshold: float = 10.0
+
+    @classmethod
+    def _from_mapping(cls, d: Mapping[str, Any]) -> ScalingConfig:
+        return cls(
+            magnitude_ratio_threshold=_num(
+                d, "magnitude_ratio_threshold", 10.0, "eda.scaling", minimum=1.0
+            )
+        )
+
+
+@dataclass(frozen=True)
+class FiguresConfig:
+    enabled: bool = True
+    dpi: int = 120
+    max_grid_vars: int = 12
+
+    @classmethod
+    def _from_mapping(cls, d: Mapping[str, Any]) -> FiguresConfig:
+        w = "eda.figures"
+        return cls(
+            enabled=bool(d.get("enabled", True)),
+            dpi=_num(d, "dpi", 120, w, integer=True, minimum=10),
+            max_grid_vars=_num(d, "max_grid_vars", 12, w, integer=True, minimum=1),
+        )
+
+
+@dataclass(frozen=True)
+class EdaConfig:
+    """Every parameter and threshold the EDA uses."""
+
+    seed: int = 0
+    significance: float = 0.05
+    structure: StructureConfig = field(default_factory=StructureConfig)
+    distribution: DistributionConfig = field(default_factory=DistributionConfig)
+    nongaussianity: NonGaussianityConfig = field(default_factory=NonGaussianityConfig)
+    linearity: LinearityConfig = field(default_factory=LinearityConfig)
+    temporal: TemporalConfig = field(default_factory=TemporalConfig)
+    conditioning: ConditioningConfig = field(default_factory=ConditioningConfig)
+    scaling: ScalingConfig = field(default_factory=ScalingConfig)
+    figures: FiguresConfig = field(default_factory=FiguresConfig)
+
+    @classmethod
+    def _from_mapping(cls, d: Mapping[str, Any]) -> EdaConfig:
+        seed = d.get("seed", 0)
+        if isinstance(seed, bool) or not isinstance(seed, int):
+            raise ConfigError(f"eda.seed must be an integer, got {seed!r}")
+        return cls(
+            seed=seed,
+            significance=_num(d, "significance", 0.05, "eda", minimum=1e-12, maximum=0.5),
+            structure=StructureConfig._from_mapping(
+                _as_mapping(d.get("structure", {}), "eda.structure")
+            ),
+            distribution=DistributionConfig._from_mapping(
+                _as_mapping(d.get("distribution", {}), "eda.distribution")
+            ),
+            nongaussianity=NonGaussianityConfig._from_mapping(
+                _as_mapping(d.get("nongaussianity", {}), "eda.nongaussianity")
+            ),
+            linearity=LinearityConfig._from_mapping(
+                _as_mapping(d.get("linearity", {}), "eda.linearity")
+            ),
+            temporal=TemporalConfig._from_mapping(
+                _as_mapping(d.get("temporal", {}), "eda.temporal")
+            ),
+            conditioning=ConditioningConfig._from_mapping(
+                _as_mapping(d.get("conditioning", {}), "eda.conditioning")
+            ),
+            scaling=ScalingConfig._from_mapping(
+                _as_mapping(d.get("scaling", {}), "eda.scaling")
+            ),
+            figures=FiguresConfig._from_mapping(
+                _as_mapping(d.get("figures", {}), "eda.figures")
+            ),
+        )
+
+    def thresholds(self) -> dict[str, Any]:
+        """Flat {section.key: value} dump, embedded verbatim in the JSON report."""
+        from dataclasses import asdict, fields
+
+        out: dict[str, Any] = {"seed": self.seed, "significance": self.significance}
+        for f in fields(self):
+            value = getattr(self, f.name)
+            # `is_dataclass` also admits a dataclass *class*; only instances
+            # can be flattened, and every field here holds an instance.
+            if is_dataclass(value) and not isinstance(value, type):
+                for key, inner in asdict(value).items():
+                    out[f"{f.name}.{key}"] = inner
+        return out
+
+
 @dataclass(frozen=True)
 class Config:
     """Fully validated run configuration."""
@@ -178,6 +462,7 @@ class Config:
     algorithm: AlgorithmConfig = field(default_factory=AlgorithmConfig)
     cases: tuple[CaseConfig, ...] = ()
     sensitivity: SensitivityConfig = field(default_factory=SensitivityConfig)
+    eda: EdaConfig = field(default_factory=EdaConfig)
     source: Path | None = None
 
     @classmethod
@@ -196,6 +481,7 @@ class Config:
             sensitivity=SensitivityConfig._from_mapping(
                 _as_mapping(data.get("sensitivity", {}), "sensitivity")
             ),
+            eda=EdaConfig._from_mapping(_as_mapping(data.get("eda", {}), "eda")),
             source=source,
         )
 

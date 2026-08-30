@@ -42,3 +42,101 @@ sensitivity:
   cond_sweep: [0, 1, 2, 3, null]
   # Row-thinning factors, probing the i.i.d. assumption on autocorrelated data.
   thin_sweep: [1, 5, 20, 50]
+
+# ---------------------------------------------------------------------------
+# Exploratory data analysis (causal-bench eda)
+#
+# Every threshold the EDA uses to turn a number into a verdict lives here. No
+# module carries one of its own. Changing a threshold changes the verdicts and
+# is recorded in eda_report.json, so a report always says what it was judged by.
+# ---------------------------------------------------------------------------
+eda:
+  # Seeds numpy and every estimator that has a random component (mutual
+  # information's kNN tie-breaking, the gradient-boosted trees).
+  seed: 0
+  # Nominal level for every hypothesis test reported.
+  significance: 0.05
+
+  structure:
+    # A column is "near constant" if its coefficient of variation falls below
+    # this, or if it takes fewer than `min_unique` distinct values.
+    near_constant_cv: 1.0e-6
+    min_unique: 10
+    # Fraction of distinct values below which a column is called discrete
+    # rather than continuous; a Gaussian test on a discrete column is void.
+    discrete_unique_ratio: 0.05
+
+  distribution:
+    # Practical-significance thresholds, applied alongside the p-values. At
+    # n=1499 a normality test rejects on a departure far too small to matter,
+    # so the verdict is driven by these, not by the p-value alone.
+    skew_threshold: 0.5
+    excess_kurtosis_threshold: 1.0
+    outlier_modified_z: 3.5
+    outlier_iqr_multiplier: 1.5
+
+  nongaussianity:
+    # VAR lag used to produce the residuals that VAR-LiNGAM would work from.
+    var_lag: 1
+    # |excess kurtosis| a residual must exceed for its innovation to be usable
+    # by an ICA-based method. Below this the fourth cumulant is too small for
+    # the contemporaneous rotation to be identified in finite samples.
+    abs_excess_kurtosis_threshold: 1.0
+    # Negentropy (nats) below which an innovation is treated as Gaussian.
+    negentropy_threshold: 0.01
+    # Fraction of equations that must clear the thresholds for a dataset-level
+    # "identifiable" verdict.
+    min_fraction_nongaussian: 0.5
+
+  linearity:
+    # |distance correlation| - |Pearson| above this flags nonlinear structure.
+    dcor_pearson_gap: 0.10
+    top_pairs: 5
+    mi_n_neighbors: 3
+    # Time-ordered holdout: the last fraction of rows. Never a random split;
+    # a random split leaks future information through autocorrelation.
+    test_fraction: 0.3
+    # Out-of-sample R^2 gain of the tree over the linear fit that counts as
+    # real nonlinear signal.
+    r2_gap_threshold: 0.05
+    gbt_n_estimators: 200
+    gbt_max_depth: 3
+    gbt_learning_rate: 0.05
+
+  temporal:
+    max_lag: 50
+    var_max_lag: 10
+    ljung_box_lags: 20
+    # Half-window fractions for the regime comparison, in standard-deviation
+    # units of the whole series.
+    regime_shift_sd_threshold: 0.5
+    changepoint_min_size: 100
+    changepoint_max_breaks: 5
+    # Minimum drop in the Gaussian cost (in nats) for a candidate changepoint
+    # to be accepted by the binary-segmentation pass.
+    changepoint_penalty: 50.0
+    # Cross-correlation is searched over +/- this many lags.
+    xcorr_max_lag: 50
+
+  conditioning:
+    # Pairs at or above this are reported explicitly as a collinearity hazard.
+    high_corr_threshold: 0.95
+    # Wider net, reported as a table.
+    report_corr_threshold: 0.90
+    vif_threshold: 10.0
+    condition_number_threshold: 1000.0
+    # Fisher-z heuristic: samples required per parameter in the partial
+    # correlation, used to derive the largest supportable conditioning set.
+    samples_per_parameter: 10
+
+  scaling:
+    # Ratio of the largest to the smallest variable standard deviation above
+    # which standardization is required rather than optional.
+    magnitude_ratio_threshold: 10.0
+
+  figures:
+    enabled: true
+    dpi: 120
+    # Grids (ACF/PACF, histograms) are capped at this many panels so a
+    # 100-variable dataset still produces a readable figure.
+    max_grid_vars: 12

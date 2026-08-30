@@ -17,6 +17,14 @@ dependencies = [
     "pandas==3.0.5",
     "python-pptx==1.0.2",
     "PyYAML==6.0.3",
+    # Added in phase 2 for the EDA module. scipy/statsmodels supply the
+    # hypothesis tests, scikit-learn the mutual information and the boosted
+    # tree, dcor the distance correlation, matplotlib the figures.
+    "scipy==1.18.1",
+    "statsmodels==0.15.0",
+    "scikit-learn==1.9.0",
+    "dcor==0.7",
+    "matplotlib==3.11.1",
 ]
 
 [project.optional-dependencies]
@@ -40,7 +48,7 @@ addopts = [
     "-q",
     "--cov=causal_bench",
     "--cov-report=term-missing",
-    "--cov-fail-under=75",
+    "--cov-fail-under=80",
 ]
 markers = [
     "slow: touches a full dataset rather than a fixture slice",
