@@ -25,7 +25,29 @@ dependencies = [
     "scikit-learn==1.9.0",
     "dcor==0.7",
     "matplotlib==3.11.1",
+    # Added in phase 3 for the algorithms themselves. tigramite provides PC and
+    # PCMCI+ and the CMIknn estimator LSTE is built on; lingam provides
+    # VAR-LiNGAM; networkx handles the graph conversions and cycle checks.
+    "tigramite==5.2.10.1",
+    "lingam==1.13.0",
+    "networkx==3.6.1",
+    # lingam imports these at package import time but does not need them for
+    # VARLiNGAM or DirectLiNGAM; they are installed without their own
+    # dependencies so they cannot drag scipy backwards (see the note below).
+    "graphviz",
+    "semopy",
+    "psy",
+    "pygam",
+    "autograd",
 ]
+
+# NOTE ON THE lingam PIN. lingam 1.13.0 declares `scipy<=1.13.1`, which has no
+# wheel for Python 3.14 and cannot be built here (no OpenBLAS). That pin is
+# conservative rather than real: VARLiNGAM and DirectLiNGAM were verified to fit
+# and to reproduce a known one-way edge on scipy 1.18.1, and the phase 3 test
+# suite exercises both. lingam is therefore installed with `--no-deps`, as are
+# its import-time extras. `pip check` will report the conflict; it is expected
+# and is recorded here rather than hidden.
 
 [project.optional-dependencies]
 dev = [
@@ -71,15 +93,15 @@ ignore = ["E731"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["E402"]
-# `algorithms/pc.py` is the former PC_Algorithm/utils.py, moved verbatim under
+# `algorithms/pc_manual.py` is the former PC_Algorithm/utils.py, moved verbatim under
 # a no-refactor constraint. Its 60 findings are all typing-modernisation
 # (typing.Dict -> dict, Optional[X] -> X | None) plus one long line -- reported,
 # deliberately not fixed. Real bug classes (F, B) still run against it.
-"src/causal_bench/algorithms/pc.py" = ["UP006", "UP035", "UP037", "UP045", "E501"]
+"src/causal_bench/algorithms/pc_manual.py" = ["UP006", "UP035", "UP037", "UP045", "E501"]
 
 [tool.ruff.format]
 # Same reason: reformatting a verbatim move would bury it in whitespace noise.
-exclude = ["src/causal_bench/algorithms/pc.py", "tests/test_pc.py"]
+exclude = ["src/causal_bench/algorithms/pc_manual.py", "tests/test_pc.py"]
 
 [tool.mypy]
 # No python_version pin: the installed numpy stubs use 3.12+ syntax, so mypy
@@ -92,10 +114,11 @@ warn_unused_configs = true
 disallow_untyped_defs = false
 check_untyped_defs = false
 
-# `algorithms/pc.py` is a verbatim move under a no-refactor constraint. It has 5
-# pre-existing mypy errors (2x unchecked `re.Match | None` .group at pc.py:638-639,
-# and 3x from the `Dict[str, object]` ground-truth `info` mapping at pc.py:655/691/693).
+# `algorithms/pc_manual.py` is a verbatim move under a no-refactor constraint (only
+# the file name changed in phase 3, so that `pc.py` could become the tigramite
+# wrapper). It carries pre-existing mypy errors from the `re.Match | None` .group
+# calls and the `Dict[str, object]` ground-truth `info` mapping.
 # Reported, not fixed; lift this block when the freeze on that module lifts.
 [[tool.mypy.overrides]]
-module = "causal_bench.algorithms.pc"
+module = "causal_bench.algorithms.pc_manual"
 ignore_errors = true

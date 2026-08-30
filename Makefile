@@ -6,7 +6,7 @@ PKG     := src/causal_bench
 SRC     := src tests
 
 .DEFAULT_GOAL := help
-.PHONY: help venv install test lint format typecheck check run eda clean
+.PHONY: help venv install test lint format typecheck check run eda discover clean
 
 help:  ## Show this help
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -17,6 +17,11 @@ venv:  ## Create the local virtual environment
 
 install: venv  ## Install the package in editable mode with the dev extras
 	$(PIP) install --upgrade pip
+	# lingam and its import-time extras pin scipy<=1.13.1, which has no wheel
+	# for python 3.14. The pin is conservative -- both estimators are verified
+	# against scipy 1.18.1 by the test suite -- so they go in without their own
+	# dependency resolution. See the note in pyproject.toml.
+	$(PIP) install --no-deps lingam==1.13.0 graphviz semopy psy pygam autograd
 	$(PIP) install -e ".[dev]"
 	$(VENV)/bin/pre-commit install || true
 
@@ -38,6 +43,11 @@ check: lint typecheck test  ## Lint, type-check and test
 
 run:  ## Run the full benchmark; output goes to results/<timestamp>/
 	$(VENV)/bin/causal-bench
+
+discover:  ## Run every algorithm on Tennessee Eastman and score them (~2.5h)
+	$(VENV)/bin/causal-bench run \
+		--out results/runs \
+		--copy-to docs/RUN_REPORT.md
 
 eda:  ## Characterise the Tennessee Eastman data; output goes to results/eda/
 	$(VENV)/bin/causal-bench eda \

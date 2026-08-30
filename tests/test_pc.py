@@ -11,7 +11,7 @@ import math
 import numpy as np
 import pytest
 
-from causal_bench.algorithms.pc import (
+from causal_bench.algorithms.pc_manual import (
     PCResult,
     _p_value_for_partial_correlation,
     _partial_correlation,

@@ -140,3 +140,56 @@ eda:
     # Grids (ACF/PACF, histograms) are capped at this many panels so a
     # 100-variable dataset still produces a readable figure.
     max_grid_vars: 12
+
+# ---------------------------------------------------------------------------
+# Causal discovery runs (causal-bench run)
+#
+# tau_max is deliberately null: it comes from the Phase 2 VAR order selection,
+# not from a number chosen here. The criteria disagree (BIC 1, HQIC 2, AIC 3),
+# so `tau_sweep` runs the whole range rather than committing to one.
+# ---------------------------------------------------------------------------
+discovery:
+  seed: 0
+  algorithms: [pc, pcmci_plus, var_lingam, lste]
+
+  # null means "take it from the EDA report". Set a value to override.
+  tau_max: null
+  standardize: null
+  # Run every tau from the EDA's min_order to its max_order, not just one.
+  tau_sweep: true
+
+  # Latent nodes are derived from the data-versus-ground-truth reconciliation,
+  # never listed here: hard-coding them would make this config dataset specific.
+  undirected_weight: 0.5
+
+  prior_knowledge: configs/prior_knowledge/te_controller_loops.yaml
+  # Each algorithm runs twice, without and with the prior.
+  run_with_prior_knowledge: true
+
+  algorithm_params:
+    pc:
+      pc_alpha: 0.01
+      contemp_collider_rule: majority
+      conflict_resolution: true
+    pc_manual:
+      pc_alpha: 0.01
+      max_cond_set_size: 2
+    pcmci_plus:
+      pc_alpha: 0.01
+      independence_test: parcorr
+      contemp_collider_rule: majority
+      conflict_resolution: true
+    var_lingam:
+      criterion: bic
+      prune: true
+      bootstrap_samples: 10
+      run_bootstrap: true
+    lste:
+      alpha: 0.05
+      # Kraskov-style kNN conditional mutual information. A Gaussian estimator
+      # would collapse transfer entropy onto linear Granger causality and
+      # duplicate the VAR result; see algorithms/lste.py.
+      knn: 0.1
+      sig_samples: 20
+      workers: -1
+      fdr_method: fdr_bh

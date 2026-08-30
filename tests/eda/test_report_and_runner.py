@@ -265,12 +265,16 @@ def test_cli_eda_requires_a_dataset():
     assert excinfo.value.code == 2
 
 
-def test_bare_invocation_still_means_run():
-    """The `run` subcommand was added after the fact; a bare argument list must
-    keep meaning what it meant before."""
+def test_bare_invocation_still_means_the_pc_report():
+    """`causal-bench --dataset ... --ground-truth ...` predates the subcommands
+    and meant "run the phase 1 PC benchmark". Phase 3 took the name `run` for
+    the multi-algorithm discovery command, so a bare argument list routes to
+    `pc-report` -- what it did before -- rather than silently changing meaning.
+    """
     from causal_bench.cli import _normalise_argv
 
-    assert _normalise_argv(["--dataset", "a.csv"])[0] == "run"
-    assert _normalise_argv(["run", "--dry-run"])[0] == "run"
+    assert _normalise_argv(["--dataset", "a.csv"])[0] == "pc-report"
+    assert _normalise_argv(["pc-report", "--dry-run"])[0] == "pc-report"
+    assert _normalise_argv(["run", "--algorithms", "pc"])[0] == "run"
     assert _normalise_argv(["eda", "--dataset", "a.csv"])[0] == "eda"
     assert _normalise_argv(["--help"]) == ["--help"]

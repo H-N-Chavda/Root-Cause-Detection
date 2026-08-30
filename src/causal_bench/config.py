@@ -455,6 +455,74 @@ class EdaConfig:
 
 
 @dataclass(frozen=True)
+class DiscoveryConfig:
+    """Parameters for `causal-bench run` (phase 3).
+
+    `tau_max` and `standardize` default to None, meaning "take it from the EDA
+    report". A lag order chosen here rather than measured would defeat the point
+    of the Phase 2 handoff, so the runner refuses to invent one.
+    """
+
+    seed: int = 0
+    algorithms: tuple[str, ...] = ("pc", "pcmci_plus", "var_lingam", "lste")
+    tau_max: int | None = None
+    standardize: bool | None = None
+    tau_sweep: bool = True
+    undirected_weight: float = 0.5
+    prior_knowledge: str | None = None
+    run_with_prior_knowledge: bool = True
+    algorithm_params: dict[str, dict[str, Any]] = field(default_factory=dict)
+
+    @classmethod
+    def _from_mapping(cls, d: Mapping[str, Any]) -> DiscoveryConfig:
+        w = "discovery"
+        seed = d.get("seed", 0)
+        if isinstance(seed, bool) or not isinstance(seed, int):
+            raise ConfigError(f"{w}.seed must be an integer, got {seed!r}")
+
+        algorithms = d.get("algorithms", cls.algorithms)
+        if isinstance(algorithms, str) or not isinstance(algorithms, Sequence):
+            raise ConfigError(f"{w}.algorithms must be a list, got {algorithms!r}")
+        if not algorithms:
+            raise ConfigError(f"{w}.algorithms must not be empty")
+
+        tau_max = d.get("tau_max")
+        if tau_max is not None:
+            tau_max = _as_cond_size(tau_max, f"{w}.tau_max")
+            if tau_max is not None and tau_max < 1:
+                raise ConfigError(f"{w}.tau_max must be >= 1, got {tau_max}")
+
+        standardize = d.get("standardize")
+        if standardize is not None and not isinstance(standardize, bool):
+            raise ConfigError(f"{w}.standardize must be a boolean or null")
+
+        params = d.get("algorithm_params", {}) or {}
+        if not isinstance(params, Mapping):
+            raise ConfigError(f"{w}.algorithm_params must be a mapping")
+        for name, entry in params.items():
+            if not isinstance(entry, Mapping):
+                raise ConfigError(f"{w}.algorithm_params.{name} must be a mapping")
+
+        prior = d.get("prior_knowledge")
+        return cls(
+            seed=seed,
+            algorithms=tuple(str(a) for a in algorithms),
+            tau_max=tau_max,
+            standardize=standardize,
+            tau_sweep=bool(d.get("tau_sweep", True)),
+            undirected_weight=_num(
+                d, "undirected_weight", 0.5, w, minimum=0.0, maximum=1.0
+            ),
+            prior_knowledge=None if prior is None else str(prior),
+            run_with_prior_knowledge=bool(d.get("run_with_prior_knowledge", True)),
+            algorithm_params={str(k): dict(v) for k, v in params.items()},
+        )
+
+    def params_for(self, algorithm: str) -> dict[str, Any]:
+        return dict(self.algorithm_params.get(algorithm, {}))
+
+
+@dataclass(frozen=True)
 class Config:
     """Fully validated run configuration."""
 
@@ -463,6 +531,7 @@ class Config:
     cases: tuple[CaseConfig, ...] = ()
     sensitivity: SensitivityConfig = field(default_factory=SensitivityConfig)
     eda: EdaConfig = field(default_factory=EdaConfig)
+    discovery: DiscoveryConfig = field(default_factory=DiscoveryConfig)
     source: Path | None = None
 
     @classmethod
@@ -482,6 +551,9 @@ class Config:
                 _as_mapping(data.get("sensitivity", {}), "sensitivity")
             ),
             eda=EdaConfig._from_mapping(_as_mapping(data.get("eda", {}), "eda")),
+            discovery=DiscoveryConfig._from_mapping(
+                _as_mapping(data.get("discovery", {}), "discovery")
+            ),
             source=source,
         )
 

@@ -26,7 +26,12 @@ from typing import Any
 import numpy as np
 
 from . import paths
-from .algorithms.pc import compute_metrics, format_metrics, pc_algorithm, summarize_graph
+from .algorithms.pc_manual import (
+    compute_metrics,
+    format_metrics,
+    pc_algorithm,
+    summarize_graph,
+)
 from .config import CaseConfig, Config, ConfigError
 from .io import format_ground_truth_info, load_dataset, load_ground_truth
 from .utils.logging import configure_logging, get_logger
@@ -183,7 +188,7 @@ def run_all(config: Config) -> str:
     return report + "\n"
 
 
-SUBCOMMANDS = ("run", "eda")
+SUBCOMMANDS = ("run", "eda", "pc-report")
 
 
 def _add_common(parser: argparse.ArgumentParser) -> None:
@@ -210,9 +215,11 @@ def _build_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest="command")
 
     run_parser = subparsers.add_parser(
-        "run",
-        help="run the PC algorithm over the configured benchmark cases",
-        description="Run the PC causal discovery algorithm over the benchmark cases.",
+        "pc-report",
+        help="the phase 1 PC benchmark report over the configured cases",
+        description="Run the hand-written PC implementation over the benchmark "
+        "cases and write the phase 1 report. Superseded by `run` for "
+        "benchmarking; kept because it is the report Results.txt came from.",
     )
     _add_common(run_parser)
     run_parser.add_argument(
@@ -246,6 +253,68 @@ def _build_parser() -> argparse.ArgumentParser:
         "--dry-run",
         action="store_true",
         help="print the report to stdout without creating a run directory",
+    )
+
+    discover_parser = subparsers.add_parser(
+        "run",
+        help="run the causal-discovery algorithms and score them against the ground truth",
+        description="Run each algorithm on a dataset, collapse lagged graphs to "
+        "summary graphs, and score them by SHD against the ground truth.",
+    )
+    _add_common(discover_parser)
+    discover_parser.add_argument(
+        "--algorithms",
+        default=None,
+        metavar="LIST",
+        help="comma-separated algorithm names (default: from config). "
+        f"Available: {', '.join(_available_algorithms())}",
+    )
+    discover_parser.add_argument(
+        "--dataset",
+        default="datasetTE.csv",
+        metavar="NAME",
+        help="dataset to run on; a bare name resolves under data/raw/",
+    )
+    discover_parser.add_argument(
+        "--ground-truth",
+        default="TEGroundTruth.txt",
+        metavar="NAME",
+        help="ground-truth adjacency matrix; a bare name resolves under data/ground_truth/",
+    )
+    discover_parser.add_argument(
+        "--out",
+        "--output-dir",
+        dest="out",
+        type=Path,
+        default=None,
+        metavar="DIR",
+        help=f"parent directory for the timestamped run folder "
+        f"(default: {paths.RESULTS_DIR / 'runs'})",
+    )
+    discover_parser.add_argument(
+        "--eda-report",
+        type=Path,
+        default=None,
+        metavar="PATH",
+        help="eda_report.json to take tau_max and the standardisation decision "
+        "from (default: the newest under results/eda/)",
+    )
+    discover_parser.add_argument(
+        "--no-prior-knowledge",
+        action="store_true",
+        help="skip the with-prior-knowledge variant of each run",
+    )
+    discover_parser.add_argument(
+        "--no-figures",
+        action="store_true",
+        help="skip figure generation",
+    )
+    discover_parser.add_argument(
+        "--copy-to",
+        type=Path,
+        default=None,
+        metavar="PATH",
+        help="also write the markdown report here, for version control",
     )
 
     eda_parser = subparsers.add_parser(
@@ -301,19 +370,27 @@ def _build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _available_algorithms() -> list[str]:
+    from .algorithms.registry import available
+
+    return available()
+
+
 def _normalise_argv(argv: Sequence[str] | None) -> list[str]:
-    """Defaults a bare invocation to the `run` subcommand.
+    """Defaults a bare invocation to the `pc-report` subcommand.
 
     `causal-bench --dataset ... --ground-truth ...` predates the subcommands and
-    still means "run the benchmark", so an argument list that does not start
-    with a known subcommand (or a help flag) gets `run` prepended.
+    meant "run the phase 1 PC benchmark". Phase 3 took the name `run` for the
+    multi-algorithm discovery command, so a bare argument list is routed to
+    `pc-report`, which is what it did before, rather than silently changing
+    meaning.
     """
     args = list(sys.argv[1:] if argv is None else argv)
     if args and args[0] in SUBCOMMANDS:
         return args
     if args and args[0] in ("-h", "--help"):
         return args
-    return ["run", *args]
+    return ["pc-report", *args]
 
 
 def _apply_overrides(config: Config, args: argparse.Namespace) -> Config:
@@ -476,11 +553,113 @@ def _run_eda(args: argparse.Namespace, argv: Sequence[str]) -> int:
     return 0 if not verification or verification["n_mismatch"] == 0 else 0
 
 
+def _run_discovery(args: argparse.Namespace, argv: Sequence[str]) -> int:
+    from dataclasses import replace
+
+    from .discovery import runner as discovery_runner
+
+    base = args.out if args.out is not None else paths.RESULTS_DIR / "runs"
+    run_dir = paths.new_run_dir(base, prefix="run")
+    configure_logging(
+        level=getattr(logging, args.log_level), log_file=run_dir / LOG_FILENAME
+    )
+
+    try:
+        config = Config.load(args.config)
+    except ConfigError as exc:
+        log.error("configuration error: %s", exc)
+        return 2
+
+    discovery = config.discovery
+    if args.no_prior_knowledge:
+        discovery = replace(discovery, run_with_prior_knowledge=False)
+
+    requested = None
+    if args.algorithms:
+        requested = [a.strip() for a in args.algorithms.split(",") if a.strip()]
+        unknown = sorted(set(requested) - set(_available_algorithms()))
+        if unknown:
+            log.error(
+                "unknown algorithm(s) %s; available: %s",
+                unknown,
+                _available_algorithms(),
+            )
+            return 2
+
+    try:
+        dataset_path = paths.dataset_path(args.dataset)
+        ground_truth_path = paths.ground_truth_path(args.ground_truth)
+    except FileNotFoundError as exc:
+        log.error("%s", exc)
+        return 2
+
+    log.info("starting discovery run")
+    log.info("paths:\n%s", paths.describe())
+
+    try:
+        results = discovery_runner.run(
+            dataset_path=dataset_path,
+            ground_truth_path=ground_truth_path,
+            cfg=discovery,
+            out_dir=run_dir,
+            algorithms=requested,
+            eda_report_path=args.eda_report,
+            config_path=config.source,
+            command="causal-bench " + " ".join(argv),
+            make_figures=not args.no_figures,
+        )
+    except (FileNotFoundError, ValueError, KeyError) as exc:
+        log.error("run failed: %s", exc)
+        return 1
+
+    report_path = run_dir / discovery_runner.REPORT_FILENAME
+    if args.copy_to:
+        args.copy_to.parent.mkdir(parents=True, exist_ok=True)
+        args.copy_to.write_text(report_path.read_text(), encoding="utf-8")
+        figures_source = run_dir / discovery_runner.FIGURES_DIRNAME
+        if figures_source.is_dir():
+            target = args.copy_to.parent / discovery_runner.FIGURES_DIRNAME
+            shutil.rmtree(target, ignore_errors=True)
+            shutil.copytree(figures_source, target)
+        log.info("copied report to %s", args.copy_to)
+
+    primary = "gt_projected"
+    summary = [
+        "",
+        "Run summary",
+        "-----------",
+        f"  dataset     : {dataset_path.name}",
+        f"  variables   : {results['meta']['n_variables']}",
+        f"  target      : {primary} ({results['targets']['gt_projected_edges']} edges)",
+        f"  scores      : {run_dir / discovery_runner.SCORES_FILENAME}",
+        f"  report      : {report_path}",
+        f"  log         : {run_dir / LOG_FILENAME}",
+        "",
+        f"  {'run':<26} {'SHD':>7}  {'edges':>6}  {'sec':>7}  assumptions",
+    ]
+    for record in sorted(
+        results["runs"],
+        key=lambda r: (r["scores"] or {}).get(primary, {}).get("shd", float("inf")),
+    ):
+        score = (record["scores"] or {}).get(primary)
+        shd = f"{score['shd']:.1f}" if score else "FAILED"
+        met = record["assumptions_met"]
+        summary.append(
+            f"  {record['label']:<26} {shd:>7}  {record['n_summary_edges']:>6}  "
+            f"{record['runtime_seconds'] or 0:>7.1f}  "
+            f"{'met' if met else ('VIOLATED' if met is False else '-')}"
+        )
+    print("\n".join(summary))
+    return 0
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     normalised = _normalise_argv(argv)
     args = _build_parser().parse_args(normalised)
     if args.command == "eda":
         return _run_eda(args, normalised)
+    if args.command == "run":
+        return _run_discovery(args, normalised)
     return _run_benchmark(args)
 
 
