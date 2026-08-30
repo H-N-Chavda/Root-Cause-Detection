@@ -11,7 +11,7 @@ from pptx.enum.dml import MSO_LINE_DASH_STYLE
 from pptx.enum.shapes import MSO_CONNECTOR, MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.oxml.ns import qn
-from pptx.util import Emu, Inches, Pt
+from pptx.util import Inches, Pt
 
 # ---------------------------------------------------------------------------
 # Canvas
@@ -23,7 +23,6 @@ MARGIN_IN = 0.65
 
 SLIDE_W = Inches(SLIDE_W_IN)
 SLIDE_H = Inches(SLIDE_H_IN)
-MARGIN = Inches(MARGIN_IN)
 
 # 12-column grid across the usable width
 _USABLE = SLIDE_W_IN - 2 * MARGIN_IN
@@ -62,13 +61,10 @@ RULE = RGBColor(0xC8, 0xC6, 0xC0)
 MUTED = RGBColor(0x6B, 0x6E, 0x73)
 
 FONT = "Aptos"
-FONT_FALLBACK = "Calibri"
 MONO = "Consolas"
 
 # Type scale (pt)
 SZ_TITLE = 30
-SZ_STATEMENT = 40
-SZ_HERO = 88
 SZ_SUB = 16
 SZ_BODY = 13.5
 SZ_SMALL = 11.5
@@ -96,7 +92,6 @@ def header(slide, section, number, accent=TEAL, dark=False):
     slides as the navigation cue.
     """
     y = MARGIN_IN + 0.42
-    ink = ON_DARK if dark else INK
     hair = RGBColor(0x33, 0x39, 0x40) if dark else RULE
     line(slide, MARGIN_IN, y, SLIDE_W_IN - MARGIN_IN, y, color=hair, pt=0.75)
     text(slide, MARGIN_IN, y - 0.24, col_w(8), 0.2, section,
@@ -343,4 +338,3 @@ def mini_axes(slide, x, y, w, h, color=RULE):
 
 
 DASH = MSO_LINE_DASH_STYLE.DASH
-ROUND_DOT = MSO_LINE_DASH_STYLE.ROUND_DOT

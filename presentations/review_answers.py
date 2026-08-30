@@ -9,7 +9,7 @@ carries the full argument and the citations.
 """
 
 from pptx.enum.shapes import MSO_SHAPE
-from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
+from pptx.enum.text import PP_ALIGN
 
 import theme as T
 
@@ -42,18 +42,6 @@ def _question(s, number, question, answer, accent=T.TEAL):
 
 def _soft(accent):
     return {T.TEAL: T.TEAL_SOFT, T.SLATE: T.SLATE_SOFT, T.AMBER: T.AMBER_SOFT}[accent]
-
-
-def _row(s, y, cells, widths, xs, bold=False, color=T.INK, size=T.SZ_BODY,
-         rule=True):
-    """One table row. `cells` are strings, `widths`/`xs` in inches."""
-    for cell, w, x in zip(cells, widths, xs):
-        T.text(s, x, y, w, 0.3, cell, size=size,
-               color=color, bold=bold, spacing=1.1)
-    if rule:
-        T.line(s, T.MARGIN_IN, y + 0.40, T.SLIDE_W_IN - T.MARGIN_IN, y + 0.40,
-               color=T.RULE, pt=0.5)
-    return y + 0.52
 
 
 def _colhead(s, y, cells, widths, xs):

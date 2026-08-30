@@ -1,5 +1,5 @@
 PC Algorithm - Results
-Generated from commit 2047fd4 by PC_Algorithm/main.py
+Generated from commit c171bf5 by PC_Algorithm/main.py
 Headline parameters: alpha = 0.01, max_cond_set_size = 2
 
 Skeleton metrics score undirected adjacency recovery; orientation metrics
@@ -377,13 +377,13 @@ Sensitivity analysis
 
   Ultra Processed Food (with Internal Machine Dependencies)
   -- alpha sweep (k = 2, no thinning) --
-    alpha=0.05      k=2     thin=1    n=23132  edges=57   P=0.789 R=0.417 F1=0.545 SHD=105
+    alpha=0.05      k=2     thin=1    n=23132  edges=57   P=0.789 R=0.417 F1=0.545 SHD=106
     alpha=0.01      k=2     thin=1    n=23132  edges=55   P=0.800 R=0.407 F1=0.540 SHD=102
     alpha=0.001     k=2     thin=1    n=23132  edges=51   P=0.824 R=0.389 F1=0.528 SHD=103
     alpha=1e-05     k=2     thin=1    n=23132  edges=52   P=0.827 R=0.398 F1=0.537 SHD=102
     alpha=1e-10     k=2     thin=1    n=23132  edges=50   P=0.820 R=0.380 F1=0.519 SHD=103
   -- conditioning-set size sweep (alpha = 0.01) --
-    alpha=0.01      k=0     thin=1    n=23132  edges=128  P=0.789 R=0.935 F1=0.856 SHD=101
+    alpha=0.01      k=0     thin=1    n=23132  edges=128  P=0.789 R=0.935 F1=0.856 SHD=115
     alpha=0.01      k=1     thin=1    n=23132  edges=92   P=0.804 R=0.685 F1=0.740 SHD=105
     alpha=0.01      k=2     thin=1    n=23132  edges=55   P=0.800 R=0.407 F1=0.540 SHD=102
     alpha=0.01      k=3     thin=1    n=23132  edges=49   P=0.816 R=0.370 F1=0.510 SHD=103

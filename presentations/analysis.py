@@ -175,38 +175,3 @@ def place_components(components, edges, panels):
         for v, (fx, fy) in layout.items():
             placed[v] = (px + fx * pw, py + fy * ph)
     return placed
-
-
-def ascii_preview(placed, edges, names, width=78, height=26):
-    """Terminal preview of a layout, so it can be sanity-checked without
-    rendering the slide."""
-    if not placed:
-        return ""
-    xs = [p[0] for p in placed.values()]
-    ys = [p[1] for p in placed.values()]
-    span_x = (max(xs) - min(xs)) or 1.0
-    span_y = (max(ys) - min(ys)) or 1.0
-    grid = [[" "] * width for _ in range(height)]
-
-    def to_cell(p):
-        cx = int((p[0] - min(xs)) / span_x * (width - 6))
-        cy = int((p[1] - min(ys)) / span_y * (height - 2))
-        return max(0, min(height - 1, cy)), max(0, min(width - 6, cx))
-
-    for a, b in edges:
-        if a not in placed or b not in placed:
-            continue
-        (r1, c1), (r2, c2) = to_cell(placed[a]), to_cell(placed[b])
-        steps = max(abs(r2 - r1), abs(c2 - c1)) or 1
-        for s in range(steps + 1):
-            r = r1 + (r2 - r1) * s // steps
-            c = c1 + (c2 - c1) * s // steps
-            if grid[r][c] == " ":
-                grid[r][c] = "."
-    for v, p in placed.items():
-        r, c = to_cell(p)
-        label = names[v].replace("X", "")
-        for offset, ch in enumerate(label[:3]):
-            if c + offset < width:
-                grid[r][c + offset] = ch
-    return "\n".join("".join(row).rstrip() for row in grid)

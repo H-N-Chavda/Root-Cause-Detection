@@ -87,12 +87,17 @@ PC_Algorithm/
   main.py                     runs all three cases, writes Results.txt
   test_pc.py                  test suite
   Results.txt                 current output
-  Results_previous.txt        earlier output, retained for reference
   *.csv, *GroundTruth.txt     datasets and reference graphs
 presentations/
-  build_presentation.py       generates PC_Algorithm.pptx
-  theme.py content.py         visual system and figures
+  build_presentation.py       generates PC_Algorithm.pptx, the main deck
+  theme.py content.py         visual system, and every figure in the main deck
   analysis.py slides.py       analysis run at build time, slide definitions
+  build_review_answers.py     generates Review_Answers.pptx
+  review_answers.py           content and slides for that follow-up deck
+insight-report/               the audit behind the current shape of the code:
+                              findings (F1-F18), remediation plan, verification,
+                              and a full walkthrough of algorithm and results
+FEEDBACK_RESPONSE.md          answers to the week-1 review, with citations
 Research Papers/              background reading
 ```
 
@@ -102,7 +107,8 @@ Research Papers/              background reading
 python3 -m venv .venv
 .venv/bin/pip install -r PC_Algorithm/requirements.txt
 
+.venv/bin/python -m pytest PC_Algorithm/test_pc.py -q   # runs from any directory
+
 cd PC_Algorithm
 ../.venv/bin/python main.py              # writes Results.txt
-../.venv/bin/python -m pytest test_pc.py -q
 ```

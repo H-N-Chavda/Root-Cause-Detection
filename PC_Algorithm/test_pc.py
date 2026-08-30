@@ -7,11 +7,13 @@ hid it. See insight-report/ finding F16.
 """
 
 import math
+from pathlib import Path
 
 import numpy as np
 import pytest
 
 from utils import (
+    PCResult,
     _partial_correlation,
     _partial_correlation_matrix,
     _p_value_for_partial_correlation,
@@ -20,6 +22,10 @@ from utils import (
     load_ground_truth,
     pc_algorithm,
 )
+
+# Datasets live beside this file; resolving from it keeps the suite runnable
+# from any working directory, not just PC_Algorithm/.
+DATA_DIR = Path(__file__).resolve().parent
 
 
 def _chain_data(n=500, seed=0):
@@ -177,12 +183,12 @@ def test_ground_truth_is_aligned_by_variable_name(tmp_path):
 
 def test_tennessee_ground_truth_alignment():
     """The real Tennessee case: 33x33 truth, 31 variables, 4 edges unrecoverable."""
-    names, _, dropped = load_dataset("datasetTE.csv")
+    names, _, dropped = load_dataset(DATA_DIR / "datasetTE.csv")
     assert dropped["index_like"] == ["Unnamed: 0"]  # F2
     assert len(names) == 31
     assert "Unnamed: 0" not in names
 
-    _, fmt, info = load_ground_truth("TEGroundTruth.txt", names)
+    _, fmt, info = load_ground_truth(DATA_DIR / "TEGroundTruth.txt", names)
     assert fmt == "matrix"
     assert info["alignment"] == "by_name"
     assert info["total_edges"] == 32
@@ -223,6 +229,39 @@ def test_recall_is_undefined_not_zero_for_an_empty_target():
     m = compute_metrics(result, np.zeros((3, 3), dtype=int), 3)
     assert math.isnan(m["Skeleton_Recall_TPR"])
     assert m["Skeleton_TP"] == 0 and m["Skeleton_FN"] == 0
+
+
+def test_shd_scoring_of_a_bidirected_truth_edge():
+    """A 2-cycle in the truth has no CPDAG form, so the charge depends on what
+    we claimed: an undirected edge is the closest faithful answer (0), a single
+    orientation is half-right (1), and missing the adjacency is wrong (1)."""
+    truth = np.zeros((2, 2), dtype=int)
+    truth[0, 1] = truth[1, 0] = 1
+
+    undirected = PCResult(adjacency={0: {1}, 1: {0}}, directed_edges=set(),
+                          sepset={}, undirected_edges={(0, 1)})
+    assert compute_metrics(undirected, truth, 2)["SHD"] == 0
+
+    oriented = PCResult(adjacency={0: {1}, 1: {0}}, directed_edges={(0, 1)},
+                        sepset={})
+    assert compute_metrics(oriented, truth, 2)["SHD"] == 1
+
+    absent = PCResult(adjacency={0: set(), 1: set()}, directed_edges=set(),
+                      sepset={})
+    assert compute_metrics(absent, truth, 2)["SHD"] == 1
+
+
+def test_constant_column_is_dropped_not_silently_corrupting(tmp_path):
+    """A zero-variance column would otherwise put a NaN row into the
+    correlation matrix and get its diagonal zeroed by nan_to_num."""
+    path = tmp_path / "d.csv"
+    rng = np.random.default_rng(9)
+    rows = "".join(f"{a},{b},7\n" for a, b in rng.normal(size=(40, 2)))
+    path.write_text("A,B,C\n" + rows)
+    names, data, dropped = load_dataset(path)
+    assert dropped["constant"] == ["C"]
+    assert names == ["A", "B"]
+    assert data.shape == (40, 2)
 
 
 def test_shd_charges_one_for_a_reversed_edge():

@@ -82,7 +82,12 @@ def load_dataset(path: str | Path) -> Tuple[List[str], np.ndarray, Dict[str, Lis
         raise FileNotFoundError(f"Dataset not found: {path}")
 
     df = pd.read_csv(path)
-    dropped: Dict[str, List[str]] = {"timestamp": [], "index_like": [], "non_numeric": []}
+    dropped: Dict[str, List[str]] = {
+        "timestamp": [],
+        "index_like": [],
+        "non_numeric": [],
+        "constant": [],
+    }
 
     for column in list(df.columns):
         if str(column).strip().lower() in {"datetime", "date", "timestamp", "time"}:
@@ -100,6 +105,14 @@ def load_dataset(path: str | Path) -> Tuple[List[str], np.ndarray, Dict[str, Lis
     keep = [c for c in numeric_df.columns if not numeric_df[c].isna().any()]
     dropped["non_numeric"] = [str(c) for c in numeric_df.columns if c not in keep]
     numeric_df = numeric_df[keep]
+
+    # A zero-variance column has an undefined correlation with everything. Left
+    # in, np.corrcoef returns a NaN row and the nan_to_num below would zero its
+    # diagonal too, silently corrupting the correlation matrix the CI tests read
+    # from. Drop it and say so instead.
+    constant = [c for c in numeric_df.columns if numeric_df[c].std(ddof=0) == 0]
+    dropped["constant"] = [str(c) for c in constant]
+    numeric_df = numeric_df.drop(columns=constant)
 
     if numeric_df.empty:
         raise ValueError("No numeric columns were found in the dataset")
@@ -209,12 +222,6 @@ def _p_value_for_partial_correlation(
     if len(z) >= n_samples - 3:
         return 1.0
     return _fisher_z_p_value(_partial_correlation(x, y, z), n_samples, len(z))
-
-
-def _conditional_independence_test(
-    x: np.ndarray, y: np.ndarray, z: Sequence[np.ndarray], n_samples: int
-) -> float:
-    return _p_value_for_partial_correlation(x, y, z, n_samples)
 
 
 # ---------------------------------------------------------------------------
@@ -721,9 +728,12 @@ def compute_metrics(
 
       Skeleton    - adjacency recovery, ignoring direction. This is what PC's
                     first phase is actually responsible for.
-      Orientation - arrowhead accuracy, scored only over edges present in both
-                    the predicted and the true skeleton, so skeleton errors are
-                    not double-counted as orientation errors.
+      Orientation - arrowhead accuracy. Precision is scored only over edges
+                    present in both the predicted and the true skeleton, so a
+                    skeleton error is not double-counted as an orientation
+                    error. Recall deliberately uses a wider denominator - every
+                    directed edge in the true skeleton - because an edge we
+                    never found is a direction we never established.
       SHD         - true edge-level Structural Hamming Distance: per unordered
                     pair, compare {absent, undirected, i->j, j->i} against the
                     truth and charge 1 for any mismatch. The original code
@@ -793,8 +803,11 @@ def compute_metrics(
             else:
                 pred = "absent"
             if truth == "both":
-                # any single orientation is half-right; charge 1, absence 1 too
-                shd += 0 if pred in {"forward", "backward", "undirected"} else 1
+                # A 2-cycle has no CPDAG representation, so an undirected edge
+                # is the closest faithful answer and costs nothing. A single
+                # orientation is half-right, and absence misses the adjacency
+                # outright; both are charged 1.
+                shd += 0 if pred == "undirected" else 1
             elif pred != truth:
                 shd += 1
 

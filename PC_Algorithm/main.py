@@ -18,8 +18,6 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-import numpy as np
-
 from utils import (
     compute_metrics,
     format_ground_truth_info,
@@ -108,17 +106,18 @@ def run_case(
 
 
 def _sensitivity_row(
-    dataset_path: str,
-    ground_truth_path: str,
+    case_data: Tuple[List[str], object, object],
     alpha: float,
     max_cond: Optional[int],
     thin: int,
 ) -> str:
-    names, data, _ = load_dataset(BASE_DIR / dataset_path)
+    """One sweep row. `case_data` is loaded once per case by `run_sensitivity`;
+    thinning only drops rows, so the variable names and the aligned ground truth
+    are identical across every row and re-reading the CSV per row is waste."""
+    names, data, ground_truth = case_data
     if thin > 1:
         data = data[::thin]
     result = pc_algorithm(data, alpha=alpha, max_cond_set_size=max_cond)
-    ground_truth, _, _ = load_ground_truth(BASE_DIR / ground_truth_path, names)
     m = compute_metrics(result, ground_truth, len(names))
     cap = "conv" if max_cond is None else str(max_cond)
     return (
@@ -139,20 +138,20 @@ def run_sensitivity() -> str:
     """
     lines = ["=" * 78, "Sensitivity analysis", "=" * 78]
     for title, dataset_path, ground_truth_path in CASES:
+        names, data, _ = load_dataset(BASE_DIR / dataset_path)
+        ground_truth, _, _ = load_ground_truth(BASE_DIR / ground_truth_path, names)
+        case_data = (names, data, ground_truth)
+
         lines.append(f"\n  {title}")
         lines.append("  -- alpha sweep (k = 2, no thinning) --")
         for alpha in ALPHA_SWEEP:
-            lines.append(_sensitivity_row(dataset_path, ground_truth_path, alpha, 2, 1))
+            lines.append(_sensitivity_row(case_data, alpha, 2, 1))
         lines.append("  -- conditioning-set size sweep (alpha = 0.01) --")
         for max_cond in COND_SWEEP:
-            lines.append(
-                _sensitivity_row(dataset_path, ground_truth_path, ALPHA, max_cond, 1)
-            )
+            lines.append(_sensitivity_row(case_data, ALPHA, max_cond, 1))
         lines.append("  -- time-thinning sweep (alpha = 0.01, k = 2) --")
         for thin in THIN_SWEEP:
-            lines.append(
-                _sensitivity_row(dataset_path, ground_truth_path, ALPHA, 2, thin)
-            )
+            lines.append(_sensitivity_row(case_data, ALPHA, 2, thin))
     return "\n".join(lines)
 
 

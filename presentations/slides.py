@@ -8,7 +8,7 @@ chosen from the shape of that slide's argument, so there is no shared
 
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
-from pptx.util import Inches, Pt
+from pptx.util import Inches
 
 import analysis
 import content as C
@@ -1089,7 +1089,6 @@ def slide_20_next(prs, data):
            size=T.SZ_MICRO, color=T.TEAL, bold=True, align=PP_ALIGN.CENTER)
 
     for i, (headline, detail) in enumerate(C.NEXT_STEPS):
-        cx = centres[C.PIPELINE_NEXT[i]] if i < len(C.PIPELINE_NEXT) else 0
         y = 4.62 + i * 0.72
         T.text(s, T.MARGIN_IN, y, 0.34, 0.26, str(i + 1), size=T.SZ_BODY,
                color=T.MUTED, bold=True)
