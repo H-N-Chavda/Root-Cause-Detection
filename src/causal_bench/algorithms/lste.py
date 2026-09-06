@@ -85,6 +85,41 @@ def build_embedding(
     return array, xyz
 
 
+def fdr_feasibility(
+    n_tests: int, sig_samples: int, alpha: float, max_floor_fraction: float = 0.5
+) -> dict[str, Any]:
+    """Can Benjamini-Hochberg reject anything at all, given the p-value floor?
+
+    A shuffle test cannot return a p-value below ``1 / (sig_samples + 1)``. BH
+    rejects the rank-k p-value only when ``p <= alpha * k / m``, so if every
+    test is pinned at the floor ``f`` the best available rank is the number of
+    tests ``c`` sitting there, and a rejection needs ``f <= alpha * c / m``:
+
+        c >= f * m / alpha
+
+    If that exceeds ``m``, no configuration of the data can produce an edge and
+    the run is a guaranteed empty graph. ``required <= m`` is too weak a bar on
+    its own, though: the run that motivated this check needed 2658 of 2790 tests
+    at the floor, which passes that test while being unreachable in practice --
+    it asks for 95% of all tested pairs to be maximally significant.
+    ``max_floor_fraction`` is therefore the real bar: a configuration is usable
+    only if a *plausible* minority of tests at the floor can trigger a
+    rejection. This is checked *before* the tests run, not reported afterwards.
+    """
+    floor = 1.0 / (sig_samples + 1)
+    required = int(np.ceil(floor * n_tests / alpha))
+    fraction = required / n_tests if n_tests else float("inf")
+    return {
+        "n_tests": n_tests,
+        "sig_samples": sig_samples,
+        "p_value_resolution_floor": floor,
+        "min_tests_at_floor_for_fdr": required,
+        "required_floor_fraction": fraction,
+        "max_floor_fraction": max_floor_fraction,
+        "feasible": required <= n_tests and fraction <= max_floor_fraction,
+    }
+
+
 class LSTEAlgorithm(CausalDiscoveryAlgorithm):
     """Lag-specific transfer entropy over every ordered pair and lag."""
 
@@ -92,10 +127,10 @@ class LSTEAlgorithm(CausalDiscoveryAlgorithm):
     library = "tigramite"
     handles_lags = True
     supports_prior_knowledge = True
-    # Each (source, target, lag) is tested on its own, so the tau-3 run already
-    # contains the tau-1 and tau-2 results. Sweeping would triple a run that
-    # costs ~1.5 s per test x 2790 tests.
-    tau_sweep_is_informative = False
+    # A tau-1 run is NOT a slice of the tau-3 run. `history` defaults to
+    # tau_max, so the conditioning set differs, and the FDR family is 930 tests
+    # instead of 2790, which moves the rejection threshold. The sweep is real.
+    tau_sweep_is_informative = True
 
     def __init__(
         self,
@@ -106,6 +141,8 @@ class LSTEAlgorithm(CausalDiscoveryAlgorithm):
         history: int | None = None,
         knn: float = 0.1,
         sig_samples: int = 100,
+        sig_samples_final: int | None = None,
+        two_stage: bool = True,
         workers: int = -1,
         fdr_method: str = "fdr_bh",
         **params: Any,
@@ -121,6 +158,10 @@ class LSTEAlgorithm(CausalDiscoveryAlgorithm):
             history=history if history is not None else tau_max,
             knn=knn,
             sig_samples=sig_samples,
+            # Stage 2 re-tests only the screen's survivors at a finer
+            # resolution. None means single stage.
+            sig_samples_final=sig_samples_final,
+            two_stage=bool(two_stage and sig_samples_final),
             workers=workers,
             fdr_method=fdr_method,
             **params,
@@ -163,33 +204,62 @@ class LSTEAlgorithm(CausalDiscoveryAlgorithm):
         tau_min = max(1, self.params["tau_min"])
         allowed = _allowed_links(prior_knowledge, n_vars, tau_max, tau_min)
 
-        test = CMIknn(
-            knn=self.params["knn"],
-            significance="shuffle_test",
-            sig_samples=self.params["sig_samples"],
-            workers=self.params["workers"],
-            # Deterministic given the global numpy seed the base class sets.
-            seed=self.seed,
-        )
+        alpha = self.params["alpha"]
+        two_stage = bool(self.params["two_stage"])
+        final_samples = int(self.params["sig_samples_final"] or self.params["sig_samples"])
 
         values = np.zeros((n_vars, n_vars, tau_max + 1))
         p_values = np.ones((n_vars, n_vars, tau_max + 1))
         tested: list[tuple[int, int, int]] = []
 
         total = sum(len(v) for v in allowed.values())
+
+        # --- pre-run guard -------------------------------------------------
+        # The old run burned 24 minutes to produce a graph that could not have
+        # contained an edge at any p-value. The arithmetic that shows this is
+        # cheap; refuse the configuration instead of discovering it afterwards.
+        feasibility = fdr_feasibility(total, final_samples, alpha)
+        if self.params["fdr_method"] not in ("none", None, "") and not feasibility[
+            "feasible"
+        ]:
+            raise ValueError(
+                f"LSTE configuration cannot realistically reject any hypothesis: "
+                f"{total} tests at sig_samples={final_samples} gives a p-value "
+                f"floor of {feasibility['p_value_resolution_floor']:.4g}, so "
+                f"{self.params['fdr_method']} at alpha={alpha} needs "
+                f"{feasibility['min_tests_at_floor_for_fdr']} of them "
+                f"({feasibility['required_floor_fraction']:.0%} of all tests) "
+                f"pinned at that floor before it rejects anything. Raise "
+                f"sig_samples_final to at least "
+                f"{int(np.ceil(total / (alpha * total * feasibility['max_floor_fraction']))) }"
+                f", or set fdr_method: none."
+            )
+
         log.info(
             "LSTE: %d conditional mutual information tests "
-            "(%d vars, lags %d..%d, %d shuffles each)",
+            "(%d vars, lags %d..%d); %s",
             total,
             n_vars,
             tau_min,
             tau_max,
-            self.params["sig_samples"],
+            f"two-stage screen at {self.params['sig_samples']} shuffles, "
+            f"survivors re-tested at {final_samples}"
+            if two_stage
+            else f"{final_samples} shuffles each",
         )
 
-        done = 0
-        for (source, target), lags in allowed.items():
-            for lag in lags:
+        def _run_pass(
+            pairs: list[tuple[int, int, int]], sig_samples: int, tag: str
+        ) -> None:
+            test = CMIknn(
+                knn=self.params["knn"],
+                significance="shuffle_test",
+                sig_samples=sig_samples,
+                workers=self.params["workers"],
+                # Deterministic given the global numpy seed the base class sets.
+                seed=self.seed,
+            )
+            for done, (source, target, lag) in enumerate(pairs, start=1):
                 array, xyz = build_embedding(
                     data, source, target, lag, self.params["history"]
                 )
@@ -197,13 +267,48 @@ class LSTEAlgorithm(CausalDiscoveryAlgorithm):
                 p = test.get_shuffle_significance(array, xyz, value)
                 values[source, target, lag] = float(value)
                 p_values[source, target, lag] = float(p)
+                if done % 200 == 0 or done == len(pairs):
+                    log.info("LSTE %s: %d/%d tests done", tag, done, len(pairs))
+
+        for (source, target), lags in allowed.items():
+            for lag in lags:
                 tested.append((source, target, lag))
-                done += 1
-                if done % 200 == 0:
-                    log.info("LSTE: %d/%d tests done", done, total)
+
+        stage_meta: dict[str, Any] = {}
+        if two_stage:
+            # Stage 1 is a cheap screen. Its only job is to decide which tests
+            # are worth paying for at full resolution; it uses the uncorrected
+            # alpha, so it is deliberately permissive.
+            _run_pass(tested, self.params["sig_samples"], "screen")
+            survivors = [e for e in tested if p_values[e[0], e[1], e[2]] < alpha]
+            stage_meta = {
+                "two_stage": True,
+                "stage1_sig_samples": self.params["sig_samples"],
+                "stage1_n_tests": len(tested),
+                "stage1_n_survivors": len(survivors),
+                "stage2_sig_samples": final_samples,
+                "stage2_n_tests": len(survivors),
+                "stage_note": (
+                    "stage 1 screens every test at low resolution; only the "
+                    "survivors are re-tested at stage-2 resolution. BH is applied "
+                    "over the full family, with non-survivors keeping their "
+                    "stage-1 p-value -- those are all >= alpha, so they cannot "
+                    "be rejected and the correction stays valid"
+                ),
+            }
+            log.info(
+                "LSTE: %d/%d survived the screen; re-testing at %d shuffles",
+                len(survivors),
+                len(tested),
+                final_samples,
+            )
+            _run_pass(survivors, final_samples, "final")
+        else:
+            stage_meta = {"two_stage": False}
+            _run_pass(tested, final_samples, "single")
 
         selected, correction = _select_edges(
-            tested, p_values, self.params["alpha"], self.params["fdr_method"]
+            tested, p_values, alpha, self.params["fdr_method"]
         )
 
         graph = CausalGraph.empty(list(var_names), tau_max=tau_max)
@@ -228,7 +333,9 @@ class LSTEAlgorithm(CausalDiscoveryAlgorithm):
                 "keeps LSTE a distinct, non-parametric method"
             ),
             "significance": "shuffle_test",
-            "sig_samples": self.params["sig_samples"],
+            "sig_samples": final_samples,
+            "sig_samples_screen": self.params["sig_samples"] if two_stage else None,
+            **stage_meta,
             "knn": self.params["knn"],
             "history": self.params["history"],
             "tau_min": tau_min,
@@ -241,17 +348,13 @@ class LSTEAlgorithm(CausalDiscoveryAlgorithm):
             # nothing can be rejected unless at least alpha^-1 * m * floor tests
             # sit at the floor. Recorded so an empty LSTE graph is read as a
             # resolution limit rather than as an absence of signal.
-            "p_value_resolution_floor": 1.0 / (self.params["sig_samples"] + 1),
-            "min_tests_at_floor_for_fdr": int(
-                np.ceil(
-                    len(tested) / (self.params["sig_samples"] + 1) / self.params["alpha"]
-                )
-            )
-            if tested
-            else 0,
+            "p_value_resolution_floor": feasibility["p_value_resolution_floor"],
+            "min_tests_at_floor_for_fdr": feasibility["min_tests_at_floor_for_fdr"],
+            "fdr_feasible_a_priori": feasibility["feasible"],
             "n_tests_at_resolution_floor": int(
                 sum(
-                    p_values[s, t, lag] <= 1.0 / (self.params["sig_samples"] + 1) + 1e-12
+                    p_values[s, t, lag]
+                    <= feasibility["p_value_resolution_floor"] + 1e-12
                     for s, t, lag in tested
                 )
             ),
@@ -266,7 +369,7 @@ class LSTEAlgorithm(CausalDiscoveryAlgorithm):
                 "constraint, not the absence of signal",
                 correction["n_significant_uncorrected"],
                 correction["fdr_method"],
-                1.0 / (self.params["sig_samples"] + 1),
+                feasibility["p_value_resolution_floor"],
             )
         return graph
 

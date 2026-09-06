@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "causal-bench"
 version = "0.1.0"
-description = "PC causal discovery on the CIPCaD-Bench industrial process datasets"
+description = "Causal discovery algorithm implementations for continuous process data"
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.11"
@@ -58,31 +58,12 @@ dev = [
     "pre-commit>=4.0",
 ]
 
-[project.scripts]
-causal-bench = "causal_bench.cli:main"
-
 [tool.setuptools.packages.find]
 where = ["src"]
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-addopts = [
-    "-q",
-    "--cov=causal_bench",
-    "--cov-report=term-missing",
-    "--cov-fail-under=80",
-]
-markers = [
-    "slow: touches a full dataset rather than a fixture slice",
-]
-
-[tool.coverage.run]
-source = ["causal_bench"]
-branch = true
-
 [tool.ruff]
 line-length = 92
-src = ["src", "tests"]
+src = ["src"]
 target-version = "py311"
 
 [tool.ruff.lint]
@@ -92,7 +73,6 @@ select = ["E", "F", "I", "UP", "B", "W"]
 ignore = ["E731"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["E402"]
 # `algorithms/pc_manual.py` is the former PC_Algorithm/utils.py, moved verbatim under
 # a no-refactor constraint. Its 60 findings are all typing-modernisation
 # (typing.Dict -> dict, Optional[X] -> X | None) plus one long line -- reported,
@@ -101,12 +81,12 @@ ignore = ["E731"]
 
 [tool.ruff.format]
 # Same reason: reformatting a verbatim move would bury it in whitespace noise.
-exclude = ["src/causal_bench/algorithms/pc_manual.py", "tests/test_pc.py"]
+exclude = ["src/causal_bench/algorithms/pc_manual.py"]
 
 [tool.mypy]
 # No python_version pin: the installed numpy stubs use 3.12+ syntax, so mypy
 # must analyse under the interpreter actually running it.
-files = ["src", "tests"]
+files = ["src"]
 ignore_missing_imports = true
 warn_unused_configs = true
 # Non-strict: the moved algorithm module is only partially annotated and

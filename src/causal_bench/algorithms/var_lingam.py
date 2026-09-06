@@ -93,17 +93,24 @@ class VARLiNGAMAlgorithm(CausalDiscoveryAlgorithm):
     name = "var_lingam"
     library = "lingam"
     handles_lags = True
-    supports_prior_knowledge = True
+    # Prior knowledge reaches DirectLiNGAM's contemporaneous B0 only, and B0 is
+    # dropped from the scored graph when the innovations are Gaussian (see
+    # `include_contemporaneous`). A prior-knowledge variant would therefore be a
+    # no-op that doubles the runtime; it is not offered.
+    supports_prior_knowledge = False
 
     def __init__(
         self,
         seed: int = 0,
         tau_max: int = 1,
-        criterion: str | None = "bic",
+        criterion: str | None = None,
         prune: bool = True,
         measure: str = "pwling",
         bootstrap_samples: int = 100,
         run_bootstrap: bool = True,
+        edge_selection: str = "bootstrap",
+        bootstrap_threshold: float = 0.9,
+        include_contemporaneous: bool = False,
         **params: Any,
     ) -> None:
         super().__init__(
@@ -114,8 +121,15 @@ class VARLiNGAMAlgorithm(CausalDiscoveryAlgorithm):
             measure=measure,
             bootstrap_samples=bootstrap_samples,
             run_bootstrap=run_bootstrap,
+            edge_selection=edge_selection,
+            bootstrap_threshold=bootstrap_threshold,
+            include_contemporaneous=include_contemporaneous,
             **params,
         )
+        if edge_selection not in ("bootstrap", "nonzero"):
+            raise ValueError(
+                f"edge_selection must be 'bootstrap' or 'nonzero', got {edge_selection!r}"
+            )
 
     def check_assumptions(self, findings: dict[str, Any] | None) -> list[str]:
         if not findings:
@@ -162,7 +176,55 @@ class VARLiNGAMAlgorithm(CausalDiscoveryAlgorithm):
         )
         model.fit(data)
 
-        graph = adjacency_matrices_to_graph(model.adjacency_matrices_, var_names)
+        coefficients = np.asarray(model.adjacency_matrices_, dtype=float)
+        selection: dict[str, Any] = {}
+        frequencies = None
+
+        if self.params["edge_selection"] == "bootstrap":
+            frequencies = self._selection_frequencies(model, data, len(var_names))
+            if frequencies is None:
+                raise RuntimeError(
+                    "edge_selection='bootstrap' but the bootstrap failed; refusing "
+                    "to fall back to unthresholded non-zero coefficients"
+                )
+            threshold = float(self.params["bootstrap_threshold"])
+            keep = frequencies >= threshold
+            selection = {
+                "edge_selection": "bootstrap",
+                "bootstrap_threshold": threshold,
+                "bootstrap_samples": self.params["bootstrap_samples"],
+                "n_nonzero_before_threshold": int((coefficients != 0).sum()),
+                "n_kept_after_threshold": int((keep & (coefficients != 0)).sum()),
+                "selection_frequency_deciles": {
+                    f"p{q}": float(np.percentile(frequencies[coefficients != 0], q))
+                    for q in (10, 25, 50, 75, 90)
+                }
+                if (coefficients != 0).any()
+                else {},
+            }
+            coefficients = np.where(keep, coefficients, 0.0)
+        else:
+            selection = {
+                "edge_selection": "nonzero",
+                "bootstrap_threshold": None,
+                "n_nonzero_before_threshold": int((coefficients != 0).sum()),
+                "n_kept_after_threshold": int((coefficients != 0).sum()),
+            }
+
+        if not self.params["include_contemporaneous"]:
+            # B0 is only identified when the innovations are non-Gaussian. When
+            # it is not, DirectLiNGAM still returns a complete causal order and
+            # a dense B0 -- it always does -- so keeping those edges would score
+            # an arbitrary permutation. They are dropped from the graph and
+            # reported as a diagnostic instead.
+            selection["contemporaneous_dropped"] = True
+            selection["n_contemporaneous_dropped"] = int((coefficients[0] != 0).sum())
+            coefficients = coefficients.copy()
+            coefficients[0] = 0.0
+        else:
+            selection["contemporaneous_dropped"] = False
+
+        graph = adjacency_matrices_to_graph(coefficients, var_names)
         meta: dict[str, Any] = {
             "lags_requested": self.params["tau_max"],
             "lags_used": int(np.asarray(model.adjacency_matrices_).shape[0] - 1),
@@ -173,12 +235,50 @@ class VARLiNGAMAlgorithm(CausalDiscoveryAlgorithm):
             ),
             "causal_order": [int(k) for k in getattr(model, "causal_order_", [])],
         }
+        meta.update(selection)
+        if meta["lags_used"] != meta["lags_requested"]:
+            meta["lag_order_collapsed"] = (
+                f"requested {meta['lags_requested']} lags but criterion "
+                f"{self.params['criterion']!r} selected {meta['lags_used']}; this "
+                "run is not distinct from the other tau values in the sweep"
+            )
+            log.warning("VAR-LiNGAM: %s", meta["lag_order_collapsed"])
         meta.update(self._split_lagged_and_contemporaneous(graph))
         meta.update(self._residual_independence(model, var_names))
-        if self.params["run_bootstrap"]:
-            meta["lag0_bootstrap"] = self._bootstrap_lag0(model, data, var_names)
+        if self.params["run_bootstrap"] or frequencies is not None:
+            meta["lag0_bootstrap"] = self._bootstrap_lag0(
+                model, data, var_names, frequencies=frequencies
+            )
         graph.meta = meta
         return graph
+
+    def _selection_frequencies(
+        self, model: Any, data: np.ndarray, n_vars: int
+    ) -> np.ndarray | None:
+        """Per-edge bootstrap selection frequency, shaped like ``adjacency_matrices_``.
+
+        Verified against lingam 1.13.0: ``bootstrap`` returns
+        ``(n_sampling, N, N * (lags + 1))`` -- the per-lag ``[effect, cause]``
+        blocks concatenated along the columns, NOT the ``(n_sampling, lags + 1,
+        N, N)`` stack that ``adjacency_matrices_`` uses. This reshapes the blocks
+        back into ``(lags + 1, N, N)`` so it can be compared to the point
+        estimate elementwise.
+        """
+        n_samples = self.params["bootstrap_samples"]
+        try:
+            result = model.bootstrap(data, n_sampling=n_samples)
+            matrices = np.asarray(result.adjacency_matrices_)
+        except Exception as exc:
+            log.warning("VAR-LiNGAM bootstrap failed: %s", exc)
+            return None
+        if matrices.ndim != 3 or matrices.shape[1] != n_vars:
+            log.warning("unexpected bootstrap shape %s for %d vars", matrices.shape, n_vars)
+            return None
+        n_blocks = matrices.shape[2] // n_vars
+        present = (matrices != 0).mean(axis=0)  # (N, N * (lags + 1))
+        return np.stack(
+            [present[:, k * n_vars : (k + 1) * n_vars] for k in range(n_blocks)]
+        )
 
     @staticmethod
     def _split_lagged_and_contemporaneous(graph: CausalGraph) -> dict[str, Any]:
@@ -225,7 +325,11 @@ class VARLiNGAMAlgorithm(CausalDiscoveryAlgorithm):
         }
 
     def _bootstrap_lag0(
-        self, model: Any, data: np.ndarray, var_names: list[str]
+        self,
+        model: Any,
+        data: np.ndarray,
+        var_names: list[str],
+        frequencies: np.ndarray | None = None,
     ) -> dict[str, Any]:
         """Resamples to show how stable the contemporaneous orientations are.
 
@@ -237,35 +341,21 @@ class VARLiNGAMAlgorithm(CausalDiscoveryAlgorithm):
         demonstration of non-identifiability rather than an assertion of it.
         """
         n_samples = self.params["bootstrap_samples"]
-        try:
-            result = model.bootstrap(data, n_sampling=n_samples)
-            matrices = np.asarray(result.adjacency_matrices_)
-        except Exception as exc:
-            log.warning("VAR-LiNGAM bootstrap failed: %s", exc)
-            return {"available": False, "error": str(exc), "n_samples": n_samples}
-
-        # Verified against lingam 1.13.0: `bootstrap` returns
-        # (n_sampling, N, N * (lags + 1)) -- the per-lag matrices concatenated
-        # along the columns, NOT the (n_sampling, lags + 1, N, N) stack that
-        # `adjacency_matrices_` uses on the fitted model. The lag-0 block is the
-        # first N columns.
         n = len(var_names)
-        if matrices.ndim != 3 or matrices.shape[1] != n:
-            log.warning("unexpected bootstrap shape %s for %d variables", matrices.shape, n)
-            return {
-                "available": False,
-                "error": f"unexpected bootstrap shape {matrices.shape}",
-                "n_samples": n_samples,
-            }
-        b0 = matrices[:, :, :n]
-        present = b0 != 0
+        if frequencies is None:
+            frequencies = self._selection_frequencies(model, data, n)
+        if frequencies is None:
+            return {"available": False, "error": "bootstrap failed", "n_samples": n_samples}
+        # `_selection_frequencies` already reduced the resamples to per-edge
+        # frequencies in [effect, cause] order; lag 0 is the first block.
+        present = frequencies[0]
 
         edges: list[dict[str, Any]] = []
         for effect in range(n):
             for cause in range(n):
                 if effect == cause:
                     continue
-                forward = float(present[:, effect, cause].mean())
+                forward = float(present[effect, cause])
                 if forward > 0:
                     edges.append(
                         {
@@ -282,8 +372,8 @@ class VARLiNGAMAlgorithm(CausalDiscoveryAlgorithm):
         flips = []
         for i in range(n):
             for j in range(i + 1, n):
-                a = present[:, j, i].mean()  # i -> j
-                b = present[:, i, j].mean()  # j -> i
+                a = float(present[j, i])  # i -> j
+                b = float(present[i, j])  # j -> i
                 if a + b > 0:
                     flips.append(min(a, b) / (a + b))
 
