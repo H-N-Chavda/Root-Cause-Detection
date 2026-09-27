@@ -25,7 +25,7 @@ venv/
 notes/
 
 # Generated output
-results/
+# results/
 
 # presentations
 references/presentations
