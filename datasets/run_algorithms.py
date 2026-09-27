@@ -30,6 +30,19 @@ DEFAULT_TAU_MAX = 20
 # LSTE is nonparametric and pays for every (variable, variable, lag) triple, so
 # it gets a shorter window than the others; at tau_max=20 with 7 variables it is
 # 980 CMIknn tests and does not finish in reasonable time.
+def ci_params(args) -> dict:
+    """Independence-test settings shared by pc and pcmci_plus.
+
+    CMIknn's cost is linear in `sig_samples` and grows fast with row count, so
+    both are on the CLI. `sig_blocklength` is deliberately left unset: tigramite
+    estimates it from the data's autocorrelation, which is the right thing for a
+    time series. That estimator needs `utils.compat.patch_numpy_corrcoef`.
+    """
+    if args.independence_test == "parcorr":
+        return {}
+    return {"significance": "shuffle_test", "sig_samples": args.cmiknn_sig}
+
+
 CONFIGS = {
     "pc": lambda tau: {"pc_alpha": 0.01},
     "pcmci_plus": lambda tau: {"tau_max": tau, "pc_alpha": 0.01},
@@ -80,6 +93,20 @@ def main() -> int:
         "stride 3 turns Ts=5s into Ts=15s, so a given tau_max spans 3x more "
         "real time for ~1/3 the samples -- cheaper AND wider for LSTE.",
     )
+    parser.add_argument(
+        "--independence-test",
+        default="parcorr",
+        choices=("parcorr", "cmiknn", "gpdc"),
+        help="CI test for pc and pcmci_plus. parcorr assumes linear "
+        "relationships; cmiknn and gpdc do not. Does not apply to var_lingam "
+        "(not a CI-based method) or lste (always CMIknn).",
+    )
+    parser.add_argument(
+        "--cmiknn-sig",
+        type=int,
+        default=500,
+        help="shuffles per CMIknn test. Runtime is linear in this.",
+    )
     parser.add_argument("--lste-sig", type=int, default=100)
     parser.add_argument("--lste-sig-final", type=int, default=None)
     parser.add_argument("--lste-tau", type=int, default=8)
@@ -108,9 +135,17 @@ def main() -> int:
         )
 
         for name in args.algorithms.split(","):
-            params = (
-                lste_config(args) if name == "lste" else CONFIGS[name](args.tau_max)
-            )
+            if name == "lste":
+                params = lste_config(args)
+            else:
+                params = CONFIGS[name](args.tau_max)
+                if name in ("pc", "pcmci_plus"):
+                    params["independence_test"] = args.independence_test
+                    params["independence_test_params"] = ci_params(args)
+                if name == "pc":
+                    # PC defaults to tau_max=0 (contemporaneous only). Given a
+                    # window it runs PC-stable over lags instead.
+                    params["tau_max"] = args.tau_max
             log.info("running %s on %s (%s)", name, ds, params)
             started = time.time()
             # standardize=True: levels span ~1.4-13 cm against ~3 V inputs, and
@@ -139,6 +174,10 @@ def main() -> int:
                 row["n_edges"],
                 elapsed,
             )
+
+        # Written per dataset, not once at the end: an interrupted run then
+        # still leaves a readable summary for the datasets that finished.
+        (run_dir / "run_summary.json").write_text(json.dumps(summary, indent=2))
 
     (run_dir / "run_summary.json").write_text(json.dumps(summary, indent=2))
     (run_dir / "ground_truth_edges.json").write_text(json.dumps(truth, indent=2))

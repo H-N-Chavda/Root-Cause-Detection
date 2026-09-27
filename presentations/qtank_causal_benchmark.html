@@ -1,0 +1,429 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Quadruple-Tank Causal Benchmark</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400..700&family=IBM+Plex+Sans:wght@400;500;600&display=swap"><style>
+*{box-sizing:border-box}html,body{margin:0;padding:0;background:#333}
+h1,h2,h3,p,hr{margin:0}ul,ol{margin:0;padding-left:1.2em}
+section{width:1920px;height:1080px;position:relative;overflow:hidden;page-break-after:always;break-after:page}
+section>*{position:relative}section>[style*="position:absolute"]{position:absolute}
+hr{border:none;height:1px}
+table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #DCE1E8;padding:20px 24px;vertical-align:top;text-align:left}
+@page{size:1920px 1080px;margin:0}
+@media screen{body{display:flex;flex-direction:column;gap:24px;padding:24px;align-items:center}}
+@media print{body{background:#fff;display:block;padding:0}}
+</style></head><body><section id="cover" data-transition="fade" style="background:#0B1F3A; color:#FBFBF8; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px; display:flex; flex-direction:column; justify-content:space-between">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#8FB3F0">Root-cause detection · benchmark results</p>
+<div style="display:flex; flex-direction:column; gap:32px">
+<h1 style="font-family:'Source Serif 4', Georgia, serif; font-size:88px; font-weight:600; line-height:1.1; width:1500px">Which causal-discovery algorithm recovers the quadruple-tank wiring from data alone?</h1>
+<p style="font-size:32px; color:#BFD0EA; width:1300px">PC, PCMCI+ and VAR-LiNGAM tested on a simulated four-tank process with a known answer key: 7 signals, 8 true links, two operating points.</p>
+</div>
+<div style="display:flex; justify-content:space-between; align-items:flex-end">
+<p style="font-size:28px; color:#BFD0EA">28 September 2026</p>
+<p style="font-size:24px; color:#8FB3F0">Runs: run-parcorr-tau20, run-fast</p>
+</div>
+
+</section>
+
+<section id="system" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:20px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">The system</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Two pumps, four tanks, eight pipes: the graph on the right is the answer key for every result that follows</h2>
+</div>
+<div style="display:flex; gap:48px; align-items:flex-start">
+<div style="display:flex; flex-direction:column; gap:16px">
+<p style="font-size:26px; font-weight:600; color:#4A5568">Physical rig (Johansson quadruple-tank process)</p>
+<div style="position:relative; width:860px; height:500px">
+<p style="position:absolute; left:180px; top:60px; width:200px; height:120px; line-height:120px; text-align:center; font-size:32px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:8px">h3 upper</p>
+<p style="position:absolute; left:630px; top:60px; width:200px; height:120px; line-height:120px; text-align:center; font-size:32px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:8px">h4 upper</p>
+<p style="position:absolute; left:180px; top:280px; width:200px; height:120px; line-height:120px; text-align:center; font-size:32px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:8px">h1 lower</p>
+<p style="position:absolute; left:630px; top:280px; width:200px; height:120px; line-height:120px; text-align:center; font-size:32px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:8px">h2 lower</p>
+<p style="position:absolute; left:445px; top:90px; width:120px; height:60px; line-height:60px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#6A7179; border-radius:8px">d</p>
+<p style="position:absolute; left:40px; top:420px; width:200px; height:70px; line-height:70px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:8px">pump v1</p>
+<p style="position:absolute; left:660px; top:420px; width:200px; height:70px; line-height:70px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:8px">pump v2</p>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="280.0" y1="180.0" x2="280.0" y2="280.0" stroke="#D9822B" stroke-width="4.0" stroke-linecap="round"/><polyline points="272.3,266.0 280.0,280.0 287.7,266.0" fill="none" stroke="#D9822B" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="730.0" y1="180.0" x2="730.0" y2="280.0" stroke="#D9822B" stroke-width="4.0" stroke-linecap="round"/><polyline points="722.3,266.0 730.0,280.0 737.7,266.0" fill="none" stroke="#D9822B" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="445.0" y1="120.0" x2="380.0" y2="120.0" stroke="#6A7179" stroke-width="3.0" stroke-linecap="round"/><polyline points="390.5,114.2 380.0,120.0 390.5,125.8" fill="none" stroke="#6A7179" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="565.0" y1="120.0" x2="630.0" y2="120.0" stroke="#6A7179" stroke-width="3.0" stroke-linecap="round"/><polyline points="619.5,125.8 630.0,120.0 619.5,114.2" fill="none" stroke="#6A7179" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="230.0" y1="420.0" x2="230.0" y2="380.0" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round"/><polyline points="235.8,390.5 230.0,380.0 224.2,390.5" fill="none" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="730.0" y1="420.0" x2="730.0" y2="380.0" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round"/><polyline points="735.8,390.5 730.0,380.0 724.2,390.5" fill="none" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="60.0" y1="420.0" x2="60.0" y2="20.0" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="60.0" y1="20.0" x2="700.0" y2="20.0" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="700.0" y1="20.0" x2="700.0" y2="60.0" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round"/><polyline points="694.2,49.5 700.0,60.0 705.8,49.5" fill="none" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="845.0" y1="420.0" x2="845.0" y2="44.0" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="845.0" y1="44.0" x2="310.0" y2="44.0" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="310.0" y1="44.0" x2="310.0" y2="60.0" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round"/><polyline points="304.2,49.5 310.0,60.0 315.8,49.5" fill="none" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+</div>
+<div style="display:flex; flex-direction:column; gap:16px">
+<p style="font-size:26px; font-weight:600; color:#4A5568">Same system as a causal graph: 7 nodes, 8 arrows</p>
+<div style="position:relative; width:640px; height:500px">
+<p style="position:absolute; left:60px; top:0px; width:110px; height:110px; line-height:110px; text-align:center; font-size:32px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v1</p>
+<p style="position:absolute; left:255px; top:0px; width:110px; height:110px; line-height:110px; text-align:center; font-size:32px; font-weight:600; color:#FBFBF8; background:#6A7179; border-radius:50%">d</p>
+<p style="position:absolute; left:450px; top:0px; width:110px; height:110px; line-height:110px; text-align:center; font-size:32px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v2</p>
+<p style="position:absolute; left:157px; top:200px; width:110px; height:110px; line-height:110px; text-align:center; font-size:32px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h4</p>
+<p style="position:absolute; left:352px; top:200px; width:110px; height:110px; line-height:110px; text-align:center; font-size:32px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h3</p>
+<p style="position:absolute; left:60px; top:380px; width:110px; height:110px; line-height:110px; text-align:center; font-size:32px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h1</p>
+<p style="position:absolute; left:450px; top:380px; width:110px; height:110px; line-height:110px; text-align:center; font-size:32px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h2</p>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="85.0" y1="110.0" x2="85.0" y2="380.0" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round"/><polyline points="79.2,369.5 85.0,380.0 90.8,369.5" fill="none" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="140.0" y1="110.0" x2="190.0" y2="200.0" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round"/><polyline points="179.9,193.6 190.0,200.0 189.9,188.0" fill="none" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="295.0" y1="110.0" x2="240.0" y2="200.0" stroke="#6A7179" stroke-width="3.0" stroke-linecap="round"/><polyline points="240.6,188.0 240.0,200.0 250.4,194.0" fill="none" stroke="#6A7179" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="325.0" y1="110.0" x2="380.0" y2="200.0" stroke="#6A7179" stroke-width="3.0" stroke-linecap="round"/><polyline points="369.6,194.0 380.0,200.0 379.4,188.0" fill="none" stroke="#6A7179" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="480.0" y1="110.0" x2="440.0" y2="200.0" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round"/><polyline points="439.0,188.0 440.0,200.0 449.5,192.7" fill="none" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="535.0" y1="110.0" x2="535.0" y2="380.0" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round"/><polyline points="529.2,369.5 535.0,380.0 540.8,369.5" fill="none" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="352.0" y1="255.0" x2="170.0" y2="435.0" stroke="#D9822B" stroke-width="4.0" stroke-linecap="round"/><polyline points="174.6,419.7 170.0,435.0 185.4,430.6" fill="none" stroke="#D9822B" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="267.0" y1="255.0" x2="450.0" y2="435.0" stroke="#D9822B" stroke-width="4.0" stroke-linecap="round"/><polyline points="434.6,430.6 450.0,435.0 445.4,419.7" fill="none" stroke="#D9822B" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+</div>
+</div>
+<p style="font-size:26px; color:#4A5568">Pumps split between a lower and an upper tank; upper tanks drain into the tank below (<span style="color:#D9822B"><b>orange</b></span> = the two drainage links, h3→h1 and h4→h2); d feeds both upper tanks.</p>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: datasets/QTank_Dynamics.m; Johansson, IEEE TCST 2000. Ground truth in results/qtank/*/ground_truth_edges.json</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">2</p>
+
+</section>
+
+<section id="datasets" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">The datasets</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Two datasets because the same rig behaves two different ways depending on how the valves split the flow</h2>
+<p style="font-size:28px; color:#4A5568">Same 8 true arrows and same inputs in both: 4 h at 5 s sampling, 2880 rows each. Only the strength and timing of each arrow changes.</p>
+</div>
+<div style="display:flex; gap:40px">
+<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:28px 36px">
+<p style="font-size:36px; font-weight:600">P− · minimum phase · the "easy" control case</p>
+<svg aria-label="Lower-tank level rises smoothly after a pump step" style="width:740px; height:120px" width="740" height="120" viewBox="0 0 740 160"><line x1="20" y1="140" x2="720" y2="140" stroke="#DCE1E8" stroke-width="2"/><path d="M 20 140 C 140 40, 260 24, 720 20" fill="none" stroke="#1F5FBF" stroke-width="5" stroke-linecap="round"/></svg>
+<p style="font-size:24px; color:#6A7179">Lower-tank level after a pump step: rises promptly</p>
+<ul style="font-size:26px; color:#4A5568; line-height:1.4">
+<li>Most of each pump's flow goes straight to the lower tanks</li>
+<li>Drainage links carry the smaller share of water</li>
+<li>Time constants 23–91 s</li>
+</ul>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:28px 36px">
+<p style="font-size:36px; font-weight:600">P+ · non-minimum phase · the "hard" control case</p>
+<svg aria-label="Lower-tank level first dips, then rises after a pump step" style="width:740px; height:120px" width="740" height="120" viewBox="0 0 740 160"><line x1="20" y1="100" x2="720" y2="100" stroke="#DCE1E8" stroke-width="2"/><path d="M 20 100 C 80 150, 140 150, 200 120 C 320 60, 440 24, 720 20" fill="none" stroke="#D9822B" stroke-width="5" stroke-linecap="round"/></svg>
+<p style="font-size:24px; color:#6A7179">Lower-tank level after a pump step: briefly moves the wrong way, then follows</p>
+<ul style="font-size:26px; color:#4A5568; line-height:1.4">
+<li>Most of each pump's flow goes to the upper tanks first</li>
+<li>Drainage links carry the larger share of water</li>
+<li>Time constants 39–91 s</li>
+</ul>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: docs/QTP_EXPECTATIONS.md; datasets/generated/*_meta.json. Step-response curves are sketches, not measured.</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">3</p>
+
+</section>
+
+<section id="summary" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:36px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Executive summary</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">PCMCI+ recovers the wiring best at both operating points; the two drainage links cause almost every error</h2>
+<p style="font-size:28px; color:#4A5568">F1 score on the 8 true links (1.0 = perfect). <span style="color:#0B1F3A"><b>●</b></span> P−  <span style="color:#D9822B"><b>●</b></span> P+</p>
+</div>
+<div style="display:flex; gap:48px; align-items:flex-start">
+<div style="display:flex; flex-direction:column; gap:8px">
+<div style="display:flex; align-items:center; gap:24px"><p style="width:260px; font-size:28px; font-weight:600">PCMCI+</p><div style="position:relative; width:800px; height:96px"><hr style="position:absolute; left:0px; top:47px; width:800px; height:2px; border:none; background:#DCE1E8"><p style="position:absolute; left:660px; top:0px; width:80px; font-size:24px; text-align:center; color:#0B1F3A; font-weight:600">0.88</p><div style="position:absolute; left:686px; top:34px; width:28px; height:28px; border-radius:50%; background:#0B1F3A"></div><div style="position:absolute; left:697px; top:34px; width:28px; height:28px; border-radius:50%; background:#D9822B"></div><p style="position:absolute; left:700px; top:66px; width:80px; font-size:24px; text-align:center; color:#D9822B; font-weight:600">0.89</p></div></div>
+<div style="display:flex; align-items:center; gap:24px"><p style="width:260px; font-size:28px; font-weight:600">VAR-LiNGAM</p><div style="position:relative; width:800px; height:96px"><hr style="position:absolute; left:0px; top:47px; width:800px; height:2px; border:none; background:#DCE1E8"><p style="position:absolute; left:494px; top:0px; width:80px; font-size:24px; text-align:center; color:#0B1F3A; font-weight:600">0.67</p><div style="position:absolute; left:520px; top:34px; width:28px; height:28px; border-radius:50%; background:#0B1F3A"></div><div style="position:absolute; left:697px; top:34px; width:28px; height:28px; border-radius:50%; background:#D9822B"></div><p style="position:absolute; left:671px; top:66px; width:80px; font-size:24px; text-align:center; color:#D9822B; font-weight:600">0.89</p></div></div>
+<div style="display:flex; align-items:center; gap:24px"><p style="width:260px; font-size:28px; font-weight:600">PC, 20-step window</p><div style="position:relative; width:800px; height:96px"><hr style="position:absolute; left:0px; top:47px; width:800px; height:2px; border:none; background:#DCE1E8"><p style="position:absolute; left:494px; top:0px; width:80px; font-size:24px; text-align:center; color:#0B1F3A; font-weight:600">0.67</p><div style="position:absolute; left:520px; top:34px; width:28px; height:28px; border-radius:50%; background:#0B1F3A"></div><div style="position:absolute; left:601px; top:34px; width:28px; height:28px; border-radius:50%; background:#D9822B"></div><p style="position:absolute; left:575px; top:66px; width:80px; font-size:24px; text-align:center; color:#D9822B; font-weight:600">0.77</p></div></div>
+<div style="display:flex; align-items:center; gap:24px"><p style="width:260px; font-size:28px; font-weight:600; color:#4A5568">PC, no time window</p><div style="position:relative; width:800px; height:96px"><hr style="position:absolute; left:0px; top:47px; width:800px; height:2px; border:none; background:#DCE1E8"><p style="position:absolute; left:466px; top:0px; width:80px; font-size:24px; text-align:center; color:#0B1F3A; font-weight:600">0.63</p><div style="position:absolute; left:492px; top:34px; width:28px; height:28px; border-radius:50%; background:#0B1F3A"></div><div style="position:absolute; left:367px; top:34px; width:28px; height:28px; border-radius:50%; background:#D9822B"></div><p style="position:absolute; left:341px; top:66px; width:80px; font-size:24px; text-align:center; color:#D9822B; font-weight:600">0.48</p></div></div>
+<div style="display:flex; gap:24px"><p style="width:260px; font-size:24px"> </p><div style="width:800px; display:flex; justify-content:space-between"><p style="font-size:24px; color:#6A7179">0.0</p><p style="font-size:24px; color:#6A7179">0.5</p><p style="font-size:24px; color:#6A7179">1.0</p></div></div>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:20px">
+<div style="background:#0B1F3A; color:#FBFBF8; border-radius:16px; padding:28px 32px; display:flex; flex-direction:column; gap:6px"><p style="font-size:56px; font-weight:600; line-height:1">2 of 8</p><p style="font-size:24px; color:#BFD0EA">edges wrong for PCMCI+ at either operating point (SHD 2)</p></div>
+<div style="background:#E4ECF9; border-radius:16px; padding:28px 32px; display:flex; flex-direction:column; gap:6px"><p style="font-size:56px; font-weight:600; line-height:1; color:#1F5FBF">1.5 s vs 134 s</p><p style="font-size:24px; color:#4A5568">runtime per dataset, PCMCI+ vs VAR-LiNGAM</p></div>
+<div style="background:#FBEEDF; border-radius:16px; padding:28px 32px; display:flex; flex-direction:column; gap:6px"><p style="font-size:56px; font-weight:600; line-height:1; color:#D9822B">2 arrows</p><p style="font-size:24px; color:#4A5568">the tank-to-tank drainage links (h3→h1, h4→h2) account for nearly every miss or flip</p></div>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: results/qtank/run-parcorr-tau20/scores.json; PC without window from results/qtank/run-fast/scores.json. Single seed, no error bars.</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">4</p>
+
+</section>
+
+<section id="setup" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:36px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">How we score</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Every algorithm hands back a graph; we count how many of the 8 true arrows it found, missed, flipped or invented</h2>
+</div>
+<div style="display:flex; gap:40px">
+<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:32px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179">The 7 signals</p>
+<div style="display:flex; gap:12px; align-items:center"><p style="width:64px; height:64px; line-height:64px; text-align:center; font-size:26px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v</p><p style="font-size:26px; color:#4A5568">v1, v2: pump voltages. Driven by us, square waves</p></div>
+<div style="display:flex; gap:12px; align-items:center"><p style="width:64px; height:64px; line-height:64px; text-align:center; font-size:26px; font-weight:600; color:#FBFBF8; background:#6A7179; border-radius:50%">d</p><p style="font-size:26px; color:#4A5568">d: disturbance flow into the upper tanks</p></div>
+<div style="display:flex; gap:12px; align-items:center"><p style="width:64px; height:64px; line-height:64px; text-align:center; font-size:26px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h</p><p style="font-size:26px; color:#4A5568">h1–h4: tank levels. The outputs the algorithms must explain</p></div>
+<p style="font-size:24px; color:#6A7179">All three inputs are recorded, so nothing hidden drives two tanks at once.</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:32px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179">Three scores</p>
+<p style="font-size:26px; color:#4A5568"><b>Precision</b>: of the arrows reported, how many are real</p>
+<p style="font-size:26px; color:#4A5568"><b>Recall</b>: of the 8 real arrows, how many were reported, pointing the right way</p>
+<p style="font-size:26px; color:#4A5568"><b>F1</b>: the balance of the two. 1.0 means a perfect graph</p>
+<p style="font-size:26px; color:#4A5568"><b>SHD</b>: number of edits (add, delete, flip) to reach the true graph. Lower is better</p>
+<p style="font-size:24px; color:#6A7179">Lagged results are collapsed to one arrow per pair before scoring. Self-loops are ignored.</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:32px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179">Shared settings</p>
+<p style="font-size:26px; color:#4A5568"><b>Significance</b>: 0.01</p>
+<p style="font-size:26px; color:#4A5568"><b>Time window</b>: 20 steps (100 s), about one time constant of the slowest tank</p>
+<p style="font-size:26px; color:#4A5568"><b>Test</b>: partial correlation (linear)</p>
+<p style="font-size:26px; color:#4A5568"><b>VAR-LiNGAM</b>: 100 bootstrap resamples, keep a link only if present in 90 of them</p>
+<p style="font-size:24px; color:#6A7179">Row count used by the main run is not recorded in its summary. UNVERIFIED whether it used all 2880 rows.</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: datasets/score_runs.py; results/qtank/run-parcorr-tau20/run_summary.json</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">5</p>
+
+</section>
+
+<section id="methods" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">The methods</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Three ways of asking "does A drive B?", each with a different blind spot</h2>
+</div>
+<div style="display:flex; gap:32px">
+<div style="flex:1; display:flex; flex-direction:column; gap:20px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:36px">
+<p style="font-size:40px; font-weight:600">PC</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">Removes a link whenever two signals become unrelated once you control for the others.</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">Built for snapshots, not time series. We ran it twice: with no time window, and with the same 20-step window as the others.</p>
+<div style="flex:1"></div>
+<p style="font-size:24px; font-weight:600; color:#D9822B">Blind spot: no correction for signals that mostly predict themselves</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:20px; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:16px; padding:36px">
+<p style="font-size:40px; font-weight:600; color:#1F5FBF">PCMCI+</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">PC redesigned for time series. Tests each link at every lag in the window and corrects for autocorrelation.</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">The method the literature recommends for slow, autocorrelated process data. Our pre-registered favourite.</p>
+<div style="flex:1"></div>
+<p style="font-size:24px; font-weight:600; color:#D9822B">Blind spot: linear test only, in this run</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:20px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:36px">
+<p style="font-size:40px; font-weight:600">VAR-LiNGAM</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">Fits a linear forecasting model, then uses the shape of the noise (non-Gaussian) to decide which way each link points.</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">Keeps a link only if it survives 90 of 100 bootstrap resamples.</p>
+<div style="flex:1"></div>
+<p style="font-size:24px; font-weight:600; color:#D9822B">Blind spot: direction is unreliable where the noise is Gaussian (the tank levels)</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: src/causal_bench/algorithms/pc.py, pcmci_plus.py, var_lingam.py; docs/QTP_EXPECTATIONS.md</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">6</p>
+
+</section>
+
+<section id="headline" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:32px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Headline result</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">PCMCI+ recovers 7 to 8 of the 8 true links with at most 2 mistakes at either operating point</h2>
+<p style="font-size:28px; color:#4A5568">F1 score on 8 directed edges; SHD (edits to reach the true graph) shown under each bar. 20-step window, partial correlation, significance 0.01.</p>
+</div>
+<div style="display:flex; gap:48px; align-items:flex-start">
+<div style="flex:1; display:flex; flex-direction:column; gap:12px">
+<p style="font-size:30px; font-weight:600">P− · minimum phase</p>
+<div style="height:320px; display:flex; align-items:flex-end; gap:40px; border-bottom:2px solid #DCE1E8">
+<div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px"><p style="font-size:32px; font-weight:600">0.67</p><div style="width:160px; height:213px; background:#9DB4D6"></div></div>
+<div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px"><p style="font-size:32px; font-weight:600; color:#1F5FBF">0.88</p><div style="width:160px; height:280px; background:#1F5FBF"></div></div>
+<div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px"><p style="font-size:32px; font-weight:600">0.67</p><div style="width:160px; height:213px; background:#0B1F3A"></div></div>
+</div>
+<div style="display:flex; gap:40px">
+<div style="flex:1; display:flex; flex-direction:column; align-items:center"><p style="font-size:26px; font-weight:600">PC</p><p style="font-size:24px; color:#6A7179">SHD 6</p></div>
+<div style="flex:1; display:flex; flex-direction:column; align-items:center"><p style="font-size:26px; font-weight:600; color:#1F5FBF">PCMCI+</p><p style="font-size:24px; color:#6A7179">SHD 2</p></div>
+<div style="flex:1; display:flex; flex-direction:column; align-items:center"><p style="font-size:26px; font-weight:600">VAR-LiNGAM</p><p style="font-size:24px; color:#6A7179">SHD 5</p></div>
+</div>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:12px">
+<p style="font-size:30px; font-weight:600">P+ · non-minimum phase</p>
+<div style="height:320px; display:flex; align-items:flex-end; gap:40px; border-bottom:2px solid #DCE1E8">
+<div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px"><p style="font-size:32px; font-weight:600">0.77</p><div style="width:160px; height:246px; background:#9DB4D6"></div></div>
+<div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px"><p style="font-size:32px; font-weight:600; color:#1F5FBF">0.89</p><div style="width:160px; height:284px; background:#1F5FBF"></div></div>
+<div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:8px"><p style="font-size:32px; font-weight:600">0.89</p><div style="width:160px; height:284px; background:#0B1F3A"></div></div>
+</div>
+<div style="display:flex; gap:40px">
+<div style="flex:1; display:flex; flex-direction:column; align-items:center"><p style="font-size:26px; font-weight:600">PC</p><p style="font-size:24px; color:#6A7179">SHD 3</p></div>
+<div style="flex:1; display:flex; flex-direction:column; align-items:center"><p style="font-size:26px; font-weight:600; color:#1F5FBF">PCMCI+</p><p style="font-size:24px; color:#6A7179">SHD 2</p></div>
+<div style="flex:1; display:flex; flex-direction:column; align-items:center"><p style="font-size:26px; font-weight:600">VAR-LiNGAM</p><p style="font-size:24px; color:#6A7179">SHD 2</p></div>
+</div>
+</div>
+</div>
+<p style="font-size:26px; color:#4A5568">PCMCI+ is the only method whose worst case stays above F1 0.85. Every true link it reports points the right way: no reversed edges in either run.</p>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: results/qtank/run-parcorr-tau20/scores.json</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">7</p>
+
+</section>
+
+<section id="drainage" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:36px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Edge by edge</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">The two tank-to-tank drainage links are what separate the methods; the six input links are found by everyone</h2>
+<p style="font-size:28px; color:#4A5568">Result for each <span style="color:#D9822B"><b>orange</b></span> arrow from slide 2, at P− and P+</p>
+</div>
+<div style="display:grid; grid-template-columns:300px 1fr 1fr 1fr; gap:16px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179; padding:12px 0px">Link</p>
+<p style="font-size:28px; font-weight:600; text-align:center; padding:12px 0px">PC (windowed)</p>
+<p style="font-size:28px; font-weight:600; text-align:center; color:#1F5FBF; padding:12px 0px">PCMCI+</p>
+<p style="font-size:28px; font-weight:600; text-align:center; padding:12px 0px">VAR-LiNGAM</p>
+<div style="display:flex; flex-direction:column; justify-content:center; gap:6px; background:#FBEEDF; border-radius:12px; padding:24px"><p style="font-size:36px; font-weight:600; color:#D9822B">h3 → h1</p><p style="font-size:24px; color:#4A5568">upper tank 3 drains into lower tank 1</p></div>
+<div style="display:flex; flex-direction:column; gap:12px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:24px"><p style="font-size:26px; padding:10px 16px; border-radius:50px; background:#F2D4D4; color:#8A1C1C"><b>P−</b> missed</p><p style="font-size:26px; padding:10px 16px; border-radius:50px; background:#F2D4D4; color:#8A1C1C"><b>P+</b> missed</p></div>
+<div style="display:flex; flex-direction:column; gap:12px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:24px"><p style="font-size:26px; padding:10px 16px; border-radius:50px; background:#F2D4D4; color:#8A1C1C"><b>P−</b> missed</p><p style="font-size:26px; padding:10px 16px; border-radius:50px; background:#D5EBD9; color:#1C5A2A"><b>P+</b> found</p></div>
+<div style="display:flex; flex-direction:column; gap:12px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:24px"><p style="font-size:26px; padding:10px 16px; border-radius:50px; background:#FBE3C6; color:#7A4A0E"><b>P−</b> reversed (h1→h3)</p><p style="font-size:26px; padding:10px 16px; border-radius:50px; background:#D5EBD9; color:#1C5A2A"><b>P+</b> found</p></div>
+<div style="display:flex; flex-direction:column; justify-content:center; gap:6px; background:#FBEEDF; border-radius:12px; padding:24px"><p style="font-size:36px; font-weight:600; color:#D9822B">h4 → h2</p><p style="font-size:24px; color:#4A5568">upper tank 4 drains into lower tank 2</p></div>
+<div style="display:flex; flex-direction:column; gap:12px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:24px"><p style="font-size:26px; padding:10px 16px; border-radius:50px; background:#F2D4D4; color:#8A1C1C"><b>P−</b> missed</p><p style="font-size:26px; padding:10px 16px; border-radius:50px; background:#F2D4D4; color:#8A1C1C"><b>P+</b> missed</p></div>
+<div style="display:flex; flex-direction:column; gap:12px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:24px"><p style="font-size:26px; padding:10px 16px; border-radius:50px; background:#D5EBD9; color:#1C5A2A"><b>P−</b> found</p><p style="font-size:26px; padding:10px 16px; border-radius:50px; background:#D5EBD9; color:#1C5A2A"><b>P+</b> found</p></div>
+<div style="display:flex; flex-direction:column; gap:12px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:24px"><p style="font-size:26px; padding:10px 16px; border-radius:50px; background:#F2D4D4; color:#8A1C1C"><b>P−</b> missed</p><p style="font-size:26px; padding:10px 16px; border-radius:50px; background:#D5EBD9; color:#1C5A2A"><b>P+</b> found</p></div>
+</div>
+<p style="font-size:26px; color:#4A5568">These are the slow, weak links. An upper tank's level is almost fully explained by its own history, which hides its effect on the tank below. Windowed PC also misses one pump link (v2→h2) at both operating points.</p>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: results/qtank/run-parcorr-tau20/scores.json (true_positives, false_negatives, reversed_edges)</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">8</p>
+
+</section>
+
+<section id="siblings" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:36px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">The recurring false positive</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Every method invents a link between the two tanks that share a pump</h2>
+<p style="font-size:28px; color:#4A5568">Pump v1 feeds both h1 and h4. Both tanks move together whenever the pump changes, and a 100 s window does not fully separate that from a direct pipe.</p>
+</div>
+<div style="display:flex; gap:64px; align-items:flex-start">
+<div style="position:relative; width:640px; height:420px">
+<p style="position:absolute; left:265px; top:0px; width:110px; height:110px; line-height:110px; text-align:center; font-size:32px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v1</p>
+<p style="position:absolute; left:40px; top:290px; width:110px; height:110px; line-height:110px; text-align:center; font-size:32px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h1</p>
+<p style="position:absolute; left:490px; top:290px; width:110px; height:110px; line-height:110px; text-align:center; font-size:32px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h4</p>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="290.0" y1="100.0" x2="120.0" y2="290.0" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round"/><polyline points="122.7,278.3 120.0,290.0 131.3,286.0" fill="none" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="350.0" y1="100.0" x2="520.0" y2="290.0" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round"/><polyline points="508.7,286.0 520.0,290.0 517.3,278.3" fill="none" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="150.0" y1="345.0" x2="490.0" y2="345.0" stroke="#8A1C1C" stroke-width="4.0" stroke-linecap="round" stroke-dasharray="14 10"/><polyline points="476.0,352.7 490.0,345.0 476.0,337.3" fill="none" stroke="#8A1C1C" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/><polyline points="164.0,337.3 150.0,345.0 164.0,352.7" fill="none" stroke="#8A1C1C" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<p style="position:absolute; left:190px; top:365px; width:260px; font-size:24px; text-align:center; color:#8A1C1C; font-weight:600">reported, but no pipe exists</p>
+<p style="position:absolute; left:0px; top:150px; width:200px; font-size:24px; color:#6A7179">real pipe</p>
+<p style="position:absolute; left:440px; top:150px; width:200px; font-size:24px; color:#6A7179; text-align:right">real pipe</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:24px">
+<div style="display:flex; gap:24px; align-items:center"><p style="width:140px; font-size:64px; font-weight:600; line-height:1; color:#8A1C1C">5/6</p><p style="font-size:26px; color:#4A5568; flex:1">runs report a spurious h1–h4 link, in one direction or the other</p></div>
+<div style="display:flex; gap:24px; align-items:center"><p style="width:140px; font-size:64px; font-weight:600; line-height:1; color:#8A1C1C">3/6</p><p style="font-size:26px; color:#4A5568; flex:1">runs report a spurious v2→h1 (the other pump reaching across)</p></div>
+<hr style="border:none; border-top:1px solid #DCE1E8; width:100%">
+<p style="font-size:26px; color:#4A5568; line-height:1.4">The same pattern holds for pump v2 and its tanks h2, h3 (spurious h3→h2 or h1→h2 in the earlier run).</p>
+<p style="font-size:28px; font-weight:600; line-height:1.4">Practical reading: a reported link between two signals fed by the same actuator is suspect until checked against the P&amp;ID.</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: false_positives in results/qtank/run-parcorr-tau20/scores.json and run-fast/scores.json (6 runs = 3 methods × 2 operating points, windowed runs)</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">9</p>
+
+</section>
+
+<section id="pc-lag" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:36px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Before and after</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Giving plain PC a time window fixes its precision but not its recall</h2>
+<p style="font-size:28px; color:#4A5568">The one methodological change between the two runs: PC scored on the current sample only, then on a 20-step window like the other methods.</p>
+</div>
+<div style="display:flex; gap:40px">
+<div style="flex:1; display:flex; flex-direction:column; gap:20px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:36px">
+<p style="font-size:34px; font-weight:600; color:#6A7179">PC, no time window</p>
+<div style="display:grid; grid-template-columns:150px 1fr 1fr 1fr; gap:8px">
+<p style="font-size:24px; color:#6A7179"> </p><p style="font-size:24px; color:#6A7179; text-align:center">Precision</p><p style="font-size:24px; color:#6A7179; text-align:center">Recall</p><p style="font-size:24px; color:#6A7179; text-align:center">F1</p>
+<p style="font-size:28px; font-weight:600">P−</p><p style="font-size:44px; font-weight:600; text-align:center">0.55</p><p style="font-size:44px; font-weight:600; text-align:center">0.75</p><p style="font-size:44px; font-weight:600; text-align:center">0.63</p>
+<p style="font-size:28px; font-weight:600">P+</p><p style="font-size:44px; font-weight:600; text-align:center; color:#8A1C1C">0.38</p><p style="font-size:44px; font-weight:600; text-align:center">0.63</p><p style="font-size:44px; font-weight:600; text-align:center">0.48</p>
+</div>
+<hr style="border:none; border-top:1px solid #DCE1E8; width:100%">
+<p style="font-size:26px; color:#4A5568">Invented links: <b>4</b> at P−, <b>6</b> at P+. Dense, spurious, as pre-registered.</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:20px; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:16px; padding:36px">
+<p style="font-size:34px; font-weight:600; color:#1F5FBF">PC, 20-step window</p>
+<div style="display:grid; grid-template-columns:150px 1fr 1fr 1fr; gap:8px">
+<p style="font-size:24px; color:#6A7179"> </p><p style="font-size:24px; color:#6A7179; text-align:center">Precision</p><p style="font-size:24px; color:#6A7179; text-align:center">Recall</p><p style="font-size:24px; color:#6A7179; text-align:center">F1</p>
+<p style="font-size:28px; font-weight:600">P−</p><p style="font-size:44px; font-weight:600; text-align:center">0.71</p><p style="font-size:44px; font-weight:600; text-align:center">0.63</p><p style="font-size:44px; font-weight:600; text-align:center">0.67</p>
+<p style="font-size:28px; font-weight:600">P+</p><p style="font-size:44px; font-weight:600; text-align:center; color:#1C5A2A">1.00</p><p style="font-size:44px; font-weight:600; text-align:center">0.63</p><p style="font-size:44px; font-weight:600; text-align:center">0.77</p>
+</div>
+<hr style="border:none; border-top:1px solid #1F5FBF; width:100%">
+<p style="font-size:26px; color:#4A5568">Invented links: <b>2</b> at P−, <b>0</b> at P+. But recall stays at 0.63: it still misses both drainage links and one pump link.</p>
+</div>
+</div>
+<div style="display:flex; gap:24px; align-items:center"><p style="font-size:56px; font-weight:600; line-height:1; color:#1F5FBF">0.38 → 1.00</p><p style="font-size:26px; color:#4A5568">precision at P+. The window removes the invented links; it does not find the missing ones.</p></div>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: results/qtank/run-fast/scores.json (tau_max 0) vs results/qtank/run-parcorr-tau20/scores.json (tau_max 20)</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">10</p>
+
+</section>
+
+<section id="varlingam" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">The second opinion</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">VAR-LiNGAM matches PCMCI+ at P+ but pays about 90× the runtime and stumbles on direction at P−</h2>
+</div>
+<div style="display:flex; gap:64px; align-items:flex-start">
+<div style="display:flex; flex-direction:column; gap:32px; width:560px">
+<div style="background:#E4ECF9; border-radius:16px; padding:32px; display:flex; flex-direction:column; gap:8px"><p style="font-size:96px; font-weight:600; line-height:1; color:#1F5FBF">1.5 s</p><p style="font-size:26px; color:#4A5568">PCMCI+, per dataset</p></div>
+<div style="background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:32px; display:flex; flex-direction:column; gap:8px"><p style="font-size:96px; font-weight:600; line-height:1">134 s</p><p style="font-size:26px; color:#4A5568">VAR-LiNGAM, per dataset (295–301 s in the earlier run)</p></div>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:28px">
+<div style="display:flex; flex-direction:column; gap:8px"><p style="font-size:30px; font-weight:600; color:#1C5A2A">At P+: all 8 true links, 2 invented (F1 0.89)</p><p style="font-size:26px; color:#4A5568; line-height:1.4">Ties PCMCI+ on F1 and SHD. The two extras are cross-pump links (v1→h2, v2→h1).</p></div>
+<div style="display:flex; flex-direction:column; gap:8px"><p style="font-size:30px; font-weight:600; color:#8A1C1C">At P−: one link reversed, one missed (F1 0.67)</p><p style="font-size:26px; color:#4A5568; line-height:1.4">Reports h1→h3 instead of h3→h1 and drops h4→h2. Both are drainage links.</p></div>
+<div style="display:flex; flex-direction:column; gap:8px"><p style="font-size:30px; font-weight:600">Why direction fails on the tanks</p><p style="font-size:26px; color:#4A5568; line-height:1.4">Its direction rule needs non-Gaussian noise. The pump signals have it; the tank levels are near-Gaussian because the tanks smooth everything. Predicted before the run.</p></div>
+<div style="display:flex; flex-direction:column; gap:8px"><p style="font-size:30px; font-weight:600">Where the time goes</p><p style="font-size:26px; color:#4A5568; line-height:1.4">100 bootstrap fits with 20 lags each. Not inherent to the estimator; a cheaper setting would cut it.</p></div>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: results/qtank/run-parcorr-tau20/run_summary.json (runtime_seconds), scores.json; docs/QTP_EXPECTATIONS.md</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">11</p>
+
+</section>
+
+<section id="predictions" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:36px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Predictions vs outcome</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">The results matched the ranking we wrote down before running anything, with one surprise</h2>
+<p style="font-size:28px; color:#4A5568">Expectations recorded on 7 September 2026, unchanged since. Results from 28 September 2026.</p>
+</div>
+<div style="display:grid; grid-template-columns:260px 1fr 1fr; gap:16px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179; padding:8px 0px">Method</p>
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179; padding:8px 0px">Predicted</p>
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179; padding:8px 0px">Observed</p>
+<p style="font-size:30px; font-weight:600; padding:24px 0px">PCMCI+</p>
+<p style="font-size:26px; color:#4A5568; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:24px">Best of the set; most or all 8 links</p>
+<div style="display:flex; gap:16px; align-items:center; background:#D5EBD9; border-radius:12px; padding:24px"><span style="width:40px; height:40px; color:#1C5A2A;display:inline-block;font-size:36px;line-height:40px;text-align:center;font-weight:700">&#10003;</span><p style="font-size:26px; color:#1C5A2A; flex:1">Best at both operating points, 7 and 8 of 8 links</p></div>
+<p style="font-size:30px; font-weight:600; padding:24px 0px">VAR-LiNGAM</p>
+<p style="font-size:26px; color:#4A5568; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:24px">Good on lagged links, weak on tank-to-tank direction</p>
+<div style="display:flex; gap:16px; align-items:center; background:#D5EBD9; border-radius:12px; padding:24px"><span style="width:40px; height:40px; color:#1C5A2A;display:inline-block;font-size:36px;line-height:40px;text-align:center;font-weight:700">&#10003;</span><p style="font-size:26px; color:#1C5A2A; flex:1">Matches at P− (one flip, one miss); better than expected at P+</p></div>
+<p style="font-size:30px; font-weight:600; padding:24px 0px">PC, no window</p>
+<p style="font-size:26px; color:#4A5568; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:24px">Poor, dense, spurious</p>
+<div style="display:flex; gap:16px; align-items:center; background:#D5EBD9; border-radius:12px; padding:24px"><span style="width:40px; height:40px; color:#1C5A2A;display:inline-block;font-size:36px;line-height:40px;text-align:center;font-weight:700">&#10003;</span><p style="font-size:26px; color:#1C5A2A; flex:1">F1 0.48–0.63 with 4–6 invented links</p></div>
+</div>
+<div style="display:flex; gap:16px; align-items:center; background:#FBEEDF; border-radius:12px; padding:24px 32px"><span style="width:40px; height:40px; color:#D9822B;display:inline-block;font-size:36px;line-height:40px;text-align:center;font-weight:700">&#9888;</span><p style="font-size:26px; color:#4A5568; flex:1"><b>Surprise:</b> we expected P+ to be harder and to flip orientations. Instead P+ was easier for every method, and windowed PC at P+ was the only run with zero invented links.</p></div>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: docs/QTP_EXPECTATIONS.md (Expectations table); results/qtank/run-parcorr-tau20/scores.json</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">12</p>
+
+</section>
+
+<section id="implications" data-transition="fade" style="background:#0B1F3A; color:#FBFBF8; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#8FB3F0">Implications</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">What this means for root-cause detection on real process data</h2>
+</div>
+<div style="display:flex; gap:32px">
+<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#14305A; border-radius:16px; padding:36px">
+<p style="font-size:72px; font-weight:600; line-height:1; color:#8FB3F0">1</p>
+<p style="font-size:30px; font-weight:600; line-height:1.3">Use PCMCI+ as the default</p>
+<p style="font-size:26px; color:#BFD0EA; line-height:1.4">Best accuracy at both operating points, seconds to run, and it never reversed a link in any run.</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#14305A; border-radius:16px; padding:36px">
+<p style="font-size:72px; font-weight:600; line-height:1; color:#8FB3F0">2</p>
+<p style="font-size:30px; font-weight:600; line-height:1.3">Distrust links between two signals on the same actuator</p>
+<p style="font-size:26px; color:#BFD0EA; line-height:1.4">Shared-pump tanks produced a spurious link in 5 of 6 runs. Check such links against the plant drawing before acting.</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#14305A; border-radius:16px; padding:36px">
+<p style="font-size:72px; font-weight:600; line-height:1; color:#8FB3F0">3</p>
+<p style="font-size:30px; font-weight:600; line-height:1.3">Expect slow, weak couplings to go missing</p>
+<p style="font-size:26px; color:#BFD0EA; line-height:1.4">Tank-to-tank drainage was the hard case every time. Where such links are known, feed them in as prior knowledge.</p>
+</div>
+</div>
+<p style="font-size:26px; color:#BFD0EA">Confidence limits: one simulator, two operating points, one random seed, linear tests only. No error bars exist on any number in this deck.</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#8FB3F0">13</p>
+
+</section>
+
+<section id="next" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Next steps</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Two cheap runs would let us say "robust" on the previous slide</h2>
+<p style="font-size:28px; color:#4A5568">Both are already scoped; no new algorithm code is needed.</p>
+</div>
+<table style="font-size:28px; color:#0B1F3A; border:none">
+<tr style="background:#E4ECF9"><th style="width:40%; text-align:left; padding:20px 24px">What</th><th style="width:20%; text-align:left">Cost</th><th style="width:40%; text-align:left">What it settles</th></tr>
+<tr><td>Run the planned nonlinear-test (CMIknn) comparison for PC and PCMCI+ on both operating points</td><td>About 2.7 h compute, config written on 27 Sep 2026</td><td>Whether the PCMCI+ win survives a nonlinear independence test</td></tr>
+<tr style="background:#FDFDFB"><td>Repeat all runs across several noise seeds</td><td>Minutes per seed for PC and PCMCI+; about 2 min per seed for VAR-LiNGAM</td><td>Error bars on every F1 in this deck</td></tr>
+<tr><td>Record the row count and stride in every run summary</td><td>One line of logging</td><td>Removes the UNVERIFIED note on slide 5</td></tr>
+</table>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: Plan.md (CMIknn comparison, 2026-09-27); datasets/run_algorithms.py flags --independence-test, --stride</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">14</p>
+
+</section>
+</body></html>

@@ -45,6 +45,9 @@ class PCAlgorithm(CausalDiscoveryAlgorithm):
         max_combinations: int | None = None,
         contemp_collider_rule: str = "majority",
         conflict_resolution: bool = True,
+        tau_max: int = 0,
+        independence_test: str = "parcorr",
+        independence_test_params: dict[str, Any] | None = None,
         **params: Any,
     ) -> None:
         super().__init__(
@@ -54,6 +57,9 @@ class PCAlgorithm(CausalDiscoveryAlgorithm):
             max_combinations=max_combinations,
             contemp_collider_rule=contemp_collider_rule,
             conflict_resolution=conflict_resolution,
+            tau_max=tau_max,
+            independence_test=independence_test,
+            independence_test_params=independence_test_params or {},
             **params,
         )
 
@@ -87,14 +93,37 @@ class PCAlgorithm(CausalDiscoveryAlgorithm):
         prior_knowledge: Any | None = None,
     ) -> CausalGraph:
         import tigramite.data_processing as pp
-        from tigramite.independence_tests.parcorr import ParCorr
         from tigramite.pcmci import PCMCI
 
-        dataframe = pp.DataFrame(data, var_names=var_names)
-        # ParCorr is the partial-correlation (Fisher-z) test.
-        pcmci = PCMCI(dataframe=dataframe, cond_ind_test=ParCorr(), verbosity=0)
+        from .pcmci_plus import build_independence_test
 
-        if prior_knowledge is None:
+        tau_max = int(self.params["tau_max"])
+        dataframe = pp.DataFrame(data, var_names=var_names)
+        # Default ParCorr is the partial-correlation (Fisher-z) test; `cmiknn`
+        # and `gpdc` are available for data whose relationships are not linear.
+        test = build_independence_test(
+            self.params["independence_test"],
+            **self.params["independence_test_params"],
+        )
+        pcmci = PCMCI(dataframe=dataframe, cond_ind_test=test, verbosity=0)
+
+        if tau_max > 0:
+            # PC-stable over a lagged window. This is *not* PCMCI+: there is no
+            # MCI step, so nothing corrects for the target's own autocorrelation
+            # inflating its parents' significance. Kept distinct on purpose --
+            # the gap against PCMCI+ measures what that correction is worth.
+            results = pcmci.run_pcalg(
+                link_assumptions=prior_knowledge,
+                pc_alpha=self.params["pc_alpha"],
+                tau_min=0,
+                tau_max=tau_max,
+                max_conds_dim=self.params["max_conds_dim"],
+                max_combinations=self.params["max_combinations"],
+                mode="standard",
+                contemp_collider_rule=self.params["contemp_collider_rule"],
+                conflict_resolution=self.params["conflict_resolution"],
+            )
+        elif prior_knowledge is None:
             results = pcmci.run_pcalg_non_timeseries_data(
                 pc_alpha=self.params["pc_alpha"],
                 max_conds_dim=self.params["max_conds_dim"],
@@ -133,8 +162,12 @@ class PCAlgorithm(CausalDiscoveryAlgorithm):
                 "collider_rule": self.params["contemp_collider_rule"],
                 "skeleton": "PC-stable (order independent)",
                 "n_ambiguous_triples": len(results.get("ambiguous_triples", [])),
+                "tau_max": tau_max,
+                "independence_test": self.params["independence_test"],
                 "entry_point": (
-                    "run_pcalg_non_timeseries_data"
+                    f"run_pcalg(tau_min=0, tau_max={tau_max})"
+                    if tau_max > 0
+                    else "run_pcalg_non_timeseries_data"
                     if prior_knowledge is None
                     else "run_pcalg(tau_min=0, tau_max=0)"
                 ),
