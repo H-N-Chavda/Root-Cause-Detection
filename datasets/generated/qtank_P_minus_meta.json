@@ -1,0 +1,26 @@
+{
+  "operating_point": "P_minus",
+  "gam1": 0.7,
+  "gam2": 0.6,
+  "gam1_plus_gam2": 1.3,
+  "phase": "minimum",
+  "k1": 3.33,
+  "k2": 3.35,
+  "ts_seconds": 5.0,
+  "hours": 4.0,
+  "rows": 2880,
+  "burn_in_discarded": 120,
+  "u_prbs_amplitude_V": 0.3,
+  "u_prbs_hold_s": 30.0,
+  "d_prbs_amplitude": 0.5,
+  "d_prbs_hold_s": 50.0,
+  "meas_noise_std": 0.05,
+  "input_noise_std": 0.05,
+  "seed": 0,
+  "time_constants_s": [
+    62.7,
+    90.3,
+    23.9,
+    30.0
+  ]
+}
