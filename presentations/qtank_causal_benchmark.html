@@ -78,6 +78,32 @@ table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #DCE1E8;
 
 </section>
 
+<section id="equations" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">The ground truth</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Every arrow on the previous slide is one term in the four mass-balance equations of the simulator</h2>
+<p style="font-size:28px; color:#4A5568">Level hᵢ in cm, pump voltages v₁, v₂ in V, disturbance flow d, g = 981 cm/s². Aᵢ tank area, aᵢ outlet area, γ valve split, kᵢ pump gain.</p>
+</div>
+<div style="display:flex; gap:40px">
+<div style="flex:3; display:flex; flex-direction:column; gap:14px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:32px 40px; font-family:'Source Serif 4', Georgia, serif">
+<p style="font-size:34px; line-height:1.5">ḣ₁ = −(a₁/A₁)√(2g h₁) + <span style="color:#D9822B"><b>(a₃/A₁)√(2g h₃)</b></span> + <span style="color:#1F5FBF"><b>(γ₁k₁/A₁) v₁</b></span></p>
+<p style="font-size:34px; line-height:1.5">ḣ₂ = −(a₂/A₂)√(2g h₂) + <span style="color:#D9822B"><b>(a₄/A₂)√(2g h₄)</b></span> + <span style="color:#1F5FBF"><b>(γ₂k₂/A₂) v₂</b></span></p>
+<p style="font-size:34px; line-height:1.5">ḣ₃ = −(a₃/A₃)√(2g h₃) + <span style="color:#1F5FBF"><b>((1−γ₂)k₂/A₃) v₂</b></span> + <span style="color:#6A7179"><b>(γ₃/A₃) d</b></span></p>
+<p style="font-size:34px; line-height:1.5">ḣ₄ = −(a₄/A₄)√(2g h₄) + <span style="color:#1F5FBF"><b>((1−γ₁)k₁/A₄) v₁</b></span> + <span style="color:#6A7179"><b>((1−γ₃)/A₄) d</b></span></p>
+</div>
+<div style="flex:2; display:flex; flex-direction:column; gap:18px">
+<p style="font-size:26px; color:#4A5568; line-height:1.4"><span style="color:#1F5FBF"><b>Blue terms</b></span> are the four pump arrows. Each pump appears in two equations because the valve splits its flow by γ.</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4"><span style="color:#D9822B"><b>Orange terms</b></span> are the two drainage arrows: the upper tank's outflow √(2g h₃) is an inflow to the lower tank.</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4"><span style="color:#6A7179"><b>Grey terms</b></span> are the disturbance arrows, split γ₃ = 0.4 between the upper tanks.</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">The first term in each row is the tank's own outflow: the self-dependence hᵢ(t−1) → hᵢ(t) that every time-series method must handle.</p>
+<p style="font-size:24px; color:#6A7179">Parameters: A₁,A₃ = 28 cm², A₂,A₄ = 32 cm², a₁,a₃ = 0.071, a₂,a₄ = 0.057 cm², k₁ = 3.14, k₂ = 3.29, γ₁ = 0.43, γ₂ = 0.34. Measurement and input noise σ = 0.05.</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: datasets/QTank_Dynamics.m, datasets/model_paramters.m</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">3</p>
+
+</section>
+
 <section id="datasets" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px">
 <div style="display:flex; flex-direction:column; gap:12px">
 <p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">The datasets</p>
@@ -107,67 +133,100 @@ table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #DCE1E8;
 </div>
 </div>
 <p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: docs/QTP_EXPECTATIONS.md; datasets/generated/*_meta.json. Step-response curves are sketches, not measured.</p>
-<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">3</p>
-
-</section>
-
-<section id="summary" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:36px">
-<div style="display:flex; flex-direction:column; gap:12px">
-<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Executive summary</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">PCMCI+ recovers the wiring best at both operating points; the two drainage links cause almost every error</h2>
-<p style="font-size:28px; color:#4A5568">F1 score on the 8 true links (1.0 = perfect). <span style="color:#0B1F3A"><b>●</b></span> P−  <span style="color:#D9822B"><b>●</b></span> P+</p>
-</div>
-<div style="display:flex; gap:48px; align-items:flex-start">
-<div style="display:flex; flex-direction:column; gap:8px">
-<div style="display:flex; align-items:center; gap:24px"><p style="width:260px; font-size:28px; font-weight:600">PCMCI+</p><div style="position:relative; width:800px; height:96px"><hr style="position:absolute; left:0px; top:47px; width:800px; height:2px; border:none; background:#DCE1E8"><p style="position:absolute; left:660px; top:0px; width:80px; font-size:24px; text-align:center; color:#0B1F3A; font-weight:600">0.88</p><div style="position:absolute; left:686px; top:34px; width:28px; height:28px; border-radius:50%; background:#0B1F3A"></div><div style="position:absolute; left:697px; top:34px; width:28px; height:28px; border-radius:50%; background:#D9822B"></div><p style="position:absolute; left:700px; top:66px; width:80px; font-size:24px; text-align:center; color:#D9822B; font-weight:600">0.89</p></div></div>
-<div style="display:flex; align-items:center; gap:24px"><p style="width:260px; font-size:28px; font-weight:600">VAR-LiNGAM</p><div style="position:relative; width:800px; height:96px"><hr style="position:absolute; left:0px; top:47px; width:800px; height:2px; border:none; background:#DCE1E8"><p style="position:absolute; left:494px; top:0px; width:80px; font-size:24px; text-align:center; color:#0B1F3A; font-weight:600">0.67</p><div style="position:absolute; left:520px; top:34px; width:28px; height:28px; border-radius:50%; background:#0B1F3A"></div><div style="position:absolute; left:697px; top:34px; width:28px; height:28px; border-radius:50%; background:#D9822B"></div><p style="position:absolute; left:671px; top:66px; width:80px; font-size:24px; text-align:center; color:#D9822B; font-weight:600">0.89</p></div></div>
-<div style="display:flex; align-items:center; gap:24px"><p style="width:260px; font-size:28px; font-weight:600">PC, 20-step window</p><div style="position:relative; width:800px; height:96px"><hr style="position:absolute; left:0px; top:47px; width:800px; height:2px; border:none; background:#DCE1E8"><p style="position:absolute; left:494px; top:0px; width:80px; font-size:24px; text-align:center; color:#0B1F3A; font-weight:600">0.67</p><div style="position:absolute; left:520px; top:34px; width:28px; height:28px; border-radius:50%; background:#0B1F3A"></div><div style="position:absolute; left:601px; top:34px; width:28px; height:28px; border-radius:50%; background:#D9822B"></div><p style="position:absolute; left:575px; top:66px; width:80px; font-size:24px; text-align:center; color:#D9822B; font-weight:600">0.77</p></div></div>
-<div style="display:flex; align-items:center; gap:24px"><p style="width:260px; font-size:28px; font-weight:600; color:#4A5568">PC, no time window</p><div style="position:relative; width:800px; height:96px"><hr style="position:absolute; left:0px; top:47px; width:800px; height:2px; border:none; background:#DCE1E8"><p style="position:absolute; left:466px; top:0px; width:80px; font-size:24px; text-align:center; color:#0B1F3A; font-weight:600">0.63</p><div style="position:absolute; left:492px; top:34px; width:28px; height:28px; border-radius:50%; background:#0B1F3A"></div><div style="position:absolute; left:367px; top:34px; width:28px; height:28px; border-radius:50%; background:#D9822B"></div><p style="position:absolute; left:341px; top:66px; width:80px; font-size:24px; text-align:center; color:#D9822B; font-weight:600">0.48</p></div></div>
-<div style="display:flex; gap:24px"><p style="width:260px; font-size:24px"> </p><div style="width:800px; display:flex; justify-content:space-between"><p style="font-size:24px; color:#6A7179">0.0</p><p style="font-size:24px; color:#6A7179">0.5</p><p style="font-size:24px; color:#6A7179">1.0</p></div></div>
-</div>
-<div style="flex:1; display:flex; flex-direction:column; gap:20px">
-<div style="background:#0B1F3A; color:#FBFBF8; border-radius:16px; padding:28px 32px; display:flex; flex-direction:column; gap:6px"><p style="font-size:56px; font-weight:600; line-height:1">2 of 8</p><p style="font-size:24px; color:#BFD0EA">edges wrong for PCMCI+ at either operating point (SHD 2)</p></div>
-<div style="background:#E4ECF9; border-radius:16px; padding:28px 32px; display:flex; flex-direction:column; gap:6px"><p style="font-size:56px; font-weight:600; line-height:1; color:#1F5FBF">1.5 s vs 134 s</p><p style="font-size:24px; color:#4A5568">runtime per dataset, PCMCI+ vs VAR-LiNGAM</p></div>
-<div style="background:#FBEEDF; border-radius:16px; padding:28px 32px; display:flex; flex-direction:column; gap:6px"><p style="font-size:56px; font-weight:600; line-height:1; color:#D9822B">2 arrows</p><p style="font-size:24px; color:#4A5568">the tank-to-tank drainage links (h3→h1, h4→h2) account for nearly every miss or flip</p></div>
-</div>
-</div>
-<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: results/qtank/run-parcorr-tau20/scores.json; PC without window from results/qtank/run-fast/scores.json. Single seed, no error bars.</p>
 <p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">4</p>
 
 </section>
 
-<section id="setup" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:36px">
+<section id="dataprops" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:32px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">The data</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Inputs are square waves and strongly non-Gaussian; the tank levels are smooth, near-Gaussian and highly autocorrelated</h2>
+<p style="font-size:28px; color:#4A5568">Measured on the generated data before any algorithm ran. These properties decide which method assumptions hold.</p>
+</div>
+<div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:32px">
+<div style="display:flex; flex-direction:column; gap:12px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:32px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179">Shape of the distribution</p>
+<p style="font-size:56px; font-weight:600; line-height:1">−2.0</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">excess kurtosis of v₁, v₂, d: a two-level square wave, as far from Gaussian as it gets (Jarque–Bera p ≈ 10⁻¹⁰⁵)</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">Levels h₁–h₄: Jarque–Bera p between 0.008 and 0.35, close to Gaussian because each tank low-pass filters its inputs</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:12px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:32px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179">Memory</p>
+<p style="font-size:56px; font-weight:600; line-height:1">0.93–0.99</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">lag-1 autocorrelation of the levels; inputs 0.83–0.90</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">Each sample is almost a copy of the previous one. A method that ignores this sees spurious links everywhere.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:12px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:32px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179">Stationarity and sampling</p>
+<p style="font-size:56px; font-weight:600; line-height:1">p &lt; 10⁻⁴</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">augmented Dickey–Fuller test on all 7 columns: no unit root, no trend</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">Ts = 5 s, 4 h, 2880 rows per dataset, 600 s burn-in discarded. Pumps switch every 30 s, disturbance every 50 s.</p>
+</div>
+</div>
+<p style="font-size:26px; color:#4A5568">Consequence: partial correlation (linear) is defensible for the levels; the non-Gaussian pump signals are what VAR-LiNGAM's direction rule needs, and they are exactly the variables that are inputs, not tanks.</p>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: docs/QTP_EXPECTATIONS.md (Data properties, measured on the generated data); datasets/generate_qtank_data.py</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">5</p>
+
+</section>
+
+<section id="setup" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:32px">
 <div style="display:flex; flex-direction:column; gap:12px">
 <p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">How we score</p>
 <h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Every algorithm hands back a graph; we count how many of the 8 true arrows it found, missed, flipped or invented</h2>
 </div>
-<div style="display:flex; gap:40px">
-<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:32px">
-<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179">The 7 signals</p>
-<div style="display:flex; gap:12px; align-items:center"><p style="width:64px; height:64px; line-height:64px; text-align:center; font-size:26px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v</p><p style="font-size:26px; color:#4A5568">v1, v2: pump voltages. Driven by us, square waves</p></div>
-<div style="display:flex; gap:12px; align-items:center"><p style="width:64px; height:64px; line-height:64px; text-align:center; font-size:26px; font-weight:600; color:#FBFBF8; background:#6A7179; border-radius:50%">d</p><p style="font-size:26px; color:#4A5568">d: disturbance flow into the upper tanks</p></div>
-<div style="display:flex; gap:12px; align-items:center"><p style="width:64px; height:64px; line-height:64px; text-align:center; font-size:26px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h</p><p style="font-size:26px; color:#4A5568">h1–h4: tank levels. The outputs the algorithms must explain</p></div>
-<p style="font-size:24px; color:#6A7179">All three inputs are recorded, so nothing hidden drives two tanks at once.</p>
+<div style="display:flex; gap:32px">
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:28px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179">Edge outcomes</p>
+<p style="font-size:26px; color:#4A5568"><b>Found</b>: true arrow, right direction (TP)</p>
+<p style="font-size:26px; color:#4A5568"><b>Missed</b>: true arrow not reported (FN)</p>
+<p style="font-size:26px; color:#4A5568"><b>Reversed</b>: true pair, wrong direction</p>
+<p style="font-size:26px; color:#4A5568"><b>Invented</b>: reported arrow with no pipe behind it (FP)</p>
+<p style="font-size:24px; color:#6A7179">Lagged edges are collapsed to one arrow per pair before scoring. Self-loops are counted separately.</p>
 </div>
-<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:32px">
-<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179">Three scores</p>
-<p style="font-size:26px; color:#4A5568"><b>Precision</b>: of the arrows reported, how many are real</p>
-<p style="font-size:26px; color:#4A5568"><b>Recall</b>: of the 8 real arrows, how many were reported, pointing the right way</p>
-<p style="font-size:26px; color:#4A5568"><b>F1</b>: the balance of the two. 1.0 means a perfect graph</p>
-<p style="font-size:26px; color:#4A5568"><b>SHD</b>: number of edits (add, delete, flip) to reach the true graph. Lower is better</p>
-<p style="font-size:24px; color:#6A7179">Lagged results are collapsed to one arrow per pair before scoring. Self-loops are ignored.</p>
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:28px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179">Two scores, read together</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:30px; line-height:1.4">precision = TP / (TP + FP + reversed)</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:30px; line-height:1.4">recall = TP / 8</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:30px; line-height:1.4">F1 = 2 · precision · recall / (precision + recall)</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4"><b>SHD</b> = missed + invented + reversed: the number of single-edge edits to reach the true graph. Lower is better; 0 is perfect.</p>
+<p style="font-size:24px; color:#6A7179">F1 already punishes invented edges through precision; SHD adds a raw count that does not saturate and treats a flip as one edit, not two.</p>
 </div>
-<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:32px">
-<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179">Shared settings</p>
-<p style="font-size:26px; color:#4A5568"><b>Significance</b>: 0.01</p>
-<p style="font-size:26px; color:#4A5568"><b>Time window</b>: 20 steps (100 s), about one time constant of the slowest tank</p>
-<p style="font-size:26px; color:#4A5568"><b>Test</b>: partial correlation (linear)</p>
-<p style="font-size:26px; color:#4A5568"><b>VAR-LiNGAM</b>: 100 bootstrap resamples, keep a link only if present in 90 of them</p>
-<p style="font-size:24px; color:#6A7179">Row count used by the main run is not recorded in its summary. UNVERIFIED whether it used all 2880 rows.</p>
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:28px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179">Shared settings, main run</p>
+<p style="font-size:26px; color:#4A5568"><b>Rows</b>: every 3rd sample, 960 rows per dataset at Ts = 15 s</p>
+<p style="font-size:26px; color:#4A5568"><b>Window</b>: τₘₐₓ = 20 steps = 300 s, about 3 time constants of the slowest tank</p>
+<p style="font-size:26px; color:#4A5568"><b>Test</b>: partial correlation, α = 0.01</p>
+<p style="font-size:26px; color:#4A5568"><b>VAR-LiNGAM</b>: 20 lags, 100 bootstraps, keep edge if in ≥ 90</p>
+<p style="font-size:24px; color:#6A7179">The same three methods were also run on all 2880 rows at 5 s (100 s window); that comparison is on its own slide.</p>
 </div>
 </div>
-<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: datasets/score_runs.py; results/qtank/run-parcorr-tau20/run_summary.json</p>
-<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">5</p>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: datasets/score_runs.py; results/qtank/run-parcorr-tau20-s3/run_summary.json (stride 3, re-run 28 Sep 2026)</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">6</p>
+
+</section>
+
+<section id="summary" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:32px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Executive summary</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">PCMCI+ recovers the wiring best at both operating points; the two drainage links cause almost every error</h2>
+<p style="font-size:28px; color:#4A5568">F1 on the 8 true links (1.0 = perfect), with SHD (edits to reach the truth) beside each row. <span style="color:#0B1F3A"><b>●</b></span> P−  <span style="color:#D9822B"><b>●</b></span> P+</p>
+</div>
+<div style="display:flex; gap:40px; align-items:flex-start">
+<div style="display:flex; flex-direction:column; gap:8px">
+<div style="display:flex; align-items:center; gap:24px"><p style="width:250px; font-size:28px; font-weight:600">PCMCI+</p><div style="position:relative; width:700px; height:96px"><hr style="position:absolute; left:0px; top:47px; width:700px; height:2px; border:none; background:#DCE1E8"><p style="position:absolute; left:572px; top:0px; width:80px; font-size:24px; text-align:center; color:#0B1F3A; font-weight:600">0.88</p><div style="position:absolute; left:598px; top:34px; width:28px; height:28px; border-radius:50%; background:#0B1F3A"></div><div style="position:absolute; left:608px; top:34px; width:28px; height:28px; border-radius:50%; background:#D9822B"></div><p style="position:absolute; left:582px; top:66px; width:80px; font-size:24px; text-align:center; color:#D9822B; font-weight:600">0.89</p></div><p style="width:180px; font-size:26px; color:#4A5568">SHD <b>2</b> · <b>2</b></p></div>
+<div style="display:flex; align-items:center; gap:24px"><p style="width:250px; font-size:28px; font-weight:600">VAR-LiNGAM</p><div style="position:relative; width:700px; height:96px"><hr style="position:absolute; left:0px; top:47px; width:700px; height:2px; border:none; background:#DCE1E8"><p style="position:absolute; left:427px; top:0px; width:80px; font-size:24px; text-align:center; color:#0B1F3A; font-weight:600">0.67</p><div style="position:absolute; left:453px; top:34px; width:28px; height:28px; border-radius:50%; background:#0B1F3A"></div><div style="position:absolute; left:608px; top:34px; width:28px; height:28px; border-radius:50%; background:#D9822B"></div><p style="position:absolute; left:582px; top:66px; width:80px; font-size:24px; text-align:center; color:#D9822B; font-weight:600">0.89</p></div><p style="width:180px; font-size:26px; color:#4A5568">SHD <b>5</b> · <b>2</b></p></div>
+<div style="display:flex; align-items:center; gap:24px"><p style="width:250px; font-size:28px; font-weight:600">PC, 20-step window</p><div style="position:relative; width:700px; height:96px"><hr style="position:absolute; left:0px; top:47px; width:700px; height:2px; border:none; background:#DCE1E8"><p style="position:absolute; left:427px; top:0px; width:80px; font-size:24px; text-align:center; color:#0B1F3A; font-weight:600">0.67</p><div style="position:absolute; left:453px; top:34px; width:28px; height:28px; border-radius:50%; background:#0B1F3A"></div><div style="position:absolute; left:524px; top:34px; width:28px; height:28px; border-radius:50%; background:#D9822B"></div><p style="position:absolute; left:498px; top:66px; width:80px; font-size:24px; text-align:center; color:#D9822B; font-weight:600">0.77</p></div><p style="width:180px; font-size:26px; color:#4A5568">SHD <b>6</b> · <b>3</b></p></div>
+<div style="display:flex; align-items:center; gap:24px"><p style="width:250px; font-size:28px; font-weight:600; color:#4A5568">PC, no time window</p><div style="position:relative; width:700px; height:96px"><hr style="position:absolute; left:0px; top:47px; width:700px; height:2px; border:none; background:#DCE1E8"><p style="position:absolute; left:402px; top:0px; width:80px; font-size:24px; text-align:center; color:#0B1F3A; font-weight:600">0.63</p><div style="position:absolute; left:428px; top:34px; width:28px; height:28px; border-radius:50%; background:#0B1F3A"></div><div style="position:absolute; left:319px; top:34px; width:28px; height:28px; border-radius:50%; background:#D9822B"></div><p style="position:absolute; left:293px; top:66px; width:80px; font-size:24px; text-align:center; color:#D9822B; font-weight:600">0.48</p></div><p style="width:180px; font-size:26px; color:#4A5568">SHD <b>5</b> · <b>8</b></p></div>
+<div style="display:flex; gap:24px"><p style="width:250px; font-size:24px"> </p><div style="width:700px; display:flex; justify-content:space-between"><p style="font-size:24px; color:#6A7179">0.0</p><p style="font-size:24px; color:#6A7179">0.5</p><p style="font-size:24px; color:#6A7179">1.0</p></div></div>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:16px">
+<div style="background:#0B1F3A; color:#FBFBF8; border-radius:16px; padding:24px 28px; display:flex; flex-direction:column; gap:6px"><p style="font-size:52px; font-weight:600; line-height:1">15 of 16</p><p style="font-size:24px; color:#BFD0EA">true links found by PCMCI+ across both datasets, none reversed</p></div>
+<div style="background:#E4ECF9; border-radius:16px; padding:24px 28px; display:flex; flex-direction:column; gap:6px"><p style="font-size:52px; font-weight:600; line-height:1; color:#1F5FBF">1.5 s vs 134 s</p><p style="font-size:24px; color:#4A5568">runtime per dataset, PCMCI+ vs VAR-LiNGAM</p></div>
+<div style="background:#FBEEDF; border-radius:16px; padding:24px 28px; display:flex; flex-direction:column; gap:6px"><p style="font-size:52px; font-weight:600; line-height:1; color:#D9822B">2 arrows</p><p style="font-size:24px; color:#4A5568">the drainage links h3→h1, h4→h2 account for 7 of the 10 misses and flips across all six runs</p></div>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: results/qtank/run-parcorr-tau20/scores.json (960 rows, Ts 15 s, 300 s window); PC without window from run-fast/scores.json. Single seed.</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">7</p>
 
 </section>
 
@@ -200,15 +259,97 @@ table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #DCE1E8;
 </div>
 </div>
 <p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: src/causal_bench/algorithms/pc.py, pcmci_plus.py, var_lingam.py; docs/QTP_EXPECTATIONS.md</p>
-<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">6</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">8</p>
 
 </section>
 
-<section id="headline" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:32px">
+<section id="math-pc" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Method 1 of 3 · PC</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">PC deletes a link whenever a conditional-independence test says two variables are unrelated given some others</h2>
+</div>
+<div style="display:flex; gap:40px">
+<div style="flex:1; display:flex; flex-direction:column; gap:16px">
+<p style="font-size:30px; font-weight:600">Step 1 · Skeleton</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">Start fully connected. For every pair (X, Y) and conditioning set S of growing size, remove the edge if</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:34px; line-height:1.4; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:20px 28px">X ⊥ Y | S &nbsp;⇔&nbsp; ρ(X, Y | S) = 0</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">ρ(X, Y | S) is the partial correlation: regress X and Y on S, correlate the residuals. Tested with Fisher's z:</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:34px; line-height:1.4; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:20px 28px">z = ½ ln[(1+ρ)/(1−ρ)] · √(n − |S| − 3) &nbsp;~&nbsp; N(0,1)</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">Edge removed if the two-sided p-value exceeds α = 0.01. The S that separated them is remembered.</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:16px">
+<p style="font-size:30px; font-weight:600">Step 2 · Orientation</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">For every path X – Z – Y with X and Y not adjacent: if Z was <i>not</i> in the set that separated X and Y, orient as a collider</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:34px; line-height:1.4; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:20px 28px">X → Z ← Y</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">Then propagate with Meek's rules (no new colliders, no cycles). Edges neither rule reaches stay undirected.</p>
+<p style="font-size:30px; font-weight:600">How we ran it here</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4"><b>No window:</b> the 7 variables at the same time step only. <b>20-step window:</b> the lagged copies Xₜ₋₁ … Xₜ₋₂₀ are added as extra variables and time order is used to forbid future → past. No correction for autocorrelation in either case.</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: src/causal_bench/algorithms/pc.py (tigramite PC with ParCorr); Spirtes, Glymour &amp; Scheines, Causation, Prediction and Search</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">9</p>
+
+</section>
+
+<section id="math-pcmci" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Method 2 of 3 · PCMCI+</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">PCMCI+ runs the same tests on time-lagged variables, but conditions on both variables' own past so autocorrelation cannot fake a link</h2>
+</div>
+<div style="display:flex; gap:40px">
+<div style="flex:1; display:flex; flex-direction:column; gap:16px">
+<p style="font-size:30px; font-weight:600">Step 1 · Lagged parent search (PC₁)</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">For each target Xʲₜ, candidates are every Xⁱₜ₋τ with 1 ≤ τ ≤ τₘₐₓ = 20. Iteratively drop a candidate when</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:32px; line-height:1.4; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:20px 28px">Xⁱₜ₋τ ⊥ Xʲₜ &nbsp;|&nbsp; S,&nbsp; S ⊆ strongest remaining candidates</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">Output: an estimated parent set P̂(Xʲₜ) for every variable. Contemporaneous links (τ = 0) are handled in the same loop with S drawn from both lagged and same-time parents.</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:16px">
+<p style="font-size:30px; font-weight:600">Step 2 · Momentary conditional independence (MCI)</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">Every surviving link is re-tested with both parent sets in the condition:</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:32px; line-height:1.4; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:12px; padding:20px 28px">Xⁱₜ₋τ ⊥ Xʲₜ &nbsp;|&nbsp; P̂(Xʲₜ) \ {Xⁱₜ₋τ},&nbsp; P̂(Xⁱₜ₋τ)</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">Conditioning on P̂(Xⁱₜ₋τ) removes the cause's own memory; conditioning on P̂(Xʲₜ) removes the effect's. What is left is the momentary effect of i on j, and its false-positive rate is controlled at α even under strong autocorrelation.</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">Same-time links are oriented by collider rules; lagged links by time order. Same ParCorr test, α = 0.01.</p>
+</div>
+</div>
+<p style="font-size:26px; color:#4A5568">Cost: every (i, j, τ) triple is tested, 7 × 7 × 21 ≈ 1000 pairs plus conditioning sets, but each ParCorr test is a small regression. Both datasets finished in 1.5 s.</p>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: src/causal_bench/algorithms/pcmci_plus.py (tigramite PCMCIplus); Runge, UAI 2020</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">10</p>
+
+</section>
+
+<section id="math-lingam" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Method 3 of 3 · VAR-LiNGAM</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">VAR-LiNGAM fits a linear forecasting model, then uses the non-Gaussian shape of the residuals to decide which way each same-time link points</h2>
+</div>
+<div style="display:flex; gap:40px">
+<div style="flex:1; display:flex; flex-direction:column; gap:14px">
+<p style="font-size:30px; font-weight:600">The model</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:32px; line-height:1.4; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:20px 28px">xₜ = B₀ xₜ + Σ<span style="color:#6A7179">τ=1..p</span> Bτ xₜ₋τ + eₜ</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">B₀ is the same-time graph (must be acyclic), Bτ the lagged effects, eₜ independent and <b>non-Gaussian</b>. p = 20 here.</p>
+<p style="font-size:30px; font-weight:600">Step 1 · Ordinary VAR</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:32px; line-height:1.4; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:20px 28px">xₜ = Σ Mτ xₜ₋τ + nₜ &nbsp;(least squares)</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">The residuals nₜ contain all the same-time structure, mixed together.</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:14px">
+<p style="font-size:30px; font-weight:600">Step 2 · LiNGAM on the residuals</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:32px; line-height:1.4; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:12px; padding:20px 28px">nₜ = B₀ nₜ + eₜ</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">DirectLiNGAM finds the causal order: the variable whose regression residual is most <i>independent</i> of the others is the root; regress it out, repeat. Independence, not correlation, is what breaks the symmetry, and it needs non-Gaussian eₜ. With Gaussian noise every order fits equally well.</p>
+<p style="font-size:30px; font-weight:600">Step 3 · Recover the lagged effects</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:32px; line-height:1.4; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:20px 28px">Bτ = (I − B₀) Mτ</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4"><b>Bootstrap:</b> refit on 100 resampled series; keep an edge only if non-zero in 90 of them. That is where the 134 s goes.</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: src/causal_bench/algorithms/var_lingam.py (lingam.VARLiNGAM); Hyvärinen et al., JMLR 2010; Shimizu et al., JMLR 2011</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">11</p>
+
+</section>
+
+<section id="headline" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:24px">
 <div style="display:flex; flex-direction:column; gap:12px">
 <p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Headline result</p>
 <h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">PCMCI+ recovers 7 to 8 of the 8 true links with at most 2 mistakes at either operating point</h2>
-<p style="font-size:28px; color:#4A5568">F1 score on 8 directed edges; SHD (edits to reach the true graph) shown under each bar. 20-step window, partial correlation, significance 0.01.</p>
+<p style="font-size:28px; color:#4A5568">F1 on 8 directed edges; SHD under each bar. 960 rows at 15 s, 300 s window, partial correlation, α = 0.01.</p>
 </div>
 <div style="display:flex; gap:48px; align-items:flex-start">
 <div style="flex:1; display:flex; flex-direction:column; gap:12px">
@@ -238,9 +379,178 @@ table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #DCE1E8;
 </div>
 </div>
 </div>
-<p style="font-size:26px; color:#4A5568">PCMCI+ is the only method whose worst case stays above F1 0.85. Every true link it reports points the right way: no reversed edges in either run.</p>
+<div style="display:flex; gap:16px; align-items:center; background:#FBEEDF; border-radius:12px; padding:20px 28px"><span style="width:40px; height:40px; color:#D9822B;display:inline-block;font-size:36px;line-height:40px;text-align:center;font-weight:700">&#9733;</span><p style="font-size:25px; color:#4A5568; flex:1; line-height:1.35"><b>P+ is the harder plant to control but the easier one to discover, the opposite of what we predicted.</b> At P+ the valves send most pump flow to the upper tanks (γ₁+γ₂ = 0.77 vs 1.30), so the drainage links carry a larger share of each lower tank's inflow and leave a stronger trace in the data. Every method gains on exactly those two links.</p></div>
 <p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: results/qtank/run-parcorr-tau20/scores.json</p>
-<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">7</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">12</p>
+
+</section>
+
+<section id="graphs-pminus" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:24px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Recovered graphs · P− (minimum phase)</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:52px; font-weight:600; line-height:1.15">P−: PCMCI+ misses one drainage link; PC and VAR-LiNGAM each lose or flip both</h2>
+</div>
+<div style="display:flex; gap:32px">
+<div style="flex:1; display:flex; flex-direction:column; gap:10px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:20px 24px">
+<p style="font-size:30px; font-weight:600; ">PC (20-step window)</p>
+<div style="position:relative; width:500px; height:430px; align-self:center">
+<p style="position:absolute; left:40px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v1</p>
+<p style="position:absolute; left:208px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#6A7179; border-radius:50%">d</p>
+<p style="position:absolute; left:376px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v2</p>
+<p style="position:absolute; left:108px; top:173px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h4</p>
+<p style="position:absolute; left:308px; top:173px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h3</p>
+<p style="position:absolute; left:40px; top:346px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h1</p>
+<p style="position:absolute; left:376px; top:346px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h2</p>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="311.0" y1="240.0" x2="121.0" y2="363.0" stroke="#B8BFC8" stroke-width="3.0" stroke-linecap="round"/><polyline points="126.7,352.4 121.0,363.0 133.0,362.1" fill="none" stroke="#B8BFC8" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="189.0" y1="240.0" x2="379.0" y2="363.0" stroke="#B8BFC8" stroke-width="3.0" stroke-linecap="round"/><polyline points="367.0,362.1 379.0,363.0 373.3,352.4" fill="none" stroke="#B8BFC8" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="418.0" y1="88.0" x2="418.0" y2="342.0" stroke="#B8BFC8" stroke-width="3.0" stroke-linecap="round"/><polyline points="412.2,331.5 418.0,342.0 423.8,331.5" fill="none" stroke="#B8BFC8" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="273.0" y1="82.0" x2="327.0" y2="175.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="313.3,166.7 327.0,175.0 326.6,159.0" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="227.0" y1="82.0" x2="173.0" y2="175.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="173.4,159.0 173.0,175.0 186.7,166.7" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="82.0" y1="88.0" x2="82.0" y2="342.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="74.3,328.0 82.0,342.0 89.7,328.0" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="99.0" y1="85.0" x2="133.0" y2="172.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="120.7,161.7 133.0,172.0 135.0,156.1" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="401.0" y1="85.0" x2="367.0" y2="172.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="365.0,156.1 367.0,172.0 379.3,161.7" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="367.0" y1="172.0" x2="401.0" y2="85.0" stroke="#D9822B" stroke-width="4.0" stroke-linecap="round"/><polyline points="403.0,100.9 401.0,85.0 388.7,95.3" fill="none" stroke="#D9822B" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="128.0" y1="388.0" x2="372.0" y2="388.0" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-dasharray="14 10"/><polyline points="361.5,393.8 372.0,388.0 361.5,382.2" fill="none" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="367.0" y1="258.0" x2="401.0" y2="345.0" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-dasharray="14 10"/><polyline points="391.8,337.3 401.0,345.0 402.5,333.1" fill="none" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<p style="font-size:24px; color:#4A5568">F1 <b>0.67</b> · SHD <b>6</b> · precision 0.71 · recall 0.62</p>
+<p style="font-size:24px; color:#6A7179">5 found · 3 missed · 1 reversed · 2 invented</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:10px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:20px 24px">
+<p style="font-size:30px; font-weight:600; color:#1F5FBF">PCMCI+</p>
+<div style="position:relative; width:500px; height:430px; align-self:center">
+<p style="position:absolute; left:40px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v1</p>
+<p style="position:absolute; left:208px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#6A7179; border-radius:50%">d</p>
+<p style="position:absolute; left:376px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v2</p>
+<p style="position:absolute; left:108px; top:173px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h4</p>
+<p style="position:absolute; left:308px; top:173px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h3</p>
+<p style="position:absolute; left:40px; top:346px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h1</p>
+<p style="position:absolute; left:376px; top:346px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h2</p>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="311.0" y1="240.0" x2="121.0" y2="363.0" stroke="#B8BFC8" stroke-width="3.0" stroke-linecap="round"/><polyline points="126.7,352.4 121.0,363.0 133.0,362.1" fill="none" stroke="#B8BFC8" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="273.0" y1="82.0" x2="327.0" y2="175.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="313.3,166.7 327.0,175.0 326.6,159.0" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="227.0" y1="82.0" x2="173.0" y2="175.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="173.4,159.0 173.0,175.0 186.7,166.7" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="189.0" y1="240.0" x2="379.0" y2="363.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="363.0,361.8 379.0,363.0 371.4,348.9" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="82.0" y1="88.0" x2="82.0" y2="342.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="74.3,328.0 82.0,342.0 89.7,328.0" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="99.0" y1="85.0" x2="133.0" y2="172.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="120.7,161.7 133.0,172.0 135.0,156.1" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="418.0" y1="88.0" x2="418.0" y2="342.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="410.3,328.0 418.0,342.0 425.7,328.0" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="401.0" y1="85.0" x2="367.0" y2="172.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="365.0,156.1 367.0,172.0 379.3,161.7" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="99.0" y1="345.0" x2="133.0" y2="258.0" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-dasharray="14 10"/><polyline points="134.5,269.9 133.0,258.0 123.8,265.7" fill="none" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<p style="font-size:24px; color:#4A5568">F1 <b>0.88</b> · SHD <b>2</b> · precision 0.88 · recall 0.88</p>
+<p style="font-size:24px; color:#6A7179">7 found · 1 missed · 0 reversed · 1 invented</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:10px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:20px 24px">
+<p style="font-size:30px; font-weight:600; ">VAR-LiNGAM</p>
+<div style="position:relative; width:500px; height:430px; align-self:center">
+<p style="position:absolute; left:40px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v1</p>
+<p style="position:absolute; left:208px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#6A7179; border-radius:50%">d</p>
+<p style="position:absolute; left:376px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v2</p>
+<p style="position:absolute; left:108px; top:173px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h4</p>
+<p style="position:absolute; left:308px; top:173px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h3</p>
+<p style="position:absolute; left:40px; top:346px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h1</p>
+<p style="position:absolute; left:376px; top:346px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h2</p>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="189.0" y1="240.0" x2="379.0" y2="363.0" stroke="#B8BFC8" stroke-width="3.0" stroke-linecap="round"/><polyline points="367.0,362.1 379.0,363.0 373.3,352.4" fill="none" stroke="#B8BFC8" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="273.0" y1="82.0" x2="327.0" y2="175.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="313.3,166.7 327.0,175.0 326.6,159.0" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="227.0" y1="82.0" x2="173.0" y2="175.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="173.4,159.0 173.0,175.0 186.7,166.7" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="82.0" y1="88.0" x2="82.0" y2="342.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="74.3,328.0 82.0,342.0 89.7,328.0" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="99.0" y1="85.0" x2="133.0" y2="172.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="120.7,161.7 133.0,172.0 135.0,156.1" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="418.0" y1="88.0" x2="418.0" y2="342.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="410.3,328.0 418.0,342.0 425.7,328.0" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="401.0" y1="85.0" x2="367.0" y2="172.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="365.0,156.1 367.0,172.0 379.3,161.7" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="121.0" y1="363.0" x2="311.0" y2="240.0" stroke="#D9822B" stroke-width="4.0" stroke-linecap="round"/><polyline points="303.4,254.1 311.0,240.0 295.0,241.2" fill="none" stroke="#D9822B" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="372.0" y1="388.0" x2="128.0" y2="388.0" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-dasharray="14 10"/><polyline points="138.5,382.2 128.0,388.0 138.5,393.8" fill="none" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="367.0" y1="258.0" x2="401.0" y2="345.0" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-dasharray="14 10"/><polyline points="391.8,337.3 401.0,345.0 402.5,333.1" fill="none" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="386.0" y1="75.0" x2="114.0" y2="355.0" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-dasharray="14 10"/><polyline points="117.2,343.4 114.0,355.0 125.5,351.5" fill="none" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<p style="font-size:24px; color:#4A5568">F1 <b>0.67</b> · SHD <b>5</b> · precision 0.60 · recall 0.75</p>
+<p style="font-size:24px; color:#6A7179">6 found · 1 missed · 1 reversed · 3 invented</p>
+</div>
+</div>
+<p style="font-size:24px; color:#4A5568"><span style="color:#1F5FBF"><b>solid blue</b></span> true link found · <span style="color:#D9822B"><b>orange</b></span> found but pointing the wrong way · <span style="color:#8A1C1C"><b>dashed red</b></span> invented · <span style="color:#6A7179"><b>dotted grey</b></span> true link missed. Self-loops not drawn.</p>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: results/qtank/run-parcorr-tau20-s3/scores.json (edges collapsed over lags)</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">13</p>
+
+</section>
+
+<section id="graphs-pplus" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:24px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Recovered graphs · P+ (non-minimum phase)</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:52px; font-weight:600; line-height:1.15">P+: PCMCI+ and VAR-LiNGAM recover all 8 true links; PC finds 5 with nothing invented</h2>
+</div>
+<div style="display:flex; gap:32px">
+<div style="flex:1; display:flex; flex-direction:column; gap:10px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:20px 24px">
+<p style="font-size:30px; font-weight:600; ">PC (20-step window)</p>
+<div style="position:relative; width:500px; height:430px; align-self:center">
+<p style="position:absolute; left:40px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v1</p>
+<p style="position:absolute; left:208px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#6A7179; border-radius:50%">d</p>
+<p style="position:absolute; left:376px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v2</p>
+<p style="position:absolute; left:108px; top:173px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h4</p>
+<p style="position:absolute; left:308px; top:173px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h3</p>
+<p style="position:absolute; left:40px; top:346px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h1</p>
+<p style="position:absolute; left:376px; top:346px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h2</p>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="311.0" y1="240.0" x2="121.0" y2="363.0" stroke="#B8BFC8" stroke-width="3.0" stroke-linecap="round"/><polyline points="126.7,352.4 121.0,363.0 133.0,362.1" fill="none" stroke="#B8BFC8" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="189.0" y1="240.0" x2="379.0" y2="363.0" stroke="#B8BFC8" stroke-width="3.0" stroke-linecap="round"/><polyline points="367.0,362.1 379.0,363.0 373.3,352.4" fill="none" stroke="#B8BFC8" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="418.0" y1="88.0" x2="418.0" y2="342.0" stroke="#B8BFC8" stroke-width="3.0" stroke-linecap="round"/><polyline points="412.2,331.5 418.0,342.0 423.8,331.5" fill="none" stroke="#B8BFC8" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="273.0" y1="82.0" x2="327.0" y2="175.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="313.3,166.7 327.0,175.0 326.6,159.0" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="227.0" y1="82.0" x2="173.0" y2="175.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="173.4,159.0 173.0,175.0 186.7,166.7" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="82.0" y1="88.0" x2="82.0" y2="342.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="74.3,328.0 82.0,342.0 89.7,328.0" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="99.0" y1="85.0" x2="133.0" y2="172.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="120.7,161.7 133.0,172.0 135.0,156.1" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="401.0" y1="85.0" x2="367.0" y2="172.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="365.0,156.1 367.0,172.0 379.3,161.7" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<p style="font-size:24px; color:#4A5568">F1 <b>0.77</b> · SHD <b>3</b> · precision 1.00 · recall 0.62</p>
+<p style="font-size:24px; color:#6A7179">5 found · 3 missed · 0 reversed · 0 invented</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:10px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:20px 24px">
+<p style="font-size:30px; font-weight:600; color:#1F5FBF">PCMCI+</p>
+<div style="position:relative; width:500px; height:430px; align-self:center">
+<p style="position:absolute; left:40px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v1</p>
+<p style="position:absolute; left:208px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#6A7179; border-radius:50%">d</p>
+<p style="position:absolute; left:376px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v2</p>
+<p style="position:absolute; left:108px; top:173px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h4</p>
+<p style="position:absolute; left:308px; top:173px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h3</p>
+<p style="position:absolute; left:40px; top:346px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h1</p>
+<p style="position:absolute; left:376px; top:346px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h2</p>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="273.0" y1="82.0" x2="327.0" y2="175.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="313.3,166.7 327.0,175.0 326.6,159.0" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="227.0" y1="82.0" x2="173.0" y2="175.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="173.4,159.0 173.0,175.0 186.7,166.7" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="311.0" y1="240.0" x2="121.0" y2="363.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="128.6,348.9 121.0,363.0 137.0,361.8" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="189.0" y1="240.0" x2="379.0" y2="363.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="363.0,361.8 379.0,363.0 371.4,348.9" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="82.0" y1="88.0" x2="82.0" y2="342.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="74.3,328.0 82.0,342.0 89.7,328.0" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="99.0" y1="85.0" x2="133.0" y2="172.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="120.7,161.7 133.0,172.0 135.0,156.1" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="418.0" y1="88.0" x2="418.0" y2="342.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="410.3,328.0 418.0,342.0 425.7,328.0" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="401.0" y1="85.0" x2="367.0" y2="172.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="365.0,156.1 367.0,172.0 379.3,161.7" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="133.0" y1="258.0" x2="99.0" y2="345.0" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-dasharray="14 10"/><polyline points="97.5,333.1 99.0,345.0 108.2,337.3" fill="none" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="386.0" y1="75.0" x2="114.0" y2="355.0" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-dasharray="14 10"/><polyline points="117.2,343.4 114.0,355.0 125.5,351.5" fill="none" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<p style="font-size:24px; color:#4A5568">F1 <b>0.89</b> · SHD <b>2</b> · precision 0.80 · recall 1.00</p>
+<p style="font-size:24px; color:#6A7179">8 found · 0 missed · 0 reversed · 2 invented</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:10px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:20px 24px">
+<p style="font-size:30px; font-weight:600; ">VAR-LiNGAM</p>
+<div style="position:relative; width:500px; height:430px; align-self:center">
+<p style="position:absolute; left:40px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v1</p>
+<p style="position:absolute; left:208px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#6A7179; border-radius:50%">d</p>
+<p style="position:absolute; left:376px; top:0px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v2</p>
+<p style="position:absolute; left:108px; top:173px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h4</p>
+<p style="position:absolute; left:308px; top:173px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h3</p>
+<p style="position:absolute; left:40px; top:346px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h1</p>
+<p style="position:absolute; left:376px; top:346px; width:84px; height:84px; line-height:84px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h2</p>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="273.0" y1="82.0" x2="327.0" y2="175.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="313.3,166.7 327.0,175.0 326.6,159.0" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="227.0" y1="82.0" x2="173.0" y2="175.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="173.4,159.0 173.0,175.0 186.7,166.7" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="311.0" y1="240.0" x2="121.0" y2="363.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="128.6,348.9 121.0,363.0 137.0,361.8" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="189.0" y1="240.0" x2="379.0" y2="363.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="363.0,361.8 379.0,363.0 371.4,348.9" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="82.0" y1="88.0" x2="82.0" y2="342.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="74.3,328.0 82.0,342.0 89.7,328.0" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="99.0" y1="85.0" x2="133.0" y2="172.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="120.7,161.7 133.0,172.0 135.0,156.1" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="418.0" y1="88.0" x2="418.0" y2="342.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="410.3,328.0 418.0,342.0 425.7,328.0" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="401.0" y1="85.0" x2="367.0" y2="172.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="365.0,156.1 367.0,172.0 379.3,161.7" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="114.0" y1="75.0" x2="386.0" y2="355.0" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-dasharray="14 10"/><polyline points="374.5,351.5 386.0,355.0 382.8,343.4" fill="none" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="386.0" y1="75.0" x2="114.0" y2="355.0" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-dasharray="14 10"/><polyline points="117.2,343.4 114.0,355.0 125.5,351.5" fill="none" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<p style="font-size:24px; color:#4A5568">F1 <b>0.89</b> · SHD <b>2</b> · precision 0.80 · recall 1.00</p>
+<p style="font-size:24px; color:#6A7179">8 found · 0 missed · 0 reversed · 2 invented</p>
+</div>
+</div>
+<p style="font-size:24px; color:#4A5568"><span style="color:#1F5FBF"><b>solid blue</b></span> true link found · <span style="color:#D9822B"><b>orange</b></span> found but pointing the wrong way · <span style="color:#8A1C1C"><b>dashed red</b></span> invented · <span style="color:#6A7179"><b>dotted grey</b></span> true link missed. Self-loops not drawn.</p>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: results/qtank/run-parcorr-tau20-s3/scores.json (edges collapsed over lags)</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">14</p>
 
 </section>
 
@@ -266,38 +576,39 @@ table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #DCE1E8;
 </div>
 <p style="font-size:26px; color:#4A5568">These are the slow, weak links. An upper tank's level is almost fully explained by its own history, which hides its effect on the tank below. Windowed PC also misses one pump link (v2→h2) at both operating points.</p>
 <p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: results/qtank/run-parcorr-tau20/scores.json (true_positives, false_negatives, reversed_edges)</p>
-<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">8</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">15</p>
 
 </section>
 
-<section id="siblings" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:36px">
+<section id="siblings" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px">
 <div style="display:flex; flex-direction:column; gap:12px">
-<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">The recurring false positive</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Every method invents a link between the two tanks that share a pump</h2>
-<p style="font-size:28px; color:#4A5568">Pump v1 feeds both h1 and h4. Both tanks move together whenever the pump changes, and a 100 s window does not fully separate that from a direct pipe.</p>
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">The invented links</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">All 10 invented links are near misses: a shortcut of a real two-step path, or two tanks fed by the same pump</h2>
+<p style="font-size:28px; color:#4A5568">Correlation between such pairs is expected. A conditional-independence method is supposed to explain it away by conditioning on the shared cause; here it only partly does.</p>
 </div>
-<div style="display:flex; gap:64px; align-items:flex-start">
-<div style="position:relative; width:640px; height:420px">
+<div style="display:flex; gap:48px; align-items:flex-start">
+<div style="position:relative; width:640px; height:400px">
 <p style="position:absolute; left:265px; top:0px; width:110px; height:110px; line-height:110px; text-align:center; font-size:32px; font-weight:600; color:#FBFBF8; background:#0B1F3A; border-radius:50%">v1</p>
-<p style="position:absolute; left:40px; top:290px; width:110px; height:110px; line-height:110px; text-align:center; font-size:32px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h1</p>
-<p style="position:absolute; left:490px; top:290px; width:110px; height:110px; line-height:110px; text-align:center; font-size:32px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h4</p>
-<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="290.0" y1="100.0" x2="120.0" y2="290.0" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round"/><polyline points="122.7,278.3 120.0,290.0 131.3,286.0" fill="none" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
-<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="350.0" y1="100.0" x2="520.0" y2="290.0" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round"/><polyline points="508.7,286.0 520.0,290.0 517.3,278.3" fill="none" stroke="#0B1F3A" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
-<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="150.0" y1="345.0" x2="490.0" y2="345.0" stroke="#8A1C1C" stroke-width="4.0" stroke-linecap="round" stroke-dasharray="14 10"/><polyline points="476.0,352.7 490.0,345.0 476.0,337.3" fill="none" stroke="#8A1C1C" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/><polyline points="164.0,337.3 150.0,345.0 164.0,352.7" fill="none" stroke="#8A1C1C" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
-<p style="position:absolute; left:190px; top:365px; width:260px; font-size:24px; text-align:center; color:#8A1C1C; font-weight:600">reported, but no pipe exists</p>
-<p style="position:absolute; left:0px; top:150px; width:200px; font-size:24px; color:#6A7179">real pipe</p>
-<p style="position:absolute; left:440px; top:150px; width:200px; font-size:24px; color:#6A7179; text-align:right">real pipe</p>
+<p style="position:absolute; left:40px; top:270px; width:110px; height:110px; line-height:110px; text-align:center; font-size:32px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h1</p>
+<p style="position:absolute; left:490px; top:270px; width:110px; height:110px; line-height:110px; text-align:center; font-size:32px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">h4</p>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="290.0" y1="100.0" x2="120.0" y2="270.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="124.5,254.6 120.0,270.0 135.4,265.5" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="350.0" y1="100.0" x2="520.0" y2="270.0" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round"/><polyline points="504.6,265.5 520.0,270.0 515.5,254.6" fill="none" stroke="#1F5FBF" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="150.0" y1="325.0" x2="490.0" y2="325.0" stroke="#8A1C1C" stroke-width="4.0" stroke-linecap="round" stroke-dasharray="14 10"/><polyline points="476.0,332.7 490.0,325.0 476.0,317.3" fill="none" stroke="#8A1C1C" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/><polyline points="164.0,317.3 150.0,325.0 164.0,332.7" fill="none" stroke="#8A1C1C" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<p style="position:absolute; left:170px; top:345px; width:300px; font-size:24px; text-align:center; color:#8A1C1C; font-weight:600">reported by PCMCI+ at both operating points</p>
+<p style="position:absolute; left:0px; top:140px; width:200px; font-size:24px; color:#6A7179">γ₁ share of v1</p>
+<p style="position:absolute; left:440px; top:140px; width:200px; font-size:24px; color:#6A7179; text-align:right">(1−γ₁) share of v1</p>
 </div>
-<div style="flex:1; display:flex; flex-direction:column; gap:24px">
-<div style="display:flex; gap:24px; align-items:center"><p style="width:140px; font-size:64px; font-weight:600; line-height:1; color:#8A1C1C">5/6</p><p style="font-size:26px; color:#4A5568; flex:1">runs report a spurious h1–h4 link, in one direction or the other</p></div>
-<div style="display:flex; gap:24px; align-items:center"><p style="width:140px; font-size:64px; font-weight:600; line-height:1; color:#8A1C1C">3/6</p><p style="font-size:26px; color:#4A5568; flex:1">runs report a spurious v2→h1 (the other pump reaching across)</p></div>
+<div style="flex:1; display:flex; flex-direction:column; gap:18px">
+<div style="display:flex; gap:20px; align-items:center"><p style="width:110px; font-size:56px; font-weight:600; line-height:1; color:#8A1C1C">4</p><p style="font-size:26px; color:#4A5568; flex:1; line-height:1.35"><b>Shared-pump siblings:</b> h1–h4 (pump v1) twice, h3–h2 (pump v2) twice. Both tanks receive the same input, in the fixed ratio γ : 1−γ.</p></div>
+<div style="display:flex; gap:20px; align-items:center"><p style="width:110px; font-size:56px; font-weight:600; line-height:1; color:#8A1C1C">4</p><p style="font-size:26px; color:#4A5568; flex:1; line-height:1.35"><b>Shortcuts of a real path:</b> v2→h1 three times, v1→h2 once. The true route is v2→h3→h1; the method skipped the middle tank.</p></div>
+<div style="display:flex; gap:20px; align-items:center"><p style="width:110px; font-size:56px; font-weight:600; line-height:1; color:#8A1C1C">2</p><p style="font-size:26px; color:#4A5568; flex:1; line-height:1.35"><b>Common ancestor:</b> h1–h2, both downstream of the disturbance d through different upper tanks.</p></div>
 <hr style="border:none; border-top:1px solid #DCE1E8; width:100%">
-<p style="font-size:26px; color:#4A5568; line-height:1.4">The same pattern holds for pump v2 and its tanks h2, h3 (spurious h3→h2 or h1→h2 in the earlier run).</p>
-<p style="font-size:28px; font-weight:600; line-height:1.4">Practical reading: a reported link between two signals fed by the same actuator is suspect until checked against the P&amp;ID.</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4"><b>Why conditioning does not fully remove them:</b> the levels respond to the pump's history over 60–90 s through a √h outflow, so a linear regression on 20 lagged copies of v1 leaves a residual the two siblings still share. The likely cause, not tested here.</p>
+<p style="font-size:26px; font-weight:600; line-height:1.4">What it means in practice: false alarms land on physically adjacent variables, never on unrelated ones. A root-cause tool built on this will point near the right place even when it is wrong.</p>
 </div>
 </div>
-<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: false_positives in results/qtank/run-parcorr-tau20/scores.json and run-fast/scores.json (6 runs = 3 methods × 2 operating points, windowed runs)</p>
-<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">9</p>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: false_positives in results/qtank/run-parcorr-tau20/scores.json, all six runs (3 methods × 2 operating points)</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">16</p>
 
 </section>
 
@@ -330,8 +641,40 @@ table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #DCE1E8;
 </div>
 </div>
 <div style="display:flex; gap:24px; align-items:center"><p style="font-size:56px; font-weight:600; line-height:1; color:#1F5FBF">0.38 → 1.00</p><p style="font-size:26px; color:#4A5568">precision at P+. The window removes the invented links; it does not find the missing ones.</p></div>
-<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: results/qtank/run-fast/scores.json (tau_max 0) vs results/qtank/run-parcorr-tau20/scores.json (tau_max 20)</p>
-<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">10</p>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: run-fast/scores.json (tau_max 0, 2880 rows at 5 s) vs run-parcorr-tau20/scores.json (tau_max 20, 960 rows at 15 s). Row count differs too; see the window-length slide.</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">17</p>
+
+</section>
+
+<section id="window" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Window length</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">A 300 s window beats a 100 s window for every method, even with a third of the rows</h2>
+<p style="font-size:28px; color:#4A5568">Same 20-lag window, two sampling rates. All 2880 rows at 5 s (window = 100 s, about 1 time constant) vs every 3rd row at 15 s (window = 300 s, about 3 time constants). F1 shown as 100 s → 300 s.</p>
+</div>
+<div style="display:flex; gap:32px">
+<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:32px">
+<p style="font-size:32px; font-weight:600">PC, windowed</p>
+<div style="display:flex; gap:24px; align-items:baseline"><p style="width:60px; font-size:26px; color:#6A7179">P−</p><p style="font-size:44px; font-weight:600">0.57 → 0.67</p></div>
+<div style="display:flex; gap:24px; align-items:baseline"><p style="width:60px; font-size:26px; color:#6A7179">P+</p><p style="font-size:44px; font-weight:600">0.55 → 0.77</p></div>
+<p style="font-size:24px; color:#4A5568; line-height:1.4">At 100 s it also drops a pump link (v1→h1) at both operating points; at 300 s it gets all four pump links at P+.</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:16px; padding:32px">
+<p style="font-size:32px; font-weight:600; color:#1F5FBF">PCMCI+</p>
+<div style="display:flex; gap:24px; align-items:baseline"><p style="width:60px; font-size:26px; color:#6A7179">P−</p><p style="font-size:44px; font-weight:600; color:#1F5FBF">0.82 → 0.88</p></div>
+<div style="display:flex; gap:24px; align-items:baseline"><p style="width:60px; font-size:26px; color:#6A7179">P+</p><p style="font-size:44px; font-weight:600; color:#1F5FBF">0.82 → 0.89</p></div>
+<p style="font-size:24px; color:#4A5568; line-height:1.4">At 100 s it reverses h3→h1 at P+, its only reversal in any run. The longer window removes it and one invented link.</p>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:32px">
+<p style="font-size:32px; font-weight:600">VAR-LiNGAM</p>
+<div style="display:flex; gap:24px; align-items:baseline"><p style="width:60px; font-size:26px; color:#6A7179">P−</p><p style="font-size:44px; font-weight:600">0.63 → 0.67</p></div>
+<div style="display:flex; gap:24px; align-items:baseline"><p style="width:60px; font-size:26px; color:#6A7179">P+</p><p style="font-size:44px; font-weight:600">0.76 → 0.89</p></div>
+<p style="font-size:24px; color:#4A5568; line-height:1.4">Invented links fall from 6 to 3 at P− and 5 to 2 at P+. Runtime halves (300 s → 134 s) with 20 lags on fewer rows.</p>
+</div>
+</div>
+<p style="font-size:26px; color:#4A5568; line-height:1.4"><b>Why:</b> the drainage effect of h3 on h1 builds up over the tank time constants (23–91 s). A 100 s window sees only the start of it; 300 s sees it complete. Rule for plant data: set τₘₐₓ · Ts to at least 3 times the slowest time constant, and subsample rather than shorten.</p>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: results/qtank/run-parcorr-tau20-full/scores.json (2880 rows) vs run-parcorr-tau20-s3/scores.json (960 rows); both re-run 28 Sep 2026 with row counts logged</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">18</p>
 
 </section>
 
@@ -353,77 +696,186 @@ table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #DCE1E8;
 </div>
 </div>
 <p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: results/qtank/run-parcorr-tau20/run_summary.json (runtime_seconds), scores.json; docs/QTP_EXPECTATIONS.md</p>
-<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">11</p>
-
-</section>
-
-<section id="predictions" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:36px">
-<div style="display:flex; flex-direction:column; gap:12px">
-<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Predictions vs outcome</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">The results matched the ranking we wrote down before running anything, with one surprise</h2>
-<p style="font-size:28px; color:#4A5568">Expectations recorded on 7 September 2026, unchanged since. Results from 28 September 2026.</p>
-</div>
-<div style="display:grid; grid-template-columns:260px 1fr 1fr; gap:16px">
-<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179; padding:8px 0px">Method</p>
-<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179; padding:8px 0px">Predicted</p>
-<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#6A7179; padding:8px 0px">Observed</p>
-<p style="font-size:30px; font-weight:600; padding:24px 0px">PCMCI+</p>
-<p style="font-size:26px; color:#4A5568; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:24px">Best of the set; most or all 8 links</p>
-<div style="display:flex; gap:16px; align-items:center; background:#D5EBD9; border-radius:12px; padding:24px"><span style="width:40px; height:40px; color:#1C5A2A;display:inline-block;font-size:36px;line-height:40px;text-align:center;font-weight:700">&#10003;</span><p style="font-size:26px; color:#1C5A2A; flex:1">Best at both operating points, 7 and 8 of 8 links</p></div>
-<p style="font-size:30px; font-weight:600; padding:24px 0px">VAR-LiNGAM</p>
-<p style="font-size:26px; color:#4A5568; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:24px">Good on lagged links, weak on tank-to-tank direction</p>
-<div style="display:flex; gap:16px; align-items:center; background:#D5EBD9; border-radius:12px; padding:24px"><span style="width:40px; height:40px; color:#1C5A2A;display:inline-block;font-size:36px;line-height:40px;text-align:center;font-weight:700">&#10003;</span><p style="font-size:26px; color:#1C5A2A; flex:1">Matches at P− (one flip, one miss); better than expected at P+</p></div>
-<p style="font-size:30px; font-weight:600; padding:24px 0px">PC, no window</p>
-<p style="font-size:26px; color:#4A5568; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:12px; padding:24px">Poor, dense, spurious</p>
-<div style="display:flex; gap:16px; align-items:center; background:#D5EBD9; border-radius:12px; padding:24px"><span style="width:40px; height:40px; color:#1C5A2A;display:inline-block;font-size:36px;line-height:40px;text-align:center;font-weight:700">&#10003;</span><p style="font-size:26px; color:#1C5A2A; flex:1">F1 0.48–0.63 with 4–6 invented links</p></div>
-</div>
-<div style="display:flex; gap:16px; align-items:center; background:#FBEEDF; border-radius:12px; padding:24px 32px"><span style="width:40px; height:40px; color:#D9822B;display:inline-block;font-size:36px;line-height:40px;text-align:center;font-weight:700">&#9888;</span><p style="font-size:26px; color:#4A5568; flex:1"><b>Surprise:</b> we expected P+ to be harder and to flip orientations. Instead P+ was easier for every method, and windowed PC at P+ was the only run with zero invented links.</p></div>
-<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: docs/QTP_EXPECTATIONS.md (Expectations table); results/qtank/run-parcorr-tau20/scores.json</p>
-<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">12</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">19</p>
 
 </section>
 
 <section id="implications" data-transition="fade" style="background:#0B1F3A; color:#FBFBF8; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
 <div style="display:flex; flex-direction:column; gap:12px">
-<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#8FB3F0">Implications</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">What this means for root-cause detection on real process data</h2>
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#8FB3F0">Implication</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Use PCMCI+ as the default engine for root-cause detection on process data</h2>
+</div>
+<div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:24px">
+<div style="display:flex; flex-direction:column; gap:8px; background:#14305A; border-radius:16px; padding:32px"><p style="font-size:72px; font-weight:600; line-height:1; color:#8FB3F0">15 / 16</p><p style="font-size:24px; color:#BFD0EA; line-height:1.4">true links recovered over both operating points; the one miss is h3→h1 at P−</p></div>
+<div style="display:flex; flex-direction:column; gap:8px; background:#14305A; border-radius:16px; padding:32px"><p style="font-size:72px; font-weight:600; line-height:1; color:#8FB3F0">0</p><p style="font-size:24px; color:#BFD0EA; line-height:1.4">reversed edges in any run; every reported direction was right</p></div>
+<div style="display:flex; flex-direction:column; gap:8px; background:#14305A; border-radius:16px; padding:32px"><p style="font-size:72px; font-weight:600; line-height:1; color:#8FB3F0">SHD 2</p><p style="font-size:24px; color:#BFD0EA; line-height:1.4">at both operating points; F1 0.88 and 0.89; best or tied-best of the three on every score</p></div>
+<div style="display:flex; flex-direction:column; gap:8px; background:#14305A; border-radius:16px; padding:32px"><p style="font-size:72px; font-weight:600; line-height:1; color:#8FB3F0">1.5 s</p><p style="font-size:24px; color:#BFD0EA; line-height:1.4">per dataset on 960 rows × 7 variables × 20 lags; 90× faster than VAR-LiNGAM</p></div>
+</div>
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:28px; color:#FBFBF8; line-height:1.4">Its three invented links all join variables that share an upstream input, so a wrong answer still points to the right neighbourhood.</p>
+<p style="font-size:28px; color:#FBFBF8; line-height:1.4">The independence test is a plug-in, so the same pipeline extends to nonlinear and non-Gaussian plants without changing the algorithm (next section).</p>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#8FB3F0">Source: results/qtank/run-parcorr-tau20/scores.json and run_summary.json. One simulator, one seed.</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#8FB3F0">20</p>
+
+</section>
+
+<section id="ng-assumptions" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:24px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Beyond linear-Gaussian data · 1 of 4</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">What each method actually assumes about the data, and which assumption breaks first on a real plant</h2>
+<p style="font-size:28px; color:#4A5568">PCMCI+ itself assumes nothing about distributions. The linear-Gaussian assumption sits in the test we plugged into it.</p>
+</div>
+<table style="font-size:24px; color:#0B1F3A; border:none">
+<tr style="background:#E4ECF9"><th style="width:22%; text-align:left; padding:18px 24px">Method</th><th style="width:26%; text-align:left">Relationship form</th><th style="width:26%; text-align:left">Noise distribution</th><th style="width:26%; text-align:left">Breaks when</th></tr>
+<tr><td>PC + ParCorr</td><td>Linear</td><td>Gaussian (for the p-value to be exact)</td><td>Nonlinear coupling, e.g. √h outflow far from the operating point</td></tr>
+<tr style="background:#FDFDFB"><td>PCMCI+ + ParCorr (this run)</td><td>Linear</td><td>Gaussian, and independent rows after conditioning on the past</td><td>Same as above; autocorrelation is already handled by MCI</td></tr>
+<tr><td>PCMCI+ + another test</td><td>Set by the test: none for CMIknn</td><td>Set by the test: none for CMIknn</td><td>Sample size: nonparametric tests need many more rows</td></tr>
+<tr style="background:#FDFDFB"><td>VAR-LiNGAM</td><td>Linear</td><td><b>Non-Gaussian</b>, required for direction</td><td>Gaussian residuals: direction becomes a coin flip (our tank levels)</td></tr>
+</table>
+<p style="font-size:25px; color:#4A5568; line-height:1.35">Here the tanks are near-linear around the operating point and the level noise near-Gaussian, so ParCorr fitted. Valve saturation, on/off logic or heavy-tailed sensor noise on a real plant break both; the fixes follow.</p>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: tigramite independence_tests documentation; Runge 2020; Hyvärinen 2010; docs/QTP_EXPECTATIONS.md</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">21</p>
+
+</section>
+
+<section id="ng-tests" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Beyond linear-Gaussian data · 2 of 4</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">For non-Gaussian or nonlinear data, swap the independence test inside PCMCI+; the algorithm stays the same</h2>
+<p style="font-size:28px; color:#4A5568">Every test answers the same question, X ⊥ Y | S, with a different statistic. Cost rises as assumptions fall.</p>
+</div>
+<div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:24px">
+<div style="display:flex; flex-direction:column; gap:12px; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:16px; padding:28px">
+<p style="font-size:30px; font-weight:600; color:#1F5FBF">ParCorr</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:28px; line-height:1.4">ρ(rₓ, rᵧ), residuals of linear fits on S</p>
+<p style="font-size:24px; color:#4A5568; line-height:1.4">Linear, Gaussian. Fastest. <b>Used in this deck.</b></p>
+<div style="flex:1"></div>
+<p style="font-size:24px; font-weight:600">1.5 s per dataset</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:12px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:28px">
+<p style="font-size:30px; font-weight:600">RobustParCorr</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:28px; line-height:1.4">ParCorr on rank-transformed (Gaussianised) data</p>
+<p style="font-size:24px; color:#4A5568; line-height:1.4">Linear in rank, any marginal. Heavy tails, skew, outliers. Same speed.</p>
+<div style="flex:1"></div>
+<p style="font-size:24px; font-weight:600">~ seconds</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:12px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:28px">
+<p style="font-size:30px; font-weight:600">GPDC</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:28px; line-height:1.4">Gaussian-process fit on S, distance correlation of residuals</p>
+<p style="font-size:24px; color:#4A5568; line-height:1.4">Nonlinear, additive noise. Smooth saturations, √h outflows. Available in our runner.</p>
+<div style="flex:1"></div>
+<p style="font-size:24px; font-weight:600">minutes</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:12px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:28px">
+<p style="font-size:30px; font-weight:600">CMIknn</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:28px; line-height:1.4">I(X; Y | S) from k-nearest-neighbour estimates, shuffle-test p-value</p>
+<p style="font-size:24px; color:#4A5568; line-height:1.4">No assumptions at all. Needs many rows; 500 shuffles per test.</p>
+<div style="flex:1"></div>
+<p style="font-size:24px; font-weight:600">~67 min per dataset (est.)</p>
+</div>
+</div>
+<p style="font-size:26px; color:#4A5568; line-height:1.4">Our runner already exposes this as a flag (parcorr, gpdc, cmiknn). The CMIknn comparison was configured on 27 September 2026 but has not been run: at 0.4 s per test and ~1000 lagged pairs, that is the 2.7 h in Next steps.</p>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: datasets/run_algorithms.py (--independence-test); Plan.md runtime estimate (UNVERIFIED, extrapolated from 49 tests per lag at 0.4 s)</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">22</p>
+
+</section>
+
+<section id="ng-badfixes" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:32px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Beyond linear-Gaussian data · 3 of 4</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">The usual pre-processing fixes make the data look Gaussian but destroy the structure the tests rely on</h2>
 </div>
 <div style="display:flex; gap:32px">
-<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#14305A; border-radius:16px; padding:36px">
-<p style="font-size:72px; font-weight:600; line-height:1; color:#8FB3F0">1</p>
-<p style="font-size:30px; font-weight:600; line-height:1.3">Use PCMCI+ as the default</p>
-<p style="font-size:26px; color:#BFD0EA; line-height:1.4">Best accuracy at both operating points, seconds to run, and it never reversed a link in any run.</p>
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:32px">
+<p style="font-size:28px; font-weight:600; color:#8A1C1C">Log, Box-Cox, quantile transforms</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:28px; line-height:1.4">y = a·x + e &nbsp;→&nbsp; log y ≠ a'·log x + e'</p>
+<p style="font-size:24px; color:#4A5568; line-height:1.4">A nonlinear transform of each variable turns a linear causal relation into a nonlinear one. ParCorr then reports a partial dependence that is an artefact of the transform, or misses a real one. The marginals look Gaussian; the joint no longer fits the model.</p>
 </div>
-<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#14305A; border-radius:16px; padding:36px">
-<p style="font-size:72px; font-weight:600; line-height:1; color:#8FB3F0">2</p>
-<p style="font-size:30px; font-weight:600; line-height:1.3">Distrust links between two signals on the same actuator</p>
-<p style="font-size:26px; color:#BFD0EA; line-height:1.4">Shared-pump tanks produced a spurious link in 5 of 6 runs. Check such links against the plant drawing before acting.</p>
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:32px">
+<p style="font-size:28px; font-weight:600; color:#8A1C1C">Differencing, detrending with short filters</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:28px; line-height:1.4">Δhₜ = hₜ − hₜ₋₁</p>
+<p style="font-size:24px; color:#4A5568; line-height:1.4">The drainage links live in the slow part of the signal (time constants 23–91 s). Differencing at 5 s whitens exactly that band, so the hardest true edges get weaker while high-frequency noise is amplified. Our series are already stationary; there is nothing to remove.</p>
 </div>
-<div style="flex:1; display:flex; flex-direction:column; gap:16px; background:#14305A; border-radius:16px; padding:36px">
-<p style="font-size:72px; font-weight:600; line-height:1; color:#8FB3F0">3</p>
-<p style="font-size:30px; font-weight:600; line-height:1.3">Expect slow, weak couplings to go missing</p>
-<p style="font-size:26px; color:#BFD0EA; line-height:1.4">Tank-to-tank drainage was the hard case every time. Where such links are known, feed them in as prior knowledge.</p>
+<div style="flex:1; display:flex; flex-direction:column; gap:14px; background:#FDFDFB; border:1px solid #DCE1E8; border-radius:16px; padding:32px">
+<p style="font-size:28px; font-weight:600; color:#8A1C1C">Clipping or winsorising outliers</p>
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:28px; line-height:1.4">x ← min(max(x, q₀.₀₁), q₀.₉₉)</p>
+<p style="font-size:24px; color:#4A5568; line-height:1.4">The extreme samples are the informative ones for direction: LiNGAM's identifiability comes entirely from non-Gaussian tails. Trimming them removes the signal it needs and biases the VAR fit near the bounds.</p>
 </div>
 </div>
-<p style="font-size:26px; color:#BFD0EA">Confidence limits: one simulator, two operating points, one random seed, linear tests only. No error bars exist on any number in this deck.</p>
-<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#8FB3F0">13</p>
+<div style="display:flex; gap:16px; align-items:center; background:#D5EBD9; border-radius:12px; padding:24px 32px"><span style="width:40px; height:40px; color:#1C5A2A;display:inline-block;font-size:36px;line-height:40px;text-align:center;font-weight:700">&#10003;</span><p style="font-size:26px; color:#1C5A2A; flex:1"><b>What is safe:</b> standardising (z-scoring) each column, because it is linear; removing burn-in; keeping all inputs in the data so no confounder is hidden. Everything else should be handled by choosing the test, not by reshaping the data.</p></div>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: reasoning from the model assumptions on the previous slide; no transform experiment was run on this benchmark</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">23</p>
+
+</section>
+
+<section id="ng-loops" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Beyond linear-Gaussian data · 4 of 4</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Lagged variables turn feedback loops into an acyclic graph, as long as the loop is slower than the sampling interval</h2>
+</div>
+<div style="display:flex; gap:48px; align-items:flex-start">
+<div style="display:flex; flex-direction:column; gap:16px">
+<p style="font-size:26px; font-weight:600; color:#4A5568">Same-time view: a cycle, no method can orient it</p>
+<div style="position:relative; width:520px; height:150px">
+<p style="position:absolute; left:20px; top:30px; width:110px; height:90px; line-height:90px; text-align:center; font-size:30px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">A</p>
+<p style="position:absolute; left:390px; top:30px; width:110px; height:90px; line-height:90px; text-align:center; font-size:30px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">B</p>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="130.0" y1="60.0" x2="390.0" y2="60.0" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round"/><polyline points="379.5,65.8 390.0,60.0 379.5,54.2" fill="none" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="390.0" y1="90.0" x2="130.0" y2="90.0" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round"/><polyline points="140.5,84.2 130.0,90.0 140.5,95.8" fill="none" stroke="#8A1C1C" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<p style="font-size:26px; font-weight:600; color:#4A5568">Unrolled in time: a chain, oriented by the clock</p>
+<div style="position:relative; width:760px; height:260px">
+<p style="position:absolute; left:0px; top:0px; width:200px; font-size:24px; color:#6A7179; text-align:center">t − 2</p>
+<p style="position:absolute; left:280px; top:0px; width:200px; font-size:24px; color:#6A7179; text-align:center">t − 1</p>
+<p style="position:absolute; left:560px; top:0px; width:200px; font-size:24px; color:#6A7179; text-align:center">t</p>
+<p style="position:absolute; left:50px; top:50px; width:100px; height:80px; line-height:80px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">A</p>
+<p style="position:absolute; left:330px; top:50px; width:100px; height:80px; line-height:80px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">A</p>
+<p style="position:absolute; left:610px; top:50px; width:100px; height:80px; line-height:80px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">A</p>
+<p style="position:absolute; left:50px; top:170px; width:100px; height:80px; line-height:80px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">B</p>
+<p style="position:absolute; left:330px; top:170px; width:100px; height:80px; line-height:80px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">B</p>
+<p style="position:absolute; left:610px; top:170px; width:100px; height:80px; line-height:80px; text-align:center; font-size:28px; font-weight:600; background:#E4ECF9; border:2px solid #1F5FBF; border-radius:50%">B</p>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="150.0" y1="90.0" x2="330.0" y2="90.0" stroke="#9DB4D6" stroke-width="3.0" stroke-linecap="round"/><polyline points="319.5,95.8 330.0,90.0 319.5,84.2" fill="none" stroke="#9DB4D6" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="430.0" y1="90.0" x2="610.0" y2="90.0" stroke="#9DB4D6" stroke-width="3.0" stroke-linecap="round"/><polyline points="599.5,95.8 610.0,90.0 599.5,84.2" fill="none" stroke="#9DB4D6" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="150.0" y1="210.0" x2="330.0" y2="210.0" stroke="#9DB4D6" stroke-width="3.0" stroke-linecap="round"/><polyline points="319.5,215.8 330.0,210.0 319.5,204.2" fill="none" stroke="#9DB4D6" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="430.0" y1="210.0" x2="610.0" y2="210.0" stroke="#9DB4D6" stroke-width="3.0" stroke-linecap="round"/><polyline points="599.5,215.8 610.0,210.0 599.5,204.2" fill="none" stroke="#9DB4D6" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="140.0" y1="120.0" x2="340.0" y2="180.0" stroke="#1C5A2A" stroke-width="3.0" stroke-linecap="round"/><polyline points="328.3,182.5 340.0,180.0 331.6,171.5" fill="none" stroke="#1C5A2A" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="420.0" y1="120.0" x2="620.0" y2="180.0" stroke="#1C5A2A" stroke-width="3.0" stroke-linecap="round"/><polyline points="608.3,182.5 620.0,180.0 611.6,171.5" fill="none" stroke="#1C5A2A" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="140.0" y1="180.0" x2="340.0" y2="120.0" stroke="#D9822B" stroke-width="3.0" stroke-linecap="round"/><polyline points="331.6,128.5 340.0,120.0 328.3,117.5" fill="none" stroke="#D9822B" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg style="position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"><line x1="420.0" y1="180.0" x2="620.0" y2="120.0" stroke="#D9822B" stroke-width="3.0" stroke-linecap="round"/><polyline points="611.6,128.5 620.0,120.0 608.3,117.5" fill="none" stroke="#D9822B" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:20px">
+<p style="font-size:26px; color:#4A5568; line-height:1.4">Aₜ₋₁ → Bₜ and Bₜ₋₁ → Aₜ are two different edges in the lagged graph. Neither can point backwards in time, so the cycle disappears and the collider rules are never needed for lagged links.</p>
+<p style="font-size:26px; color:#4A5568; line-height:1.4"><b>Condition:</b> the loop's round-trip time must be longer than the sampling interval Ts, otherwise both directions collapse into the same-time slice and the cycle returns.</p>
+<div style="background:#E4ECF9; border-radius:12px; padding:24px 28px; display:flex; flex-direction:column; gap:6px"><p style="font-size:26px; color:#4A5568">Here: Ts = 5 s, tank time constants 23–91 s</p><p style="font-size:44px; font-weight:600; color:#1F5FBF; line-height:1">5 to 18 samples per loop</p></div>
+<p style="font-size:26px; color:#4A5568; line-height:1.4"><b>Seen in the results:</b> the tanks' self-loops hᵢ(t−1) → hᵢ(t) are the one cycle this rig has. PCMCI+ reported all 7 self-dependencies (levels and inputs) in both datasets; windowed PC found 6 to 7. The same mechanism will handle recycle streams and control loops on a plant.</p>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: n_self_loops in results/qtank/run-parcorr-tau20/scores.json; tau_max reasoning in datasets/run_algorithms.py</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">24</p>
 
 </section>
 
 <section id="next" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:40px">
 <div style="display:flex; flex-direction:column; gap:12px">
 <p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Next steps</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Two cheap runs would let us say "robust" on the previous slide</h2>
-<p style="font-size:28px; color:#4A5568">Both are already scoped; no new algorithm code is needed.</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Next steps</h2>
+<p style="font-size:28px; color:#4A5568">All three are scoped; no new algorithm code is needed.</p>
 </div>
 <table style="font-size:28px; color:#0B1F3A; border:none">
 <tr style="background:#E4ECF9"><th style="width:40%; text-align:left; padding:20px 24px">What</th><th style="width:20%; text-align:left">Cost</th><th style="width:40%; text-align:left">What it settles</th></tr>
 <tr><td>Run the planned nonlinear-test (CMIknn) comparison for PC and PCMCI+ on both operating points</td><td>About 2.7 h compute, config written on 27 Sep 2026</td><td>Whether the PCMCI+ win survives a nonlinear independence test</td></tr>
 <tr style="background:#FDFDFB"><td>Repeat all runs across several noise seeds</td><td>Minutes per seed for PC and PCMCI+; about 2 min per seed for VAR-LiNGAM</td><td>Error bars on every F1 in this deck</td></tr>
-<tr><td>Record the row count and stride in every run summary</td><td>One line of logging</td><td>Removes the UNVERIFIED note on slide 5</td></tr>
+<tr><td>Run PCMCI+ on real plant data with prior knowledge (known pipes, actuators) supplied as link assumptions</td><td>Data access; prior module already exists</td><td>Whether the benchmark result transfers to a process with unknown wiring</td></tr>
 </table>
 <p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: Plan.md (CMIknn comparison, 2026-09-27); datasets/run_algorithms.py flags --independence-test, --stride</p>
-<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">14</p>
+<p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">25</p>
 
+</section>
+
+<section id="thanks" data-transition="fade" style="background:#0B1F3A; color:#FBFBF8; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px; display:flex; flex-direction:column; justify-content:center; gap:32px">
+<h1 style="font-family:'Source Serif 4', Georgia, serif; font-size:120px; font-weight:600; line-height:1.1">Thank you</h1>
+<p style="font-size:32px; color:#BFD0EA; width:1400px">Questions, and the code: every number in this deck traces to a file under results/qtank/ or docs/ in the Root-Cause-Detection repository.</p>
+<p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#8FB3F0">Quadruple-Tank Causal Benchmark · 28 September 2026</p>
 </section>
 </body></html>

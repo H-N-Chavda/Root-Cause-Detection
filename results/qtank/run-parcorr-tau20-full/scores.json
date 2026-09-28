@@ -1,0 +1,388 @@
+[
+  {
+    "dataset": "P_minus",
+    "algorithm": "pc",
+    "n_true": 8,
+    "n_predicted": 6,
+    "n_raw_lagged_edges": 20,
+    "n_self_loops": 7,
+    "true_positives": [
+      [
+        "d",
+        "h3"
+      ],
+      [
+        "d",
+        "h4"
+      ],
+      [
+        "v1",
+        "h4"
+      ],
+      [
+        "v2",
+        "h3"
+      ]
+    ],
+    "reversed_edges": [],
+    "false_positives": [
+      [
+        "h1",
+        "h2"
+      ],
+      [
+        "h3",
+        "h2"
+      ]
+    ],
+    "false_negatives": [
+      [
+        "h3",
+        "h1"
+      ],
+      [
+        "h4",
+        "h2"
+      ],
+      [
+        "v1",
+        "h1"
+      ],
+      [
+        "v2",
+        "h2"
+      ]
+    ],
+    "undirected_hits": [],
+    "precision": 0.6667,
+    "recall": 0.5,
+    "f1": 0.5714,
+    "shd": 6,
+    "lag_multiplicity": 3.33,
+    "tau_max": 20
+  },
+  {
+    "dataset": "P_minus",
+    "algorithm": "pcmci_plus",
+    "n_true": 8,
+    "n_predicted": 9,
+    "n_raw_lagged_edges": 33,
+    "n_self_loops": 7,
+    "true_positives": [
+      [
+        "d",
+        "h3"
+      ],
+      [
+        "d",
+        "h4"
+      ],
+      [
+        "h4",
+        "h2"
+      ],
+      [
+        "v1",
+        "h1"
+      ],
+      [
+        "v1",
+        "h4"
+      ],
+      [
+        "v2",
+        "h2"
+      ],
+      [
+        "v2",
+        "h3"
+      ]
+    ],
+    "reversed_edges": [],
+    "false_positives": [
+      [
+        "h1",
+        "h4"
+      ],
+      [
+        "h2",
+        "h3"
+      ]
+    ],
+    "false_negatives": [
+      [
+        "h3",
+        "h1"
+      ]
+    ],
+    "undirected_hits": [],
+    "precision": 0.7778,
+    "recall": 0.875,
+    "f1": 0.8235,
+    "shd": 3,
+    "lag_multiplicity": 3.67,
+    "tau_max": 20
+  },
+  {
+    "dataset": "P_minus",
+    "algorithm": "var_lingam",
+    "n_true": 8,
+    "n_predicted": 11,
+    "n_raw_lagged_edges": 56,
+    "n_self_loops": 7,
+    "true_positives": [
+      [
+        "d",
+        "h3"
+      ],
+      [
+        "d",
+        "h4"
+      ],
+      [
+        "v1",
+        "h1"
+      ],
+      [
+        "v1",
+        "h4"
+      ],
+      [
+        "v2",
+        "h2"
+      ],
+      [
+        "v2",
+        "h3"
+      ]
+    ],
+    "reversed_edges": [],
+    "false_positives": [
+      [
+        "d",
+        "h2"
+      ],
+      [
+        "h1",
+        "h2"
+      ],
+      [
+        "h1",
+        "h4"
+      ],
+      [
+        "h3",
+        "h2"
+      ],
+      [
+        "h4",
+        "h1"
+      ],
+      [
+        "v2",
+        "h1"
+      ]
+    ],
+    "false_negatives": [
+      [
+        "h3",
+        "h1"
+      ],
+      [
+        "h4",
+        "h2"
+      ]
+    ],
+    "undirected_hits": [],
+    "precision": 0.5455,
+    "recall": 0.75,
+    "f1": 0.6316,
+    "shd": 8,
+    "lag_multiplicity": 5.09,
+    "tau_max": 20
+  },
+  {
+    "dataset": "P_plus",
+    "algorithm": "pc",
+    "n_true": 8,
+    "n_predicted": 3,
+    "n_raw_lagged_edges": 14,
+    "n_self_loops": 7,
+    "true_positives": [
+      [
+        "d",
+        "h4"
+      ],
+      [
+        "v1",
+        "h4"
+      ],
+      [
+        "v2",
+        "h3"
+      ]
+    ],
+    "reversed_edges": [],
+    "false_positives": [],
+    "false_negatives": [
+      [
+        "d",
+        "h3"
+      ],
+      [
+        "h3",
+        "h1"
+      ],
+      [
+        "h4",
+        "h2"
+      ],
+      [
+        "v1",
+        "h1"
+      ],
+      [
+        "v2",
+        "h2"
+      ]
+    ],
+    "undirected_hits": [],
+    "precision": 1.0,
+    "recall": 0.375,
+    "f1": 0.5455,
+    "shd": 5,
+    "lag_multiplicity": 4.67,
+    "tau_max": 20
+  },
+  {
+    "dataset": "P_plus",
+    "algorithm": "pcmci_plus",
+    "n_true": 8,
+    "n_predicted": 9,
+    "n_raw_lagged_edges": 28,
+    "n_self_loops": 7,
+    "true_positives": [
+      [
+        "d",
+        "h3"
+      ],
+      [
+        "d",
+        "h4"
+      ],
+      [
+        "h4",
+        "h2"
+      ],
+      [
+        "v1",
+        "h1"
+      ],
+      [
+        "v1",
+        "h4"
+      ],
+      [
+        "v2",
+        "h2"
+      ],
+      [
+        "v2",
+        "h3"
+      ]
+    ],
+    "reversed_edges": [
+      [
+        "h1",
+        "h3"
+      ]
+    ],
+    "false_positives": [
+      [
+        "h1",
+        "h4"
+      ]
+    ],
+    "false_negatives": [],
+    "undirected_hits": [],
+    "precision": 0.7778,
+    "recall": 0.875,
+    "f1": 0.8235,
+    "shd": 2,
+    "lag_multiplicity": 3.11,
+    "tau_max": 20
+  },
+  {
+    "dataset": "P_plus",
+    "algorithm": "var_lingam",
+    "n_true": 8,
+    "n_predicted": 13,
+    "n_raw_lagged_edges": 61,
+    "n_self_loops": 7,
+    "true_positives": [
+      [
+        "d",
+        "h3"
+      ],
+      [
+        "d",
+        "h4"
+      ],
+      [
+        "h3",
+        "h1"
+      ],
+      [
+        "h4",
+        "h2"
+      ],
+      [
+        "v1",
+        "h1"
+      ],
+      [
+        "v1",
+        "h4"
+      ],
+      [
+        "v2",
+        "h2"
+      ],
+      [
+        "v2",
+        "h3"
+      ]
+    ],
+    "reversed_edges": [],
+    "false_positives": [
+      [
+        "h1",
+        "h2"
+      ],
+      [
+        "h3",
+        "h2"
+      ],
+      [
+        "h4",
+        "h1"
+      ],
+      [
+        "v1",
+        "h2"
+      ],
+      [
+        "v2",
+        "h1"
+      ]
+    ],
+    "false_negatives": [],
+    "undirected_hits": [],
+    "precision": 0.6154,
+    "recall": 1.0,
+    "f1": 0.7619,
+    "shd": 5,
+    "lag_multiplicity": 4.69,
+    "tau_max": 20
+  }
+]

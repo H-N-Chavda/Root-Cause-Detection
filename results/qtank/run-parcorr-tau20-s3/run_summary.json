@@ -1,0 +1,86 @@
+[
+  {
+    "dataset": "P_minus",
+    "algorithm": "pc",
+    "params": {
+      "pc_alpha": 0.01,
+      "independence_test": "parcorr",
+      "independence_test_params": {},
+      "tau_max": 20
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 16,
+    "runtime_seconds": 4.4
+  },
+  {
+    "dataset": "P_minus",
+    "algorithm": "pcmci_plus",
+    "params": {
+      "tau_max": 20,
+      "pc_alpha": 0.01,
+      "independence_test": "parcorr",
+      "independence_test_params": {}
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 26,
+    "runtime_seconds": 1.2
+  },
+  {
+    "dataset": "P_minus",
+    "algorithm": "var_lingam",
+    "params": {
+      "tau_max": 20,
+      "run_bootstrap": true,
+      "bootstrap_samples": 100,
+      "bootstrap_threshold": 0.9
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 30,
+    "runtime_seconds": 135.0
+  },
+  {
+    "dataset": "P_plus",
+    "algorithm": "pc",
+    "params": {
+      "pc_alpha": 0.01,
+      "independence_test": "parcorr",
+      "independence_test_params": {},
+      "tau_max": 20
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 18,
+    "runtime_seconds": 4.6
+  },
+  {
+    "dataset": "P_plus",
+    "algorithm": "pcmci_plus",
+    "params": {
+      "tau_max": 20,
+      "pc_alpha": 0.01,
+      "independence_test": "parcorr",
+      "independence_test_params": {}
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 30,
+    "runtime_seconds": 1.4
+  },
+  {
+    "dataset": "P_plus",
+    "algorithm": "var_lingam",
+    "params": {
+      "tau_max": 20,
+      "run_bootstrap": true,
+      "bootstrap_samples": 100,
+      "bootstrap_threshold": 0.9
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 28,
+    "runtime_seconds": 134.3
+  }
+]
