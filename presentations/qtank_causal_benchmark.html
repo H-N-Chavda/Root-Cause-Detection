@@ -196,7 +196,7 @@ table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #DCE1E8;
 <p style="font-size:26px; color:#4A5568"><b>Rows</b>: every 3rd sample, 960 rows per dataset at Ts = 15 s</p>
 <p style="font-size:26px; color:#4A5568"><b>Window</b>: τₘₐₓ = 20 steps = 300 s, about 3 time constants of the slowest tank</p>
 <p style="font-size:26px; color:#4A5568"><b>Test</b>: partial correlation, α = 0.01</p>
-<p style="font-size:26px; color:#4A5568"><b>VAR-LiNGAM</b>: 20 lags, 100 bootstraps, keep edge if in ≥ 90</p>
+<p style="font-size:26px; color:#4A5568"><b>VAR-LiNGAM only</b>: 20 lags, 100 bootstrap resamples, keep edge if in ≥ 90. PC and PCMCI+ use no bootstrap; one test per edge at α = 0.01</p>
 <p style="font-size:24px; color:#6A7179">The same three methods were also run on all 2880 rows at 5 s (100 s window); that comparison is on its own slide.</p>
 </div>
 </div>
@@ -311,7 +311,7 @@ table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #DCE1E8;
 <p style="font-size:26px; color:#4A5568; line-height:1.4">Same-time links are oriented by collider rules; lagged links by time order. Same ParCorr test, α = 0.01.</p>
 </div>
 </div>
-<p style="font-size:26px; color:#4A5568">Cost: every (i, j, τ) triple is tested, 7 × 7 × 21 ≈ 1000 pairs plus conditioning sets, but each ParCorr test is a small regression. Both datasets finished in 1.5 s.</p>
+<p style="font-size:26px; color:#4A5568">In practice the 7 columns are widened in memory to 7 + 7 × 20 = 147 columns (each variable at t, t−1 … t−20); the first 20 rows are dropped. Every (i, j, τ) triple is tested, about 1000 pairs plus conditioning sets, each a small regression. Both datasets finished in 1.5 s.</p>
 <p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: src/causal_bench/algorithms/pcmci_plus.py (tigramite PCMCIplus); Runge, UAI 2020</p>
 <p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">10</p>
 
@@ -646,7 +646,7 @@ table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #DCE1E8;
 
 </section>
 
-<section id="window" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:28px">
+<section id="window" data-transition="fade" style="background:#FBFBF8; color:#0B1F3A; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:22px">
 <div style="display:flex; flex-direction:column; gap:12px">
 <p style="font-size:24px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#1F5FBF">Window length</p>
 <h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">A 300 s window beats a 100 s window for every method, even with a third of the rows</h2>
@@ -672,7 +672,7 @@ table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #DCE1E8;
 <p style="font-size:24px; color:#4A5568; line-height:1.4">Invented links fall from 6 to 3 at P− and 5 to 2 at P+. Runtime halves (300 s → 134 s) with 20 lags on fewer rows.</p>
 </div>
 </div>
-<p style="font-size:26px; color:#4A5568; line-height:1.4"><b>Why:</b> the drainage effect of h3 on h1 builds up over the tank time constants (23–91 s). A 100 s window sees only the start of it; 300 s sees it complete. Rule for plant data: set τₘₐₓ · Ts to at least 3 times the slowest time constant, and subsample rather than shorten.</p>
+<p style="font-size:25px; color:#4A5568; line-height:1.35"><b>Why:</b> the h3→h1 effect is spread over the tank time constant (60–90 s). A 100 s window sees only its start, so the true edge tests weak while short-lag shared-pump correlation gets reported. A 300 s window measures it at full strength and conditions the indirect ones away. Rule: τₘₐₓ · Ts ≥ 3 × slowest time constant; subsample, do not shorten.</p>
 <p style="position:absolute; left:128px; bottom:64px; font-size:24px; color:#6A7179">Source: results/qtank/run-parcorr-tau20-full/scores.json (2880 rows) vs run-parcorr-tau20-s3/scores.json (960 rows); both re-run 28 Sep 2026 with row counts logged</p>
 <p style="position:absolute; right:128px; bottom:64px; font-size:24px; color:#6A7179">18</p>
 
