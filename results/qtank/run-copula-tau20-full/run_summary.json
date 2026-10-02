@@ -1,0 +1,92 @@
+[
+  {
+    "dataset": "P_minus",
+    "algorithm": "pc",
+    "transform": "copula",
+    "params": {
+      "pc_alpha": 0.01,
+      "independence_test": "parcorr",
+      "independence_test_params": {},
+      "tau_max": 20
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 17,
+    "runtime_seconds": 30.9
+  },
+  {
+    "dataset": "P_minus",
+    "algorithm": "pcmci_plus",
+    "transform": "copula",
+    "params": {
+      "tau_max": 20,
+      "pc_alpha": 0.01,
+      "independence_test": "parcorr",
+      "independence_test_params": {}
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 31,
+    "runtime_seconds": 7.3
+  },
+  {
+    "dataset": "P_minus",
+    "algorithm": "var_lingam",
+    "transform": "copula",
+    "params": {
+      "tau_max": 20,
+      "run_bootstrap": true,
+      "bootstrap_samples": 100,
+      "bootstrap_threshold": 0.9
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 51,
+    "runtime_seconds": 516.4
+  },
+  {
+    "dataset": "P_plus",
+    "algorithm": "pc",
+    "transform": "copula",
+    "params": {
+      "pc_alpha": 0.01,
+      "independence_test": "parcorr",
+      "independence_test_params": {},
+      "tau_max": 20
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 15,
+    "runtime_seconds": 33.6
+  },
+  {
+    "dataset": "P_plus",
+    "algorithm": "pcmci_plus",
+    "transform": "copula",
+    "params": {
+      "tau_max": 20,
+      "pc_alpha": 0.01,
+      "independence_test": "parcorr",
+      "independence_test_params": {}
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 27,
+    "runtime_seconds": 4.5
+  },
+  {
+    "dataset": "P_plus",
+    "algorithm": "var_lingam",
+    "transform": "copula",
+    "params": {
+      "tau_max": 20,
+      "run_bootstrap": true,
+      "bootstrap_samples": 100,
+      "bootstrap_threshold": 0.9
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 54,
+    "runtime_seconds": 468.7
+  }
+]

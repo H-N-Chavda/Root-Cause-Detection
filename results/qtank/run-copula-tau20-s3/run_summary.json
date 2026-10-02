@@ -1,0 +1,92 @@
+[
+  {
+    "dataset": "P_minus",
+    "algorithm": "pc",
+    "transform": "copula",
+    "params": {
+      "pc_alpha": 0.01,
+      "independence_test": "parcorr",
+      "independence_test_params": {},
+      "tau_max": 20
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 16,
+    "runtime_seconds": 3.4
+  },
+  {
+    "dataset": "P_minus",
+    "algorithm": "pcmci_plus",
+    "transform": "copula",
+    "params": {
+      "tau_max": 20,
+      "pc_alpha": 0.01,
+      "independence_test": "parcorr",
+      "independence_test_params": {}
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 23,
+    "runtime_seconds": 2.0
+  },
+  {
+    "dataset": "P_minus",
+    "algorithm": "var_lingam",
+    "transform": "copula",
+    "params": {
+      "tau_max": 20,
+      "run_bootstrap": true,
+      "bootstrap_samples": 100,
+      "bootstrap_threshold": 0.9
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 43,
+    "runtime_seconds": 239.7
+  },
+  {
+    "dataset": "P_plus",
+    "algorithm": "pc",
+    "transform": "copula",
+    "params": {
+      "pc_alpha": 0.01,
+      "independence_test": "parcorr",
+      "independence_test_params": {},
+      "tau_max": 20
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 17,
+    "runtime_seconds": 8.5
+  },
+  {
+    "dataset": "P_plus",
+    "algorithm": "pcmci_plus",
+    "transform": "copula",
+    "params": {
+      "tau_max": 20,
+      "pc_alpha": 0.01,
+      "independence_test": "parcorr",
+      "independence_test_params": {}
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 26,
+    "runtime_seconds": 5.3
+  },
+  {
+    "dataset": "P_plus",
+    "algorithm": "var_lingam",
+    "transform": "copula",
+    "params": {
+      "tau_max": 20,
+      "run_bootstrap": true,
+      "bootstrap_samples": 100,
+      "bootstrap_threshold": 0.9
+    },
+    "completed": true,
+    "error": null,
+    "n_edges": 42,
+    "runtime_seconds": 249.3
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "dataset": "P_minus",
+    "algorithm": "lste",
+    "n_true": 8,
+    "n_predicted": 0,
+    "n_raw_lagged_edges": 0,
+    "n_self_loops": 0,
+    "true_positives": [],
+    "reversed_edges": [],
+    "false_positives": [],
+    "false_negatives": [
+      [
+        "d",
+        "h3"
+      ],
+      [
+        "d",
+        "h4"
+      ],
+      [
+        "h3",
+        "h1"
+      ],
+      [
+        "h4",
+        "h2"
+      ],
+      [
+        "v1",
+        "h1"
+      ],
+      [
+        "v1",
+        "h4"
+      ],
+      [
+        "v2",
+        "h2"
+      ],
+      [
+        "v2",
+        "h3"
+      ]
+    ],
+    "undirected_hits": [],
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "shd": 8,
+    "lag_multiplicity": 0.0,
+    "tau_max": 8
+  }
+]
