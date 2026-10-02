@@ -1,0 +1,59 @@
+{
+  "dataset": "P_minus",
+  "n_rows": 2880,
+  "columns": [
+    "v1",
+    "v2",
+    "d",
+    "h1",
+    "h2",
+    "h3",
+    "h4"
+  ],
+  "binary_columns": [
+    "v1",
+    "v2",
+    "d"
+  ],
+  "alpha": 0.05,
+  "before_normality": {
+    "n_scored": 7,
+    "rejections": {
+      "shapiro_wilk": 7,
+      "dagostino_k2": 6,
+      "jarque_bera": 6,
+      "anderson_darling": 7
+    },
+    "n_unanimous_reject": 6,
+    "n_practically_gaussian": 4,
+    "alpha": 0.05,
+    "skew_threshold": 0.5,
+    "excess_kurtosis_threshold": 1.0
+  },
+  "outliers": {
+    "n_scored": 7,
+    "total_modified_z_outliers": 0,
+    "total_iqr_outliers": 22,
+    "modified_z_threshold": 3.5,
+    "iqr_multiplier": 1.5
+  },
+  "after_normality": {
+    "n_scored": 7,
+    "rejections": {
+      "shapiro_wilk": 7,
+      "dagostino_k2": 7,
+      "jarque_bera": 7,
+      "anderson_darling": 3
+    },
+    "n_unanimous_reject": 3,
+    "n_practically_gaussian": 4,
+    "alpha": 0.05,
+    "skew_threshold": 0.5,
+    "excess_kurtosis_threshold": 1.0
+  },
+  "t2": {
+    "ucl": 14.123680095034759,
+    "fraction_exceeding": 0.02847222222222222,
+    "n": 2880
+  }
+}

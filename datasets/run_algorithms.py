@@ -110,6 +110,12 @@ def main() -> int:
     parser.add_argument("--lste-sig", type=int, default=100)
     parser.add_argument("--lste-sig-final", type=int, default=None)
     parser.add_argument("--lste-tau", type=int, default=8)
+    parser.add_argument(
+        "--transform",
+        choices=("none", "copula"),
+        default="none",
+        help="marginal transform to apply before running algorithms (none or copula)",
+    )
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -129,6 +135,17 @@ def main() -> int:
     for ds in args.datasets.split(","):
         raw = np.genfromtxt(DATA / f"qtank_{ds}.csv", delimiter=",", names=True)
         data = np.column_stack([raw[c] for c in var_names])[:: args.stride]
+        if args.transform == "copula":
+            import pandas as pd
+            from causal_bench.eda.copula import (
+                gaussian_copula_fit,
+                gaussian_copula_transform,
+            )
+
+            df = pd.DataFrame(data, columns=var_names)
+            tf = gaussian_copula_fit(df)
+            data = gaussian_copula_transform(df, tf).to_numpy(dtype=float)
+            log.info("applied gaussian copula transform to %s", ds)
         log.info(
             "%s: %d rows x %d vars (stride %d, Ts=%gs)",
             ds, *data.shape, args.stride, 5.0 * args.stride,
@@ -160,6 +177,7 @@ def main() -> int:
             row = {
                 "dataset": ds,
                 "algorithm": name,
+                "transform": args.transform,
                 "params": params,
                 "completed": graph.meta.get("completed"),
                 "error": graph.meta.get("error"),
