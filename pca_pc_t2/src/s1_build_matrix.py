@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 from common import (DATA, DATA_ROOT, EXPECTED_N_PARAMS, FFILL_MAX_GAP, FLARE_BUFFER, K, MAX_MISSING,
-                    SENTINELS, TAB, TRAIN_FRAC, UNITS, gate, load_folder, load_json, log,
+                    MIN_ROW_COMPLETE, SENTINELS, TAB, TRAIN_FRAC, UNITS, gate, load_folder, load_json, log,
                     read_flare_events, read_tag_map, save_json, stage)
 
 
@@ -92,7 +92,10 @@ dropped += [{"column": c, "unit": unit_of[c], "reason": "zero variance", "value"
 X = X.drop(columns=constant)
 miss_kept = X.isna().mean()
 rows_before = len(X)
-X = X.dropna()
+X = X[X.notna().mean(axis=1) >= MIN_ROW_COMPLETE]       # was: X.dropna()
+log(f"dropped {len(too_missing)} tags (>30% missing), {len(constant)} constant tags; "
+    f"rows with < {MIN_ROW_COMPLETE:.0%} of tags observed dropped: {rows_before - len(X)} of {rows_before}")
+gate(len(X) > 10 * K, f"{len(X)} rows remain (need > {10 * K})")
 log(f"dropped {len(too_missing)} tags (>30% missing), {len(constant)} constant tags; "
     f"incomplete rows dropped: {rows_before - len(X)} of {rows_before}")
 gate(len(X) > 10 * K, f"{len(X)} complete rows remain (need > {10 * K})")
@@ -123,9 +126,14 @@ pd.DataFrame(dropped, columns=["column", "unit", "reason", "value"]).to_csv(TAB 
 gate(X.shape[1] >= K, f"{X.shape[1]} tags remain (need >= {K} for the PCA)")
 
 # ---- z-score with TRAIN statistics only
-mu = X[train].mean()
+mu = X[train].mean()                    # pandas skips NaN, so these use observed TRAIN values only
 sd = X[train].std()
 Z = (X - mu) / sd
+imputed = Z.isna()
+n_imputed = int(imputed.to_numpy().sum())
+imputed_frac = imputed.mean(axis=1)     # per-row share of imputed tags, saved for the T² stage
+Z = Z.fillna(0.0)                       # 0 after z-scoring = TRAIN mean
+log(f"mean-imputed {n_imputed} values = {100 * n_imputed / Z.size:.2f}% of the matrix")
 X_train, X_test = Z[train], Z[~train]
 gate(np.isfinite(X_train.to_numpy()).all() and np.isfinite(X_test.to_numpy()).all(), "no NaN / inf in X_train, X_test")
 
@@ -133,7 +141,8 @@ X_train.to_parquet(DATA / "X_train.parquet")
 X_test.to_parquet(DATA / "X_test.parquet")
 pd.DataFrame({"mean": mu, "std": sd}).rename_axis("column").to_csv(DATA / "scaler.csv")
 pd.DataFrame({"flare": flare.astype(int), "near_flare": near.astype(int),
-              "set": np.where(train, "TRAIN", "TEST")}, index=idx).to_parquet(DATA / "labels.parquet")
+              "set": np.where(train, "TRAIN", "TEST"),
+              "imputed_frac": imputed_frac.to_numpy()}, index=idx).to_parquet(DATA / "labels.parquet")
 
 kept = set(X.columns)
 mrows = []
@@ -156,6 +165,7 @@ save_json({"interval": str(interval), "shape_joined": shape_joined, "shape_final
            "n_dropped_missing": len(too_missing), "n_dropped_constant": len(constant),
            "n_dropped_constant_train": len(const_train), "rows_dropped_incomplete": rows_before - len(X),
            "n_sentinels_replaced": sum(r["replaced"] for r in sentinel_rows), "n_not_loaded": len(not_loaded),
+           "n_imputed": n_imputed, "pct_imputed": 100 * n_imputed / Z.size, "min_row_complete": MIN_ROW_COMPLETE,
            "time_start": idx.min(), "time_end": idx.max()}, "s1_summary.json")
 
 log(f"X_train {X_train.shape}, X_test {X_test.shape}; columns {X.shape[1]} vs expected {EXPECTED_N_PARAMS}")

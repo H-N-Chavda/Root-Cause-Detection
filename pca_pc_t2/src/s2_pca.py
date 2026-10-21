@@ -18,12 +18,12 @@ unit_of = dict(zip(tm["column"], tm["unit"]))
 units = present_units(cols, unit_of)
 gate(X_train.shape[1] >= K and list(X_test.columns) == cols, f"{len(cols)} tags >= k = {K}; TRAIN/TEST columns match")
 
-Xtr = X_train.to_numpy()
+Xtr = X_train.to_numpy(dtype = "float64")
 pca = PCA(n_components=K, svd_solver="full", random_state=SEED).fit(Xtr)
 lam = pca.explained_variance_
 P = pca.components_.T                                    # tags x 26
 T_train = pca.transform(Xtr)
-T_test = pca.transform(X_test.to_numpy())
+T_test = pca.transform(X_test.to_numpy(dtype = "float64"))
 
 # Full spectrum from the TRAIN covariance (same n-1 normalisation as sklearn; avoids a second big SVD).
 eig_full = np.clip(np.linalg.eigvalsh(np.cov(Xtr, rowvar=False))[::-1], 0, None)

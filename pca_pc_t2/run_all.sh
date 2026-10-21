@@ -4,7 +4,7 @@
 # Set DATA_ROOT in pca_pc_t2/.env first. Any failed stage gate stops the run (see outputs/run.log).
 set -euo pipefail
 cd "$(dirname "$0")"
-PY="${PYTHON:-python3}"
+PY="${PYTHON:-python}"
 
 "$PY" - <<'EOF'
 import importlib.util, sys

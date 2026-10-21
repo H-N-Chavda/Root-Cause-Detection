@@ -52,6 +52,7 @@ K = 26                      # number of PCs (user-specified)
 SENTINELS = [-999.0, -9999.0, -99999.0, 99999.0]   # replaced by NaN in Stage 1 (user decision)
 FFILL_MAX_GAP = 5           # samples; only NaN runs this short are forward-filled (Stage 1)
 MAX_MISSING = 0.30          # drop tags with more missing than this after the fill
+MIN_ROW_COMPLETE = 0.90     # keep rows with at least this share of tags observed; the rest are TRAIN-mean imputed
 TRAIN_FRAC = 0.60           # TRAIN = first 60 % of the time span (minus flare windows ± buffer)
 FLARE_BUFFER = pd.Timedelta(hours=2)    # excluded around every flare window from TRAIN (user decision)
 MATCH_WINDOW = pd.Timedelta(hours=6)    # an alarm counts for a flare if it starts <= 6 h before onset (user decision)
@@ -230,7 +231,15 @@ def load_folder(folder):
             frames.append(num)
     if not frames:
         return pd.DataFrame(), infos
-    return pd.concat(frames, axis=0, sort=False).sort_index(kind="stable"), infos
+    by_col = {}                                   # same tag split across files -> stack on rows
+    for f in frames:
+        for c in f.columns:
+            by_col.setdefault(c, []).append(f[c])
+    cols = {}
+    for c, parts in by_col.items():
+        s = pd.concat(parts).sort_index(kind="stable")
+        cols[c] = s[~s.index.duplicated(keep="last")].astype("float32")
+    return pd.DataFrame(cols).sort_index(), infos  # different tags -> side by side on timestamp
 
 
 def read_tag_map():

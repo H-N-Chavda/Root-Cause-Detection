@@ -1,0 +1,6 @@
+variant,jaccard_alpha0p05_vs_0p01,jaccard_vs_final_alpha0p05
+T_train_fisherz,1.0,0.0
+T_test_fisherz,0.6190476190476191,1.0
+flare_only_fisherz,0.5142857142857142,0.8679245283018868
+T_train_kci,,0.08333333333333333
+T_train_lagged_fisherz,0.9529411764705882,

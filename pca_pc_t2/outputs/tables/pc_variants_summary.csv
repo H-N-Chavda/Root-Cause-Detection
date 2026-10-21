@@ -1,0 +1,10 @@
+variant,test,alpha,rows,nodes,edges,directed,undirected,bidirected,ci_tests,seconds,note
+T_train_fisherz,fisherz,0.05,5469,26,0,0,0,0,328,0.2,planned method
+T_train_fisherz,fisherz,0.01,5469,26,0,0,0,0,328,0.2,planned method
+T_test_fisherz,fisherz,0.05,576292,26,48,45,3,0,236727,61.7,"(a) TEST scores, TRAIN-fit PCA"
+T_test_fisherz,fisherz,0.01,576292,26,54,52,2,0,183824,280.9,"(a) TEST scores, TRAIN-fit PCA"
+flare_only_fisherz,fisherz,0.05,575776,26,51,47,4,0,230706,49.3,(a) flare-window rows only
+flare_only_fisherz,fisherz,0.01,575776,26,55,53,2,0,177569,40.6,(a) flare-window rows only
+T_train_kci,kci,0.05,300,26,17,11,6,0,19900,3770.2,(b) KCI on an evenly spaced subsample of n=300 TRAIN rows; alpha=0.01 not run (runtime)
+T_train_lagged_fisherz,fisherz,0.05,5465,78,85,15,70,0,3258,4.3,(c) DIAGNOSTIC ONLY: lags 0..2
+T_train_lagged_fisherz,fisherz,0.01,5465,78,81,9,72,0,3126,3.5,(c) DIAGNOSTIC ONLY: lags 0..2

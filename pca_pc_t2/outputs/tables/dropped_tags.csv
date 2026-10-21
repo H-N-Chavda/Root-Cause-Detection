@@ -1,0 +1,22 @@
+column,unit,reason,value
+102PC4302R.DACA.PV,NSU_NHT_CCR,> 30% missing after ffill,32.43
+102PI4244AN.PV,NSU_NHT_CCR,> 30% missing after ffill,44.8
+102PI4559.DACA.PV,NSU_NHT_CCR,> 30% missing after ffill,30.2
+102TI1515.DACA.PV,NSU_NHT_CCR,> 30% missing after ffill,32.43
+102TI4301.DACA.PV,NSU_NHT_CCR,> 30% missing after ffill,37.87
+102TI4351N.DACA.PV,NSU_NHT_CCR,> 30% missing after ffill,37.62
+102TI4405.DACA.PV,NSU_NHT_CCR,> 30% missing after ffill,37.62
+102TI4406.DACA.PV,NSU_NHT_CCR,> 30% missing after ffill,30.2
+99PI1542.DACA.PV,LOUP,zero variance,0.0
+102PY6708.PV,NSU_NHT_CCR,zero variance,0.0
+105PI2803.DACA.PV,PG,zero variance,0.0
+105TI2401.DACA.PV,PG,zero variance,0.0
+PPI3239.PV,SEU2,zero variance,0.0
+71PC1701.PV,DIU,constant within TRAIN,0.0
+99PI1260B.PV,LOUP,constant within TRAIN,0.0
+102PI5001.DACA.PV,NSU_NHT_CCR,constant within TRAIN,0.0
+102TI4602.DACA.PV,NSU_NHT_CCR,constant within TRAIN,0.0
+102TI8602.DACA.PV,NSU_NHT_CCR,constant within TRAIN,0.0
+PDI3215A.PV,SEU2,constant within TRAIN,0.0
+PPI3241.PV,SEU2,constant within TRAIN,0.0
+44PI4411.PV,SEU3,constant within TRAIN,0.0
