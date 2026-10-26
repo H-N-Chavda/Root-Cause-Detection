@@ -1,55 +1,48 @@
-"""Shared paths, constants, logging, data readers and plotting helpers for the PCA -> PC -> T² pipeline."""
+"""Shared settings, logging, raw-data readers and graph helpers for the PCA + flare tags -> PC -> T² pipeline.
+
+Copied from causal_t2/src/common.py (readers, ffill_short_gaps, edge_list, logging unchanged). Edited: output
+sub-folders (t2/, figures/per_node/) and the PCA / node settings marked "new in this pipeline".
+"""
 import json
 import os
+import re
 import sys
-import textwrap
 import time
 from pathlib import Path
 
-import matplotlib
+import numpy as np
+import pandas as pd
+from dotenv import load_dotenv
 
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
-import numpy as np  # noqa: E402
-import pandas as pd  # noqa: E402
-from matplotlib.patches import Patch  # noqa: E402
+try:
+    sys.stdout.reconfigure(encoding="utf-8")    # Windows redirects default to cp1252, which has no '→'
+except AttributeError:
+    pass
 
-# ----------------------------------------------------------------------------- paths
+# ----------------------------------------------------------------------------- paths (all from .env)
 PROJECT = Path(__file__).resolve().parent.parent
-OUT = PROJECT / "outputs"
-DATA = OUT / "data"
-FIG = OUT / "figures"
-TAB = OUT / "tables"
-for _d in (DATA, FIG, TAB):
-    _d.mkdir(parents=True, exist_ok=True)
+load_dotenv(PROJECT / ".env")
+_REQUIRED = ["DATA_ROOT", "UNIT_FOLDERS", "FLARE_FOLDER", "ALL_TAGS_FOLDER", "CONTROL_FOLDER", "OUT_DIR"]
+_missing = [k for k in _REQUIRED if not os.environ.get(k, "").strip()]
+if _missing:
+    sys.exit(f"Set {', '.join(_missing)} in pca_pc_t2/.env before running the pipeline.")
 
 
-def _read_env(path):
-    """Minimal KEY=VALUE reader for the project .env file (avoids an extra dependency)."""
-    env = {}
-    if path.exists():
-        for line in path.read_text().splitlines():
-            line = line.strip()
-            if line and not line.startswith("#") and "=" in line:
-                key, value = line.split("=", 1)
-                env[key.strip()] = value.strip().strip("'\"")
-    return env
+def _path(value):
+    p = Path(value.strip().strip("'\""))
+    return p if p.is_absolute() else (PROJECT / p).resolve()
 
 
-_ENV = _read_env(PROJECT / ".env")
+DATA_ROOT = _path(os.environ["DATA_ROOT"])
+UNIT_FOLDERS = [s.strip() for s in os.environ["UNIT_FOLDERS"].split(",") if s.strip()]
+FLARE_FOLDER = os.environ["FLARE_FOLDER"].strip()
+ALL_TAGS_FOLDER = os.environ["ALL_TAGS_FOLDER"].strip()
+CONTROL_FOLDER = os.environ["CONTROL_FOLDER"].strip()
+OUT = _path(os.environ["OUT_DIR"])
 
-
-def _env(key):
-    return (os.environ.get(key) or _ENV.get(key, "")).strip()
-
-
-# The only absolute path in the project. Set in pca_pc_t2/.env (an environment variable overrides it).
-DATA_ROOT = Path(_env("DATA_ROOT"))
-
-# Optional time window from .env: only rows with WINDOW_START <= timestamp < WINDOW_END are read.
-# Used to run on one month first; leave both empty to scale up to all data.
-WINDOW_START = pd.Timestamp(_env("WINDOW_START")) if _env("WINDOW_START") else None
-WINDOW_END = pd.Timestamp(_env("WINDOW_END")) if _env("WINDOW_END") else None
+# Optional time window: only rows with WINDOW_START <= timestamp < WINDOW_END are read (empty = all data).
+WINDOW_START = pd.Timestamp(os.environ["WINDOW_START"].strip()) if os.environ.get("WINDOW_START", "").strip() else None
+WINDOW_END = pd.Timestamp(os.environ["WINDOW_END"].strip()) if os.environ.get("WINDOW_END", "").strip() else None
 WINDOW_TEXT = (f"{WINDOW_START or 'start of data'} to {WINDOW_END or 'end of data'} (end excluded)"
                if WINDOW_START is not None or WINDOW_END is not None else "all data (no window)")
 
@@ -63,59 +56,58 @@ def in_window(times):
     if WINDOW_END is not None:
         mask &= t < WINDOW_END
     return mask
+DATA = OUT / "data"           # cached intermediate files
+TAB = OUT / "tables"
+GRAPH = OUT / "graph"
+T2DIR = OUT / "t2"            # per-node T_j·PA(j), overall T², flags
+FIG = OUT / "figures"
+LOGS = OUT / "logs"
+for _d in (DATA, TAB, GRAPH, T2DIR, FIG / "per_node", LOGS):
+    _d.mkdir(parents=True, exist_ok=True)
+REGISTRY = OUT / "tag_registry.csv"
+NODES = DATA / "nodes.csv"    # PC-graph nodes: node, is_flare, kind (PC / flare), unit
 
-# ----------------------------------------------------------------------------- constants
+# ----------------------------------------------------------------------------- settings
+# Reused unchanged from the earlier pipeline (pca_pc_t2/src/common.py), decisions of the project owner:
+SENTINELS = [-999.0, -9999.0, -99999.0, 99999.0]   # -> NaN
+FFILL_MAX_GAP = 5             # samples; only NaN runs this short are forward-filled
+MAX_MISSING = 0.30            # drop tags with more missing than this after the fill
+MIN_ROW_COMPLETE = 0.90       # keep rows with at least this share of tags observed
+NEAR_CONSTANT_SHARE = 0.99    # near-constant = one value covers > 99 % of samples (s0_audit definition)
+TRAIN_FRAC = 0.60             # reference (normal operation) = first 60 % of time minus flare windows +- buffer
+FLARE_BUFFER = pd.Timedelta(hours=2)
+FLARE_MAD_K = 3.0             # flaring = any flare signal > median + 3 * MAD
+EVENT_GAP = 5                 # samples; flare flags closer than this are merged into one event
+MATCH_WINDOW = pd.Timedelta(hours=6)   # an alarm counts for a flare if it starts <= 6 h before onset
+
+# New in this pipeline (PCA + node matrix):
+N_PCS = 26                    # exactly 26 principal components (prompt Stage 2)
+TOP_LOAD_N = 15               # top tags by |loading| saved per PC
+PC_ALPHAS = (0.01, 0.05)      # alpha sweep of the PC algorithm (edge counts reported)
+
+# From causal_t2 (PC_ALPHA = the alpha used downstream):
+PC_ALPHA = 0.01               # Fisher-Z significance level of the PC algorithm
+PC_ROW_STEP = 10              # PC uses every 10th row (1-min samples are strongly autocorrelated)
+PC_MAX_K = 3                  # largest conditioning-set size allowed
+PC_TEST_BUDGET = 3e7          # upper bound on CI tests; the depth cap is lowered until the estimate fits
+COLLINEAR_R = 0.999           # |r| at or above this = collinear pair, one tag dropped
+EIG_MIN = 1e-6                # smallest eigenvalue allowed in the correlation matrix used by PC
+ALPHA0 = 0.05                 # overall false-alarm rate: T² limit chi2_p(1 - ALPHA0); per tag Bonferroni ALPHA0 / p
+SIGMA2_MIN = 1e-6             # floor for the conditional variance sigma²_j·PA(j) (numerical guard)
+EVENT_DIAG_WINDOW = pd.Timedelta(minutes=30)  # rows after the first out-of-control T² used to rank tags per event
+TOP_N = 15                    # tags shown per flare event
+ZOOM_N = 5                    # root-cause tags with a zoomed graph view
+PLOT_MAX_POINTS = 4000        # time series are binned to at most this many points before plotting
 SEED = 42
-UNITS = ["APS_NVPS_LEU", "DAK", "DIU", "ISOM", "ISOM_3", "ISOM_4", "LOUP",
-         "NSU_NHT_CCR", "PDA", "PG", "SEU1", "SEU2", "SEU3"]
-TAG_FOLDER = "All_unit_tags"
-FLARE_FOLDER = "flare_data"
-CONTROL_FOLDER = "unit_wise_control_data"
-EXPECTED_N_PARAMS = 418
 
-K = 26                      # number of PCs (user-specified)
-SENTINELS = [-999.0, -9999.0, -99999.0, 99999.0]   # replaced by NaN in Stage 1 (user decision)
-FFILL_MAX_GAP = 5           # samples; only NaN runs this short are forward-filled (Stage 1)
-MAX_MISSING = 0.30          # drop tags with more missing than this after the fill
-MIN_ROW_COMPLETE = 0.90     # keep rows with at least this share of tags observed; the rest are TRAIN-mean imputed
-TRAIN_FRAC = 0.60           # TRAIN = first 60 % of the time span (minus flare windows ± buffer)
-FLARE_BUFFER = pd.Timedelta(hours=2)    # excluded around every flare window from TRAIN (user decision)
-MATCH_WINDOW = pd.Timedelta(hours=6)    # an alarm counts for a flare if it starts <= 6 h before onset (user decision)
-FLARE_MAD_K = 3.0           # continuous flare signal: flaring = value > median + 3 * MAD (user decision)
-FLAG_HINTS = ("flag", "label", "event", "flaring", "alarm")
+EDGE_DIRECTED, EDGE_UNDIRECTED, EDGE_BIDIRECTED = "->", "--", "<->"
 
-ALPHAS = (0.05, 0.01)
-NEAR_EMPTY_EDGES = 5        # fewer edges than this among the 26 PCs = "near-empty" (§3.3)
-BOOT_B = 100
-STABLE_FREQ = 0.7
-KCI_N = 300                 # subsample size for the KCI variant (§3.3 b)
-LAG_TAU = 2                 # lags 0..2 for the lagged diagnostic (§3.3 c)
-MAX_STEP_SECONDS = 600      # §5: a step longer than 10 min is reduced
-EVENT_GAP = 5               # samples; alarms closer than this are merged into one event
-PLOT_MAX_POINTS = 20000     # longer time series are binned before plotting
-
-EDGE_DIRECTED, EDGE_UNDIRECTED, EDGE_BIDIRECTED = "→", "—", "↔"
-PCS = [f"PC{i + 1}" for i in range(K)]
-
-# Fixed colour per unit (Okabe-Ito + Tol muted, best effort for 13 colour-blind-safe colours).
-UNIT_COLORS = dict(zip(UNITS, ["#0072B2", "#E69F00", "#009E73", "#CC79A7", "#56B4E9", "#D55E00",
-                               "#F0E442", "#000000", "#332288", "#882255", "#44AA99", "#999933",
-                               "#888888"]))
-TRAIN_COLOR, TEST_COLOR, FLARE_COLOR = "#0072B2", "#E69F00", "#D55E00"
-
-plt.rcParams.update({"font.size": 11, "axes.titlesize": 12, "axes.labelsize": 11,
-                     "xtick.labelsize": 11, "ytick.labelsize": 11, "legend.fontsize": 11,
-                     "savefig.bbox": "tight"})
-
-# ----------------------------------------------------------------------------- logging and gates
+# ----------------------------------------------------------------------------- logging, gates, json
 _T0 = time.time()
 
 
 def log(msg=""):
-    line = f"[{time.time() - _T0:8.1f}s] {msg}"
-    print(line, flush=True)
-    with open(OUT / "run.log", "a", encoding="utf-8") as f:
-        f.write(line + "\n")
+    print(f"[{time.time() - _T0:8.1f}s] {msg}", flush=True)
 
 
 def stage(name):
@@ -123,35 +115,76 @@ def stage(name):
 
 
 def gate(ok, msg):
-    """Stage gate (§6): log the check; on failure stop the whole pipeline."""
+    """Stage check (Definition of Done): log it; on failure stop with exit code 1."""
     log(f"CHECK {'PASS' if ok else 'FAIL'}: {msg}")
     if not ok:
-        log("GATE FAILED - pipeline stopped. Send this log to the project owner before changing anything.")
+        log("CHECK FAILED - stage stopped.")
         sys.exit(1)
 
 
-def fmt(v):
-    if isinstance(v, (float, np.floating)):
-        return "" if np.isnan(v) else f"{v:.4g}"
-    return str(v)
-
-
-def md_table(df):
-    """Markdown table without the optional 'tabulate' dependency."""
-    lines = ["| " + " | ".join(map(str, df.columns)) + " |", "|" + "---|" * df.shape[1]]
-    lines += ["| " + " | ".join(fmt(v) for v in row) + " |" for row in df.itertuples(index=False)]
-    return "\n".join(lines)
-
-
 def save_json(obj, name):
-    (DATA / name).write_text(json.dumps(obj, indent=2, default=str))
+    (DATA / name).write_text(json.dumps(obj, indent=2, default=str), encoding="utf-8")
 
 
 def load_json(name):
-    return json.loads((DATA / name).read_text())
+    return json.loads((DATA / name).read_text(encoding="utf-8"))
 
 
-# ----------------------------------------------------------------------------- raw data readers
+def _append_json_list(name, stage_name, msg):
+    p = DATA / name
+    items = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
+    items = [i for i in items if not (i["stage"] == stage_name and i["text"] == msg)]
+    items.append({"stage": stage_name, "text": msg})
+    p.write_text(json.dumps(items, indent=2), encoding="utf-8")
+
+
+def assumption(stage_name, msg):
+    """Log an assumption / choice; SUMMARY.md lists all of them."""
+    log(f"ASSUMPTION: {msg}")
+    _append_json_list("assumptions.json", stage_name, msg)
+
+
+def deviation(stage_name, msg):
+    """Log a fallback that departs from the plan; SUMMARY.md lists them under 'Deviations'."""
+    log(f"DEVIATION: {msg}")
+    _append_json_list("deviations.json", stage_name, msg)
+
+
+def clear_notes(stage_name):
+    """Drop this stage's old assumptions / deviations before a rerun."""
+    for name in ("assumptions.json", "deviations.json"):
+        p = DATA / name
+        if p.exists():
+            items = [i for i in json.loads(p.read_text(encoding="utf-8")) if i["stage"] != stage_name]
+            p.write_text(json.dumps(items, indent=2), encoding="utf-8")
+
+
+def done(stage_name, seconds):
+    (DATA / f"{stage_name}.done").write_text(f"{seconds:.1f}\n", encoding="utf-8")
+
+
+def read_registry():
+    reg = pd.read_csv(REGISTRY, dtype=str, keep_default_na=False)
+    reg["is_flare"] = reg["is_flare"].eq("True")
+    return reg
+
+
+def write_registry(reg):
+    reg.to_csv(REGISTRY, index=False)
+
+
+def read_nodes():
+    nodes = pd.read_csv(NODES, dtype=str, keep_default_na=False)
+    nodes["is_flare"] = nodes["is_flare"].eq("True")
+    return nodes
+
+
+def safe_name(tag):
+    """File-name-safe version of a tag (flare tags contain '/', '*', '(' ...)."""
+    return re.sub(r"[^A-Za-z0-9._-]+", "_", str(tag)).strip("_")[:120]
+
+
+# ----------------------------------------------------------------------------- raw data readers (copied)
 def parquet_files(folder):
     return sorted(p for p in Path(folder).rglob("*.parquet") if p.is_file())
 
@@ -189,8 +222,7 @@ def to_datetime_or_none(s):
 
 
 def find_time_column(df):
-    """(column name, parsed timestamps) of the timestamp column, or (None, None).
-    datetime-typed columns are tried first, then columns whose name contains 'time'/'date'."""
+    """(column name, parsed timestamps) of the timestamp column, or (None, None)."""
     dt_cols = [c for c in df.columns if pd.api.types.is_datetime64_any_dtype(df[c])]
     hinted = [c for c in df.columns if c not in dt_cols and ("time" in c.lower() or "date" in c.lower())]
     for c in dt_cols + hinted:
@@ -201,8 +233,7 @@ def find_time_column(df):
 
 
 def numeric_part(df):
-    """Numeric tag columns of a raw table. Text columns that are mostly numbers (historian text such
-    as 'Bad Input' mixed in) are coerced and the text becomes NaN.
+    """Numeric tag columns of a raw table. Mostly-numeric text columns are coerced, the text becomes NaN.
     Returns (numeric frame, dropped non-numeric column names, {column: text values coerced})."""
     out, dropped, coerced = {}, [], {}
     for c in df.columns:
@@ -231,66 +262,19 @@ def load_file(path):
     """One parquet file -> (numeric frame indexed by timestamp, info dict). Frame is None without a timestamp."""
     df = read_table(path)
     tcol, t = find_time_column(df)
-    info = {"file": str(Path(path).relative_to(DATA_ROOT)), "rows": len(df), "columns": df.shape[1],
-            "time_column": tcol, "time_dtype": str(df[tcol].dtype) if tcol else None}
+    info = {"file": Path(path).relative_to(DATA_ROOT).as_posix(), "rows": len(df), "time_column": tcol}
     if tcol is None:
         return None, info
     num, dropped, coerced = numeric_part(df.drop(columns=[tcol]))
     num.index = pd.DatetimeIndex(t.to_numpy(), name="timestamp")
     num = num[~num.index.isna() & in_window(num.index)]
     info.update({"rows_in_window": len(num), "numeric_columns": num.shape[1], "non_numeric_dropped": "; ".join(dropped),
-                 "text_values_coerced": int(sum(coerced.values())),
-                 "start": num.index.min(), "end": num.index.max(),
-                 "median_interval": median_interval(num.index),
-                 "duplicated_timestamps": int(num.index.duplicated().sum())})
+                 "text_values_coerced": int(sum(coerced.values())), "median_interval": median_interval(num.index)})
     return num, info
 
 
-def load_folder(folder):
-    """All parquet files under a folder stacked in time (rows); columns are the union of the files."""
-    frames, infos = [], []
-    for p in parquet_files(folder):
-        num, info = load_file(p)
-        infos.append(info)
-        if num is not None and num.shape[1]:
-            frames.append(num)
-    if not frames:
-        return pd.DataFrame(), infos
-    by_col = {}                                   # same tag split across files -> stack on rows
-    for f in frames:
-        for c in f.columns:
-            by_col.setdefault(c, []).append(f[c])
-    cols = {}
-    for c, parts in by_col.items():
-        s = pd.concat(parts).sort_index(kind="stable")
-        cols[c] = s[~s.index.duplicated(keep="last")].astype("float32")
-    return pd.DataFrame(cols).sort_index(), infos  # different tags -> side by side on timestamp
-
-
-def read_tag_map():
-    return pd.read_csv(DATA / "tag_unit_map.csv", dtype=str, keep_default_na=False)
-
-
-def read_flare_events():
-    p = DATA / "flare_events.csv"
-    if not p.exists():
-        return pd.DataFrame({"event_id": pd.Series(dtype=int), "start": pd.Series(dtype="datetime64[ns]"),
-                             "end": pd.Series(dtype="datetime64[ns]")})
-    ev = pd.read_csv(p)
-    ev["start"], ev["end"] = pd.to_datetime(ev["start"]), pd.to_datetime(ev["end"])   # datetime even when empty
-    return ev
-
-
-def present_units(columns, unit_of):
-    """The units (in fixed UNITS order) that own at least one of the given columns."""
-    have = {unit_of[c] for c in columns}
-    return [u for u in UNITS if u in have]
-
-
-# ----------------------------------------------------------------------------- shared analysis helpers
 def flags_to_events(times, flag, max_gap):
-    """Group flagged timestamps into events; flags at most max_gap apart are merged.
-    Returns a frame with start, end, n_flagged."""
+    """Group flagged timestamps into events; flags at most max_gap apart are merged (start, end, n_flagged)."""
     t = pd.DatetimeIndex(times)[np.asarray(flag, dtype=bool)].sort_values()
     if len(t) == 0:
         return pd.DataFrame({"start": pd.Series(dtype="datetime64[ns]"),
@@ -301,49 +285,53 @@ def flags_to_events(times, flag, max_gap):
     return pd.DataFrame({"start": by.min(), "end": by.max(), "n_flagged": by.size()}).reset_index(drop=True)
 
 
-def loading_mass(P, columns, unit_of, units):
-    """Share of each PC's squared loadings carried by each unit's tags (rows PCs, columns units, rows sum to 1)."""
-    sq = pd.DataFrame(np.asarray(P) ** 2, index=columns, columns=[f"PC{i + 1}" for i in range(P.shape[1])])
-    m = sq.groupby(pd.Series(columns, index=columns).map(unit_of)).sum().T
-    return m.reindex(columns=units, fill_value=0.0)
+def ffill_short_gaps(df, max_gap):
+    """Forward-fill only NaN runs of length <= max_gap that follow a valid value (longer gaps stay NaN).
+    Returns (filled frame, histogram of NaN-run lengths, number of filled values).
+    Copied from pca_pc_t2/src/s1_build_matrix.py."""
+    out = df.copy()
+    run_hist = pd.Series(dtype="float64")
+    n_filled = 0
+    for c in df.columns:
+        na = df[c].isna()
+        if not na.any():
+            continue
+        run_id = (~na).cumsum()                     # NaNs share the id of the last valid value before them
+        lengths = na.groupby(run_id).sum()
+        lengths = lengths[lengths > 0]
+        run_hist = run_hist.add(lengths.value_counts(), fill_value=0)
+        run_len = run_id.map(lengths).fillna(0)
+        fill = na & (run_len <= max_gap) & (run_id > 0)
+        out.loc[fill, c] = df[c].ffill()[fill]
+        n_filled += int(fill.sum())
+    run_hist.index = run_hist.index.astype(int)
+    return out, run_hist.astype(int).sort_index(), n_filled
 
 
-# ----------------------------------------------------------------------------- plotting helpers
-FIG_INDEX = []      # (figure name, takeaway) for RESULTS.md
+def read_flare_events():
+    ev = pd.read_csv(DATA / "flare_events.csv")
+    ev["start"], ev["end"] = pd.to_datetime(ev["start"]), pd.to_datetime(ev["end"])
+    return ev
 
 
-def save_fig(fig, name, title, takeaway, table, index=False, bottom=0.0):
-    """Title + one-line takeaway subtitle, 300 dpi PNG + vector PDF, and the plotted numbers as CSV.
-    bottom reserves a figure fraction below the axes (for a figure-level legend)."""
-    w, h = fig.get_size_inches()
-    sub = textwrap.fill(takeaway, max(40, int(w * 11)))
-    n_lines = sub.count("\n") + 1
-    fig.suptitle(title, fontsize=14, fontweight="bold", y=1 - 0.12 / h, va="top")
-    fig.text(0.5, 1 - 0.45 / h, sub, ha="center", va="top", fontsize=11, style="italic")
-    fig.tight_layout(rect=(0, bottom, 1, 1 - (0.75 + 0.2 * n_lines) / h))
-    fig.savefig(FIG / f"{name}.png", dpi=300)
-    fig.savefig(FIG / f"{name}.pdf")
-    plt.close(fig)
-    table.to_csv(TAB / f"{name}.csv", index=index)
-    FIG_INDEX.append((name, takeaway))
-    log(f"  saved {name}")
-
-
-def shade_flares(ax, events, label=True):
-    for k, (s, e) in enumerate(zip(events["start"], events["end"])):
-        ax.axvspan(s, e, color=FLARE_COLOR, alpha=0.25, lw=0,
-                   label="flare event" if (label and k == 0) else None)
-
-
-def unit_handles(units):
-    return [Patch(facecolor=UNIT_COLORS.get(u, "#BBBBBB"), edgecolor="k", label=u) for u in units]
-
-
-def bin_for_plot(df, how):
-    """Bin a time-indexed frame to at most PLOT_MAX_POINTS bins (empty bins stay NaN so lines break).
-    Returns (frame, description of the binning)."""
-    if len(df) <= PLOT_MAX_POINTS:
-        return df, "raw samples"
-    span = df.index.max() - df.index.min()
-    rule = max(pd.Timedelta(minutes=1), (span / PLOT_MAX_POINTS).ceil("min"))
-    return df.resample(rule).agg(how), f"{int(rule.total_seconds() // 60)}-min bins, {how}"
+# ----------------------------------------------------------------------------- graph helpers
+def edge_list(G, names):
+    """Edges of a causal-learn graph matrix: G[i,j] = -1 and G[j,i] = 1 means i -> j;
+    both -1 = undirected; both 1 = bidirected (conflicting orientations). Copied from pca_pc_t2 s3."""
+    rows = []
+    for i in range(len(names)):
+        for j in range(i + 1, len(names)):
+            a, b = G[i, j], G[j, i]
+            if a == 0 and b == 0:
+                continue
+            if a == -1 and b == 1:
+                rows.append((names[i], names[j], EDGE_DIRECTED))
+            elif a == 1 and b == -1:
+                rows.append((names[j], names[i], EDGE_DIRECTED))
+            elif a == -1 and b == -1:
+                rows.append((names[i], names[j], EDGE_UNDIRECTED))
+            elif a == 1 and b == 1:
+                rows.append((names[i], names[j], EDGE_BIDIRECTED))
+            else:
+                rows.append((names[i], names[j], f"other({a},{b})"))
+    return pd.DataFrame(rows, columns=["source", "target", "type"])
