@@ -11,7 +11,7 @@ PC output need not have a consistent extension. Then, logged and counted:
   - no sink at all (directed cycle) -> the node with the fewest outgoing edges is taken, those edges reversed.
 Bidirected (conflict) edges are treated as undirected.
 
-Writes outputs/graph/{dag_edges.csv, dag_adjacency.csv, dag.graphml}, outputs/data/{parents.json, s3_summary.json}.
+Writes outputs/graph/{dag_edges.csv, dag_adjacency.csv, dag.graphml}, outputs/data/{parents.json, s4_summary.json}.
 """
 import time
 
@@ -151,5 +151,5 @@ seconds = time.time() - t0
 save_json({"n_nodes": len(names), "n_edges": len(dag), "cpdag_directed": len(cpdag_dir), "cpdag_directed_kept": kept_dir,
            "n_reversed": len(reversed_edges), "n_forced": n_forced,
            "how_counts": d["how"].value_counts().to_dict(), "n_roots": int((n_par == 0).sum()),
-           "max_parents": int(n_par.max()), "mean_parents": float(n_par.mean()), "seconds": seconds}, "s3_summary.json")
+           "max_parents": int(n_par.max()), "mean_parents": float(n_par.mean()), "seconds": seconds}, "s4_summary.json")
 done(S, seconds)
