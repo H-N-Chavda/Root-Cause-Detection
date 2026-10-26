@@ -1,0 +1,15 @@
+[     0.0s] ===== Stage 2 - PCA on the process tags | started 2026-10-26 22:25:13 =====
+[     0.3s] CHECK PASS: 270 process tags >= 26 components
+[     0.3s] CHECK PASS: every process tag varies over the fit rows
+[     0.3s] ASSUMPTION: PCA fit rows = the full cleaned matrix (44640 rows); each process tag standardized over these rows (zero mean, unit variance)
+[     1.3s] CHECK PASS: PCA has exactly 26 components
+[     1.3s] CHECK PASS: PC scores have no NaN / inf
+[     1.3s] variance retained by 26 PCs: 80.09% (PC1 19.60%)
+[     1.3s] ASSUMPTION: PC scores standardized to unit variance (each divided by its std over the fit rows) before Stage 3
+[     1.4s] CHECK PASS: squared-loading unit shares sum to 1 for every PC
+[     1.4s]   PC1: 19.60% variance; dominant unit LOUP (27%); top tag 42PI4304.PV
+[     1.4s]   PC2: 12.36% variance; dominant unit LOUP (29%); top tag 99TI2366B.DACA.PV
+[     1.4s]   PC3: 9.18% variance; dominant unit PG (33%); top tag 103TI5608.daca.pv
+[     1.4s]   PC4: 5.96% variance; dominant unit DIU (22%); top tag 71PI9902.PV
+[     1.4s]   PC5: 4.81% variance; dominant unit LOUP (29%); top tag 16TT201.pv
+[     1.4s]   PC6: 3.32% variance; dominant unit ISOM (22%); top tag 41TI4140.pv

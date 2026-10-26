@@ -1,0 +1,274 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d2" for="edge" attr.name="type" attr.type="string" />
+  <key id="d1" for="node" attr.name="is_flare" attr.type="boolean" />
+  <key id="d0" for="node" attr.name="unit" attr.type="string" />
+  <graph edgedefault="directed">
+    <node id="PC1">
+      <data key="d0">PC (LOUP)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC2">
+      <data key="d0">PC (LOUP)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC3">
+      <data key="d0">PC (PG)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC4">
+      <data key="d0">PC (DIU)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC5">
+      <data key="d0">PC (LOUP)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC6">
+      <data key="d0">PC (ISOM)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC7">
+      <data key="d0">PC (LOUP)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC8">
+      <data key="d0">PC (ISOM_3)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC9">
+      <data key="d0">PC (ISOM)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC10">
+      <data key="d0">PC (ISOM)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC11">
+      <data key="d0">PC (ISOM)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC12">
+      <data key="d0">PC (PDA)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC13">
+      <data key="d0">PC (LOUP)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC14">
+      <data key="d0">PC (SEU3)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC15">
+      <data key="d0">PC (LOUP)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC16">
+      <data key="d0">PC (LOUP)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC17">
+      <data key="d0">PC (ISOM)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC18">
+      <data key="d0">PC (ISOM)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC19">
+      <data key="d0">PC (ISOM)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC20">
+      <data key="d0">PC (PG)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC21">
+      <data key="d0">PC (PDA)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC22">
+      <data key="d0">PC (ISOM)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC23">
+      <data key="d0">PC (ISOM)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC24">
+      <data key="d0">PC (LOUP)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC25">
+      <data key="d0">PC (ISOM)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="PC26">
+      <data key="d0">PC (ISOM)</data>
+      <data key="d1">False</data>
+    </node>
+    <node id="(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000">
+      <data key="d0">flare_data</data>
+      <data key="d1">True</data>
+    </node>
+    <node id="509fi5201.daca.pv/1000">
+      <data key="d0">flare_data</data>
+      <data key="d1">True</data>
+    </node>
+    <node id="509mw5101.daca.pv">
+      <data key="d0">flare_data</data>
+      <data key="d1">True</data>
+    </node>
+    <edge source="PC1" target="(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC1" target="509fi5201.daca.pv/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC1" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC2" target="(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC2" target="509fi5201.daca.pv/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC2" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC3" target="(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC3" target="509fi5201.daca.pv/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC3" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC4" target="(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC4" target="509fi5201.daca.pv/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC4" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC5" target="(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC6" target="(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC6" target="509fi5201.daca.pv/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC6" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC8" target="509fi5201.daca.pv/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC8" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC9" target="(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC9" target="509fi5201.daca.pv/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC9" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC10" target="(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC10" target="509fi5201.daca.pv/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC11" target="(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC11" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC12" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC13" target="509fi5201.daca.pv/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC14" target="(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC15" target="(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC15" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC16" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC17" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC18" target="509fi5201.daca.pv/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC18" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC19" target="509fi5201.daca.pv/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC19" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC20" target="(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC20" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC21" target="(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC21" target="509fi5201.daca.pv/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC22" target="509fi5201.daca.pv/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC22" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC23" target="(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC23" target="509fi5201.daca.pv/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC23" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC24" target="(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC24" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC25" target="509fi5201.daca.pv/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC26" target="(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000">
+      <data key="d2">directed</data>
+    </edge>
+    <edge source="PC26" target="509mw5101.daca.pv">
+      <data key="d2">directed</data>
+    </edge>
+  </graph>
+</graphml>

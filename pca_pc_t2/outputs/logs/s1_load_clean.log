@@ -1,0 +1,68 @@
+[     0.0s] ===== Stage 1 - load and clean | started 2026-10-26 22:25:06 =====
+[     0.0s] CHECK PASS: DATA_ROOT in .env is an existing folder
+[     0.0s] ASSUMPTION: time window read: 2025-05-01 00:00:00 to 2025-06-01 00:00:00 (end excluded) (WINDOW_START / WINDOW_END in .env; empty = all data); flare thresholds, reference period and all limits are computed inside this window only
+[     0.0s] folders under DATA_ROOT: ['All_unit_cont', 'CCR', 'CDU', 'DAK', 'DHT', 'DIU', 'ISOM', 'ISOM_3', 'LOUP', 'PDA', 'PG', 'SEU1', 'SEU2', 'SEU3', '__pycache__', 'flare_data', 'plot']
+[     0.0s] unit folders found: 10 of 13; missing: ['APS_NVPS_LEU', 'ISOM_4', 'NSU_NHT_CCR']; not named in .env (ignored): ['All_unit_cont', 'CCR', 'CDU', 'DHT', '__pycache__', 'plot']
+[     0.0s] CHECK PASS: at least one unit folder exists
+[     0.0s] CHECK PASS: flare folder 'flare_data' exists (needed for the flare constraint)
+[     0.0s] ASSUMPTION: duplicate tag names (spaces and case ignored) keep the first copy in folder order flare_data > DAK > DIU > ISOM > ISOM_3 > LOUP > PDA > PG > SEU1 > SEU2 > SEU3; flare folder first so a flare tag is always marked is_flare
+[     0.1s]   flare_data: 4 files, 4 new tags
+[     0.2s]   DAK: 5 files, 5 new tags
+[     0.6s]   DIU: 21 files, 21 new tags
+[     1.5s]   ISOM: 49 files, 49 new tags
+[     1.7s]   ISOM_3: 17 files, 17 new tags
+[     3.2s]   LOUP: 79 files, 79 new tags
+[     3.7s]   PDA: 30 files, 30 new tags
+[     4.4s]   PG: 39 files, 39 new tags
+[     4.8s]   SEU1: 23 files, 23 new tags
+[     5.2s]   SEU2: 17 files, 17 new tags
+[     5.6s]   SEU3: 14 files, 14 new tags
+[     5.6s] tags loaded: 298 unique, 0 duplicate copies skipped (tables/duplicate_tags.csv)
+[     5.6s] CHECK PASS: at least one timestamped tag was loaded
+[     5.6s] CHECK PASS: the time window (2025-05-01 00:00:00 to 2025-06-01 00:00:00 (end excluded)) contains data rows
+[     5.6s] CHECK PASS: at least one flare tag was loaded
+[     5.6s] CHECK PASS: a positive sampling interval could be measured
+[     5.6s] ASSUMPTION: all tags resampled to the most common file sampling interval 0 days 00:01:00 (bin mean), as in pca_pc_t2
+[     6.3s] joined matrix (44640, 298) on a 0 days 00:01:00 grid; sentinel values set to NaN: 2
+[     6.3s] ASSUMPTION: flaring = any flare tag > median + 3 * MAD (MAD x 1.4826), flags <= 5 samples apart merged into one event (pca_pc_t2 s0_audit rule)
+[     6.3s] flare events: 1; flagged samples: 15.9% of the flare grid
+[     6.3s] forward-filled 2 values (NaN runs <= 5 samples)
+[     6.3s]   drop 103pc1101.pida.op: 64.5% missing after ffill (> 30%)
+[     6.3s]   drop 14pc417x.op: 100.0% missing after ffill (> 30%)
+[     6.3s]   drop 14pc418x.op: 100.0% missing after ffill (> 30%)
+[     6.3s]   drop 58pc105.op: 100.0% missing after ffill (> 30%)
+[     6.3s]   drop 41pc4110.op: 64.5% missing after ffill (> 30%)
+[     6.3s]   drop 41pic4114.op: 64.5% missing after ffill (> 30%)
+[     6.3s]   drop 105TI1313N.PV: 64.5% missing after ffill (> 30%)
+[     6.3s]   drop (44ft2505.pv*509mw5101.daca.pv/22.414)/1000: 64.5% missing after ffill (> 30%)
+[     6.4s]   drop 71PC1701.PV: constant
+[     6.4s]   drop 103pc1805.pida.op: constant
+[     6.4s]   drop 99PI1260A.PV: constant
+[     6.4s]   drop 99PI1542.DACA.PV: constant
+[     6.4s]   drop 99PI3213.PV: constant
+[     6.4s]   drop 99PI3227.PV: constant
+[     6.4s]   drop 105PI2803.DACA.PV: constant
+[     6.4s]   drop 105TI2401.DACA.PV: constant
+[     6.4s]   drop PPI3239.PV: constant
+[     6.4s]   drop PPI3241.PV: constant
+[     6.4s]   drop 103pic5120n.pida.op: near-constant (99.93% one value > 99%)
+[     6.4s]   drop 99PI1260B.PV: near-constant (99.98% one value > 99%)
+[     6.4s]   drop 99PI1566.PV: near-constant (99.15% one value > 99%)
+[     6.4s]   drop 99PI3281A.DACA.PV: near-constant (100.00% one value > 99%)
+[     6.4s]   drop 99PI4153.DACA.PV: near-constant (99.66% one value > 99%)
+[     6.4s]   drop PDI3215A.PV: near-constant (99.71% one value > 99%)
+[     6.5s] rows with < 90% of tags observed dropped: 0 of 44640
+[     6.5s] CHECK PASS: 44640 rows remain after the row filter
+[     6.5s] DEVIATION: flare-free reference had < 1370 rows (5 x tags); fell back to: reference = rows before 2025-05-19 14:23:24 (first 60% of time), flare windows NOT excluded
+[     6.5s] ASSUMPTION: reference = rows before 2025-05-19 14:23:24 (first 60% of time), flare windows NOT excluded
+[     6.5s] flare rows: 99.3% of the matrix; reference rows: 26784
+[     6.5s] CHECK PASS: reference rows 26784 >= 1370 (5 x tags)
+[     6.5s]   drop 99PI3265.PV: constant within the reference period
+[     6.7s] reference-mean imputed 0 values = 0.00% of the matrix
+[     6.7s] CHECK PASS: combined matrix has no NaN / inf
+[     6.7s] CHECK PASS: combined matrix has no constant column
+[     6.7s] CHECK PASS: tag count in matrix 273 == in_matrix rows of tag_registry.csv (273)
+[     7.0s] CHECK PASS: X_process has 270 tags, X_flare has 3 tags
+[     7.0s] ASSUMPTION: combined matrix has 273 tags = 270 process + 3 flare (prompt expected about 376: all tags -103, process tags only -106)
+[     7.0s] reused: causal_t2/src/s1_load_clean.py (load, dedupe, ffill_short_gaps, drops, reference rule, z-score) and causal_t2/src/common.py (readers)
+[     7.0s] combined matrix (44640, 273) saved; tags per unit: {'LOUP': 70, 'ISOM': 46, 'PG': 36, 'PDA': 28, 'SEU1': 23, 'DIU': 20, 'ISOM_3': 14, 'SEU3': 14, 'SEU2': 14, 'DAK': 5, 'flare_data': 3}

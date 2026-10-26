@@ -1,0 +1,3 @@
+alpha,n_edges,n_directed,n_undirected,n_bidirected,pc_pc,pc_flare,flare_flare,n_ci_tests,seconds
+0.01,50,50,0,0,0,50,0,36308,2.1
+0.05,55,55,0,0,0,55,0,56164,3.1

@@ -22,6 +22,7 @@ import pandas as pd
 from causallearn.graph.GraphNode import GraphNode
 from causallearn.search.ConstraintBased.PC import pc
 from causallearn.utils.PCUtils.BackgroundKnowledge import BackgroundKnowledge
+from causallearn.graph.GraphClass import CausalGraph
 from scipy.stats import norm
 
 from common import (COLLINEAR_R, DATA, EDGE_BIDIRECTED, EDGE_DIRECTED, EDGE_UNDIRECTED, EIG_MIN, GRAPH, PC_ALPHA,
@@ -137,6 +138,14 @@ bk.forbid_within_tier(1)
 assumption(S, f"PC: causal-learn pc, Fisher-Z, alpha = {PC_ALPHA}, stable = True, uc_rule = 0, uc_priority = 2; "
               "flare tags in tier 1 (no edge into tier 0, none within tier 1)")
 t_pc = time.time()
+
+def _find_adj(self):
+    g = self.G.graph
+    t, a = np.where(g == -1), np.where(g == 1)
+    return list(zip(t[1], t[0])) + list(zip(a[1], a[0]))
+
+CausalGraph.find_adj = _find_adj
+
 cg = pc(Dk, alpha=PC_ALPHA, indep_test="fisherz", stable=True, uc_rule=0, uc_priority=2, background_knowledge=bk,
         verbose=False, show_progress=False, max_k=max_k)
 secs_pc = time.time() - t_pc

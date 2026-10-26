@@ -1,0 +1,8 @@
+[     0.0s] ===== Stage 4 - CPDAG to DAG | started 2026-10-26 22:25:22 =====
+[     0.0s] CHECK PASS: no flare tag has an outgoing edge in the CPDAG
+[     0.0s] 3 flare tags removed first as sinks
+[     0.0s] ASSUMPTION: DAG = Dor-Tarsi consistent extension of the PC CPDAG; flare tags removed first (all edges into flares); bidirected edges treated as undirected; ties broken by the matrix column order
+[     0.1s] CHECK PASS: DAG is acyclic
+[     0.1s] CHECK PASS: 0 outgoing edges from any flare tag in the DAG
+[     0.1s] CHECK PASS: DAG keeps exactly the CPDAG skeleton (50 edges)
+[     0.1s] DAG: 50 edges; CPDAG directed kept 50 of 50, reversed 0, forced steps 0

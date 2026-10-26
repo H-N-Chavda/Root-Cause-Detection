@@ -1,0 +1,6 @@
+[
+  {
+    "stage": "s1_load_clean",
+    "text": "flare-free reference had < 1370 rows (5 x tags); fell back to: reference = rows before 2025-05-19 14:23:24 (first 60% of time), flare windows NOT excluded"
+  }
+]

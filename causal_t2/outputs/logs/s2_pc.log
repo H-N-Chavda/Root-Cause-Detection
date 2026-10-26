@@ -1,0 +1,15 @@
+[     0.0s] ===== Stage 2 - PC algorithm | started 2026-10-26 21:45:35 =====
+[     0.0s] CHECK PASS: installed causal-learn supports the depth cap max_k (if not: pip install -U causal-learn)
+[     0.0s] ASSUMPTION: PC runs on every 10th row of the combined matrix (4464 rows): consecutive samples are strongly autocorrelated, and Fisher-Z uses the data only through the correlation matrix and n
+[     0.0s]   drop 98PIC3307.DACA.PV: |r| = 1.00000 with 98PIC1601.DACA.PV
+[     0.0s]   drop 98PIC1601.DACA.PV: |r| = 1.00000 with 98PI2002.DACA.PV
+[     0.0s]   drop 98PIC2601.DACA.PV: |r| = 1.00000 with 98PI2002.DACA.PV
+[     0.0s]   drop 98PIC1102.DACA.PV: |r| = 1.00000 with 98PI2002.DACA.PV
+[     0.0s]   drop PPI3207.PV: |r| = 0.99991 with PPI3205.PV
+[     0.0s]   drop 71PI9902.PV: |r| = 0.99916 with 71PC0001.PV
+[     0.0s] correlation matrix of 267 tags: smallest eigenvalue 4.213e-05, condition number 1.197e+06
+[     0.1s] CHECK PASS: flare tags still present for PC: 3
+[     0.1s] PC input: 4464 rows x 267 tags (6 dropped in this stage)
+[     0.1s] marginal skeleton: 29185 edges, max degree 250; CI-test upper bound by depth {0: 58370, 1: 12985504, 2: 1453951269, 3: 108917432828}
+[     0.1s] ASSUMPTION: PC depth cap max_k = 1: largest depth <= 3 whose CI-test upper bound (1.3e+07) fits the budget 3e+07
+[     0.1s] ASSUMPTION: PC: causal-learn pc, Fisher-Z, alpha = 0.01, stable = True, uc_rule = 0, uc_priority = 2; flare tags in tier 1 (no edge into tier 0, none within tier 1)

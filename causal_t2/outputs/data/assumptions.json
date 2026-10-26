@@ -1,0 +1,34 @@
+[
+  {
+    "stage": "s1_load_clean",
+    "text": "time window read: 2025-05-01 00:00:00 to 2025-06-01 00:00:00 (end excluded) (WINDOW_START / WINDOW_END in .env; empty = all data); flare thresholds, reference period and all limits are computed inside this window only"
+  },
+  {
+    "stage": "s1_load_clean",
+    "text": "duplicate tag names (spaces and case ignored) keep the first copy in folder order flare_data > DAK > DIU > ISOM > ISOM_3 > LOUP > PDA > PG > SEU1 > SEU2 > SEU3; flare folder first so a flare tag is always marked is_flare"
+  },
+  {
+    "stage": "s1_load_clean",
+    "text": "all tags resampled to the most common file sampling interval 0 days 00:01:00 (bin mean), as in pca_pc_t2"
+  },
+  {
+    "stage": "s1_load_clean",
+    "text": "flaring = any flare tag > median + 3 * MAD (MAD x 1.4826), flags <= 5 samples apart merged into one event (pca_pc_t2 s0_audit rule)"
+  },
+  {
+    "stage": "s1_load_clean",
+    "text": "reference = rows before 2025-05-19 14:23:24 (first 60% of time), flare windows NOT excluded"
+  },
+  {
+    "stage": "s2_pc",
+    "text": "PC runs on every 10th row of the combined matrix (4464 rows): consecutive samples are strongly autocorrelated, and Fisher-Z uses the data only through the correlation matrix and n"
+  },
+  {
+    "stage": "s2_pc",
+    "text": "PC depth cap max_k = 1: largest depth <= 3 whose CI-test upper bound (1.3e+07) fits the budget 3e+07"
+  },
+  {
+    "stage": "s2_pc",
+    "text": "PC: causal-learn pc, Fisher-Z, alpha = 0.01, stable = True, uc_rule = 0, uc_priority = 2; flare tags in tier 1 (no edge into tier 0, none within tier 1)"
+  }
+]

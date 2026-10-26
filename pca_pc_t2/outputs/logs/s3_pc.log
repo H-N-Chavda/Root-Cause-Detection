@@ -1,0 +1,21 @@
+[     0.0s] ===== Stage 3 - PC algorithm on 26 PCs + flare tags | started 2026-10-26 22:25:15 =====
+[     0.0s] CHECK PASS: installed causal-learn supports the depth cap max_k (if not: pip install -U causal-learn)
+[     0.0s] CHECK PASS: PC scores and flare tags share the same timestamps
+[     0.0s] CHECK PASS: node matrix: 26 PCs + 3 flare tags = 29 nodes
+[     0.1s] ASSUMPTION: flare tags enter PC as standardized in Stage 1 (reference mean / std); PC scores as standardized in Stage 2
+[     0.1s] ASSUMPTION: PC runs on every 10th row of the node matrix (4464 rows): consecutive samples are strongly autocorrelated, and Fisher-Z uses the data only through the correlation matrix and n
+[     0.1s] correlation matrix of 29 nodes: smallest eigenvalue 2.607e-01, condition number 7.306e+00
+[     0.1s] CHECK PASS: flare tags still present for PC: 3
+[     0.1s] PC input: 4464 rows x 29 nodes (26 PCs, 3 flare tags; 0 dropped in this stage)
+[     0.1s] marginal skeleton (alpha 0.05): 62 edges, max degree 22; CI-test upper bound by depth {0: 124, 1: 1328, 2: 11562, 3: 68704}
+[     0.1s] ASSUMPTION: PC depth cap max_k = 3: largest depth <= 3 whose CI-test upper bound (8.17e+04) fits the budget 3e+07
+[     0.1s] ASSUMPTION: PC: causal-learn pc, Fisher-Z, stable = True, uc_rule = 0, uc_priority = 2, alphas [0.01, 0.05]; flare tags in tier 1 (no edge into tier 0, none within tier 1, so flare-flare edges are forbidden too)
+[     2.2s] PC alpha 0.01: 50 edges ({'pc_pc': 0, 'pc_flare': 50, 'flare_flare': 0}), 36308 CI tests, 2.1s
+[     5.3s] PC alpha 0.05: 55 edges ({'pc_pc': 0, 'pc_flare': 55, 'flare_flare': 0}), 56164 CI tests, 3.1s
+[     5.3s] CHECK PASS: the downstream alpha 0.01 is part of the sweep [0.01, 0.05]
+[     5.3s] ASSUMPTION: downstream alpha = 0.01: the stricter level of the sweep, as in causal_t2; with thousands of rows Fisher-Z rejects independence for very small correlations, so the stricter level keeps the graph sparser
+[     5.3s] alpha 0.01 used downstream: 50 edges; flare edges straight from PC: {'directed_out_of_flare': 0, 'undirected_or_bidirected_touching_flare': 0, 'flare_flare': 0}
+[     5.3s] flare edges changed after PC: 0; flare edges now: {'directed_out_of_flare': 0, 'undirected_or_bidirected_touching_flare': 0, 'flare_flare': 0}; edges by kind: {'pc_pc': 0, 'pc_flare': 50, 'flare_flare': 0}
+[     5.3s] CHECK PASS: 0 directed edges out of any flare tag
+[     5.3s] CHECK PASS: 0 undirected / bidirected edges touching a flare tag
+[     5.3s] CHECK PASS: 0 flare-flare edges

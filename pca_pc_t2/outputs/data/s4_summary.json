@@ -1,0 +1,15 @@
+{
+  "n_nodes": 29,
+  "n_edges": 50,
+  "cpdag_directed": 50,
+  "cpdag_directed_kept": 50,
+  "n_reversed": 0,
+  "n_forced": 0,
+  "how_counts": {
+    "directed in CPDAG, kept": 50
+  },
+  "n_roots": 26,
+  "max_parents": 19,
+  "mean_parents": 1.7241379310344827,
+  "seconds": 0.14348983764648438
+}

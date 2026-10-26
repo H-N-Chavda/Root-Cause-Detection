@@ -1,0 +1,10 @@
+[     0.0s] ===== Stage 7 - SUMMARY.md and Definition-of-Done checks | started 2026-10-26 22:25:32 =====
+[     0.1s] CHECK PASS: No hardcoded path in code (paths only in .env); DATA_ROOT never written to outputs (code hits: none; output files with DATA_ROOT: none)
+[     0.1s] CHECK PASS: No git command in the pipeline code (files: none)
+[     0.1s] CHECK PASS: Matrix code from causal_t2; no NaN/inf, no constant column; tag count matches tag_registry.csv (44640 rows x 273 tags (270 process + 3 flare); registry rows in matrix: 273)
+[     0.1s] CHECK PASS: PCA: exactly 26 components; variance reported; loadings tables exist; scores have no NaN (26 PCs, cumulative variance 80.09%)
+[     0.1s] CHECK PASS: PC graph nodes = 26 PCs + flare tags; 0 directed edges out of a flare, 0 undirected touching one; DAG acyclic (nodes 29 (expected 29 after 0 collinear drops); PC out-of-flare 0, undirected at flare 0; DAG out-of-flare 0, acyclic True)
+[     0.1s] CHECK PASS: Reference T_j·PA(j) about N(0,1); discrepancy computed; every node has a chart (max |mean| 2.7e-10, max |std-1| 8.4e-10; charts 29 for 29 nodes)
+[     0.1s] CHECK PASS: figures_index.csv, SUMMARY.md and LOG.md exist and agree (index rows 47 (all files exist: True); registry 'used' 3 = flare nodes in T² 3; LOG.md PASS rows for 6/6 stages)
+[     0.1s] CHECK PASS: One command reruns the whole pipeline (documented at the top) (python pca_pc_t2/run_all.py --force)
+[     0.1s] SUMMARY.md written (81 lines)

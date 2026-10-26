@@ -1,0 +1,48 @@
+filename,what_it_shows,key_numbers
+figures/pca_scree.png,Scree plot: explained variance per PC (bars) and cumulative (line),cum_26=80.09%; PC1=19.60%
+figures/pca_unit_composition.png,Stacked bars: share of each PC's squared loadings per unit,dominant: PC1=LOUP; PC2=LOUP; PC3=PG; PC4=DIU; PC5=LOUP
+figures/pca_loadings_PC1.png,"Top tags by |loading| for PC1, coloured by unit","top3=42PI4304.PV, 71TI8403.PV, 71TI0405.PV"
+figures/pca_loadings_PC2.png,"Top tags by |loading| for PC2, coloured by unit","top3=99TI2366B.DACA.PV, 99TI2106.DACA.PV, 99TI1515.DACA.PV"
+figures/pca_loadings_PC3.png,"Top tags by |loading| for PC3, coloured by unit","top3=103TI5608.daca.pv, 103TI1503.daca.pv, 103TIC5122N.pida.pv"
+figures/pca_loadings_PC4.png,"Top tags by |loading| for PC4, coloured by unit","top3=71PI9902.PV, K604BTI1.PV, 71PC0001.PV"
+figures/dag_graph.png,"Final DAG: PCs (circles) and flare tags (squares), edges directed",nodes=29; edges=50; pc_pc=0; pc_flare=50
+tables/degree_summary.csv,In / out degree of every DAG node (table),nodes=29; mean_in=1.72
+figures/dag_degree_summary.png,In- and out-degree of every node in the DAG,mean_in=1.72; max_in=19; max_out=3
+figures/per_node/001_PC1.png,"$T_{j\cdot PA(j)}$ over time for PC1 (LOUP) with ±z limits, flare events and reference period shaded",parents=0; significant=7.86%; max|T|=5.1
+figures/per_node/002_PC2.png,"$T_{j\cdot PA(j)}$ over time for PC2 (LOUP) with ±z limits, flare events and reference period shaded",parents=0; significant=0.00%; max|T|=2.6
+figures/per_node/003_PC3.png,"$T_{j\cdot PA(j)}$ over time for PC3 (PG) with ±z limits, flare events and reference period shaded",parents=0; significant=0.01%; max|T|=3.2
+figures/per_node/004_PC4.png,"$T_{j\cdot PA(j)}$ over time for PC4 (DIU) with ±z limits, flare events and reference period shaded",parents=0; significant=0.00%; max|T|=3.0
+figures/per_node/005_PC5.png,"$T_{j\cdot PA(j)}$ over time for PC5 (LOUP) with ±z limits, flare events and reference period shaded",parents=0; significant=0.21%; max|T|=3.3
+figures/per_node/006_PC6.png,"$T_{j\cdot PA(j)}$ over time for PC6 (ISOM) with ±z limits, flare events and reference period shaded",parents=0; significant=0.00%; max|T|=3.1
+figures/per_node/007_PC7.png,"$T_{j\cdot PA(j)}$ over time for PC7 (LOUP) with ±z limits, flare events and reference period shaded",parents=0; significant=2.83%; max|T|=4.0
+figures/per_node/008_PC8.png,"$T_{j\cdot PA(j)}$ over time for PC8 (ISOM_3) with ±z limits, flare events and reference period shaded",parents=0; significant=1.32%; max|T|=7.2
+figures/per_node/009_PC9.png,"$T_{j\cdot PA(j)}$ over time for PC9 (ISOM) with ±z limits, flare events and reference period shaded",parents=0; significant=1.37%; max|T|=4.5
+figures/per_node/010_PC10.png,"$T_{j\cdot PA(j)}$ over time for PC10 (ISOM) with ±z limits, flare events and reference period shaded",parents=0; significant=0.25%; max|T|=4.9
+figures/per_node/011_PC11.png,"$T_{j\cdot PA(j)}$ over time for PC11 (ISOM) with ±z limits, flare events and reference period shaded",parents=0; significant=0.01%; max|T|=3.5
+figures/per_node/012_PC12.png,"$T_{j\cdot PA(j)}$ over time for PC12 (PDA) with ±z limits, flare events and reference period shaded",parents=0; significant=2.55%; max|T|=7.6
+figures/per_node/013_PC13.png,"$T_{j\cdot PA(j)}$ over time for PC13 (LOUP) with ±z limits, flare events and reference period shaded",parents=0; significant=1.08%; max|T|=5.3
+figures/per_node/014_PC14.png,"$T_{j\cdot PA(j)}$ over time for PC14 (SEU3) with ±z limits, flare events and reference period shaded",parents=0; significant=3.30%; max|T|=13.8
+figures/per_node/015_PC15.png,"$T_{j\cdot PA(j)}$ over time for PC15 (LOUP) with ±z limits, flare events and reference period shaded",parents=0; significant=0.34%; max|T|=4.3
+figures/per_node/016_PC16.png,"$T_{j\cdot PA(j)}$ over time for PC16 (LOUP) with ±z limits, flare events and reference period shaded",parents=0; significant=0.23%; max|T|=7.1
+figures/per_node/017_PC17.png,"$T_{j\cdot PA(j)}$ over time for PC17 (ISOM) with ±z limits, flare events and reference period shaded",parents=0; significant=0.31%; max|T|=8.4
+figures/per_node/018_PC18.png,"$T_{j\cdot PA(j)}$ over time for PC18 (ISOM) with ±z limits, flare events and reference period shaded",parents=0; significant=1.13%; max|T|=10.7
+figures/per_node/019_PC19.png,"$T_{j\cdot PA(j)}$ over time for PC19 (ISOM) with ±z limits, flare events and reference period shaded",parents=0; significant=0.67%; max|T|=13.7
+figures/per_node/020_PC20.png,"$T_{j\cdot PA(j)}$ over time for PC20 (PG) with ±z limits, flare events and reference period shaded",parents=0; significant=0.35%; max|T|=8.8
+figures/per_node/021_PC21.png,"$T_{j\cdot PA(j)}$ over time for PC21 (PDA) with ±z limits, flare events and reference period shaded",parents=0; significant=0.43%; max|T|=14.3
+figures/per_node/022_PC22.png,"$T_{j\cdot PA(j)}$ over time for PC22 (ISOM) with ±z limits, flare events and reference period shaded",parents=0; significant=1.08%; max|T|=6.6
+figures/per_node/023_PC23.png,"$T_{j\cdot PA(j)}$ over time for PC23 (ISOM) with ±z limits, flare events and reference period shaded",parents=0; significant=0.19%; max|T|=9.0
+figures/per_node/024_PC24.png,"$T_{j\cdot PA(j)}$ over time for PC24 (LOUP) with ±z limits, flare events and reference period shaded",parents=0; significant=1.32%; max|T|=6.5
+figures/per_node/025_PC25.png,"$T_{j\cdot PA(j)}$ over time for PC25 (ISOM) with ±z limits, flare events and reference period shaded",parents=0; significant=0.94%; max|T|=12.2
+figures/per_node/026_PC26.png,"$T_{j\cdot PA(j)}$ over time for PC26 (ISOM) with ±z limits, flare events and reference period shaded",parents=0; significant=0.86%; max|T|=5.4
+figures/per_node/027_LRflare.pv_LREflare.pv_99fi4601.daca.pv_1000.png,"$T_{j\cdot PA(j)}$ over time for (LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000 with ±z limits, flare events and reference period shaded",parents=16; significant=6.26%; max|T|=10.6
+figures/per_node/028_509fi5201.daca.pv_1000.png,"$T_{j\cdot PA(j)}$ over time for 509fi5201.daca.pv/1000 with ±z limits, flare events and reference period shaded",parents=15; significant=4.39%; max|T|=25.6
+figures/per_node/029_509mw5101.daca.pv.png,"$T_{j\cdot PA(j)}$ over time for 509mw5101.daca.pv with ±z limits, flare events and reference period shaded",parents=19; significant=5.58%; max|T|=6.2
+figures/per_node_contact_sheet.png,Grid of all 29 per-node $T_{j\cdot PA(j)}$ charts,charts=29
+figures/t2_overall.png,"Overall Hotelling T² (Eq. 7) with the χ² limit, flare events and reference period shaded",limit=42.6; ooc_all=46.42%; ooc_reference=12.99%
+figures/t2_discrepancy.png,Relative gap between T² and the sum of the causal terms (0 for a correct graph),median_all=0.286; p90_all=0.961; median_reference=0.130
+figures/heatmap_abs_T.png,Heatmap of mean |$T_{j\cdot PA(j)}$| (nodes x time); line on the colour bar = z limit,nodes=29; bins=372; colour_cap=3.29; z_lim=3.13
+tables/root_cause_by_event.csv,"Top nodes per flare event, with the top-loaded tags of each PC (table)",events_with_alarm=1; events_without_alarm=0
+tables/flagged_pc_tags.csv,Flagged PCs per event traced to their top-loaded plant tags (table),"flagged_pcs=PC13, PC7"
+tables/root_cause_nodes.csv,Root-cause statistics for every node (table),nodes=29
+figures/root_cause_event_01.png,Top root-cause nodes for flare event 1,"first_alarm=2025-05-01 00:00:00; top3=PC13, PC7, PC5"
+figures/root_cause_overall.png,PCs by share of out-of-control samples where their causal term is significant,"top3=PC1, PC14, PC12"

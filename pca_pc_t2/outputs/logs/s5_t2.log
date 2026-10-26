@@ -1,0 +1,12 @@
+[     0.0s] ===== Stage 5 - causation-based T² decomposition on 26 PCs + flare tags | started 2026-10-26 22:25:22 =====
+[     0.0s] CHECK PASS: node matrix and meta share the same timestamps
+[     0.0s] CHECK PASS: every DAG node is a column of the node matrix
+[     0.0s] ASSUMPTION: reference period for Σ = Stage 1 'reference' rows (the repo's normal-operation rule)
+[     1.0s] ASSUMPTION: Σ = correlation matrix of the 26784 reference rows; tags re-standardized with reference mean and std so that Σ is exactly their covariance
+[     1.0s] p = 29 tags; T² limit chi²_29(1 - 0.05) = 42.56; per-tag limit z(α'/2) = 3.134 with α' = 0.05/29 = 1.72e-03
+[     1.0s] T² out of control: 46.42% of all rows, 12.99% of reference rows (expected about 5%)
+[     1.1s] CHECK PASS: reference T_j·PA(j) about N(0,1): max |mean| = 2.74e-10, max |std - 1| = 8.38e-10 (tags not floored)
+[     1.1s] ASSUMPTION: per flare event: first out-of-control T² from 0 days 06:00:00 before onset to the event end; nodes ranked by the share of significant |T_j·PA(j)| (then mean |T|) over the 0 days 00:30:00 after it
+[     1.1s] ASSUMPTION: flagged node = |T_j·PA(j)| > z at the first T² alarm of a flare event (paper Fig. 5 reading); each flagged PC is listed with its top 15 tags by |loading| (tables/flagged_pc_tags.csv)
+[     2.2s] CHECK PASS: tag_registry.csv marks exactly the 3 flare tags in the T² as 'used'
+[     2.2s] Proposition 1 relative discrepancy (median / p90): all 0.286 / 0.961, reference 0.130 / 0.358

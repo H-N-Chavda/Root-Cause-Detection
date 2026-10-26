@@ -1,0 +1,29 @@
+{
+  "interval": "0 days 00:01:00",
+  "n_tags_loaded": 298,
+  "n_duplicate_copies": 0,
+  "n_flare_tags_loaded": 4,
+  "n_tags_matrix": 273,
+  "n_flare_tags_matrix": 3,
+  "flare_pc_only": [],
+  "n_dropped_s1": 25,
+  "dropped_s1_by_reason": {
+    "constant": 10,
+    "missing": 8,
+    "near-constant": 6,
+    "reference": 1
+  },
+  "rows": 44640,
+  "rows_dropped_incomplete": 0,
+  "time_start": "2025-05-01 00:00:00",
+  "time_end": "2025-05-31 23:59:00",
+  "n_sentinels": 2,
+  "n_filled": 2,
+  "n_imputed": 0,
+  "pct_imputed": 0.0,
+  "n_flare_events": 1,
+  "pct_flare_rows": 99.33243727598567,
+  "n_reference_rows": 26784,
+  "reference_rule": "reference = rows before 2025-05-19 14:23:24 (first 60% of time), flare windows NOT excluded",
+  "seconds": 7.292300224304199
+}

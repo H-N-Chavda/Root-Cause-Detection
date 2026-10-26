@@ -1,0 +1,6 @@
+[     0.0s] ===== Stage 6 - figures and tables | started 2026-10-26 22:25:25 =====
+[     1.0s] time series binned to 0 days 00:12:00 (1 flare spans, 1 reference spans shaded)
+[     3.8s] per-node charts: 29
+[     7.0s] CHECK PASS: every T² node has a chart (29 nodes, 29 PNGs in figures/per_node)
+[     7.0s] CHECK PASS: every file in figures_index.csv exists
+[     7.0s] figures_index.csv: 47 rows

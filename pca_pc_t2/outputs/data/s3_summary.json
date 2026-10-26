@@ -1,0 +1,68 @@
+{
+  "rows_pc": 4464,
+  "row_step": 10,
+  "n_nodes_pc": 29,
+  "n_pcs_pc": 26,
+  "n_flare_tags_pc": 3,
+  "n_dropped_s3": 0,
+  "dropped_s3": [],
+  "alpha": 0.01,
+  "alpha_sweep": [
+    {
+      "alpha": 0.01,
+      "n_edges": 50,
+      "n_directed": 50,
+      "n_undirected": 0,
+      "n_bidirected": 0,
+      "pc_pc": 0,
+      "pc_flare": 50,
+      "flare_flare": 0,
+      "n_ci_tests": 36308,
+      "seconds": 2.1
+    },
+    {
+      "alpha": 0.05,
+      "n_edges": 55,
+      "n_directed": 55,
+      "n_undirected": 0,
+      "n_bidirected": 0,
+      "pc_pc": 0,
+      "pc_flare": 55,
+      "flare_flare": 0,
+      "n_ci_tests": 56164,
+      "seconds": 3.1
+    }
+  ],
+  "max_k": 3,
+  "ci_test_bound_by_depth": [
+    124,
+    1328,
+    11562,
+    68704
+  ],
+  "test_budget": 30000000.0,
+  "marginal_edges": 62,
+  "n_ci_tests": 36308,
+  "n_edges": 50,
+  "n_directed": 50,
+  "n_undirected": 0,
+  "n_bidirected": 0,
+  "edges_by_kind": {
+    "pc_pc": 0,
+    "pc_flare": 50,
+    "flare_flare": 0
+  },
+  "flare_edges_raw": {
+    "directed_out_of_flare": 0,
+    "undirected_or_bidirected_touching_flare": 0,
+    "flare_flare": 0
+  },
+  "flare_edges_changed": 0,
+  "flare_edges_after": {
+    "directed_out_of_flare": 0,
+    "undirected_or_bidirected_touching_flare": 0,
+    "flare_flare": 0
+  },
+  "seconds_pc": 2.1254467964172363,
+  "seconds": 5.348606586456299
+}

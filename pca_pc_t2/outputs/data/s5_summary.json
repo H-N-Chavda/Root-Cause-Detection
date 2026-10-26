@@ -1,0 +1,207 @@
+{
+  "p": 29,
+  "df": 29,
+  "rows": 44640,
+  "n_reference_rows": 26784,
+  "alpha0": 0.05,
+  "alpha_prime": 0.001724137931034483,
+  "z_lim": 3.1340460549238425,
+  "t2_lim": 42.55696780429269,
+  "excluded": [],
+  "floored": [],
+  "n_pcs": 26,
+  "n_flare": 3,
+  "n_root_nodes": 26,
+  "n_flagged_pc_rows": 2,
+  "flagged_pcs": [
+    "PC13",
+    "PC7"
+  ],
+  "pct_ooc_all": 46.422491039426525,
+  "pct_ooc_reference": 12.98536439665472,
+  "pct_ooc_flare": 46.07144467998737,
+  "pct_ooc_nonflare": 98.65771812080537,
+  "discrepancy": {
+    "all": {
+      "median": 0.2859719486022505,
+      "p90": 0.9605392388776214,
+      "p99": 0.9903548262289185
+    },
+    "reference": {
+      "median": 0.12998178745268546,
+      "p90": 0.35754868474725077,
+      "p99": 0.5308590342569182
+    },
+    "T2_ooc": {
+      "median": 0.9234057554671484,
+      "p90": 0.9777753980993505,
+      "p99": 0.9908279515861225
+    },
+    "flare": {
+      "median": 0.28218247861160983,
+      "p90": 0.9601875830423429,
+      "p99": 0.9903590437840908
+    }
+  },
+  "ref_max_abs_mean": 2.735164395517403e-10,
+  "ref_max_abs_std_dev": 8.383040928094943e-10,
+  "ref_median_excess_kurtosis": 0.7587943009374438,
+  "ref_pct_beyond_limit_mean": 0.6103746961644625,
+  "ref_expected_pct": 0.1724137931034483,
+  "ref_sample": [
+    {
+      "node": "PC1",
+      "unit": "PC (LOUP)",
+      "n_parents": 0,
+      "mean": -1.4413392502619671e-10,
+      "std": 1.0000000000107732,
+      "excess_kurtosis": -0.02219337257148224,
+      "pct_beyond_limit": 0.0
+    },
+    {
+      "node": "PC4",
+      "unit": "PC (DIU)",
+      "n_parents": 0,
+      "mean": 1.5391669778612701e-10,
+      "std": 0.9999999998495838,
+      "excess_kurtosis": -0.17424106853484167,
+      "pct_beyond_limit": 0.0
+    },
+    {
+      "node": "PC7",
+      "unit": "PC (LOUP)",
+      "n_parents": 0,
+      "mean": -6.602339331033388e-11,
+      "std": 0.9999999997180941,
+      "excess_kurtosis": 6.167270955950746,
+      "pct_beyond_limit": 4.7192353643966545
+    },
+    {
+      "node": "PC10",
+      "unit": "PC (ISOM)",
+      "n_parents": 0,
+      "mean": -2.3997838098751635e-12,
+      "std": 1.0000000000554001,
+      "excess_kurtosis": 0.7587943009374438,
+      "pct_beyond_limit": 0.4032258064516129
+    },
+    {
+      "node": "PC13",
+      "unit": "PC (LOUP)",
+      "n_parents": 0,
+      "mean": -1.2856229183582863e-10,
+      "std": 1.0000000003316456,
+      "excess_kurtosis": 2.450334878658494,
+      "pct_beyond_limit": 1.4150238948626044
+    },
+    {
+      "node": "PC16",
+      "unit": "PC (LOUP)",
+      "n_parents": 0,
+      "mean": -1.1731026610757163e-11,
+      "std": 0.9999999998443388,
+      "excess_kurtosis": 0.19523315890479598,
+      "pct_beyond_limit": 0.2837514934289128
+    },
+    {
+      "node": "PC19",
+      "unit": "PC (ISOM)",
+      "n_parents": 0,
+      "mean": 1.9060956609712579e-10,
+      "std": 1.00000000016022,
+      "excess_kurtosis": 1.3127556273039254,
+      "pct_beyond_limit": 0.3621565113500598
+    },
+    {
+      "node": "PC22",
+      "unit": "PC (ISOM)",
+      "n_parents": 0,
+      "mean": 1.856914897964769e-10,
+      "std": 0.9999999993856957,
+      "excess_kurtosis": 0.2053080289875222,
+      "pct_beyond_limit": 0.30615292712066905
+    },
+    {
+      "node": "PC25",
+      "unit": "PC (ISOM)",
+      "n_parents": 0,
+      "mean": -6.066737819663369e-11,
+      "std": 1.000000000486113,
+      "excess_kurtosis": 3.3957788201666315,
+      "pct_beyond_limit": 1.1499402628434887
+    },
+    {
+      "node": "509mw5101.daca.pv",
+      "unit": "flare_data",
+      "n_parents": 19,
+      "mean": -7.9453109430868e-11,
+      "std": 1.0000000001050817,
+      "excess_kurtosis": 3.932268832589992,
+      "pct_beyond_limit": 2.158004778972521
+    }
+  ],
+  "events_without_ooc": [],
+  "top_nodes": [
+    {
+      "node": "PC1",
+      "unit": "PC (LOUP)",
+      "pct_significant_when_T2_ooc": 16.93287651401824,
+      "top_loaded_tags": "42PI4304.PV (SEU3, +0.11); 71TI8403.PV (DIU, +0.11); 71TI0405.PV (DIU, +0.11); 99TI3269.DACA.PV (LOUP, +0.10); 99TI2366A.DACA.PV (LOUP, +0.10)"
+    },
+    {
+      "node": "(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000",
+      "unit": "flare_data",
+      "pct_significant_when_T2_ooc": 13.371616078753076,
+      "top_loaded_tags": ""
+    },
+    {
+      "node": "509mw5101.daca.pv",
+      "unit": "flare_data",
+      "pct_significant_when_T2_ooc": 10.567967958307195,
+      "top_loaded_tags": ""
+    },
+    {
+      "node": "509fi5201.daca.pv/1000",
+      "unit": "flare_data",
+      "pct_significant_when_T2_ooc": 8.999662211069825,
+      "top_loaded_tags": ""
+    },
+    {
+      "node": "PC14",
+      "unit": "PC (SEU3)",
+      "pct_significant_when_T2_ooc": 7.112869758239637,
+      "top_loaded_tags": "42PC4215.PV (SEU3, +0.31); 42PC4501.PV (SEU3, +0.31); 99PC1527.DACA.PV (LOUP, +0.23); 42PI4205.PV (SEU3, +0.22); 42PC4502.PV (SEU3, +0.21)"
+    },
+    {
+      "node": "PC12",
+      "unit": "PC (PDA)",
+      "pct_significant_when_T2_ooc": 5.501134005694157,
+      "top_loaded_tags": "41TI41130.pv (PDA, +0.21); 41PI4114.pv (PDA, +0.20); 41PI41129.pv (PDA, +0.20); 41PI41136.pv (PDA, +0.20); 103PC6901.daca.pv (ISOM, +0.18)"
+    },
+    {
+      "node": "PC9",
+      "unit": "PC (ISOM)",
+      "pct_significant_when_T2_ooc": 2.943589248660908,
+      "top_loaded_tags": "103TI5303A.daca.pv (ISOM, +0.24); 103TI7003.daca.pv (ISOM, +0.23); 103PI5301A.pv (ISOM, -0.22); 103PI7009N.pv (ISOM, +0.22); 103TI7015N.pv (ISOM, +0.22)"
+    },
+    {
+      "node": "PC8",
+      "unit": "PC (ISOM_3)",
+      "pct_significant_when_T2_ooc": 2.851903681899339,
+      "top_loaded_tags": "14PT304.PV (ISOM_3, +0.26); 14TI614.PV (ISOM_3, +0.22); 14TI511.PV (ISOM_3, +0.22); 14TI808.PV (ISOM_3, +0.21); 42PC4220.PV (SEU3, -0.19)"
+    },
+    {
+      "node": "PC24",
+      "unit": "PC (LOUP)",
+      "pct_significant_when_T2_ooc": 2.851903681899339,
+      "top_loaded_tags": "99PI2251.DACA.PV (LOUP, +0.28); 42PC4215.PV (SEU3, +0.25); 42PC4501.PV (SEU3, +0.24); 99PI4103.DACA.PV (LOUP, +0.18); 41TI4133.pv (PDA, +0.17)"
+    },
+    {
+      "node": "PC18",
+      "unit": "PC (ISOM)",
+      "pct_significant_when_T2_ooc": 2.383824735800801,
+      "top_loaded_tags": "103PIC5711BN.pida.pv (ISOM, +0.24); 103PI5601.daca.pv (ISOM, +0.21); 103PI8208N.pv (ISOM, -0.19); 103PI8501.daca.pv (ISOM, +0.18); 41TI41136.pv (PDA, +0.18)"
+    }
+  ],
+  "seconds": 2.171874523162842
+}

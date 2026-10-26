@@ -1,0 +1,30 @@
+node,is_flare,kind,unit,in_pc
+PC1,False,PC,PC (LOUP),True
+PC2,False,PC,PC (LOUP),True
+PC3,False,PC,PC (PG),True
+PC4,False,PC,PC (DIU),True
+PC5,False,PC,PC (LOUP),True
+PC6,False,PC,PC (ISOM),True
+PC7,False,PC,PC (LOUP),True
+PC8,False,PC,PC (ISOM_3),True
+PC9,False,PC,PC (ISOM),True
+PC10,False,PC,PC (ISOM),True
+PC11,False,PC,PC (ISOM),True
+PC12,False,PC,PC (PDA),True
+PC13,False,PC,PC (LOUP),True
+PC14,False,PC,PC (SEU3),True
+PC15,False,PC,PC (LOUP),True
+PC16,False,PC,PC (LOUP),True
+PC17,False,PC,PC (ISOM),True
+PC18,False,PC,PC (ISOM),True
+PC19,False,PC,PC (ISOM),True
+PC20,False,PC,PC (PG),True
+PC21,False,PC,PC (PDA),True
+PC22,False,PC,PC (ISOM),True
+PC23,False,PC,PC (ISOM),True
+PC24,False,PC,PC (LOUP),True
+PC25,False,PC,PC (ISOM),True
+PC26,False,PC,PC (ISOM),True
+(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000,True,flare,flare_data,True
+509fi5201.daca.pv/1000,True,flare,flare_data,True
+509mw5101.daca.pv,True,flare,flare_data,True
