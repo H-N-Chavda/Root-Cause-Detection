@@ -10,10 +10,10 @@ import numpy as np
 import pandas as pd
 
 from common import (CONTROL_FOLDER, DATA, DATA_ROOT, EVENT_GAP, EXPECTED_N_PARAMS, FLAG_HINTS,
-                    FLARE_FOLDER, FLARE_MAD_K, OUT, SENTINELS, TAB, TAG_FOLDER, UNITS,
-                    find_time_column, flags_to_events, gate, load_file, load_folder, log, md_table,
-                    median_interval, numeric_part, parquet_files, read_table, save_json, stage,
-                    to_datetime_or_none)
+                    FLARE_FOLDER, FLARE_MAD_K, OUT, SENTINELS, TAB, TAG_FOLDER, UNITS, WINDOW_END,
+                    WINDOW_START, WINDOW_TEXT, find_time_column, flags_to_events, gate, in_window,
+                    load_file, load_folder, log, md_table, median_interval, numeric_part, parquet_files,
+                    read_table, save_json, stage, to_datetime_or_none)
 
 
 def norm(name):
@@ -104,7 +104,7 @@ def audit_flare(files):
             continue
         num, _, _ = numeric_part(df.drop(columns=[tcol]))
         num.index = pd.DatetimeIndex(t.to_numpy())
-        num = num[~num.index.isna()]
+        num = num[~num.index.isna() & in_window(num.index)]
         for c in num.columns:
             s = num[c].groupby(level=0).max().rename(f"{rel}:{c}")
             v = s.dropna()
@@ -115,6 +115,10 @@ def audit_flare(files):
     if windows:
         ev = pd.concat(windows).dropna()
         ev = ev[ev["end"] >= ev["start"]].sort_values("start").reset_index(drop=True)
+        if WINDOW_START is not None:                 # keep windows overlapping the time window, clipped to it
+            ev = ev[ev["end"] >= WINDOW_START].assign(start=lambda d: d["start"].clip(lower=WINDOW_START))
+        if WINDOW_END is not None:
+            ev = ev[ev["start"] < WINDOW_END].assign(end=lambda d: d["end"].clip(upper=WINDOW_END))
         fmt_ = "event windows (start/end columns)"
         label = "flaring = inside a [start, end] window from flare_data (unambiguous)"
     elif flags:
@@ -143,6 +147,7 @@ def audit_flare(files):
 stage("Stage 0 - data audit")
 gate(str(DATA_ROOT) not in ("", ".") and DATA_ROOT.is_dir(),
      f"DATA_ROOT is an existing folder: '{DATA_ROOT}' (set it in pca_pc_t2/.env)")
+log(f"time window: {WINDOW_TEXT} (WINDOW_START / WINDOW_END in .env; empty = all data)")
 
 folders = sorted(p.name for p in DATA_ROOT.iterdir() if p.is_dir())
 units_found = [u for u in UNITS if u in folders]
@@ -176,7 +181,7 @@ for u in units_found:
                       "duplicated_timestamps": dup})
     log(f"  {u}: {df.shape[1]} tags, {len(df)} timestamps, {len(infos)} files")
     del df
-gate(len(unit_tags) > 0, "at least one unit has readable timestamped data")
+gate(len(unit_tags) > 0, f"at least one unit has readable timestamped data inside the time window ({WINDOW_TEXT})")
 units = list(unit_tags)
 all_tags = set().union(*unit_tags.values())
 
@@ -268,7 +273,7 @@ time_cols = sorted({str(c) for c in unit_files["time_column"].dropna()})
 time_types = sorted({str(c) for c in unit_files["time_dtype"].dropna()})
 no_time = unit_files.loc[unit_files["time_column"].isna(), "file"].tolist()
 
-save_json({"units": units, "missing_units": missing_units, "unexpected_folders": unexpected,
+save_json({"window": WINDOW_TEXT, "units": units, "missing_units": missing_units, "unexpected_folders": unexpected,
            "n_params": n_params, "n_unit_params": n_unit_params, "expected_n_params": EXPECTED_N_PARAMS,
            "include_control": include_control, "n_control_unique_tags": len(ctrl_unique),
            "interval_s": dominant.total_seconds(), "time_start": t_start, "time_end": t_end,
@@ -299,6 +304,8 @@ md = ["# 00 Data audit", "",
       f"- Metadata-vs-folder unit conflicts: {len(conflicts)} (`outputs/tables/tag_unit_conflicts.csv`; metadata wins).",
       "- Tag -> unit map saved: `outputs/data/tag_unit_map.csv`.", "",
       "## Time",
+      f"- Time window read: **{WINDOW_TEXT}** (`WINDOW_START` / `WINDOW_END` in .env). All counts, ranges and "
+      "flare thresholds below are for this window only.",
       f"- Timestamp column name(s) in unit files: {time_cols}; dtype(s): {time_types}; "
       f"consistent: {'yes' if len(time_cols) == 1 else 'NO - names differ, each file parsed on its own'}. "
       "tz-aware stamps converted to UTC (naive).",

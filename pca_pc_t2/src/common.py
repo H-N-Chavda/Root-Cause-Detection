@@ -36,8 +36,33 @@ def _read_env(path):
     return env
 
 
+_ENV = _read_env(PROJECT / ".env")
+
+
+def _env(key):
+    return (os.environ.get(key) or _ENV.get(key, "")).strip()
+
+
 # The only absolute path in the project. Set in pca_pc_t2/.env (an environment variable overrides it).
-DATA_ROOT = Path(os.environ.get("DATA_ROOT") or _read_env(PROJECT / ".env").get("DATA_ROOT", ""))
+DATA_ROOT = Path(_env("DATA_ROOT"))
+
+# Optional time window from .env: only rows with WINDOW_START <= timestamp < WINDOW_END are read.
+# Used to run on one month first; leave both empty to scale up to all data.
+WINDOW_START = pd.Timestamp(_env("WINDOW_START")) if _env("WINDOW_START") else None
+WINDOW_END = pd.Timestamp(_env("WINDOW_END")) if _env("WINDOW_END") else None
+WINDOW_TEXT = (f"{WINDOW_START or 'start of data'} to {WINDOW_END or 'end of data'} (end excluded)"
+               if WINDOW_START is not None or WINDOW_END is not None else "all data (no window)")
+
+
+def in_window(times):
+    """Boolean mask: timestamps inside [WINDOW_START, WINDOW_END)."""
+    t = pd.DatetimeIndex(times)
+    mask = np.ones(len(t), dtype=bool)
+    if WINDOW_START is not None:
+        mask &= t >= WINDOW_START
+    if WINDOW_END is not None:
+        mask &= t < WINDOW_END
+    return mask
 
 # ----------------------------------------------------------------------------- constants
 SEED = 42
@@ -212,8 +237,8 @@ def load_file(path):
         return None, info
     num, dropped, coerced = numeric_part(df.drop(columns=[tcol]))
     num.index = pd.DatetimeIndex(t.to_numpy(), name="timestamp")
-    num = num[~num.index.isna()]
-    info.update({"numeric_columns": num.shape[1], "non_numeric_dropped": "; ".join(dropped),
+    num = num[~num.index.isna() & in_window(num.index)]
+    info.update({"rows_in_window": len(num), "numeric_columns": num.shape[1], "non_numeric_dropped": "; ".join(dropped),
                  "text_values_coerced": int(sum(coerced.values())),
                  "start": num.index.min(), "end": num.index.max(),
                  "median_interval": median_interval(num.index),

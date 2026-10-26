@@ -18,8 +18,9 @@ import pandas as pd
 
 from common import (ALL_TAGS_FOLDER, CONTROL_FOLDER, DATA, DATA_ROOT, EVENT_GAP, FFILL_MAX_GAP, FLARE_BUFFER,
                     FLARE_FOLDER, FLARE_MAD_K, MAX_MISSING, MIN_ROW_COMPLETE, NEAR_CONSTANT_SHARE, SENTINELS, TAB,
-                    TRAIN_FRAC, UNIT_FOLDERS, assumption, clear_notes, deviation, done, ffill_short_gaps,
-                    flags_to_events, gate, load_file, log, parquet_files, save_json, stage, write_registry)
+                    TRAIN_FRAC, UNIT_FOLDERS, WINDOW_TEXT, assumption, clear_notes, deviation, done,
+                    ffill_short_gaps, flags_to_events, gate, load_file, log, parquet_files, save_json, stage,
+                    write_registry)
 
 S = "s1_load_clean"
 
@@ -48,6 +49,9 @@ t0 = time.time()
 stage("Stage 1 - load and clean")
 clear_notes(S)
 gate(DATA_ROOT.is_dir(), "DATA_ROOT in .env is an existing folder")
+(DATA / "window.txt").write_text(WINDOW_TEXT + "\n", encoding="utf-8")   # run_all.py compares it before reusing caches
+assumption(S, f"time window read: {WINDOW_TEXT} (WINDOW_START / WINDOW_END in .env; empty = all data); "
+              "flare thresholds, reference period and all limits are computed inside this window only")
 present = sorted(p.name for p in DATA_ROOT.iterdir() if p.is_dir())
 units = [u for u in UNIT_FOLDERS if u in present]
 known = set(UNIT_FOLDERS) | {FLARE_FOLDER, ALL_TAGS_FOLDER, CONTROL_FOLDER}
@@ -101,6 +105,7 @@ pd.DataFrame(dup_rows, columns=["tag", "duplicate_file", "kept_folder", "kept_ta
     TAB / "duplicate_tags.csv", index=False)
 log(f"tags loaded: {len(reg_rows)} unique, {len(dup_rows)} duplicate copies skipped (tables/duplicate_tags.csv)")
 gate(len(reg_rows) > 0 and len(intervals) > 0, "at least one timestamped tag was loaded")
+gate(any(len(f) for f in folder_frames.values()), f"the time window ({WINDOW_TEXT}) contains data rows")
 
 order = {f: i for i, f in enumerate(units + [CONTROL_FOLDER, ALL_TAGS_FOLDER, FLARE_FOLDER])}
 reg = pd.DataFrame(reg_rows)

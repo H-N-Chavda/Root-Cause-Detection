@@ -22,7 +22,7 @@ if missing:
     sys.exit("Missing packages. Install with:  pip install " + " ".join(missing))
 
 sys.path.insert(0, str(PROJECT / "src"))
-from common import DATA, LOGS, OUT  # noqa: E402  (reads .env, creates the output folders)
+from common import DATA, LOGS, OUT, WINDOW_TEXT  # noqa: E402  (reads .env, creates the output folders)
 
 STAGES = ["s1_load_clean", "s2_pc", "s3_dag", "s4_t2", "s5_figures", "s6_summary"]
 args = sys.argv[1:]
@@ -30,6 +30,11 @@ force = "--force" in args
 start = args[args.index("--from") + 1] if "--from" in args else None
 if start is not None and start not in STAGES:
     sys.exit(f"--from must be one of {STAGES}")
+cached_window = DATA / "window.txt"
+old_window = cached_window.read_text(encoding="utf-8").strip() if cached_window.exists() else "not recorded"
+if (DATA / "s1_load_clean.done").exists() and old_window != WINDOW_TEXT and not force:
+    sys.exit(f"Cached results in {OUT} are for the time window '{old_window}', but .env now says "
+             f"'{WINDOW_TEXT}'. Rerun with --force, or set another OUT_DIR in .env.")
 
 
 def log_row(st, result, seconds, note):

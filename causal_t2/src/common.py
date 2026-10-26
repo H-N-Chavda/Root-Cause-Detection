@@ -39,6 +39,23 @@ FLARE_FOLDER = os.environ["FLARE_FOLDER"].strip()
 ALL_TAGS_FOLDER = os.environ["ALL_TAGS_FOLDER"].strip()
 CONTROL_FOLDER = os.environ["CONTROL_FOLDER"].strip()
 OUT = _path(os.environ["OUT_DIR"])
+
+# Optional time window: only rows with WINDOW_START <= timestamp < WINDOW_END are read (empty = all data).
+WINDOW_START = pd.Timestamp(os.environ["WINDOW_START"].strip()) if os.environ.get("WINDOW_START", "").strip() else None
+WINDOW_END = pd.Timestamp(os.environ["WINDOW_END"].strip()) if os.environ.get("WINDOW_END", "").strip() else None
+WINDOW_TEXT = (f"{WINDOW_START or 'start of data'} to {WINDOW_END or 'end of data'} (end excluded)"
+               if WINDOW_START is not None or WINDOW_END is not None else "all data (no window)")
+
+
+def in_window(times):
+    """Boolean mask: timestamps inside [WINDOW_START, WINDOW_END)."""
+    t = pd.DatetimeIndex(times)
+    mask = np.ones(len(t), dtype=bool)
+    if WINDOW_START is not None:
+        mask &= t >= WINDOW_START
+    if WINDOW_END is not None:
+        mask &= t < WINDOW_END
+    return mask
 DATA = OUT / "data"           # cached intermediate files
 TAB = OUT / "tables"
 GRAPH = OUT / "graph"
@@ -237,8 +254,8 @@ def load_file(path):
         return None, info
     num, dropped, coerced = numeric_part(df.drop(columns=[tcol]))
     num.index = pd.DatetimeIndex(t.to_numpy(), name="timestamp")
-    num = num[~num.index.isna()]
-    info.update({"numeric_columns": num.shape[1], "non_numeric_dropped": "; ".join(dropped),
+    num = num[~num.index.isna() & in_window(num.index)]
+    info.update({"rows_in_window": len(num), "numeric_columns": num.shape[1], "non_numeric_dropped": "; ".join(dropped),
                  "text_values_coerced": int(sum(coerced.values())), "median_interval": median_interval(num.index)})
     return num, info
 
