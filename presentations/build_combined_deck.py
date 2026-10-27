@@ -1,10 +1,10 @@
 """Build the combined progress deck.
 
-Part A: the two Meet2-Midsem explainer decks (PCMCI+, VAR-LiNGAM), recoloured to the new palette.
+Part A: the two week7 (Meet2-Midsem) explainer decks (PCMCI+, VAR-LiNGAM), recoloured to the new palette.
 Part B: traditional PC results on plant data, read from the committed pca_pc_t2/outputs files.
 
 Run from the repo root:  .venv/bin/python presentations/build_combined_deck.py
-Output: presentations/rcd_combined_deck.pptx
+Output: presentations/week9/rcd_combined_deck.pptx
 """
 import copy
 import csv
@@ -24,9 +24,9 @@ from pptx.oxml.ns import qn
 from pptx.util import Emu, Inches, Pt
 
 ROOT = Path(__file__).resolve().parent.parent
-OLD = ROOT / "presentations" / "Meet2-Midsem"
+OLD = ROOT / "presentations" / "week7"
 RES = ROOT / "pca_pc_t2" / "outputs"
-OUT = ROOT / "presentations" / "rcd_combined_deck.pptx"
+OUT = ROOT / "presentations" / "week9" / "rcd_combined_deck.pptx"
 
 # ---------- palette ----------
 IVORY, PANEL, INSET, BORDER = "F7F5EF", "FFFFFF", "F1EEE6", "DAD4C6"
