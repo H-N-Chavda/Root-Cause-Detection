@@ -1,0 +1,33 @@
+/Users/gyan/Documents/Root-Cause-Detection/.venv/lib/python3.14/site-packages/causallearn/search/ConstraintBased/PC.py:37: UserWarning: The number of features is much larger than the sample size!
+  warnings.warn("The number of features is much larger than the sample size!")
+Z.parquet: 44640 rows x 273 tags
+loaded rows: 100 rows x 273 tags, flare tags 3
+constant tags in these rows (correlation undefined): 16
+tag pairs with |r| >= 0.999999 (singular Fisher-Z submatrix): 0
+test input after drops: 100 rows x 257 tags, flare tags 3
+Python 3.14.0, recursion limit 1000 (unchanged)
+PC: fisherz, alpha = 0.01, stable = True, uc_rule = 0, uc_priority = 2, max_k = 1, flare tags in tier 1 (as in src/s2_pc.py)
+---- result
+SUCCESS
+PC time: 1896.09 s
+peak Python memory during PC (tracemalloc): 690.4 MiB
+peak process RSS (ru_maxrss, KiB on Linux): 1454997504
+edges in output graph: 455
+     3012.16 real      1851.88 user        19.99 sys
+          1473265664  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+             2000235  page reclaims
+                6470  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                3589  voluntary context switches
+              569863  involuntary context switches
+      19193003426922  instructions retired
+       3698903766027  cycles elapsed
+          2034944232  peak memory footprint
