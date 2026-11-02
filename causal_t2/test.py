@@ -8,6 +8,7 @@ reproduce here) or from the number of rows (it should not). Nothing in src/ is c
 Needs outputs/data/Z.parquet from Stage 1 (python causal_t2/run_all.py runs it first if missing).
 The recursion limit is only printed, never raised.
 """
+
 import faulthandler
 import sys
 import time
@@ -25,14 +26,18 @@ from causallearn.graph.GraphNode import GraphNode  # noqa: E402
 from causallearn.search.ConstraintBased.PC import pc  # noqa: E402
 from causallearn.utils.PCUtils.BackgroundKnowledge import BackgroundKnowledge  # noqa: E402
 
-faulthandler.enable()                 # a segfault (C stack overflow) still prints the Python stack
-N_ROWS = 100
-MAX_K = 1                             # same depth cap Stage 2 chose for the failing one-month run
-DUP_R = 0.999999                      # |r| at or above this in the test rows = duplicate tag (singular Fisher-Z)
+faulthandler.enable()  # a segfault (C stack overflow) still prints the Python stack
+N_ROWS = 200
+MAX_K = 1  # same depth cap Stage 2 chose for the failing one-month run
+DUP_R = (
+    0.999999  # |r| at or above this in the test rows = duplicate tag (singular Fisher-Z)
+)
 
 z_path = DATA / "Z.parquet"
 if not z_path.exists():
-    sys.exit(f"{z_path} not found: run Stage 1 first (python causal_t2/run_all.py stops after it fails at s2_pc).")
+    sys.exit(
+        f"{z_path} not found: run Stage 1 first (python causal_t2/run_all.py stops after it fails at s2_pc)."
+    )
 Z = pd.read_parquet(z_path)
 print(f"Z.parquet: {Z.shape[0]} rows x {Z.shape[1]} tags")
 X = Z.head(N_ROWS)
@@ -51,7 +56,9 @@ with np.errstate(invalid="ignore", divide="ignore"):
 iu = np.triu_indices(len(names), 1)
 print(f"loaded rows: {D.shape[0]} rows x {D.shape[1]} tags, flare tags {int(fl.sum())}")
 print(f"constant tags in these rows (correlation undefined): {int((sd == 0).sum())}")
-print(f"tag pairs with |r| >= {DUP_R} (singular Fisher-Z submatrix): {int((np.abs(R[iu]) >= DUP_R).sum())}")
+print(
+    f"tag pairs with |r| >= {DUP_R} (singular Fisher-Z submatrix): {int((np.abs(R[iu]) >= DUP_R).sum())}"
+)
 
 # ---- drop only what makes Fisher-Z impossible on so few rows: constant tags, then one tag of each duplicate pair
 keep = sd > 0
@@ -59,14 +66,22 @@ r = np.abs(np.nan_to_num(R[iu]))
 for h in np.flatnonzero(r >= DUP_R):
     i, j = iu[0][h], iu[1][h]
     if keep[i] and keep[j]:
-        keep[i if (fl[j] and not fl[i]) else j] = False      # never drop a flare tag if avoidable
+        keep[i if (fl[j] and not fl[i]) else j] = (
+            False  # never drop a flare tag if avoidable
+        )
 names = [t for t, k in zip(names, keep) if k]
 D = D[:, keep]
 fl = fl[keep]
-print(f"test input after drops: {D.shape[0]} rows x {D.shape[1]} tags, flare tags {int(fl.sum())}")
-print(f"Python {sys.version.split()[0]}, recursion limit {sys.getrecursionlimit()} (unchanged)")
-print(f"PC: fisherz, alpha = {PC_ALPHA}, stable = True, uc_rule = 0, uc_priority = 2, max_k = {MAX_K}, "
-      "flare tags in tier 1 (as in src/s2_pc.py)")
+print(
+    f"test input after drops: {D.shape[0]} rows x {D.shape[1]} tags, flare tags {int(fl.sum())}"
+)
+print(
+    f"Python {sys.version.split()[0]}, recursion limit {sys.getrecursionlimit()} (unchanged)"
+)
+print(
+    f"PC: fisherz, alpha = {PC_ALPHA}, stable = True, uc_rule = 0, uc_priority = 2, max_k = {MAX_K}, "
+    "flare tags in tier 1 (as in src/s2_pc.py)"
+)
 
 # ---- same background knowledge and the same find_adj replacement as src/s2_pc.py
 node_names = [f"X{i + 1}" for i in range(len(names))]
@@ -87,10 +102,22 @@ CausalGraph.find_adj = _find_adj
 tracemalloc.start()
 t0 = time.perf_counter()
 try:
-    cg = pc(D, alpha=PC_ALPHA, indep_test="fisherz", stable=True, uc_rule=0, uc_priority=2, background_knowledge=bk,
-            verbose=False, show_progress=False, max_k=MAX_K)
+    cg = pc(
+        D,
+        alpha=PC_ALPHA,
+        indep_test="fisherz",
+        stable=True,
+        uc_rule=0,
+        uc_priority=2,
+        background_knowledge=bk,
+        verbose=False,
+        show_progress=False,
+        max_k=MAX_K,
+    )
     result = "SUCCESS"
-except BaseException as exc:          # RecursionError, MemoryError, ValueError, KeyboardInterrupt ...
+except (
+    BaseException
+) as exc:  # RecursionError, MemoryError, ValueError, KeyboardInterrupt ...
     cg = None
     result = f"FAILURE: {type(exc).__name__}: {exc}"
     print("---- traceback")
@@ -105,9 +132,14 @@ print(f"PC time: {secs:.2f} s")
 print(f"peak Python memory during PC (tracemalloc): {peak / 2**20:.1f} MiB")
 try:
     import resource
-    print(f"peak process RSS (ru_maxrss, KiB on Linux): {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}")
+
+    print(
+        f"peak process RSS (ru_maxrss, KiB on Linux): {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss}"
+    )
 except ImportError:
-    pass                              # Windows has no resource module
+    pass  # Windows has no resource module
 if cg is not None:
     G = np.asarray(cg.G.graph)
-    print(f"edges in output graph: {int(((G != 0) | (G.T != 0))[np.triu_indices(len(names), 1)].sum())}")
+    print(
+        f"edges in output graph: {int(((G != 0) | (G.T != 0))[np.triu_indices(len(names), 1)].sum())}"
+    )

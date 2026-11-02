@@ -1,0 +1,90 @@
+[
+  {
+    "stage": "s1_load_clean",
+    "text": "time window read: 2025-05-01 00:00:00 to 2025-06-01 00:00:00 (end excluded) (WINDOW_START / WINDOW_END in .env; empty = all data); flare thresholds, reference period and all limits are computed inside this window only"
+  },
+  {
+    "stage": "s1_load_clean",
+    "text": "duplicate tag names (spaces and case ignored) keep the first copy in folder order flare_data > APS_NVPS_LEU > DAK > DIU > ISOM > ISOM_3 > ISOM_4 > LOUP > NSU_NHT_CCR > PDA > PG > SEU1 > SEU2 > SEU3; flare folder first so a flare tag is always marked is_flare"
+  },
+  {
+    "stage": "s1_load_clean",
+    "text": "all tags resampled to the most common file sampling interval 0 days 00:01:00 (bin mean), as in pca_pc_t2"
+  },
+  {
+    "stage": "s1_load_clean",
+    "text": "single flare node flare_net = (LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000 + 509fi5201.daca.pv/1000 - (44ft2505.pv*509mw5101.daca.pv/22.414)/1000 (FLARE_*_TAG in .env); where the recovery tag has no value: counted as 0 (no recovery) (FLARE_RECOVERY_MISSING = zero)"
+  },
+  {
+    "stage": "s1_load_clean",
+    "text": "flaring = flare_net > median + 3 * MAD (MAD x 1.4826), flags <= 5 samples apart merged into one event (pca_pc_t2 s0_audit rule)"
+  },
+  {
+    "stage": "s1_load_clean",
+    "text": "reference = rows before 2025-05-19 14:23:24 (first 60% of time), flare windows NOT excluded"
+  },
+  {
+    "stage": "s1_load_clean",
+    "text": "combined matrix has 347 tags = 346 process + 1 flare (prompt expected about 376: all tags -29, process tags only -30)"
+  },
+  {
+    "stage": "s2_pca",
+    "text": "PCA fit rows = the full cleaned matrix (44640 rows); each process tag standardized over these rows (zero mean, unit variance); one PCA per unit on its own tags, top 16 components kept"
+  },
+  {
+    "stage": "s2_pca",
+    "text": "APS_NVPS_LEU has 14 process tag(s): 14 PC(s) kept instead of 16"
+  },
+  {
+    "stage": "s2_pca",
+    "text": "DAK has 5 process tag(s): 5 PC(s) kept instead of 16"
+  },
+  {
+    "stage": "s2_pca",
+    "text": "ISOM_3 has 14 process tag(s): 14 PC(s) kept instead of 16"
+  },
+  {
+    "stage": "s2_pca",
+    "text": "ISOM_4 has 3 process tag(s): 3 PC(s) kept instead of 16"
+  },
+  {
+    "stage": "s2_pca",
+    "text": "SEU2 has 14 process tag(s): 14 PC(s) kept instead of 16"
+  },
+  {
+    "stage": "s2_pca",
+    "text": "SEU3 has 14 process tag(s): 14 PC(s) kept instead of 16"
+  },
+  {
+    "stage": "s2_pca",
+    "text": "PC scores standardized to unit variance (each divided by its std over the fit rows) before Stage 3"
+  },
+  {
+    "stage": "s2_pca",
+    "text": "9054 cross-unit PC pairs are marginally dependent at alpha 0.01 (n = 4464); this is the most PC-PC edges PC can keep, since within-unit PC pairs are uncorrelated by construction"
+  },
+  {
+    "stage": "s2_pca",
+    "text": "Fisher-Z in Stage 3 treats the 4464 subsampled rows as independent; with lag-10 autocorrelation median 0.93 the effective sample size is about 161, so p-values are too small and the graph can keep spurious edges"
+  },
+  {
+    "stage": "s2_pca",
+    "text": "causal sufficiency: the 7.3% of process-tag variance outside the kept PCs is unobserved; a dependence carried only by dropped components is missed or appears as a spurious edge"
+  },
+  {
+    "stage": "s3_pc",
+    "text": "flare tags enter PC as standardized in Stage 1 (reference mean / std); PC scores as standardized in Stage 2"
+  },
+  {
+    "stage": "s3_pc",
+    "text": "PC runs on every 10th row of the node matrix (4464 rows): consecutive samples are strongly autocorrelated, and Fisher-Z uses the data only through the correlation matrix and n"
+  },
+  {
+    "stage": "s3_pc",
+    "text": "PC depth cap max_k = 1: largest depth <= 3 whose CI-test upper bound (2.43e+06) fits the budget 3e+07"
+  },
+  {
+    "stage": "s3_pc",
+    "text": "PC: causal-learn pc, Fisher-Z, stable = True, uc_rule = 0, uc_priority = 2, alphas [0.01, 0.05]; flare tags in tier 1 (no edge into tier 0, none within tier 1, so flare-flare edges are forbidden too)"
+  }
+]

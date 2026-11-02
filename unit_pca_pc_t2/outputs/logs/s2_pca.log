@@ -1,0 +1,47 @@
+[     0.0s] ===== Stage 2 - unit-wise PCA on the process tags | started 2026-11-02 13:00:18 =====
+[     0.1s] units with process tags: 13 (0 of the 13 in .env have none); tags per unit: {'APS_NVPS_LEU': 14, 'DAK': 5, 'DIU': 17, 'ISOM': 45, 'ISOM_3': 14, 'ISOM_4': 3, 'LOUP': 70, 'NSU_NHT_CCR': 64, 'PDA': 28, 'PG': 35, 'SEU1': 23, 'SEU2': 14, 'SEU3': 14}
+[     0.1s] CHECK PASS: 13 units with process tags (a cross-unit graph needs at least 2)
+[     0.2s] CHECK PASS: every process tag varies over the fit rows
+[     0.4s] ASSUMPTION: PCA fit rows = the full cleaned matrix (44640 rows); each process tag standardized over these rows (zero mean, unit variance); one PCA per unit on its own tags, top 16 components kept
+[     0.4s] ASSUMPTION: APS_NVPS_LEU has 14 process tag(s): 14 PC(s) kept instead of 16
+[     0.4s] CHECK PASS: APS_NVPS_LEU: 14 PCs from 14 tags, scores finite and not constant
+[     0.4s]   APS_NVPS_LEU: 14 tags, 14 PCs keep 100.0% of the unit's variance (42.6%, 15.6%, 8.9%, 7.3%, 7.2%, 5.8%, 4.4%, 4.1%, 2.3%, 1.7%, 0.1%, 0.1%, 0.1%, 0.0%)
+[     0.4s] ASSUMPTION: DAK has 5 process tag(s): 5 PC(s) kept instead of 16
+[     0.4s] CHECK PASS: DAK: 5 PCs from 5 tags, scores finite and not constant
+[     0.4s]   DAK: 5 tags, 5 PCs keep 100.0% of the unit's variance (100.0%, 0.0%, 0.0%, 0.0%, 0.0%)
+[     0.4s] CHECK PASS: DIU: 16 PCs from 17 tags, scores finite and not constant
+[     0.4s]   DIU: 17 tags, 16 PCs keep 100.0% of the unit's variance (64.0%, 11.6%, 5.5%, 5.1%, 4.3%, 3.4%, 1.7%, 1.3%, 1.0%, 0.7%, 0.4%, 0.4%, 0.3%, 0.2%, 0.1%, 0.0%)
+[     0.5s] CHECK PASS: ISOM: 16 PCs from 45 tags, scores finite and not constant
+[     0.5s]   ISOM: 45 tags, 16 PCs keep 89.5% of the unit's variance (18.6%, 14.9%, 10.3%, 8.9%, 6.2%, 4.8%, 4.3%, 4.0%, 2.7%, 2.5%, 2.3%, 2.2%, 2.1%, 2.0%, 2.0%, 1.6%)
+[     0.5s] ASSUMPTION: ISOM_3 has 14 process tag(s): 14 PC(s) kept instead of 16
+[     0.5s] CHECK PASS: ISOM_3: 14 PCs from 14 tags, scores finite and not constant
+[     0.5s]   ISOM_3: 14 tags, 14 PCs keep 100.0% of the unit's variance (44.1%, 18.3%, 8.5%, 7.0%, 6.2%, 4.6%, 3.2%, 2.7%, 2.0%, 1.3%, 1.1%, 0.7%, 0.2%, 0.0%)
+[     0.5s] ASSUMPTION: ISOM_4 has 3 process tag(s): 3 PC(s) kept instead of 16
+[     0.6s] CHECK PASS: ISOM_4: 3 PCs from 3 tags, scores finite and not constant
+[     0.6s]   ISOM_4: 3 tags, 3 PCs keep 100.0% of the unit's variance (36.5%, 34.3%, 29.3%)
+[     0.7s] CHECK PASS: LOUP: 16 PCs from 70 tags, scores finite and not constant
+[     0.7s]   LOUP: 70 tags, 16 PCs keep 82.3% of the unit's variance (25.4%, 14.6%, 9.2%, 7.3%, 5.4%, 3.5%, 3.1%, 1.9%, 1.8%, 1.7%, 1.5%, 1.4%, 1.4%, 1.3%, 1.3%, 1.3%)
+[     0.8s] CHECK PASS: NSU_NHT_CCR: 16 PCs from 64 tags, scores finite and not constant
+[     0.8s]   NSU_NHT_CCR: 64 tags, 16 PCs keep 89.5% of the unit's variance (36.1%, 13.3%, 8.7%, 4.8%, 4.3%, 3.3%, 2.7%, 2.5%, 2.3%, 2.0%, 1.9%, 1.8%, 1.6%, 1.5%, 1.4%, 1.3%)
+[     0.8s] CHECK PASS: PDA: 16 PCs from 28 tags, scores finite and not constant
+[     0.8s]   PDA: 28 tags, 16 PCs keep 96.8% of the unit's variance (25.0%, 14.6%, 10.5%, 9.3%, 7.1%, 5.8%, 5.3%, 4.2%, 3.4%, 2.4%, 2.3%, 2.0%, 1.6%, 1.2%, 1.1%, 0.9%)
+[     0.9s] CHECK PASS: PG: 16 PCs from 35 tags, scores finite and not constant
+[     0.9s]   PG: 35 tags, 16 PCs keep 98.9% of the unit's variance (40.7%, 21.7%, 9.2%, 6.1%, 4.9%, 3.8%, 2.8%, 2.3%, 1.8%, 1.4%, 1.3%, 1.0%, 0.7%, 0.5%, 0.4%, 0.4%)
+[     0.9s] CHECK PASS: SEU1: 16 PCs from 23 tags, scores finite and not constant
+[     0.9s]   SEU1: 23 tags, 16 PCs keep 99.3% of the unit's variance (51.4%, 10.4%, 9.2%, 6.3%, 4.4%, 3.9%, 3.2%, 2.2%, 2.0%, 1.7%, 1.2%, 1.0%, 0.8%, 0.7%, 0.4%, 0.4%)
+[     0.9s] ASSUMPTION: SEU2 has 14 process tag(s): 14 PC(s) kept instead of 16
+[     0.9s] CHECK PASS: SEU2: 14 PCs from 14 tags, scores finite and not constant
+[     0.9s]   SEU2: 14 tags, 14 PCs keep 100.0% of the unit's variance (57.7%, 10.8%, 8.8%, 7.0%, 5.8%, 4.1%, 2.8%, 1.1%, 0.9%, 0.4%, 0.3%, 0.2%, 0.1%, 0.0%)
+[     0.9s] ASSUMPTION: SEU3 has 14 process tag(s): 14 PC(s) kept instead of 16
+[     0.9s] CHECK PASS: SEU3: 14 PCs from 14 tags, scores finite and not constant
+[     0.9s]   SEU3: 14 tags, 14 PCs keep 100.0% of the unit's variance (18.9%, 17.5%, 12.8%, 9.8%, 8.5%, 7.5%, 5.9%, 5.4%, 4.4%, 4.1%, 2.9%, 1.9%, 0.3%, 0.1%)
+[     1.0s] 176 PCs from 13 units keep 92.69% of the total process-tag variance
+[     1.0s] ASSUMPTION: PC scores standardized to unit variance (each divided by its std over the fit rows) before Stage 3
+[     1.6s] CHECK PASS: every PC loads only on its own unit (squared-loading share 1)
+[     1.8s] CHECK PASS: PCs of the same unit are uncorrelated over the fit rows (max |r| 5.2e-14)
+[     1.9s] cross-unit |r| between PC scores: median 0.061, max 0.876; 9054 of 14183 pairs above the depth-0 Fisher-Z limit |r| > 0.0385 (alpha 0.01, n = 4464)
+[     1.9s] ASSUMPTION: 9054 cross-unit PC pairs are marginally dependent at alpha 0.01 (n = 4464); this is the most PC-PC edges PC can keep, since within-unit PC pairs are uncorrelated by construction
+[     2.4s] skewness |median| 0.55 / max 50.47; excess kurtosis median 2.98 / max 2929.39 (Gaussian: 0 / 0)
+[     2.4s] lag-10 autocorrelation median 0.930 / max 1.000; AR(1) effective sample size of the 4464 PC rows: median 161 / min 0
+[     2.4s] ASSUMPTION: Fisher-Z in Stage 3 treats the 4464 subsampled rows as independent; with lag-10 autocorrelation median 0.93 the effective sample size is about 161, so p-values are too small and the graph can keep spurious edges
+[     2.5s] ASSUMPTION: causal sufficiency: the 7.3% of process-tag variance outside the kept PCs is unobserved; a dependence carried only by dropped components is missed or appears as a spurious edge
