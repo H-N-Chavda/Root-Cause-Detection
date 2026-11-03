@@ -74,6 +74,9 @@ def main():
     terms.insert(0, "event_id", pre_eid[w])
     terms.insert(1, "T2", t2[w])
     terms.to_parquet(d["t2"] / "preflare_terms.parquet")
+    pd.DataFrame(T.astype(np.float32), index=Z.index, columns=nodes).to_parquet(d["t2"] / "terms_all_rows.parquet")
+    net.to_frame().to_parquet(d["tables"] / "flare_net_raw.parquet")
+    N.astype(np.float32).to_parquet(d["graph"] / "node_matrix.parquet")
     first = H.evaluate_preflare_windows(Z.index, pre_eid, events, T, t2, t2_lim, z_lim, nodes)
     first.to_csv(d["t2"] / "preflare_first_ooc.csv", index=False)
     pd.DataFrame([{"p": p, "t2_limit": t2_lim, "z_limit": z_lim, "alpha0": C.ALPHA0, "flare_threshold": thr,
