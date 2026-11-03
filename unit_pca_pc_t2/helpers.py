@@ -887,13 +887,15 @@ def load_plot_inputs(out):
     """Read the saved pipeline outputs that the figures need."""
     files = {"flare": out / "tables" / "flare_net_raw.parquet", "events": out / "tables" / "flare_events.csv",
              "limits": out / "t2" / "limits.csv", "t2": out / "t2" / "t2_all_rows.parquet",
-             "terms": out / "t2" / "terms_all_rows.parquet", "loadings": out / "tables" / "pca_loadings.csv"}
+             "terms": out / "t2" / "terms_all_rows.parquet", "loadings": out / "tables" / "pca_loadings.csv",
+             "dag": out / "graph" / "dag_edges.csv", "cpdag": out / "graph" / "pc_edges.csv"}
     missing = [p.name for p in files.values() if not p.exists()]
     gate(not missing, f"pipeline outputs exist (run main.py first); missing: {missing or 'none'}")
     limits = pd.read_csv(files["limits"]).iloc[0]
     return {"flare": pd.read_parquet(files["flare"]), "t2": pd.read_parquet(files["t2"]),
             "events": pd.read_csv(files["events"], parse_dates=["start", "end"]),
             "terms": pd.read_parquet(files["terms"]), "loadings": pd.read_csv(files["loadings"], index_col=0),
+            "dag": pd.read_csv(files["dag"], dtype=str), "cpdag": pd.read_csv(files["cpdag"], dtype=str),
             "thr": float(limits["flare_threshold"]), "t2_lim": float(limits["t2_limit"]),
             "z_lim": float(limits["z_limit"]), "interval": pd.Timedelta(limits["interval"])}
 
@@ -1197,4 +1199,144 @@ def plot_pc_terms(D, peaks, spans, path):
         ax.set_ylabel("T_j·PA(j)")
         add_legend(ax)
     format_time_axis(axes[-1, 0], mdates, terms.index.min().floor("D"), terms.index.max().ceil("D"))
+    save_figure(fig, path, plt)
+
+
+def node_unit(node):
+    """Unit of a graph node: the prefix of '<unit>_PC<k>', or 'flare' for flare_net."""
+    return "flare" if node == C.FLARE_NET else node.rsplit("_PC", 1)[0]
+
+
+def plot_individual_pcs(D, peaks, spans, sections, folder):
+    """One PNG per PC in the T²: T_j·PA(j) over the whole window, then per section, with ±z limits and its labelled peaks."""
+    plt, mdates = plot_modules()
+    folder.mkdir(parents=True, exist_ok=True)
+    for old in folder.glob("*.png"):
+        old.unlink()
+    col, z, terms, dag = C.PLOT_COLORS, D["z_lim"], D["terms"], D["dag"]
+    windows = [(sections[0][0], sections[-1][1])] + list(sections)
+    for i, pc in enumerate(terms.columns, start=1):
+        s = terms[pc].astype(np.float64)
+        own = peaks[peaks["top_pc"] == pc]
+        par = list(dag.loc[dag["target"] == pc, "source"])
+        kids = list(dag.loc[dag["source"] == pc, "target"])
+        big = max(1.5 * z, float(np.nanpercentile(np.abs(s), 99.9)),
+                  1.1 * float(own["T_value"].abs().max()) if len(own) else 0.0)
+        fig, axes = plt.subplots(len(windows), 1, figsize=(C.PLOT_WIDTH_IN, C.PLOT_ROW_HEIGHT_IN * len(windows)),
+                                 squeeze=False, gridspec_kw={"hspace": C.PLOT_ROW_GAP})
+        for k, (ax, (a, b)) in enumerate(zip(axes[:, 0], windows)):
+            sel = s[(s.index >= a) & (s.index < b)]
+            o = own[(own["timestamp"] >= a) & (own["timestamp"] < b)]
+            shade(ax, clip_spans(spans["preflare"], a, b), col["preflare"], 0.2, "30-min pre-flare window")
+            shade(ax, clip_spans(spans["event"], a, b), col["event"], 0.3, "flare event")
+            ax.plot(sel.index, sel.to_numpy(), color=col["t2"], lw=0.4 if k == 0 else 0.7)
+            ax.axhline(z, color=col["limit"], ls="--", lw=1, label=f"±z(α'/2) = ±{z:.2f}")
+            ax.axhline(-z, color=col["limit"], ls="--", lw=1)
+            ax.plot(o["timestamp"], o["T_value"], "o", ms=5, color=col["preflare"], label="T² peaks labelled with this PC")
+            ax.set_ylim(-big, big)
+            ax.set_ylabel("T_j·PA(j)")
+            if k == 0:
+                ax.set_title(f"{pc}: whole window; |T| > z in {100 * (s.abs() > z).mean():.2f}% of rows; labels {len(own)} "
+                             f"T² peaks\nparents ({len(par)}): {', '.join(par[:10]) or 'none (root node)'}"
+                             f"{' ...' if len(par) > 10 else ''}; children: {len(kids)}"
+                             f"{' incl. flare_net' if C.FLARE_NET in kids else ''}; top tags: "
+                             f"{top_tags_text(D['loadings'], pc) or '-'}", loc="left")
+            else:
+                ax.set_title(f"{a:%d %b %H:%M} to {b:%d %b %H:%M}: {len(o)} labelled peaks", loc="left")
+            add_legend(ax)
+            format_time_axis(ax, mdates, a, b)
+        save_figure(fig, folder / f"{i:03d}_{pc}.png", plt)
+    log(f"individual PC figures: {terms.shape[1]} PNGs in '{folder.name}'")
+
+
+def plot_causal_graph(D, path):
+    """Figure 5: the final DAG (PCs grouped by unit around flare_net), unit-to-unit edge counts, and flare_net's parents."""
+    import networkx as nx
+    from matplotlib.patches import Patch
+    plt, _ = plot_modules()
+    dag, cp, col = D["dag"], D["cpdag"], C.PLOT_COLORS
+    pcs = list(D["terms"].columns)
+    units = list(dict.fromkeys(node_unit(v) for v in pcs))
+    ucol = {u: plt.cm.tab20(i % 20) for i, u in enumerate(units)}
+    ucol["flare"] = col["flare"]
+    G = nx.DiGraph()
+    G.add_nodes_from(pcs + [C.FLARE_NET])
+    G.add_edges_from(zip(dag["source"], dag["target"]))
+    to_flare = [(s, t) for s, t in G.edges if t == C.FLARE_NET]
+    same = [(s, t) for s, t in G.edges if t != C.FLARE_NET and node_unit(s) == node_unit(t)]
+    cross = [(s, t) for s, t in G.edges if t != C.FLARE_NET and node_unit(s) != node_unit(t)]
+    n_dir = int((cp["type"] == EDGE_DIRECTED).sum())
+    fig, axes = plt.subplots(3, 1, figsize=(C.PLOT_WIDTH_IN, 54), gridspec_kw={"height_ratios": [24, 15, 15]})
+
+    ax = axes[0]
+    ang = {v: 2 * np.pi * i / len(pcs) for i, v in enumerate(pcs)}
+    pos = {v: (np.cos(a), np.sin(a)) for v, a in ang.items()}
+    pos[C.FLARE_NET] = (0.0, 0.0)
+    nx.draw_networkx_edges(G, pos, edgelist=cross, ax=ax, edge_color="#7f7f7f", width=0.4, alpha=0.25, arrowsize=6,
+                           node_size=40)
+    nx.draw_networkx_edges(G, pos, edgelist=same, ax=ax, edge_color="#1f5fa8", width=0.6, alpha=0.5, arrowsize=6,
+                           node_size=40, connectionstyle="arc3,rad=0.3")
+    nx.draw_networkx_edges(G, pos, edgelist=to_flare, ax=ax, edge_color=col["flare"], width=1.4, alpha=0.9,
+                           arrowsize=12, node_size=600)
+    nx.draw_networkx_nodes(G, pos, nodelist=pcs, ax=ax, node_size=40, node_color=[ucol[node_unit(v)] for v in pcs])
+    nx.draw_networkx_nodes(G, pos, nodelist=[C.FLARE_NET], ax=ax, node_size=600, node_shape="s", node_color=col["flare"])
+    ax.text(0, -0.07, C.FLARE_NET, ha="center", va="top", fontsize=12, fontweight="bold")
+    for u in units:
+        a = np.mean([ang[v] for v in pcs if node_unit(v) == u])
+        ax.text(1.13 * np.cos(a), 1.13 * np.sin(a), u, ha="center", va="center", fontsize=12, color=ucol[u],
+                fontweight="bold")
+    ax.set_title(f"Final DAG after PC + Dor-Tarsi orientation: {len(pcs)} PCs + flare_net, {G.number_of_edges()} edges "
+                 f"(cross-unit {len(cross)} grey, same-unit {len(same)} blue, into flare_net {len(to_flare)} red); "
+                 f"PC output had {n_dir} directed and {len(cp) - n_dir} undirected edges", loc="left")
+    ax.legend(handles=[Patch(color=ucol[u], label=u) for u in units], loc="upper left", bbox_to_anchor=(1.0, 1.0))
+    ax.set_xlim(-1.3, 1.3)
+    ax.set_ylim(-1.3, 1.3)
+    ax.set_aspect("equal")
+    ax.axis("off")
+
+    ax = axes[1]
+    U = nx.DiGraph()
+    U.add_nodes_from(units + ["flare"])
+    counts = pd.Series([(node_unit(s), node_unit(t)) for s, t in G.edges]).value_counts()
+    within = {u: int(counts.get((u, u), 0)) for u in units}
+    for (a, b), c in counts.items():
+        if a != b:
+            U.add_edge(a, b, n=int(c))
+    upos = {u: (np.cos(2 * np.pi * i / len(units)), np.sin(2 * np.pi * i / len(units))) for i, u in enumerate(units)}
+    upos["flare"] = (0.0, 0.0)
+    cmax = max([d["n"] for _, _, d in U.edges(data=True)] + [1])
+    for a, b, d in U.edges(data=True):
+        nx.draw_networkx_edges(U, upos, edgelist=[(a, b)], ax=ax, width=0.5 + 6 * d["n"] / cmax, alpha=0.6,
+                               edge_color=col["flare"] if b == "flare" else "#555555", arrowsize=14, node_size=2600,
+                               connectionstyle="arc3,rad=0.12")
+    nx.draw_networkx_nodes(U, upos, ax=ax, node_size=2600, node_color=[ucol[u] for u in U.nodes])
+    n_pc = pd.Series([node_unit(v) for v in pcs]).value_counts()
+    nx.draw_networkx_labels(U, upos, ax=ax, font_size=9, labels={
+        u: (f"{u}\n{n_pc[u]} PCs\n{within[u]} within" if u != "flare" else C.FLARE_NET) for u in U.nodes})
+    top = [(a, b, d["n"]) for a, b, d in sorted(U.edges(data=True), key=lambda e: -e[2]["n"])][:12]
+    ax.text(1.02, 0.98, "Most edges between units:\n" + "\n".join(f"{a} → {b}: {n}" for a, b, n in top),
+            transform=ax.transAxes, va="top", fontsize=10, family="monospace")
+    ax.set_title("Unit-level summary of the DAG: arrow width = number of PC edges from unit to unit "
+                 "(red = into flare_net)", loc="left")
+    ax.set_aspect("equal")
+    ax.axis("off")
+
+    ax = axes[2]
+    par = list(G.predecessors(C.FLARE_NET))
+    gp = pd.Series([g for p in par for g in G.predecessors(p) if g not in par]).value_counts()
+    gp = list(gp.index[:40])
+    H = G.subgraph(gp + par + [C.FLARE_NET]).copy()
+    for v in H.nodes:
+        H.nodes[v]["layer"] = 2 if v == C.FLARE_NET else (1 if v in par else 0)
+    if H.number_of_nodes() > 1:
+        hpos = nx.multipartite_layout(H, subset_key="layer", align="horizontal", scale=1.0)
+        hpos = {v: (x, -y) for v, (x, y) in hpos.items()}
+        nx.draw_networkx_edges(H, hpos, ax=ax, edge_color=[col["flare"] if t == C.FLARE_NET else "#7f7f7f"
+                                                           for _, t in H.edges], width=0.8, alpha=0.7, arrowsize=10,
+                               node_size=500)
+        nx.draw_networkx_nodes(H, hpos, ax=ax, node_size=500, node_color=[ucol[node_unit(v)] for v in H.nodes])
+        nx.draw_networkx_labels(H, hpos, ax=ax, font_size=8, labels={v: v.replace("_PC", "\nPC") for v in H.nodes})
+    ax.set_title(f"flare_net's {len(par)} parents (middle row) and up to 40 of their most-connected parents (top row)",
+                 loc="left")
+    ax.axis("off")
     save_figure(fig, path, plt)

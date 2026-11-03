@@ -4,7 +4,7 @@ import helpers as H
 
 
 def main():
-    """Read outputs/, label the T² peaks and draw Figures 1-4 (one PNG each, sections stacked inside)."""
+    """Read outputs/, label the T² peaks, draw Figures 1-5 and one PNG per PC in 'individual PCs'."""
     H.check_packages()
     P = C.load_paths()
     d = H.make_output_dirs(P.out)
@@ -18,6 +18,8 @@ def main():
     H.plot_t2_overview(D, spans, sections, peaks, d["figures"] / "fig2_t2_overall.png")
     H.plot_event_zooms(D, d["figures"] / "fig3_event_zooms.png")
     H.plot_pc_terms(D, peaks, spans, d["figures"] / "fig4_pc_terms.png")
+    H.plot_causal_graph(D, d["figures"] / "fig5_causal_graph.png")
+    H.plot_individual_pcs(D, peaks, spans, sections, d["figures"] / "individual PCs")
     H.log("figures finished")
 
 
