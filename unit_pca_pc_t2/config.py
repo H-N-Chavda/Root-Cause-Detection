@@ -80,6 +80,14 @@ PLOT_DPI = 120
 PLOT_COLORS = {"flare": "#c0392b", "t2": "#1f5fa8", "event": "#e67e22", "preflare": "#d62728", "noc": "#2ca02c",
                "limit": "#222222", "missing": "#9e9e9e"}
 
+# ---- CONTRIBUTOR DECK (deck.py, native PowerPoint charts) ----
+DECK_TOP_N = (3, 5, 10)                # top-N choices; each gets its own set of weekly slides, linked by buttons
+DECK_WEEK_HOURS = 168                  # time span of one weekly slide
+DECK_BIN = "15min"                     # chart resolution: the max of T²_j / own limit within each bin
+DECK_RATIO_MIN = 0.01                  # ratios below this are drawn at this value (log axis)
+DECK_OVERALL_TOP = 15                  # PCs in the "main PCs over the whole period" slide
+DECK_EVENT_TOP = 5                     # PCs in each flare event's contributor bar chart
+
 
 def load_paths() -> SimpleNamespace:
     """Read the data paths and flare tag names from unit_pca_pc_t2/.env and check the settings in this file.

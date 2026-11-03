@@ -31,6 +31,7 @@ Paper: Li, Jin & Shi (2008), J. Quality Technology 40(1) 46-58 (`references/pape
 | 25 | Diagnosis | decompose the first $T^2(t) > T^2_{lim}$ in $W_e$; terms above their own limit = root-cause PCs | | Fig. 5 | [helpers.py:1326](helpers.py#L1326) |
 | 26 | Share of T² | $s_j(t) = T^2_{j\cdot PA(j)}(t) / T^2(t)$, $\sum_j s_j(t) = 1$ by row 20 | | Project | [helpers.py:1757](helpers.py#L1757) |
 | 27 | Cause ranking per event | PCs above their own limit in $W_e$, ranked by minutes above, then earliest first crossing | | Project | [helpers.py:1979](helpers.py#L1979) |
+| 28 | Ratio to own limit (deck) | $r_j(t) = T^2_{j\cdot PA(j)}(t) / T^2_{j,lim}$; $r_j > 1$ = above its own limit; weekly charts show $\max r_j$ per 15-min bin | $T^2_{j,lim}$: row 22 | Project | [helpers.py:2117](helpers.py#L2117), [:2131](helpers.py#L2131) |
 
 - Paper vs request: Eq. 13 of the paper (the sum identity) holds exactly for the sample $\hat{\Sigma}$ only if the learned DAG is the true BN (Proposition 1, p. 50). The code monitors $T^2$ with $\Sigma_G$, where it is exact, and logs the gap to $T^2_S$.
 - Report Eq. 13 is printed as $\frac{(m+p)(m-p)}{m(m-k-p)} F_{1-\alpha,p,m-p}$. It has no factor $p$, so the overall limit would be about 1.2 against a normal T² of about $p$. Row 21 is the Phase II form (Tracy et al. 1992; Mason et al. 1995). For $p = 1$ the two differ only slightly.

@@ -2099,3 +2099,355 @@ def build_summary(out: Path) -> None:
               f"{C.TA_FLARE_COUNT} flares of about {C.TA_FLARE_MINUTES} min."]
     (out / "SUMMARY.md").write_text("\n".join(L) + "\n", encoding="utf-8")
     log(f"SUMMARY.md written ({len(L)} lines)")
+
+
+# ---- CONTRIBUTOR DECK ----
+def limit_ratios(D: dict[str, Any]) -> pd.DataFrame:
+    """Each PC's causal term divided by its own limit: r_j(t) = T²_j·PA(j)(t) / T²_j,lim (1 = exactly at its limit).
+
+    Every PC has a different limit (it depends on its number of parents), so raw T²_j values of two PCs cannot share
+    one threshold line; the ratios can.
+
+    Args:
+        D: Plot inputs from load_plot_inputs(); uses terms (T_j·PA(j) per row) and term_lim (sqrt of each PC's limit).
+
+    Returns:
+        Table (rows = timestamps, columns = PCs) of ratios, float32.
+    """
+    lim2 = D["term_lim"].reindex(D["terms"].columns).to_numpy(dtype=np.float64) ** 2
+    return (D["terms"].astype(np.float64) ** 2 / lim2).astype(np.float32)
+
+
+def rank_pcs(R: pd.DataFrame, n: int) -> list[str]:
+    """Top-n PCs of a time slice: most minutes above their own limit (ratio > 1), ties broken by the mean ratio.
+
+    Args:
+        R: Ratios from limit_ratios() for the rows of one slice (a week or a window).
+        n: Number of PCs to return.
+
+    Returns:
+        PC names, strongest first.
+    """
+    score = pd.DataFrame({"frac": (R > 1).mean(), "mean": R.mean()})
+    return list(score.sort_values(["frac", "mean"], ascending=False).index[:n])
+
+
+def deck_modules() -> SimpleNamespace:
+    """Import python-pptx pieces used to build native PowerPoint charts.
+
+    Returns:
+        Namespace with Presentation, CategoryChartData, XL_CHART_TYPE, XL_LEGEND_POSITION, MSO_SHAPE,
+        MSO_LINE_DASH_STYLE, Inches, Pt, RGBColor and qn (XML tag helper).
+
+    Raises:
+        SystemExit: If python-pptx or XlsxWriter (needed for chart data) is missing.
+    """
+    missing = [pip for mod, pip in (("pptx", "python-pptx"), ("xlsxwriter", "XlsxWriter"))
+               if importlib.util.find_spec(mod) is None]
+    if missing:
+        sys.exit("Missing packages. Install with:  pip install " + " ".join(missing))
+    from pptx import Presentation
+    from pptx.chart.data import CategoryChartData
+    from pptx.dml.color import RGBColor
+    from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION
+    from pptx.enum.dml import MSO_LINE_DASH_STYLE
+    from pptx.enum.shapes import MSO_SHAPE
+    from pptx.oxml.ns import qn
+    from pptx.util import Inches, Pt
+    return SimpleNamespace(Presentation=Presentation, CategoryChartData=CategoryChartData, RGBColor=RGBColor,
+                           XL_CHART_TYPE=XL_CHART_TYPE, XL_LEGEND_POSITION=XL_LEGEND_POSITION,
+                           MSO_LINE_DASH_STYLE=MSO_LINE_DASH_STYLE, MSO_SHAPE=MSO_SHAPE, qn=qn, Inches=Inches, Pt=Pt)
+
+
+def add_text(slide: Any, M: SimpleNamespace, text: str, x: float, y: float, w: float, h: float, size: int,
+             bold: bool = False) -> None:
+    """Add a text box (one paragraph per line of text) to a slide.
+
+    Args:
+        slide: python-pptx slide.
+        M: Modules from deck_modules().
+        text: Text; '\\n' starts a new paragraph.
+        x: Left edge in inches.
+        y: Top edge in inches.
+        w: Width in inches.
+        h: Height in inches.
+        size: Font size in points.
+        bold: Bold text.
+    """
+    tf = slide.shapes.add_textbox(M.Inches(x), M.Inches(y), M.Inches(w), M.Inches(h)).text_frame
+    tf.word_wrap = True
+    for i, line in enumerate(text.split("\n")):
+        para = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
+        run = para.add_run()
+        run.text = line
+        run.font.size = M.Pt(size)
+        run.font.bold = bold
+
+
+def add_button(slide: Any, M: SimpleNamespace, text: str, x: float, target: Any) -> None:
+    """Add a clickable button at the bottom of a slide that jumps to another slide (works in slideshow mode).
+
+    Args:
+        slide: python-pptx slide that gets the button.
+        M: Modules from deck_modules().
+        text: Button label.
+        x: Left edge in inches.
+        target: Slide to jump to; no button is drawn when None.
+    """
+    if target is None:
+        return
+    shp = slide.shapes.add_shape(M.MSO_SHAPE.ROUNDED_RECTANGLE, M.Inches(x), M.Inches(6.9), M.Inches(1.45),
+                                 M.Inches(0.42))
+    shp.fill.solid()
+    shp.fill.fore_color.rgb = M.RGBColor(0x1F, 0x5F, 0xA8)
+    shp.line.fill.background()
+    run = shp.text_frame.paragraphs[0].add_run()
+    run.text = text
+    run.font.size = M.Pt(12)
+    run.font.bold = True
+    run.font.color.rgb = M.RGBColor(0xFF, 0xFF, 0xFF)
+    shp.click_action.target_slide = target
+
+
+def set_log_axis(chart: Any, M: SimpleNamespace, minimum: float) -> None:
+    """Switch a chart's value axis to a base-10 log scale starting at minimum (no python-pptx API, so via XML).
+
+    Args:
+        chart: python-pptx chart.
+        M: Modules from deck_modules().
+        minimum: Lowest value shown (a power of 10).
+    """
+    scaling = chart.value_axis._element.find(M.qn("c:scaling"))
+    log_base = scaling.find(M.qn("c:logBase"))
+    if log_base is None:
+        log_base = scaling.makeelement(M.qn("c:logBase"), {})
+        scaling.insert(0, log_base)
+    log_base.set("val", "10")
+    chart.value_axis.minimum_scale = minimum
+
+
+def set_label_skip(chart: Any, M: SimpleNamespace, skip: int) -> None:
+    """Show only every skip-th category label on the time axis (no python-pptx API, so via XML).
+
+    Args:
+        chart: python-pptx chart.
+        M: Modules from deck_modules().
+        skip: Label every skip-th category (e.g. once per day for 15-min bins = 96).
+    """
+    cat = chart.category_axis._element
+    for tag in ("c:tickLblSkip", "c:tickMarkSkip"):
+        el = cat.makeelement(M.qn(tag), {"val": str(max(1, skip))})
+        no_multi = cat.find(M.qn("c:noMultiLvlLbl"))
+        if no_multi is not None:
+            no_multi.addprevious(el)
+        else:
+            cat.append(el)
+
+
+def add_line_chart(slide: Any, M: SimpleNamespace, box: tuple, cats: list[str], series: dict[str, np.ndarray],
+                   limit: tuple[str, float], y_title: str, log_min: float, label_skip: int) -> Any:
+    """Add a native PowerPoint line chart with a dashed limit line, a log value axis and sparse time labels.
+
+    Args:
+        slide: python-pptx slide.
+        M: Modules from deck_modules().
+        box: (left, top, width, height) in inches.
+        cats: Time labels, one per point.
+        series: Legend name -> values (NaN = gap in the line).
+        limit: (legend name, value) of the horizontal limit line.
+        y_title: Value-axis title.
+        log_min: Lowest value on the log axis.
+        label_skip: Show every label_skip-th time label.
+
+    Returns:
+        The python-pptx chart (values can be read by hovering in PowerPoint; series can be hidden with chart filters).
+    """
+    cd = M.CategoryChartData()
+    cd.categories = cats
+    for name, vals in series.items():
+        cd.add_series(name, [None if not np.isfinite(v) else float(v) for v in np.asarray(vals, dtype=np.float64)])
+    cd.add_series(limit[0], [float(limit[1])] * len(cats))
+    x, y, w, h = box
+    chart = slide.shapes.add_chart(M.XL_CHART_TYPE.LINE, M.Inches(x), M.Inches(y), M.Inches(w), M.Inches(h), cd).chart
+    chart.has_legend = True
+    chart.legend.position = M.XL_LEGEND_POSITION.BOTTOM
+    chart.legend.include_in_layout = False
+    chart.legend.font.size = M.Pt(10)
+    for s in chart.plots[0].series:
+        s.smooth = False
+        s.format.line.width = M.Pt(1.25)
+    lim_series = chart.plots[0].series[-1]
+    lim_series.format.line.color.rgb = M.RGBColor(0, 0, 0)
+    lim_series.format.line.dash_style = M.MSO_LINE_DASH_STYLE.DASH
+    lim_series.format.line.width = M.Pt(1.75)
+    chart.category_axis.tick_labels.font.size = M.Pt(9)
+    chart.value_axis.tick_labels.font.size = M.Pt(9)
+    chart.value_axis.has_title = True
+    chart.value_axis.axis_title.text_frame.text = y_title
+    set_log_axis(chart, M, log_min)
+    set_label_skip(chart, M, label_skip)
+    return chart
+
+
+def add_bar_chart(slide: Any, M: SimpleNamespace, box: tuple, cats: list[str], series: dict[str, list[float]],
+                  number_format: str) -> Any:
+    """Add a native PowerPoint horizontal bar chart with value labels; the first category is drawn at the top.
+
+    Args:
+        slide: python-pptx slide.
+        M: Modules from deck_modules().
+        box: (left, top, width, height) in inches.
+        cats: Category names (PCs), strongest first.
+        series: Legend name -> one value per category.
+        number_format: Excel number format of the value labels, e.g. '0.0'.
+
+    Returns:
+        The python-pptx chart.
+    """
+    cd = M.CategoryChartData()
+    cd.categories = list(reversed(cats))
+    for name, vals in series.items():
+        cd.add_series(name, [float(v) for v in reversed(list(vals))])
+    x, y, w, h = box
+    chart = slide.shapes.add_chart(M.XL_CHART_TYPE.BAR_CLUSTERED, M.Inches(x), M.Inches(y), M.Inches(w), M.Inches(h),
+                                   cd).chart
+    chart.has_legend = len(series) > 1
+    if chart.has_legend:
+        chart.legend.position = M.XL_LEGEND_POSITION.BOTTOM
+        chart.legend.include_in_layout = False
+    plot = chart.plots[0]
+    plot.has_data_labels = True
+    plot.data_labels.number_format = number_format
+    plot.data_labels.number_format_is_linked = False
+    plot.data_labels.font.size = M.Pt(9)
+    chart.category_axis.tick_labels.font.size = M.Pt(10)
+    chart.value_axis.tick_labels.font.size = M.Pt(9)
+    return chart
+
+
+def build_contributor_deck(D: dict[str, Any], path: Path) -> None:
+    """Write a PowerPoint deck of native charts showing which PCs drive T² over the whole period and at each flare.
+
+    Slides: title; menu (buttons); main PCs over the whole period (bar chart of % of minutes above their own limit:
+    all rows, NOC rows, pre-flare rows); one slide per week for each top-N in DECK_TOP_N (line chart of
+    T²_j / own limit, max per DECK_BIN, with the limit at 1); one slide per flare event (overall T² from 2 h before
+    onset to 30 min after with the pre-flare window as its own series, and the top PCs by mean ratio over the
+    minutes where T² crossed its limit). Buttons link weeks, top-N choices, events and the menu in slideshow mode.
+
+    Args:
+        D: Plot inputs from load_plot_inputs().
+        path: .pptx file to write.
+    """
+    M = deck_modules()
+    prs = M.Presentation()
+    prs.slide_width, prs.slide_height = M.Inches(13.333), M.Inches(7.5)
+    blank = prs.slide_layouts[6]
+    R = limit_ratios(D)
+    t2df, events, lim = D["t2"], D["events"], D["t2_lim"]
+    weeks = time_sections(R.index.min(), R.index.max(), C.DECK_WEEK_HOURS)
+    bins_per_day = max(1, int(round(pd.Timedelta(days=1) / pd.Timedelta(C.DECK_BIN))))
+    label = {pc: f"{pc} ({top_tags_text(D['loadings'], pc).split('; ')[0] or '-'})" for pc in R.columns}
+
+    title = prs.slides.add_slide(blank)
+    add_text(title, M, "Which PCs drive T²: contributor charts", 0.6, 2.4, 12, 1.0, 36, True)
+    add_text(title, M, f"{window_text()}; {len(events)} flare events of >= {C.FLARE_MIN_DURATION_MIN} min.\n"
+             "Every PC is shown as T²_j·PA(j) divided by its own limit (report Eq. 13), so 1 = at its limit for every PC.",
+             0.6, 3.6, 12, 1.5, 18)
+    menu = prs.slides.add_slide(blank)
+    add_text(menu, M, "Menu", 0.6, 0.4, 12, 0.8, 30, True)
+    add_text(menu, M, "Click a button (in slideshow mode). Every slide has buttons back to this menu.\n"
+             "Weekly slides: the top N PCs of that week by minutes above their own limit; line = the highest "
+             f"T²_j / own limit in each {C.DECK_BIN} bin; dashed line = own limit (1).\n"
+             "Event slides: overall T² around the flare onset (red = 30-min pre-flare window) and the top PCs over the "
+             "minutes where T² crossed its limit.\nHover over a line or bar in PowerPoint to read its value.",
+             0.6, 1.3, 12, 3.0, 16)
+
+    overall = prs.slides.add_slide(blank)
+    noc = t2df["noc"].to_numpy()
+    pre = (t2df["preflare_event_id"] > 0).to_numpy()
+    frac_all = 100 * (R > 1).mean()
+    top = list(frac_all.sort_values(ascending=False).index[:C.DECK_OVERALL_TOP])
+    series = {"all rows": frac_all[top].tolist(), "NOC rows": (100 * (R[noc][top] > 1).mean()).tolist()}
+    if pre.any():
+        series["30-min pre-flare windows"] = (100 * (R[pre][top] > 1).mean()).tolist()
+    add_text(overall, M, f"Main PCs over the whole period: % of minutes above their own limit (top {len(top)})",
+             0.4, 0.2, 12.5, 0.6, 22, True)
+    add_text(overall, M, f"By chance a PC is above its limit in about {100 * C.ALPHA_TERM:g}% of NOC minutes.",
+             0.4, 0.75, 12.5, 0.4, 13)
+    add_bar_chart(overall, M, (0.4, 1.2, 12.5, 5.6), [label[p] for p in top], series, "0.0")
+
+    week_slides = {}
+    for n in C.DECK_TOP_N:
+        for k, (s, e) in enumerate(weeks):
+            Rw = R[(R.index >= s) & (R.index < e)]
+            if Rw.empty:
+                continue
+            pcs = rank_pcs(Rw, n)
+            Rb = Rw[pcs].resample(C.DECK_BIN).max().clip(lower=C.DECK_RATIO_MIN)
+            frac = 100 * (Rw[pcs] > 1).mean()
+            sl = prs.slides.add_slide(blank)
+            add_text(sl, M, f"Top {n} PCs, {s:%d %b} to {e - pd.Timedelta(minutes=1):%d %b %Y}: T²_j / own limit",
+                     0.4, 0.15, 12.5, 0.6, 22, True)
+            inside = events[(events["start"] >= s) & (events["start"] < e)]
+            ev_text = ", ".join(f"E{r.event_id} {r.start:%d %b %H:%M}" for r in inside.itertuples(index=False))
+            add_text(sl, M, f"Flare events this week: {ev_text or 'none'}", 0.4, 0.7, 12.5, 0.4, 12)
+            add_line_chart(sl, M, (0.3, 1.1, 12.7, 5.7), [f"{t:%d %b %H:%M}" for t in Rb.index],
+                           {f"{label[p]}: {frac[p]:.0f}% of min above": Rb[p].to_numpy() for p in pcs},
+                           ("own limit = 1", 1.0), "T²_j / own limit (log)", C.DECK_RATIO_MIN, bins_per_day)
+            week_slides[(n, k)] = sl
+
+    event_slides = []
+    ev = events
+    if len(ev) > C.PLOT_MAX_EVENTS:
+        log(f"{len(ev)} events: the deck shows the {C.PLOT_MAX_EVENTS} with the largest flare_net peak")
+        ev = ev.nlargest(C.PLOT_MAX_EVENTS, "peak_flare_net").sort_values("start")
+    before, after = pd.Timedelta(minutes=C.PLOT_ZOOM_BEFORE_MIN), pd.Timedelta(minutes=C.PLOT_ZOOM_AFTER_MIN)
+    for e in ev.itertuples(index=False):
+        w = t2df.loc[e.start - before:e.start + after]
+        if w.empty:
+            continue
+        in_pre = (w["preflare_event_id"] == e.event_id).to_numpy()
+        vals = w["T2"].clip(lower=C.DECK_RATIO_MIN).to_numpy(dtype=np.float64)
+        rows_pre = w.index[in_pre]
+        cross = rows_pre[w.loc[rows_pre, "T2"].to_numpy() > lim]
+        basis = cross if len(cross) else rows_pre
+        sl = prs.slides.add_slide(blank)
+        found = "found" if len(cross) else "not found"
+        add_text(sl, M, f"E{e.event_id}: onset {e.start:%d %b %Y %H:%M}, {e.duration_min:.0f} min, {found} "
+                 f"({len(cross)} of {len(rows_pre)} pre-flare minutes above the T² limit)", 0.4, 0.15, 12.5, 0.6, 20, True)
+        add_line_chart(sl, M, (0.3, 0.9, 8.4, 5.9), [f"{t:%H:%M}" for t in w.index],
+                       {"T² outside the window": np.where(in_pre, np.nan, vals),
+                        "T² in the 30-min pre-flare window": np.where(in_pre, vals, np.nan)},
+                       (f"T² limit {lim:.1f}", lim), "overall T² (log)", C.DECK_RATIO_MIN, 15)
+        if len(basis):
+            mean_r = R.loc[basis].mean().nlargest(C.DECK_EVENT_TOP)
+            what = "minutes above the T² limit" if len(cross) else "whole pre-flare window (T² never crossed)"
+            add_text(sl, M, f"Top {len(mean_r)} PCs: mean T²_j / own limit over the {what}", 8.8, 0.9, 4.3, 0.6, 12, True)
+            add_bar_chart(sl, M, (8.8, 1.5, 4.3, 5.3), [label[p] for p in mean_r.index],
+                          {"mean T²_j / own limit": mean_r.tolist()}, "0.0")
+        event_slides.append(sl)
+
+    first_week = {n: next((week_slides[(n, k)] for k in range(len(weeks)) if (n, k) in week_slides), None)
+                  for n in C.DECK_TOP_N}
+    x = 0.4
+    for n in C.DECK_TOP_N:
+        add_button(menu, M, f"Top {n} by week", x, first_week[n])
+        x += 1.6
+    add_button(menu, M, "Main PCs", x, overall)
+    add_button(menu, M, "Flare events", x + 1.6, event_slides[0] if event_slides else None)
+    add_button(overall, M, "Menu", 0.4, menu)
+    for (n, k), sl in week_slides.items():
+        add_button(sl, M, "◀ prev week", 0.4, week_slides.get((n, k - 1)))
+        add_button(sl, M, "next week ▶", 2.0, week_slides.get((n, k + 1)))
+        x = 3.6
+        for n2 in C.DECK_TOP_N:
+            if n2 != n:
+                add_button(sl, M, f"Top {n2}", x, week_slides.get((n2, k)))
+                x += 1.6
+        add_button(sl, M, "Menu", 11.4, menu)
+    for i, sl in enumerate(event_slides):
+        add_button(sl, M, "◀ prev event", 0.4, event_slides[i - 1] if i > 0 else None)
+        add_button(sl, M, "next event ▶", 2.0, event_slides[i + 1] if i + 1 < len(event_slides) else None)
+        add_button(sl, M, "Menu", 11.4, menu)
+    prs.save(path)
+    log(f"saved {path.name}: {len(prs.slides)} slides ({len(week_slides)} weekly, {len(event_slides)} event)")
