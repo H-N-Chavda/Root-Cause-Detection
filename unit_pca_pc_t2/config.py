@@ -54,6 +54,21 @@ ALPHA0 = 0.05                          # T² limit chi²_p(1 - ALPHA0); per-term
 SIGMA2_MIN = 1e-6                      # floor for sigma²_j·PA(j) (numerical guard)
 IDENTITY_TOL = 1e-6                    # max relative error allowed in the sum identity check
 
+# ---- PLOTS (plots.py) ----
+PLOT_SECTION_HOURS = 48                # each section row of Figures 1-2 covers this many hours at 1-min resolution
+PLOT_PEAK_MIN_SEP_MIN = 60             # labelled T² peaks are at least this far apart
+PLOT_MAX_LABELS_PER_SECTION = 8        # labelled T² peaks per section row
+PLOT_TOP_TAGS = 2                      # tags named per PC label
+PLOT_ZOOM_BEFORE_MIN = 120             # Figure 3 window: onset - 120 min ...
+PLOT_ZOOM_AFTER_MIN = 30               # ... to onset + 30 min
+PLOT_TOP_PCS_ZOOM = 5                  # PCs drawn separately in the T² share panel; the rest is "other PCs"
+PLOT_MAX_EVENTS = 30                   # events in Figure 3 (largest flare_net peaks if there are more)
+PLOT_MAX_PCS = 40                      # PCs in Figure 4 (most often labelled first)
+PLOT_WIDTH_IN = 22
+PLOT_DPI = 120
+PLOT_COLORS = {"flare": "#c0392b", "t2": "#1f5fa8", "event": "#e67e22", "preflare": "#d62728", "noc": "#2ca02c",
+               "limit": "#222222", "missing": "#9e9e9e"}
+
 
 def load_paths():
     """Read folder paths and flare tag names from .env and stop if any is missing."""

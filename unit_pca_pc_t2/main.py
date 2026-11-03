@@ -17,6 +17,8 @@ def main():
     # 1. load the 13 units and the flare tags, build flare_net, find flare events, clean
     reg, frames, intervals = H.load_all_tags(P)
     X, interval = H.join_and_resample(frames, intervals, reg)
+    parts = X.reindex(columns=[P.flare_1_tag, P.flare_2_tag, P.flare_recovery_tag]).set_axis(
+        ["flare_1", "flare_2", "recovery"], axis=1)
     X, reg, net, status = H.build_flare_net(X, reg, P)
     events, thr = H.detect_flare_events(net, interval)
     H.gate(len(events) > 0, "at least one flare event in the window")
@@ -75,7 +77,7 @@ def main():
     terms.insert(1, "T2", t2[w])
     terms.to_parquet(d["t2"] / "preflare_terms.parquet")
     pd.DataFrame(T.astype(np.float32), index=Z.index, columns=nodes).to_parquet(d["t2"] / "terms_all_rows.parquet")
-    net.to_frame().to_parquet(d["tables"] / "flare_net_raw.parquet")
+    pd.concat([net, parts], axis=1).to_parquet(d["tables"] / "flare_net_raw.parquet")
     N.astype(np.float32).to_parquet(d["graph"] / "node_matrix.parquet")
     first = H.evaluate_preflare_windows(Z.index, pre_eid, events, T, t2, t2_lim, z_lim, nodes)
     first.to_csv(d["t2"] / "preflare_first_ooc.csv", index=False)

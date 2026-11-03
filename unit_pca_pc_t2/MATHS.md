@@ -24,7 +24,7 @@ Paper: Li, Jin & Shi (2008), J. Quality Technology 40(1) 46-58 (`references/pape
 | 18 | Overall T² | $T^2 = Z^\top \Sigma^{-1} Z$, monitored with $\Sigma = \Sigma_G$; $T^2_S$ with $\Sigma = \hat{\Sigma}$ reported | $Z$: one row of standardized PCs | Eq. 7 | [helpers.py:779](helpers.py#L779) |
 | 19 | Decomposition / sum identity | $T^2 = Z^\top \Sigma_G^{-1} Z = \sum_{j=1}^{p} T^2_{j\cdot PA(j)}$, since $\Sigma_G^{-1} = (I - B) D^{-1} (I - B^\top)$ | | Definition 2, Eq. 13; Proposition 1 | [helpers.py:834](helpers.py#L834) |
 | 20 | T² limit | $T^2 > \chi^2_p(1 - \alpha)$ is out of control | $\alpha$ = `ALPHA0` = 0.05; $p$: PCs in the T² | Eq. 6; p. 52 step 1(b) | [helpers.py:776](helpers.py#L776) |
-| 21 | Per-term limit | $\lvert T_{j\cdot PA(j)}\rvert > z_{\alpha'/2}$, $\alpha' = \alpha/p$ (Bonferroni) | $z_q$: upper $q$ point of $N(0,1)$ | p. 52 (Fig. 5, step 1(c)) | [main.py:61](main.py#L61) |
+| 21 | Per-term limit | $\lvert T_{j\cdot PA(j)}\rvert > z_{\alpha'/2}$, $\alpha' = \alpha/p$ (Bonferroni) | $z_q$: upper $q$ point of $N(0,1)$ | p. 52 (Fig. 5, step 1(c)) | [main.py:63](main.py#L63) |
 | 22 | NOC reference | $T_{j\cdot PA(j)} \sim N(0,1)$ on NOC; checked as mean 0, std 1 | | p. 52 | [helpers.py:854](helpers.py#L854) |
 | 23 | Diagnosis | decompose the first out-of-control $T^2$ in $W_e$; significant terms = root-cause PCs | | Fig. 5 | [helpers.py:872](helpers.py#L872) |
 

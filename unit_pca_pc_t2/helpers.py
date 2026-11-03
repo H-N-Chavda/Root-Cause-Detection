@@ -23,7 +23,7 @@ _LOG = {"file": None}
 def check_packages():
     """Stop with a pip command if a required package is missing."""
     need = {"pandas": "pandas", "pyarrow": "pyarrow", "numpy": "numpy", "scipy": "scipy", "networkx": "networkx",
-            "causallearn": "causal-learn", "dotenv": "python-dotenv", "sklearn": "scikit-learn"}
+            "causallearn": "causal-learn", "dotenv": "python-dotenv", "sklearn": "scikit-learn", "matplotlib": "matplotlib"}
     missing = [pip for mod, pip in need.items() if importlib.util.find_spec(mod) is None]
     if missing:
         sys.exit("Missing packages. Install with:  pip install " + " ".join(missing))
@@ -31,7 +31,7 @@ def check_packages():
 
 def make_output_dirs(out):
     """Create the output sub-folders and return them by name."""
-    dirs = {name: out / name for name in ("tables", "graph", "t2", "logs")}
+    dirs = {name: out / name for name in ("tables", "graph", "t2", "logs", "figures")}
     for d in dirs.values():
         d.mkdir(parents=True, exist_ok=True)
     return dirs
@@ -880,3 +880,318 @@ def evaluate_preflare_windows(idx, pre_eid, events, T, t2, t2_lim, z_lim, nodes)
     log(f"pre-flare windows: {int((out['window_rows'] > 0).sum())} of {len(out)} events have rows; "
         f"{int(out['first_ooc'].notna().sum())} reach T² > {t2_lim:.2f}")
     return out
+
+
+# ---- PLOT INPUTS AND PEAK LABELS ----
+def load_plot_inputs(out):
+    """Read the saved pipeline outputs that the figures need."""
+    files = {"flare": out / "tables" / "flare_net_raw.parquet", "events": out / "tables" / "flare_events.csv",
+             "limits": out / "t2" / "limits.csv", "t2": out / "t2" / "t2_all_rows.parquet",
+             "terms": out / "t2" / "terms_all_rows.parquet", "loadings": out / "tables" / "pca_loadings.csv"}
+    missing = [p.name for p in files.values() if not p.exists()]
+    gate(not missing, f"pipeline outputs exist (run main.py first); missing: {missing or 'none'}")
+    limits = pd.read_csv(files["limits"]).iloc[0]
+    return {"flare": pd.read_parquet(files["flare"]), "t2": pd.read_parquet(files["t2"]),
+            "events": pd.read_csv(files["events"], parse_dates=["start", "end"]),
+            "terms": pd.read_parquet(files["terms"]), "loadings": pd.read_csv(files["loadings"], index_col=0),
+            "thr": float(limits["flare_threshold"]), "t2_lim": float(limits["t2_limit"]),
+            "z_lim": float(limits["z_limit"]), "interval": pd.Timedelta(limits["interval"])}
+
+
+def time_sections(start, end):
+    """Consecutive [s, e) spans of PLOT_SECTION_HOURS from midnight of the first day to past the last row."""
+    step = pd.Timedelta(hours=C.PLOT_SECTION_HOURS)
+    s, out = start.floor("D"), []
+    while s <= end:
+        out.append((s, s + step))
+        s += step
+    return out
+
+
+def mask_to_spans(index, mask, interval):
+    """(start, end) time spans of consecutive True rows of a boolean mask."""
+    m = np.asarray(mask, dtype=bool)
+    if not m.any():
+        return []
+    edges = np.flatnonzero(np.diff(np.r_[0, m.astype(int), 0]))
+    return [(index[a], index[b - 1] + interval) for a, b in zip(edges[::2], edges[1::2])]
+
+
+def clip_spans(spans, s, e):
+    """Spans overlapping [s, e), cut to that range."""
+    return [(max(a, s), min(b, e)) for a, b in spans if b > s and a < e]
+
+
+def context_spans(D):
+    """Time spans of NOC rows, 30-min pre-flare windows and flare events, for shading."""
+    t2, iv = D["t2"], D["interval"]
+    return {"noc": mask_to_spans(t2.index, t2["noc"].to_numpy(), iv),
+            "preflare": mask_to_spans(t2.index, (t2["preflare_event_id"] > 0).to_numpy(), iv),
+            "event": [(s, e + iv) for s, e in zip(D["events"]["start"], D["events"]["end"])]}
+
+
+def find_t2_peaks(t2, limit, sections):
+    """Highest T² rows above the limit, at least PLOT_PEAK_MIN_SEP_MIN apart, at most PLOT_MAX_LABELS_PER_SECTION per section."""
+    sep = pd.Timedelta(minutes=C.PLOT_PEAK_MIN_SEP_MIN)
+    above = t2[t2 > limit]
+    picked = []
+    for s, e in sections:
+        chosen = []
+        for t in above[(above.index >= s) & (above.index < e)].sort_values(ascending=False).index:
+            if all(abs(t - c) >= sep for c in chosen):
+                chosen.append(t)
+                if len(chosen) == C.PLOT_MAX_LABELS_PER_SECTION:
+                    break
+        picked += chosen
+    return sorted(picked)
+
+
+def top_tags_text(loadings, pc):
+    """Top PLOT_TOP_TAGS tags of a PC by |loading|, each with its squared-loading share."""
+    if pc not in loadings.index:
+        return ""
+    row = loadings.loc[pc].astype(np.float64)
+    return "; ".join(f"{t} {100 * row[t] ** 2:.0f}%" for t in row.abs().nlargest(C.PLOT_TOP_TAGS).index)
+
+
+def label_t2_peaks(D, sections):
+    """Name each labelled T² peak by the PC with the largest |T_j·PA(j)| there, its unit, top tags and nearest event."""
+    t2, terms, events = D["t2"]["T2"], D["terms"], D["events"]
+    rows = []
+    for t in find_t2_peaks(t2, D["t2_lim"], sections):
+        tr = terms.loc[t].astype(np.float64)
+        pc = str(tr.abs().idxmax())
+        v = float(tr[pc])
+        nxt = events[events["start"] >= t]
+        rows.append({"timestamp": t, "T2": float(t2[t]), "top_pc": pc, "unit": pc.rsplit("_PC", 1)[0], "T_value": v,
+                     "share_of_T2": v ** 2 / float((tr ** 2).sum()), "significant": abs(v) > D["z_lim"],
+                     "top_tags": top_tags_text(D["loadings"], pc),
+                     "preflare_event_id": int(D["t2"].at[t, "preflare_event_id"]),
+                     "in_flare_event": bool(D["t2"].at[t, "flare_event"]),
+                     "next_event_id": int(nxt["event_id"].iloc[0]) if len(nxt) else -1,
+                     "minutes_to_next_onset": (nxt["start"].iloc[0] - t) / pd.Timedelta(minutes=1) if len(nxt) else np.nan})
+    cols = ["timestamp", "T2", "top_pc", "unit", "T_value", "share_of_T2", "significant", "top_tags",
+            "preflare_event_id", "in_flare_event", "next_event_id", "minutes_to_next_onset"]
+    peaks = pd.DataFrame(rows, columns=cols)
+    peaks["peaks_labelled_by_pc"] = peaks["top_pc"].map(peaks["top_pc"].value_counts())
+    log(f"labelled T² peaks: {len(peaks)}; top PC significant (|T| > z) at {int(peaks['significant'].sum())}; "
+        f"distinct PCs: {peaks['top_pc'].nunique()}")
+    return peaks
+
+
+# ---- PLOTTING ----
+def plot_modules():
+    """Headless matplotlib with one shared style."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.dates as mdates
+    import matplotlib.pyplot as plt
+    plt.rcParams.update({"font.size": 11, "axes.titlesize": 12, "axes.grid": True, "grid.alpha": 0.3,
+                         "axes.spines.top": False, "axes.spines.right": False, "legend.fontsize": 9})
+    return plt, mdates
+
+
+def format_time_axis(ax, mdates, s, e):
+    """Set the x range to [s, e) with ticks suited to its length."""
+    ax.set_xlim(s, e)
+    hours = (e - s) / pd.Timedelta(hours=1)
+    if hours > 24 * 7:
+        ax.xaxis.set_major_locator(mdates.DayLocator(interval=2))
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%d %b"))
+    elif hours > 6:
+        ax.xaxis.set_major_locator(mdates.HourLocator(byhour=range(0, 24, 6)))
+        ax.xaxis.set_minor_locator(mdates.HourLocator())
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%d %b\n%H:%M"))
+    else:
+        ax.xaxis.set_major_locator(mdates.MinuteLocator(byminute=[0, 30]))
+        ax.xaxis.set_minor_locator(mdates.MinuteLocator(byminute=range(0, 60, 10)))
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%H:%M"))
+
+
+def shade(ax, spans, color, alpha, label):
+    """Shade time spans on an axis; only the first span carries the legend label."""
+    for k, (a, b) in enumerate(spans):
+        ax.axvspan(a, b, color=color, alpha=alpha, lw=0, label=label if k == 0 else None)
+
+
+def add_legend(ax):
+    """Show a legend only when the axis has labelled artists."""
+    if ax.get_legend_handles_labels()[0]:
+        ax.legend(loc="upper right")
+
+
+def save_figure(fig, path, plt):
+    """Save a figure at PLOT_DPI and close it."""
+    fig.savefig(path, dpi=C.PLOT_DPI, bbox_inches="tight")
+    plt.close(fig)
+    log(f"saved {path.name}")
+
+
+def peak_label(r):
+    """Two-line label of a T² peak: PC with its T value, then its top tag."""
+    return f"{r.top_pc} ({r.T_value:+.1f})\n{r.top_tags.split('; ')[0]}"
+
+
+def plot_flare_overview(D, spans, sections, path):
+    """Figure 1: flare_net over the whole window, its three inputs, then flare_net per section with every event numbered."""
+    plt, mdates = plot_modules()
+    col, f, events, thr, iv = C.PLOT_COLORS, D["flare"], D["events"], D["thr"], D["interval"]
+    net = f[C.FLARE_NET]
+    n = len(sections) + 2
+    fig, axes = plt.subplots(n, 1, figsize=(C.PLOT_WIDTH_IN, 2.8 * n), squeeze=False)
+    axes = axes[:, 0]
+    ax = axes[0]
+    ax.plot(net.index, net.to_numpy(), color=col["flare"], lw=0.5)
+    ax.axhline(thr, color=col["limit"], ls="--", lw=1, label=f"event threshold {thr:.2f}")
+    for t in events["start"]:
+        ax.axvline(t, color=col["event"], lw=0.8, alpha=0.7)
+    ax.set_title(f"flare_net, whole window: {len(events)} flare events (orange lines = onsets)", loc="left")
+    ax.set_ylabel("flare_net (t/h)")
+    add_legend(ax)
+    format_time_axis(ax, mdates, sections[0][0], sections[-1][1])
+    ax = axes[1]
+    for c, color in (("flare_1", "#1f77b4"), ("flare_2", "#9467bd"), ("recovery", "#2ca02c")):
+        ax.plot(f.index, f[c].to_numpy(), lw=0.5, color=color, label=c)
+    shade(ax, mask_to_spans(f.index, f["recovery"].isna().to_numpy(), iv), col["missing"], 0.25, "recovery missing")
+    ax.set_title("flare_net inputs: flare_net = flare_1 + flare_2 - recovery", loc="left")
+    ax.set_ylabel("t/h")
+    add_legend(ax)
+    format_time_axis(ax, mdates, sections[0][0], sections[-1][1])
+    for k, (s, e) in enumerate(sections):
+        ax = axes[k + 2]
+        sel = net[(net.index >= s) & (net.index < e)]
+        shade(ax, clip_spans(spans["preflare"], s, e), col["preflare"], 0.15, "30-min pre-flare window")
+        shade(ax, clip_spans(spans["event"], s, e), col["event"], 0.3, "flare event")
+        ax.plot(sel.index, sel.to_numpy(), color=col["flare"], lw=0.7)
+        ax.axhline(thr, color=col["limit"], ls="--", lw=1)
+        inside = events[(events["start"] >= s) & (events["start"] < e)]
+        for ev in inside.itertuples(index=False):
+            ax.text(ev.start, 0.97, f"E{ev.event_id}", transform=ax.get_xaxis_transform(), ha="center", va="top",
+                    fontsize=8, fontweight="bold", color=col["event"])
+        ax.set_title(f"{s:%d %b %H:%M} to {e:%d %b %H:%M}: {len(inside)} event onsets", loc="left")
+        ax.set_ylabel("flare_net (t/h)")
+        add_legend(ax)
+        format_time_axis(ax, mdates, s, e)
+    save_figure(fig, path, plt)
+
+
+def plot_t2_overview(D, spans, sections, peaks, path):
+    """Figure 2: overall T² (log scale) per section with the χ² limit, context shading and each labelled peak named."""
+    plt, mdates = plot_modules()
+    col, lim = C.PLOT_COLORS, D["t2_lim"]
+    t2 = D["t2"]["T2"].clip(lower=1e-3)
+    n = len(sections) + 1
+    fig, axes = plt.subplots(n, 1, figsize=(C.PLOT_WIDTH_IN, 3.2 * n), squeeze=False)
+    axes = axes[:, 0]
+    ax = axes[0]
+    ax.plot(t2.index, t2.to_numpy(), color=col["t2"], lw=0.4)
+    ax.axhline(lim, color=col["limit"], ls="--", lw=1, label=f"χ² limit {lim:.1f}")
+    for t in D["events"]["start"]:
+        ax.axvline(t, color=col["event"], lw=0.8, alpha=0.7)
+    ax.set_yscale("log")
+    ax.set_title(f"Overall T² = Σ_j T²_j·PA(j), whole window: {100 * (t2 > lim).mean():.1f}% of rows above the limit "
+                 "(orange lines = flare onsets)", loc="left")
+    ax.set_ylabel("T²")
+    add_legend(ax)
+    format_time_axis(ax, mdates, sections[0][0], sections[-1][1])
+    for k, (s, e) in enumerate(sections):
+        ax = axes[k + 1]
+        sel = t2[(t2.index >= s) & (t2.index < e)]
+        shade(ax, clip_spans(spans["noc"], s, e), col["noc"], 0.08, "NOC (baseline)")
+        shade(ax, clip_spans(spans["preflare"], s, e), col["preflare"], 0.2, "30-min pre-flare window")
+        shade(ax, clip_spans(spans["event"], s, e), col["event"], 0.3, "flare event")
+        ax.plot(sel.index, sel.to_numpy(), color=col["t2"], lw=0.6)
+        ax.axhline(lim, color=col["limit"], ls="--", lw=1)
+        ax.set_yscale("log")
+        pk = peaks[(peaks["timestamp"] >= s) & (peaks["timestamp"] < e)]
+        for i, r in enumerate(pk.itertuples(index=False)):
+            ax.plot(r.timestamp, r.T2, "v", ms=6, color="black" if r.significant else col["missing"])
+            ax.annotate(peak_label(r), xy=(r.timestamp, r.T2), xytext=(0, 8 + 16 * (i % 3)), textcoords="offset points",
+                        ha="center", va="bottom", fontsize=7.5,
+                        bbox={"boxstyle": "round,pad=0.2", "fc": "white", "ec": "none", "alpha": 0.8})
+        if len(sel):
+            ax.set_ylim(top=float(sel.max()) * 30)
+        ax.set_title(f"{s:%d %b %H:%M} to {e:%d %b %H:%M}: {len(pk)} labelled peaks "
+                     "(black ▼ = that PC's term is significant, grey ▼ = not)", loc="left")
+        ax.set_ylabel("T²")
+        add_legend(ax)
+        format_time_axis(ax, mdates, s, e)
+    save_figure(fig, path, plt)
+
+
+def plot_event_zooms(D, path):
+    """Figure 3: per event, flare_net, T² and each PC's share of T² from 2 h before onset to 30 min after (one PNG)."""
+    plt, mdates = plot_modules()
+    col, iv, ev = C.PLOT_COLORS, D["interval"], D["events"]
+    if len(ev) > C.PLOT_MAX_EVENTS:
+        log(f"{len(ev)} events: Figure 3 shows the {C.PLOT_MAX_EVENTS} with the largest flare_net peak")
+        ev = ev.nlargest(C.PLOT_MAX_EVENTS, "peak_flare_net").sort_values("start")
+    ncol = 2 if len(ev) > 1 else 1
+    nrow = int(np.ceil(len(ev) / ncol))
+    fig = plt.figure(figsize=(C.PLOT_WIDTH_IN, 8 * nrow), constrained_layout=True)
+    subs = np.atleast_1d(fig.subfigures(nrow, ncol)).ravel()
+    before, after = pd.Timedelta(minutes=C.PLOT_ZOOM_BEFORE_MIN), pd.Timedelta(minutes=C.PLOT_ZOOM_AFTER_MIN)
+    pre = pd.Timedelta(minutes=C.FLARE_PRE_WINDOW_MIN)
+    net, t2, terms = D["flare"][C.FLARE_NET], D["t2"]["T2"], D["terms"]
+    for sf, e in zip(subs, ev.itertuples(index=False)):
+        a, b = e.start - before, e.start + after
+        axs = sf.subplots(3, 1, sharex=True, gridspec_kw={"height_ratios": [1, 1, 1.3]})
+        f = net.loc[a:b]
+        axs[0].plot(f.index, f.to_numpy(), color=col["flare"], lw=1)
+        axs[0].axhline(D["thr"], color=col["limit"], ls="--", lw=1)
+        axs[0].set_ylabel("flare_net (t/h)")
+        t = t2.loc[a:b].clip(lower=1e-3)
+        axs[1].plot(t.index, t.to_numpy(), color=col["t2"], lw=1)
+        axs[1].axhline(D["t2_lim"], color=col["limit"], ls="--", lw=1)
+        axs[1].set_yscale("log")
+        axs[1].set_ylabel("T²")
+        sq = terms.loc[a:b].astype(np.float64) ** 2
+        if len(sq):
+            share = sq.div(sq.sum(axis=1), axis=0)
+            win = share.loc[e.start - pre:e.start - iv]
+            top = list((win if len(win) else share).mean().nlargest(C.PLOT_TOP_PCS_ZOOM).index)
+            other = (1 - share[top].sum(axis=1)).clip(lower=0)
+            axs[2].stackplot(share.index, *[share[c].to_numpy() for c in top], other.to_numpy(),
+                             labels=top + ["other PCs"], colors=list(plt.cm.tab10.colors[:len(top)]) + ["#d9d9d9"])
+            axs[2].legend(loc="upper left", ncol=3, fontsize=8)
+        axs[2].set_ylim(0, 1)
+        axs[2].set_ylabel("share of T²")
+        for ax in axs:
+            ax.axvspan(e.start - pre, e.start, color=col["preflare"], alpha=0.12, lw=0)
+            ax.axvspan(e.start, e.end + iv, color=col["event"], alpha=0.25, lw=0)
+            ax.axvline(e.start, color=col["event"], lw=1.2)
+        format_time_axis(axs[2], mdates, a, b)
+        sf.suptitle(f"E{e.event_id}: onset {e.start:%d %b %H:%M}, {e.duration_min:.0f} min, peak flare_net "
+                    f"{e.peak_flare_net:.2f} t/h (red band = 30-min pre-flare window)", x=0.01, ha="left", fontsize=12)
+    fig.savefig(path, dpi=C.PLOT_DPI)
+    plt.close(fig)
+    log(f"saved {path.name}")
+
+
+def plot_pc_terms(D, peaks, spans, path):
+    """Figure 4: T_j·PA(j) over the whole window for each PC that labels a T² peak, with ±z limits and its peaks marked."""
+    plt, mdates = plot_modules()
+    if peaks.empty:
+        log("no labelled T² peaks: Figure 4 skipped")
+        return
+    col, z, terms = C.PLOT_COLORS, D["z_lim"], D["terms"]
+    pcs = list(peaks["top_pc"].value_counts().index[:C.PLOT_MAX_PCS])
+    fig, axes = plt.subplots(len(pcs), 1, figsize=(C.PLOT_WIDTH_IN, 2.6 * len(pcs)), squeeze=False, sharex=True)
+    for ax, pc in zip(axes[:, 0], pcs):
+        s = terms[pc].astype(np.float64)
+        own = peaks[peaks["top_pc"] == pc]
+        shade(ax, spans["event"], col["event"], 0.3, "flare event")
+        ax.plot(s.index, s.to_numpy(), color=col["t2"], lw=0.4)
+        ax.axhline(z, color=col["limit"], ls="--", lw=1, label=f"±z(α'/2) = ±{z:.2f}")
+        ax.axhline(-z, color=col["limit"], ls="--", lw=1)
+        for t in peaks["timestamp"]:
+            ax.axvline(t, color=col["missing"], lw=0.4, ls=":")
+        ax.plot(own["timestamp"], own["T_value"], "o", ms=5, color=col["preflare"], label="T² peaks labelled with this PC")
+        big = max(1.5 * z, float(np.nanpercentile(np.abs(s), 99.9)), 1.1 * float(own["T_value"].abs().max()))
+        ax.set_ylim(-big, big)
+        ax.set_title(f"{pc} (top tags: {own['top_tags'].iloc[0] or '-'}): labels {len(own)} T² peaks, "
+                     f"|T| > z at {int(own['significant'].sum())} of them", loc="left")
+        ax.set_ylabel("T_j·PA(j)")
+        add_legend(ax)
+    format_time_axis(axes[-1, 0], mdates, terms.index.min().floor("D"), terms.index.max().ceil("D"))
+    save_figure(fig, path, plt)
