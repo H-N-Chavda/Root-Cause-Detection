@@ -52,7 +52,8 @@ COLLINEAR_R = 0.999                    # |r| at or above this: one node of the p
 EIG_MIN = 1e-6                         # smallest relative eigenvalue kept (PC input and per-unit PCA rank)
 
 # ---- T² (Li, Jin & Shi 2008) ----
-ALPHA0 = 0.05                          # T² limit chi²_p(1 - ALPHA0); per-term Bonferroni alpha' = ALPHA0 / p
+ALPHA0 = 0.05                          # significance level of the overall T² limit (report Eq. 13, p = PCs, k = 0)
+ALPHA_TERM = 0.05                      # significance level of each per-PC limit (report Eq. 13, p = 1, k = parents)
 SIGMA2_MIN = 1e-6                      # floor for sigma²_j·PA(j) (numerical guard)
 IDENTITY_TOL = 1e-6                    # max relative error allowed in the sum identity check
 

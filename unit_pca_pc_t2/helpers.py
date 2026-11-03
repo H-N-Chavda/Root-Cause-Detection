@@ -10,7 +10,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from scipy.linalg import solve_triangular
-from scipy.stats import chi2, norm
+from scipy.stats import f as f_dist
+from scipy.stats import norm
 
 import config as C
 
@@ -747,7 +748,8 @@ def cpdag_to_dag(edges, names, flare_nodes):
     parents = {v: sorted(g.predecessors(v), key=order.get) for v in names}
     dag_edges = pd.DataFrame(sorted(dag, key=lambda st: (order[st[1]], order[st[0]])), columns=["source", "target"])
     log(f"DAG: {len(dag)} edges, mean parents {np.mean([len(p) for p in parents.values()]):.2f}")
-    return parents, dag_edges
+    return parents, dag_edges, {"n_edges": len(dag), "n_forced_steps": counts["forced"],
+                                "n_reversed_edges": counts["reversed"]}
 
 
 def pc_subgraph_parents(parents, flare_nodes):
@@ -771,9 +773,10 @@ def noc_correlation(X, noc):
     return Xs, S
 
 
-def t2_control_limit(p):
-    """Upper control limit chi²_p(1 − ALPHA0) of the T² chart (Eq. 6)."""
-    return float(chi2.ppf(1 - C.ALPHA0, p))
+def t2_threshold(m, p, k, alpha):
+    """T² limit p(m+1)(m−1) / (m(m−k−p)) · F(1−α; p, m−k−p) (report Eq. 13 with its typos corrected)."""
+    gate(m - k - p > 0, f"T² limit needs m - k - p > 0 (m = {m}, k = {k}, p = {p})")
+    return float(p * (m + 1) * (m - 1) / (m * (m - k - p)) * f_dist.ppf(1 - alpha, p, m - k - p))
 
 
 def compute_t2(X, Sigma):
@@ -828,7 +831,7 @@ def bn_implied_correlation(B, sigma2):
 
 
 def check_sum_identity(T, X, B, sigma2):
-    """Assert Σ_j T²_j·PA(j) = Zᵀ Σ_G⁻¹ Z on every row (Definition 2, Eq. 13, Proposition 1) and return the sum."""
+    """Assert Σ_j T²_j·PA(j) = Zᵀ Σ_G⁻¹ Z on every row (Definition 2, Eq. 13, Proposition 1); return the sum and its error."""
     sum_t2 = (T ** 2).sum(axis=1)
     eye = np.eye(len(sigma2))
     Q = (eye - B) @ np.diag(1.0 / sigma2) @ (eye - B.T)
@@ -842,13 +845,13 @@ def check_sum_identity(T, X, B, sigma2):
         L = np.linalg.cholesky(Sg)
     except np.linalg.LinAlgError:
         log(f"Σ_G is numerically not positive definite (condition number {cond:.1e}); numerical inverse check skipped")
-        return sum_t2
+        return sum_t2, rel_q
     direct = (solve_triangular(L, X.T, lower=True) ** 2).sum(axis=0)
     rel_g = float((np.abs(sum_t2 - direct) / np.maximum(direct, 1.0)).max())
     tol = max(C.IDENTITY_TOL, 1e3 * cond * np.finfo(float).eps)
     gate(rel_g < tol, f"same identity with Σ_G = (I-Bᵀ)⁻¹ D (I-Bᵀ)⁻ᵀ inverted numerically (condition number {cond:.1e}): "
                       f"max relative error {rel_g:.2e} < {tol:.1e}")
-    return sum_t2
+    return sum_t2, rel_q
 
 
 def check_noc_terms(T, noc, nodes, floored):
@@ -860,8 +863,8 @@ def check_noc_terms(T, noc, nodes, floored):
 
 
 # ---- PRE-FLARE EVALUATION ----
-def evaluate_preflare_windows(idx, pre_eid, events, T, t2, t2_lim, z_lim, nodes):
-    """Per pre-flare window: rows above the T² limit, the first one and its significant T_j·PA(j) (Fig. 5)."""
+def evaluate_preflare_windows(idx, pre_eid, events, T, t2, t2_lim, abs_lim, nodes):
+    """Per pre-flare window: rows above the T² limit, the first one and its T_j·PA(j) above their limits (Fig. 5)."""
     rows = []
     for ev in events.itertuples(index=False):
         w = np.flatnonzero(pre_eid == ev.event_id)
@@ -870,7 +873,7 @@ def evaluate_preflare_windows(idx, pre_eid, events, T, t2, t2_lim, z_lim, nodes)
                "first_ooc": pd.NaT, "minutes_before_onset": np.nan, "t2_at_first_ooc": np.nan, "significant_pcs": ""}
         if ooc.any():
             i0 = w[int(np.argmax(ooc))]
-            sig = np.flatnonzero(np.abs(T[i0]) > z_lim)
+            sig = np.flatnonzero(np.abs(T[i0]) > abs_lim)
             sig = sig[np.argsort(-np.abs(T[i0, sig]))]
             row.update({"first_ooc": idx[i0], "minutes_before_onset": (ev.start - idx[i0]) / pd.Timedelta(minutes=1),
                         "t2_at_first_ooc": float(t2[i0]),
@@ -888,7 +891,8 @@ def load_plot_inputs(out):
     files = {"flare": out / "tables" / "flare_net_raw.parquet", "events": out / "tables" / "flare_events.csv",
              "limits": out / "t2" / "limits.csv", "t2": out / "t2" / "t2_all_rows.parquet",
              "terms": out / "t2" / "terms_all_rows.parquet", "loadings": out / "tables" / "pca_loadings.csv",
-             "dag": out / "graph" / "dag_edges.csv", "cpdag": out / "graph" / "pc_edges.csv"}
+             "dag": out / "graph" / "dag_edges.csv", "cpdag": out / "graph" / "pc_edges.csv",
+             "term_limits": out / "t2" / "term_limits.csv"}
     missing = [p.name for p in files.values() if not p.exists()]
     gate(not missing, f"pipeline outputs exist (run main.py first); missing: {missing or 'none'}")
     limits = pd.read_csv(files["limits"]).iloc[0]
@@ -897,7 +901,8 @@ def load_plot_inputs(out):
             "terms": pd.read_parquet(files["terms"]), "loadings": pd.read_csv(files["loadings"], index_col=0),
             "dag": pd.read_csv(files["dag"], dtype=str), "cpdag": pd.read_csv(files["cpdag"], dtype=str),
             "thr": float(limits["flare_threshold"]), "t2_lim": float(limits["t2_limit"]),
-            "z_lim": float(limits["z_limit"]), "interval": pd.Timedelta(limits["interval"])}
+            "term_lim": pd.read_csv(files["term_limits"]).set_index("node")["abs_T_limit"], "limits": limits,
+            "interval": pd.Timedelta(limits["interval"])}
 
 
 def time_sections(start, end):
@@ -966,7 +971,7 @@ def label_t2_peaks(D, sections):
         v = float(tr[pc])
         nxt = events[events["start"] >= t]
         rows.append({"timestamp": t, "T2": float(t2[t]), "top_pc": pc, "unit": pc.rsplit("_PC", 1)[0], "T_value": v,
-                     "share_of_T2": v ** 2 / float((tr ** 2).sum()), "significant": abs(v) > D["z_lim"],
+                     "share_of_T2": v ** 2 / float((tr ** 2).sum()), "significant": abs(v) > float(D["term_lim"][pc]),
                      "top_tags": top_tags_text(D["loadings"], pc),
                      "preflare_event_id": int(D["t2"].at[t, "preflare_event_id"]),
                      "in_flare_event": bool(D["t2"].at[t, "flare_event"]),
@@ -1173,21 +1178,22 @@ def plot_event_zooms(D, path):
 
 
 def plot_pc_terms(D, peaks, spans, path):
-    """Figure 4: T_j·PA(j) over the whole window for each PC that labels a T² peak, with ±z limits and its peaks marked."""
+    """Figure 4: T_j·PA(j) over the whole window for each PC that labels a T² peak, with its ± limits and its peaks marked."""
     plt, mdates = plot_modules()
     if peaks.empty:
         log("no labelled T² peaks: Figure 4 skipped")
         return
-    col, z, terms = C.PLOT_COLORS, D["z_lim"], D["terms"]
+    col, terms = C.PLOT_COLORS, D["terms"]
     pcs = list(peaks["top_pc"].value_counts().index[:C.PLOT_MAX_PCS])
     fig, axes = plt.subplots(len(pcs), 1, figsize=(C.PLOT_WIDTH_IN, C.PLOT_ROW_HEIGHT_IN * len(pcs)), squeeze=False,
                              sharex=True, gridspec_kw={"hspace": C.PLOT_ROW_GAP})
     for ax, pc in zip(axes[:, 0], pcs):
+        z = float(D["term_lim"][pc])
         s = terms[pc].astype(np.float64)
         own = peaks[peaks["top_pc"] == pc]
         shade(ax, spans["event"], col["event"], 0.3, "flare event")
         ax.plot(s.index, s.to_numpy(), color=col["t2"], lw=0.4)
-        ax.axhline(z, color=col["limit"], ls="--", lw=1, label=f"±z(α'/2) = ±{z:.2f}")
+        ax.axhline(z, color=col["limit"], ls="--", lw=1, label=f"±√(T²_j limit, Eq. 13) = ±{z:.2f}")
         ax.axhline(-z, color=col["limit"], ls="--", lw=1)
         for t in peaks["timestamp"]:
             ax.axvline(t, color=col["missing"], lw=0.4, ls=":")
@@ -1195,7 +1201,7 @@ def plot_pc_terms(D, peaks, spans, path):
         big = max(1.5 * z, float(np.nanpercentile(np.abs(s), 99.9)), 1.1 * float(own["T_value"].abs().max()))
         ax.set_ylim(-big, big)
         ax.set_title(f"{pc} (top tags: {own['top_tags'].iloc[0] or '-'}): labels {len(own)} T² peaks, "
-                     f"|T| > z at {int(own['significant'].sum())} of them", loc="left")
+                     f"|T| above its limit at {int(own['significant'].sum())} of them", loc="left")
         ax.set_ylabel("T_j·PA(j)")
         add_legend(ax)
     format_time_axis(axes[-1, 0], mdates, terms.index.min().floor("D"), terms.index.max().ceil("D"))
@@ -1208,14 +1214,15 @@ def node_unit(node):
 
 
 def plot_individual_pcs(D, peaks, spans, sections, folder):
-    """One PNG per PC in the T²: T_j·PA(j) over the whole window, then per section, with ±z limits and its labelled peaks."""
+    """One PNG per PC in the T²: T_j·PA(j) over the whole window, then per section, with its ± limits and its labelled peaks."""
     plt, mdates = plot_modules()
     folder.mkdir(parents=True, exist_ok=True)
     for old in folder.glob("*.png"):
         old.unlink()
-    col, z, terms, dag = C.PLOT_COLORS, D["z_lim"], D["terms"], D["dag"]
+    col, terms, dag = C.PLOT_COLORS, D["terms"], D["dag"]
     windows = [(sections[0][0], sections[-1][1])] + list(sections)
     for i, pc in enumerate(terms.columns, start=1):
+        z = float(D["term_lim"][pc])
         s = terms[pc].astype(np.float64)
         own = peaks[peaks["top_pc"] == pc]
         par = list(dag.loc[dag["target"] == pc, "source"])
@@ -1230,13 +1237,13 @@ def plot_individual_pcs(D, peaks, spans, sections, folder):
             shade(ax, clip_spans(spans["preflare"], a, b), col["preflare"], 0.2, "30-min pre-flare window")
             shade(ax, clip_spans(spans["event"], a, b), col["event"], 0.3, "flare event")
             ax.plot(sel.index, sel.to_numpy(), color=col["t2"], lw=0.4 if k == 0 else 0.7)
-            ax.axhline(z, color=col["limit"], ls="--", lw=1, label=f"±z(α'/2) = ±{z:.2f}")
+            ax.axhline(z, color=col["limit"], ls="--", lw=1, label=f"±√(T²_j limit, Eq. 13) = ±{z:.2f}")
             ax.axhline(-z, color=col["limit"], ls="--", lw=1)
             ax.plot(o["timestamp"], o["T_value"], "o", ms=5, color=col["preflare"], label="T² peaks labelled with this PC")
             ax.set_ylim(-big, big)
             ax.set_ylabel("T_j·PA(j)")
             if k == 0:
-                ax.set_title(f"{pc}: whole window; |T| > z in {100 * (s.abs() > z).mean():.2f}% of rows; labels {len(own)} "
+                ax.set_title(f"{pc}: whole window; |T| > {z:.2f} in {100 * (s.abs() > z).mean():.2f}% of rows; labels {len(own)} "
                              f"T² peaks\nparents ({len(par)}): {', '.join(par[:10]) or 'none (root node)'}"
                              f"{' ...' if len(par) > 10 else ''}; children: {len(kids)}"
                              f"{' incl. flare_net' if C.FLARE_NET in kids else ''}; top tags: "
@@ -1344,19 +1351,19 @@ def plot_causal_graph(D, path):
 
 # ---- ROOT-CAUSE TABLE ----
 def root_cause_table(D):
-    """Per event: PCs with |T_j·PA(j)| > z in the pre-flare window, how long and how early, and their path length to flare_net."""
+    """Per event: PCs with |T_j·PA(j)| above its limit in the pre-flare window, how long and how early, and their path length to flare_net."""
     import networkx as nx
     G = nx.DiGraph()
     G.add_edges_from(zip(D["dag"]["source"], D["dag"]["target"]))
     dist = nx.single_source_shortest_path_length(G.reverse(copy=False), C.FLARE_NET) if C.FLARE_NET in G else {}
-    t2, terms, z, lim = D["t2"], D["terms"], D["z_lim"], D["t2_lim"]
+    t2, terms, lim = D["t2"], D["terms"], D["t2_lim"]
     rows = []
     for ev in D["events"].itertuples(index=False):
         w = t2.index[t2["preflare_event_id"].to_numpy() == ev.event_id]
         if not len(w):
             continue
         T = terms.loc[w].astype(np.float64)
-        sig = T.abs() > z
+        sig = T.abs() > D["term_lim"].reindex(T.columns).to_numpy()
         above = t2.loc[w, "T2"].to_numpy() > lim
         first_ooc = w[int(np.argmax(above))] if above.any() else None
         for pc in sig.columns[sig.any().to_numpy()]:
@@ -1387,3 +1394,95 @@ def root_cause_table(D):
     log(f"root-cause table: {len(out)} rows for {out['event_id'].nunique()} events; "
         f"{int(out['ancestor_of_flare'].sum())} rows are ancestors of flare_net")
     return out
+
+
+# ---- SUMMARY ----
+def drop_reason(status):
+    """Short drop reason from a tag-registry status."""
+    for key, name in (("within NOC", "constant in NOC"), ("missing", "too much missing"),
+                      ("near-constant", "near-constant"), ("duplicate", "duplicate column"), ("constant", "constant")):
+        if key in str(status):
+            return name
+    return str(status)
+
+
+def build_summary(out):
+    """Write outputs/SUMMARY.md: data and cleaning, PCA variance, graph and loops, T² limits and root causes."""
+    D = load_plot_inputs(out)
+    lim, t2, ev, dag, cp = D["limits"], D["t2"], D["events"], D["dag"], D["cpdag"]
+    reg = pd.read_csv(out / "tag_registry.csv", dtype=str, keep_default_na=False)
+    units = pd.read_csv(out / "tables" / "pcs_per_unit.csv")
+    dropped_pc = pd.read_csv(out / "graph" / "pc_dropped_nodes.csv", dtype=str)
+    stats = pd.read_csv(out / "graph" / "dag_stats.csv").iloc[0]
+    terml = pd.read_csv(out / "t2" / "term_limits.csv")
+    first = pd.read_csv(out / "t2" / "preflare_first_ooc.csv").set_index("event_id")
+    rc = root_cause_table(D)
+    pre = t2["preflare_event_id"] > 0
+
+    drops = reg.loc[reg["status"].str.startswith("dropped"), "status"].map(drop_reason).value_counts()
+    L = ["# SUMMARY: unit-wise PCA → PC algorithm → causation-based T²", "",
+         f"Generated {pd.Timestamp.now():%Y-%m-%d %H:%M} from `outputs/` by `summary.py`.", "",
+         "## Data and cleaning", "| item | value |", "|---|---|",
+         f"| time window | {window_text()} |", f"| sampling interval | {lim['interval']} |",
+         f"| tags loaded | {int((reg['tag'] != C.FLARE_NET).sum())} ({int((reg['is_flare'] == 'True').sum()) - 1} flare tags) |",
+         f"| process tags used in PCA | {int((reg['status'] == 'used_in_pca').sum())} |",
+         f"| tags dropped | {int(drops.sum())}: " + (", ".join(f"{k} {v}" for k, v in drops.items()) or "none") + " |",
+         f"| rows in matrix | {len(t2)} |", f"| NOC rows (baseline) | {int(t2['noc'].sum())} |",
+         f"| flare-event rows / pre-flare rows | {int(t2['flare_event'].sum())} / {int(pre.sum())} |",
+         f"| flare_net threshold | {D['thr']:.3f} t/h ({lim['flare_threshold_rule']}) |",
+         f"| flare events | {len(ev)}, {ev['duration_min'].sum():.0f} event minutes in total |", ""]
+
+    n_all = float(units["n_tags"].sum())
+    overall = float((units["variance_kept"] * units["n_tags"]).sum()) / n_all if n_all else float("nan")
+    L += ["## PCA variance", "| unit | tags | rank | PCs kept | variance captured |", "|---|---|---|---|---|"]
+    L += [f"| {r.unit} | {r.n_tags} | {r.rank} | {r.n_pcs} | {100 * r.variance_kept:.1f}% |"
+          for r in units.itertuples(index=False)]
+    L += [f"| **all units** | {int(n_all)} | | {int(units['n_pcs'].sum())} | {100 * overall:.1f}% |", ""]
+
+    to_flare = dag[dag["target"] == C.FLARE_NET]
+    pc_edges = dag[dag["target"] != C.FLARE_NET]
+    same = int((pc_edges["source"].map(node_unit) == pc_edges["target"].map(node_unit)).sum())
+    types = cp["type"].value_counts()
+    L += ["## Graph and loops",
+          f"- PC input: {terml.shape[0] + len(dropped_pc)} PCs + {C.FLARE_NET}; dropped before PC (collinear / dependent): "
+          f"{len(dropped_pc)}" + (f" ({', '.join(dropped_pc['node'].head(10))})" if len(dropped_pc) else "") + ".",
+          f"- PC output: {len(cp)} edges = {int(types.get(EDGE_DIRECTED, 0))} directed, "
+          f"{int(types.get(EDGE_UNDIRECTED, 0))} undirected, {int(types.get(EDGE_BIDIRECTED, 0))} bidirected.",
+          f"- Final DAG: {len(dag)} edges = {same} same-unit, {len(pc_edges) - same} cross-unit, {len(to_flare)} into "
+          f"{C.FLARE_NET}.",
+          f"- Loops: {int(stats['n_reversed_edges'])} directed edges reversed to break cycles; "
+          f"{int(stats['n_forced_steps'])} forced Dor-Tarsi steps (no consistent extension); final graph is acyclic "
+          "(checked in the run).",
+          f"- Parents per PC: mean {terml['n_parents'].mean():.2f}, max {int(terml['n_parents'].max())}; root PCs (no "
+          f"parents): {int((terml['n_parents'] == 0).sum())}.",
+          f"- {C.FLARE_NET} parents ({len(to_flare)}): {', '.join(to_flare['source']) or 'none'}.", ""]
+
+    L += ["## T² and root causes",
+          f"- Overall T² limit {D['t2_lim']:.2f}: report Eq. 13 (corrected), m = {int(lim['n_noc_rows'])} NOC rows, "
+          f"p = {int(lim['p'])} PCs, k = 0, α = {lim['alpha0']:g}. Above it: {lim['pct_noc_above_t2_limit']:.2f}% of NOC "
+          f"rows (expected about {100 * lim['alpha0']:g}%), {lim['pct_preflare_above_t2_limit']:.2f}% of pre-flare rows.",
+          f"- Per-PC limits on T²_j: Eq. 13 with p = 1, k = number of parents, α = {lim['alpha_term']:g}: "
+          f"{terml['t2_limit'].min():.3f} to {terml['t2_limit'].max():.3f}. NOC rows above: mean "
+          f"{lim['pct_noc_above_term_limit_mean']:.2f}% per PC (expected about {100 * lim['alpha_term']:g}%).",
+          f"- Sum identity Σ_j T²_j·PA(j) = T²: max relative error {lim['sum_identity_max_rel_error']:.1e}. Median gap to "
+          f"the sample-Σ T² on NOC: {lim['gap_sample_vs_bn_median_noc']:.3f}.", "",
+          "| event | onset | min | peak t/h | first T² alarm (min before onset) | top root-cause PC | path to flare_net | "
+          "minutes above limit |", "|---|---|---|---|---|---|---|---|"]
+    top = rc[rc["rank"] == 1].set_index("event_id") if len(rc) else pd.DataFrame()
+    for e in ev.head(40).itertuples(index=False):
+        alarm = first["minutes_before_onset"].get(e.event_id, np.nan)
+        if e.event_id in top.index:
+            r = top.loc[e.event_id]
+            path = f"{int(r['path_length_to_flare'])}" if r["ancestor_of_flare"] else "not an ancestor"
+            cause = f"{r['pc']} | {path} | {int(r['minutes_significant'])} of {int(r['window_rows'])}"
+        else:
+            cause = "none | - | -"
+        L.append(f"| E{e.event_id} | {e.start:%d %b %H:%M} | {e.duration_min:.0f} | {e.peak_flare_net:.2f} | "
+                 f"{'-' if pd.isna(alarm) else f'{alarm:.0f}'} | {cause} |")
+    if len(ev) > 40:
+        L.append(f"\n{len(ev) - 40} more events in `tables/flare_events.csv` and `tables/root_cause_by_event.csv`.")
+    ta = ev[(ev["start"] >= pd.Timestamp(C.TA_CHECK_START)) & (ev["start"] < pd.Timestamp(C.TA_CHECK_END))]
+    L += ["", f"- TA cross-check: {len(ta)} events with onset in [{C.TA_CHECK_START}, {C.TA_CHECK_END}); TA said "
+          f"{C.TA_FLARE_COUNT} flares of about {C.TA_FLARE_MINUTES} min."]
+    (out / "SUMMARY.md").write_text("\n".join(L) + "\n", encoding="utf-8")
+    log(f"SUMMARY.md written ({len(L)} lines)")
