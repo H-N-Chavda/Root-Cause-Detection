@@ -14,6 +14,7 @@ def main():
     spans = H.context_spans(D)
     peaks = H.label_t2_peaks(D, sections)
     peaks.to_csv(d["tables"] / "t2_peaks.csv", index=False)
+    H.root_cause_table(D).to_csv(d["tables"] / "root_cause_by_event.csv", index=False)
     H.plot_flare_overview(D, spans, sections, d["figures"] / "fig1_flare.png")
     H.plot_t2_overview(D, spans, sections, peaks, d["figures"] / "fig2_t2_overall.png")
     H.plot_event_zooms(D, d["figures"] / "fig3_event_zooms.png")

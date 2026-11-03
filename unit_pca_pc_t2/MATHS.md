@@ -27,6 +27,8 @@ Paper: Li, Jin & Shi (2008), J. Quality Technology 40(1) 46-58 (`references/pape
 | 21 | Per-term limit | $\lvert T_{j\cdot PA(j)}\rvert > z_{\alpha'/2}$, $\alpha' = \alpha/p$ (Bonferroni) | $z_q$: upper $q$ point of $N(0,1)$ | p. 52 (Fig. 5, step 1(c)) | [main.py:63](main.py#L63) |
 | 22 | NOC reference | $T_{j\cdot PA(j)} \sim N(0,1)$ on NOC; checked as mean 0, std 1 | | p. 52 | [helpers.py:854](helpers.py#L854) |
 | 23 | Diagnosis | decompose the first out-of-control $T^2$ in $W_e$; significant terms = root-cause PCs | | Fig. 5 | [helpers.py:872](helpers.py#L872) |
+| 24 | Share of T² | $s_j(t) = T^2_{j\cdot PA(j)}(t) / T^2(t)$, $\sum_j s_j(t) = 1$ by row 19 | | Project (uses Eq. 13) | `plot_event_zooms` in helpers.py |
+| 25 | Cause ranking per event | PCs with $\lvert T_{j\cdot PA(j)}\rvert > z_{\alpha'/2}$ in $W_e$, ranked by: ancestor of flare_net, minutes significant, earliest first significance, shortest DAG path $d(j \to F)$ | $d$: directed path length in the DAG | Project (extends Fig. 5 with the DAG) | [helpers.py:1351](helpers.py#L1351), [:1378](helpers.py#L1378) |
 
 - Paper vs request: Eq. 13 is exact for the sample $\hat{\Sigma}$ only if the learned DAG is the true BN (Proposition 1; p. 50 assumes no learning or sampling error). A DAG alone is not enough. The code monitors $T^2$ with $\Sigma_G$, where the identity is exact, and logs the gap to $T^2_S$.
 - Limits are $\chi^2$ with known $\Sigma$, as in the paper. They are not the finite-sample Phase II $F$ limit.

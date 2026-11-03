@@ -1340,3 +1340,50 @@ def plot_causal_graph(D, path):
                  loc="left")
     ax.axis("off")
     save_figure(fig, path, plt)
+
+
+# ---- ROOT-CAUSE TABLE ----
+def root_cause_table(D):
+    """Per event: PCs with |T_j·PA(j)| > z in the pre-flare window, how long and how early, and their path length to flare_net."""
+    import networkx as nx
+    G = nx.DiGraph()
+    G.add_edges_from(zip(D["dag"]["source"], D["dag"]["target"]))
+    dist = nx.single_source_shortest_path_length(G.reverse(copy=False), C.FLARE_NET) if C.FLARE_NET in G else {}
+    t2, terms, z, lim = D["t2"], D["terms"], D["z_lim"], D["t2_lim"]
+    rows = []
+    for ev in D["events"].itertuples(index=False):
+        w = t2.index[t2["preflare_event_id"].to_numpy() == ev.event_id]
+        if not len(w):
+            continue
+        T = terms.loc[w].astype(np.float64)
+        sig = T.abs() > z
+        above = t2.loc[w, "T2"].to_numpy() > lim
+        first_ooc = w[int(np.argmax(above))] if above.any() else None
+        for pc in sig.columns[sig.any().to_numpy()]:
+            s = sig[pc].to_numpy()
+            i0 = int(np.argmax(s))
+            d = dist.get(pc)
+            rows.append({"event_id": ev.event_id, "onset": ev.start, "pc": pc, "unit": node_unit(pc),
+                         "minutes_significant": int(s.sum()), "window_rows": len(w), "first_significant": w[i0],
+                         "minutes_before_onset": (ev.start - w[i0]) / pd.Timedelta(minutes=1),
+                         "T_at_first_significant": float(T[pc].iloc[i0]), "max_abs_T": float(T[pc].abs().max()),
+                         "significant_at_first_ooc": bool(first_ooc is not None and sig.at[first_ooc, pc]),
+                         "ancestor_of_flare": d is not None, "path_length_to_flare": d if d is not None else np.nan,
+                         "top_tags": top_tags_text(D["loadings"], pc)})
+    cols = ["event_id", "onset", "pc", "unit", "minutes_significant", "window_rows", "first_significant",
+            "minutes_before_onset", "T_at_first_significant", "max_abs_T", "significant_at_first_ooc",
+            "ancestor_of_flare", "path_length_to_flare", "top_tags"]
+    out = pd.DataFrame(rows, columns=cols)
+    if len(out):
+        out = out.sort_values(["event_id", "ancestor_of_flare", "minutes_significant", "minutes_before_onset",
+                               "path_length_to_flare"], ascending=[True, False, False, False, True])
+        out.insert(2, "rank", out.groupby("event_id").cumcount() + 1)
+        best = out[out["rank"] == 1]
+        for r in best.itertuples(index=False):
+            where = (f"path {int(r.path_length_to_flare)} to flare_net" if r.ancestor_of_flare
+                     else "not an ancestor of flare_net")
+            log(f"  E{r.event_id}: top candidate {r.pc} ({where}), significant {r.minutes_significant} of "
+                f"{r.window_rows} min, first {r.minutes_before_onset:.0f} min before onset")
+    log(f"root-cause table: {len(out)} rows for {out['event_id'].nunique()} events; "
+        f"{int(out['ancestor_of_flare'].sum())} rows are ancestors of flare_net")
+    return out
