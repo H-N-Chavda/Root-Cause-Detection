@@ -316,8 +316,9 @@ def load_file(path: Path, data_root: Path) -> tuple[pd.DataFrame | None, dict]:
         data_root: DATA_ROOT from .env (used to report the file path relative to it).
 
     Returns:
-        A tuple (table, info): table has one float column per tag and a nanosecond DatetimeIndex, or None if the file
-        has no timestamp column; info holds the file name, row counts, time zone and median sampling interval.
+        A tuple (table, info): table has one float column per tag and a nanosecond DatetimeIndex (a repeated timestamp
+        keeps its first row, as in the TA's load_parquet_folder), or None if the file has no timestamp column; info
+        holds the file name, row counts, time zone and median sampling interval.
     """
     df = read_table(path)
     tcol, t, tz = find_time_column(df)
@@ -327,6 +328,7 @@ def load_file(path: Path, data_root: Path) -> tuple[pd.DataFrame | None, dict]:
     num, _, _ = numeric_part(df.drop(columns=[tcol]))
     num.index = to_ns_index(t.to_numpy())
     num = num[~num.index.isna() & in_window(num.index)]
+    num = num[~num.index.duplicated(keep="first")]
     info.update({"rows_in_window": len(num), "median_interval": median_interval(num.index)})
     return num, info
 
@@ -385,7 +387,7 @@ def load_all_tags(P: SimpleNamespace) -> tuple[pd.DataFrame, dict[str, pd.DataFr
             cols = {}
             for c, ps in parts.items():
                 s = pd.concat(ps).sort_index(kind="stable")
-                cols[c] = s[~s.index.duplicated(keep="last")]
+                cols[c] = s[~s.index.duplicated(keep="first")]
             folder_frames[folder] = pd.DataFrame(cols)
         log(f"  {folder}: {len(files)} files, {len(parts)} new tags")
     log(f"tags loaded: {len(reg_rows)} unique, {len(dup_rows)} duplicate copies skipped; "
@@ -400,36 +402,42 @@ def load_all_tags(P: SimpleNamespace) -> tuple[pd.DataFrame, dict[str, pd.DataFr
     return reg, folder_frames, intervals
 
 
-def join_and_resample(folder_frames: dict[str, pd.DataFrame], intervals: list[pd.Timedelta],
+def join_on_time_grid(folder_frames: dict[str, pd.DataFrame], intervals: list[pd.Timedelta],
                       reg: pd.DataFrame) -> tuple[pd.DataFrame, pd.Timedelta]:
-    """Put every tag on one common time grid: sentinels -> NaN, resample to the most common interval, join on time.
+    """Put every tag on one common time grid, as the TA's load_parquet_folder does: outer join on time, then reindex.
+
+    Sentinels become NaN; the tags are outer-joined on their timestamps and reindexed to a complete GRID_FREQ grid
+    from the first to the last timestamp. No resampling: a value whose timestamp is not on the grid is lost (counted
+    in the log).
 
     Args:
         folder_frames: Raw tags per folder from load_all_tags() (emptied by this function to save memory).
-        intervals: Median sampling interval of each file, from load_all_tags().
+        intervals: Median sampling interval of each file, from load_all_tags() (only logged).
         reg: Tag registry from load_all_tags(); its tag order becomes the column order.
 
     Returns:
         A tuple (X, interval): X is the joined matrix (rows = grid timestamps, columns = tags, float32, NaN where a tag
-        has no value); interval is the grid step (1 min for this plant).
-
-    Raises:
-        SystemExit: If no positive sampling interval could be measured.
+        has no value); interval is the grid step GRID_FREQ (1 min).
     """
     iv = pd.to_timedelta(pd.Series(intervals)).dt.round("1s")
     counts = iv[iv > pd.Timedelta(0)].value_counts()
-    gate(len(counts) > 0, "a positive sampling interval could be measured")
-    interval = max(counts[counts == counts.max()].index)
+    interval = pd.Timedelta(C.GRID_FREQ)
+    if len(counts):
+        log(f"most common file sampling interval: {counts.index[0]} (grid: {interval})")
     frames, n_sent = [], 0
     for folder in list(folder_frames):
         f = folder_frames.pop(folder).replace([np.inf, -np.inf], np.nan)
         is_sent = f.isin(C.SENTINELS)
         n_sent += int(is_sent.to_numpy().sum())
-        frames.append(f.mask(is_sent).resample(interval).mean().astype("float32"))
+        frames.append(f.mask(is_sent).astype("float32"))
     X = pd.concat(frames, axis=1).sort_index()
     X = X[list(reg["tag"])]
+    n_values = int(X.notna().to_numpy().sum())
+    X = X.reindex(pd.date_range(X.index.min(), X.index.max(), freq=interval))
     X.index = to_ns_index(X.index)
-    log(f"joined matrix {X.shape} on a {interval} grid (bin mean); sentinel values set to NaN: {n_sent}")
+    lost = n_values - int(X.notna().to_numpy().sum())
+    log(f"joined matrix {X.shape} on a complete {interval} grid (outer join + reindex, no resampling); "
+        f"sentinel values set to NaN: {n_sent}; values off the grid and lost: {lost}")
     return X, interval
 
 
@@ -438,16 +446,19 @@ def build_flare_net(X: pd.DataFrame, reg: pd.DataFrame,
                     P: SimpleNamespace) -> tuple[pd.DataFrame, pd.DataFrame, pd.Series, dict[str, str]]:
     """Replace all flare tags by one column flare_net = flare_1 + flare_2 - recovery (t/h).
 
+    The three formula tags (recovery included) are first gap-filled with impute_spline(), the TA's method; the TA
+    drops a flare tag above 50 % missing, here such a tag is kept (the formula needs it) and a warning is logged.
+
     Args:
-        X: Joined matrix from join_and_resample().
+        X: Joined matrix from join_on_time_grid().
         reg: Tag registry from load_all_tags().
         P: Paths and names from config.load_paths(); flare_1_tag, flare_2_tag and flare_recovery_tag are the exact
             flare_data column names from .env.
 
     Returns:
         A tuple (X, reg, net, status): X without the raw flare tags and with a flare_net column; reg with a flare_net
-        row added; net is the raw flare_net series on the full grid (used to find flare events); status records what
-        happened to each raw flare tag.
+        row added; net is flare_net from the gap-filled tags on the full grid (used to find flare events); status
+        records what happened to each raw flare tag.
 
     Raises:
         SystemExit: If a formula tag is not a flare tag or a tag is already called flare_net.
@@ -457,14 +468,16 @@ def build_flare_net(X: pd.DataFrame, reg: pd.DataFrame,
     gate(all(t in flare_loaded for t in formula), f"flare formula tags are flare tags: {formula} (loaded: {flare_loaded})")
     gate(C.FLARE_NET not in X.columns, f"no loaded tag is already named '{C.FLARE_NET}'")
     for t in formula:
-        log(f"  {t}: {100 * X[t].isna().mean():.1f}% missing on the grid, median {X[t].median():.3f}")
-    rec = X[P.flare_recovery_tag]
-    if C.FLARE_RECOVERY_MISSING == "zero":
-        rec = rec.fillna(0.0)
-    net = (X[P.flare_1_tag] + X[P.flare_2_tag] - rec).astype("float32").rename(C.FLARE_NET)
+        miss = X[t].isna().mean()
+        log(f"  {t}: {100 * miss:.1f}% missing on the grid, median {X[t].median():.3f}"
+            + (f"  WARNING: above the TA's {C.FLARE_MAX_MISSING:.0%} limit for flare tags, kept and gap-filled"
+               if miss > C.FLARE_MAX_MISSING else ""))
+    F = impute_spline(X[formula])
+    net = (F[P.flare_1_tag] + F[P.flare_2_tag] - F[P.flare_recovery_tag]).astype("float32").rename(C.FLARE_NET)
     formula_text = f"{C.FLARE_NET} = {P.flare_1_tag} + {P.flare_2_tag} - {P.flare_recovery_tag}"
-    log(f"{formula_text}; recovery with no value: {C.FLARE_RECOVERY_MISSING}; {100 * net.isna().mean():.1f}% missing, "
-        f"median {net.median():.3f}; flare tags removed from the matrix: {flare_loaded}")
+    log(f"{formula_text}; formula tags gap-filled by cubic spline + ffill/bfill (TA's method); "
+        f"{100 * net.isna().mean():.1f}% missing, median {net.median():.3f}; flare tags removed from the matrix: "
+        f"{flare_loaded}")
     X = X.drop(columns=flare_loaded)
     X[C.FLARE_NET] = net
     reg = pd.concat([reg, pd.DataFrame([{"tag": C.FLARE_NET, "source_folder": P.flare_folder, "unit": P.flare_folder,
@@ -483,7 +496,7 @@ def detect_flare_events(net: pd.Series, interval: pd.Timedelta) -> tuple[pd.Data
 
     Args:
         net: Raw flare_net (t/h) on the full grid, from build_flare_net() (before any cleaning).
-        interval: Grid step from join_and_resample().
+        interval: Grid step from join_on_time_grid().
 
     Returns:
         A tuple (events, short, thr). events has one row per flare event: event_id (1, 2, ... in time order), start
@@ -547,7 +560,7 @@ def label_flare_rows(idx: pd.DatetimeIndex, events: pd.DataFrame, short: pd.Data
         idx: Timestamps of the cleaned matrix, from clean_matrix().
         events: Flare events (>= 30 min) from detect_flare_events().
         short: Shorter runs above the threshold from detect_flare_events().
-        interval: Grid step from join_and_resample().
+        interval: Grid step from join_on_time_grid().
         n_tags: Number of columns of the cleaned matrix (sets the minimum NOC size).
 
     Returns:
@@ -588,7 +601,7 @@ def preflare_window_length(interval: pd.Timedelta) -> int:
     """Number of grid samples in FLARE_PRE_WINDOW_MIN minutes (30 min -> 30 samples on a 1-min grid).
 
     Args:
-        interval: Grid step from join_and_resample().
+        interval: Grid step from join_on_time_grid().
 
     Returns:
         Window length in samples.
@@ -610,7 +623,7 @@ def extract_preflare_window(idx: pd.DatetimeIndex, events: pd.DataFrame, interva
     Args:
         idx: Timestamps of the cleaned matrix.
         events: Flare events from detect_flare_events().
-        interval: Grid step from join_and_resample().
+        interval: Grid step from join_on_time_grid().
         flare: Flare-event rows from label_flare_rows().
 
     Returns:
@@ -667,37 +680,31 @@ def check_flare_source_agreement(flare_z: pd.Series, mu: float, sd: float, net: 
 
 
 # ---- CLEANING ----
-def ffill_short_gaps(df: pd.DataFrame, max_gap: int) -> tuple[pd.DataFrame, int]:
-    """Forward-fill gaps of at most max_gap missing samples that follow a valid value; longer gaps stay NaN.
+def impute_spline(df: pd.DataFrame) -> pd.DataFrame:
+    """Fill missing values the way the TA's clean_and_impute does: cubic-spline interpolation, then ffill / bfill.
+
+    Same call as the TA's notebook: interpolate(method='spline', order=SPLINE_ORDER, limit_direction='both') on a
+    0..n-1 row position (the TA's frame has a plain row index), then forward fill and back fill whatever is left.
 
     Args:
-        df: Joined matrix (rows = grid timestamps, columns = tags).
-        max_gap: Longest run of NaN to fill, in samples (FFILL_MAX_GAP).
+        df: Columns to fill (rows = grid timestamps), e.g. the flare formula tags or the cleaned process tags.
 
     Returns:
-        A tuple (filled matrix, number of values filled).
+        The same table, same index, float32, with no NaN left in any column that had at least one value.
     """
-    out = df.copy()
-    n_filled = 0
-    for c in df.columns:
-        na = df[c].isna()
-        if not na.any():
-            continue
-        run_id = (~na).cumsum()
-        lengths = na.groupby(run_id).sum()
-        lengths = lengths[lengths > 0]
-        run_len = run_id.map(lengths).fillna(0)
-        fill = na & (run_len <= max_gap) & (run_id > 0)
-        out.loc[fill, c] = df[c].ffill()[fill]
-        n_filled += int(fill.sum())
-    return out, n_filled
+    out = df.astype("float64").reset_index(drop=True)
+    out = out.interpolate(method="spline", order=C.SPLINE_ORDER, limit_direction="both")
+    out = out.ffill().bfill()
+    out.index = df.index
+    return out.astype("float32")
 
 
 def clean_matrix(X: pd.DataFrame, reg: pd.DataFrame, status: dict[str, str]) -> tuple[pd.DataFrame, dict[str, str]]:
     """Clean the joined matrix; flare_net is never dropped.
 
-    Steps: fill short gaps; drop tags with more than MAX_MISSING missing; drop rows without flare_net; drop constant
-    and near-constant tags; drop rows with fewer than MIN_ROW_COMPLETE of tags observed; drop duplicate columns.
+    Steps: drop tags with more than MAX_MISSING missing (10 %, as the TA); drop rows without flare_net; drop constant
+    and near-constant tags; fill every remaining gap with impute_spline() (the TA's method); drop rows with fewer than
+    MIN_ROW_COMPLETE of tags observed (nothing is left to drop after the fill); drop duplicate columns.
 
     Args:
         X: Matrix with flare_net, from build_flare_net().
@@ -719,11 +726,9 @@ def clean_matrix(X: pd.DataFrame, reg: pd.DataFrame, status: dict[str, str]) -> 
             log(f"  drop {c}: {reason(c)}")
         return frame.drop(columns=list(cols))
 
-    X, n_filled = ffill_short_gaps(X, C.FFILL_MAX_GAP)
-    log(f"forward-filled {n_filled} values (NaN runs <= {C.FFILL_MAX_GAP} samples)")
     miss = X.isna().mean()
     X = drop(X, [c for c in miss[miss > C.MAX_MISSING].index if c != C.FLARE_NET],
-             lambda c: f"{100 * miss[c]:.1f}% missing after ffill (> {C.MAX_MISSING:.0%})")
+             lambda c: f"{100 * miss[c]:.1f}% missing (> {C.MAX_MISSING:.0%})")
     n0 = len(X)
     X = X[X[C.FLARE_NET].notna()]
     log(f"rows without a {C.FLARE_NET} value dropped: {n0 - len(X)} of {n0}")
@@ -733,6 +738,10 @@ def clean_matrix(X: pd.DataFrame, reg: pd.DataFrame, status: dict[str, str]) -> 
     near = [c for c in X.columns if top_share[c] > C.NEAR_CONSTANT_SHARE]
     X = drop(X, [c for c in near if not is_flare[c]],
              lambda c: f"near-constant ({100 * top_share[c]:.2f}% one value > {C.NEAR_CONSTANT_SHARE:.0%})")
+    n_missing = int(X.isna().to_numpy().sum())
+    X = impute_spline(X)
+    log(f"filled {n_missing} missing values ({100 * n_missing / X.size:.2f}% of the matrix) by cubic spline + "
+        f"ffill/bfill (TA's method)")
     n0 = len(X)
     X = X[X.notna().mean(axis=1) >= C.MIN_ROW_COMPLETE]
     log(f"rows with < {C.MIN_ROW_COMPLETE:.0%} of tags observed dropped: {n0 - len(X)} of {n0}")
@@ -1148,23 +1157,18 @@ def t2_threshold(m: int, p: int, k: int, alpha: float) -> float:
 
 
 def compute_t2(X: np.ndarray, Sigma: np.ndarray) -> tuple[np.ndarray, int]:
-    """Hotelling T² = Zᵀ Σ⁻¹ Z for every row (paper Eq. 7); pseudo-inverse if Σ is singular.
+    """Overall T² = Zᵀ pinv(R) Z for every row (paper Eq. 7), computed as in the TA's Main.py (lines 243 and 315).
+
+    R is the sample NOC correlation matrix of the standardized PCs; the TA uses np.linalg.pinv(np.corrcoef(...)).
 
     Args:
         X: Standardized PCs from noc_correlation() (rows = timestamps).
-        Sigma: A covariance / correlation matrix of those PCs (the sample NOC Σ here).
+        Sigma: Sample NOC correlation matrix R from noc_correlation().
 
     Returns:
-        A tuple (T² per row, number of directions used).
+        A tuple (T² per row, rank of R).
     """
-    try:
-        L = np.linalg.cholesky(Sigma)
-        return (solve_triangular(L, X.T, lower=True) ** 2).sum(axis=0), Sigma.shape[0]
-    except np.linalg.LinAlgError:
-        vals, vecs = np.linalg.eigh(Sigma)
-        keep = vals > 1e-10 * vals.max()
-        log(f"DEVIATION: Σ is singular; T² uses a pseudo-inverse on {int(keep.sum())} of {len(vals)} directions")
-        return ((X @ (vecs[:, keep] / np.sqrt(vals[keep]))) ** 2).sum(axis=1), int(keep.sum())
+    return ((X @ np.linalg.pinv(Sigma)) * X).sum(axis=1), int(np.linalg.matrix_rank(Sigma))
 
 
 # ---- T2 DECOMPOSITION ----
@@ -1239,7 +1243,7 @@ def bn_implied_correlation(B: np.ndarray, sigma2: np.ndarray) -> np.ndarray:
 
 
 def check_sum_identity(T: np.ndarray, X: np.ndarray, B: np.ndarray, sigma2: np.ndarray) -> tuple[np.ndarray, float]:
-    """Compute the overall T² as the sum of the causal terms and check it equals Zᵀ Σ_G⁻¹ Z (paper Eq. 13).
+    """Sum the causal terms and check the sum equals Zᵀ Σ_G⁻¹ Z (paper Eq. 13); the monitored T² is compute_t2().
 
     Args:
         T: Causal terms from decompose_t2_causal().
@@ -1248,7 +1252,7 @@ def check_sum_identity(T: np.ndarray, X: np.ndarray, B: np.ndarray, sigma2: np.n
         sigma2: Conditional variances from fit_causal_regressions().
 
     Returns:
-        A tuple (T² per row, max relative error of the identity).
+        A tuple (sum of the causal terms per row, max relative error of the identity).
 
     Raises:
         SystemExit: If the identity fails beyond IDENTITY_TOL (or the numerical-inverse tolerance).
@@ -1688,7 +1692,7 @@ def plot_t2_overview(D: dict[str, Any], spans: dict[str, list[tuple]], sections:
     for t in D["events"]["start"]:
         ax.axvline(t, color=col["event"], lw=0.8, alpha=0.7)
     ax.set_yscale("log")
-    ax.set_title(f"Overall T² = Σ_j T²_j·PA(j) (PCs only), whole window: {100 * (t2 > lim).mean():.1f}% of rows above "
+    ax.set_title(f"Overall T² = Zᵀ R⁻¹ Z (PCs only), whole window: {100 * (t2 > lim).mean():.1f}% of rows above "
                  "the limit (orange lines = flare onsets)", loc="left")
     ax.set_ylabel("T²")
     add_legend(ax)
@@ -1762,7 +1766,7 @@ def plot_event_zooms(D: dict[str, Any], path: Path) -> None:
                              labels=top + ["other PCs"], colors=list(plt.cm.tab10.colors[:len(top)]) + ["#d9d9d9"])
             axs[2].legend(loc="upper left", ncol=3, fontsize=8)
         axs[2].set_ylim(0, 1)
-        axs[2].set_ylabel("share of T²")
+        axs[2].set_ylabel("share of Σ_j T²_j·PA(j)")
         for ax in axs:
             ax.axvspan(e.start - pre, e.start, color=col["preflare"], alpha=0.12, lw=0)
             ax.axvspan(e.start, e.end + iv, color=col["event"], alpha=0.25, lw=0)
@@ -2071,8 +2075,9 @@ def build_summary(out: Path) -> None:
           f"- Per-PC limits on T²_j: Eq. 13 with p = 1, k = number of parents, α = {lim['alpha_term']:g}: "
           f"{terml['t2_limit'].min():.3f} to {terml['t2_limit'].max():.3f}. NOC rows above: mean "
           f"{lim['pct_noc_above_term_limit_mean']:.2f}% per PC (expected about {100 * lim['alpha_term']:g}%).",
-          f"- Sum identity Σ_j T²_j·PA(j) = T²: max relative error {lim['sum_identity_max_rel_error']:.1e}. Median gap to "
-          f"the sample-Σ T² on NOC: {lim['gap_sample_vs_bn_median_noc']:.3f}.", "",
+          f"- Overall T² = Zᵀ R⁻¹ Z with the sample NOC correlation R (as the TA). The causal terms sum to Zᵀ Σ_G⁻¹ Z "
+          f"(max relative error {lim['sum_identity_max_rel_error']:.1e}); median gap between that sum and T² on NOC: "
+          f"{lim['gap_t2_vs_sum_terms_median_noc']:.3f}.", "",
           "| event | onset | min | peak t/h | found | first T² alarm (min before onset) | top root-cause PC | "
           "minutes above its limit |", "|---|---|---|---|---|---|---|---|"]
     top = rc[rc["rank"] == 1].set_index("event_id") if len(rc) else pd.DataFrame()

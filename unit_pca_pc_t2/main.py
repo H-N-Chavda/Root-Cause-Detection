@@ -26,7 +26,7 @@ def main() -> None:
 
     # 1. load, flare_net, flare events, cleaning, row labels, standardization
     reg, frames, intervals = H.load_all_tags(P)
-    X, interval = H.join_and_resample(frames, intervals, reg)
+    X, interval = H.join_on_time_grid(frames, intervals, reg)
     parts = X.reindex(columns=[P.flare_1_tag, P.flare_2_tag, P.flare_recovery_tag]).set_axis(
         ["flare_1", "flare_2", "recovery"], axis=1)
     X, reg, net, status = H.build_flare_net(X, reg, P)
@@ -64,9 +64,9 @@ def main() -> None:
     B, sigma2, coef, floored = H.fit_causal_regressions(S, nodes, pa)
     coef.to_csv(d["t2"] / "path_coefficients.csv", index=False)
     T = H.decompose_t2_causal(Xs, B, sigma2)
-    t2, identity_err = H.check_sum_identity(T, Xs, B, sigma2)
+    t2_terms, identity_err = H.check_sum_identity(T, Xs, B, sigma2)
     H.check_noc_terms(T, noc, nodes, floored)
-    t2_sample, df_sample = H.compute_t2(Xs, S)
+    t2, rank_s = H.compute_t2(Xs, S)
     p, m = len(nodes), int(noc.sum())
     t2_lim = H.t2_threshold(m, p, 0, C.ALPHA0)
     term_lim = np.array([H.t2_threshold(m, 1, len(pa[t]), C.ALPHA_TERM) for t in nodes])
@@ -74,15 +74,16 @@ def main() -> None:
     pd.DataFrame({"node": nodes, "n_parents": [len(pa[t]) for t in nodes], "sigma2": sigma2, "t2_limit": term_lim,
                   "abs_T_limit": abs_lim}).to_csv(d["t2"] / "term_limits.csv", index=False)
     noc_above, noc_term_rate = 100 * (t2[noc] > t2_lim).mean(), 100 * (np.abs(T[noc]) > abs_lim).mean(axis=0)
-    gap = np.abs(t2_sample - t2) / np.maximum(t2_sample, 1e-12)
+    gap = np.abs(t2 - t2_terms) / np.maximum(t2, 1e-12)
     H.log(f"p = {p} PCs, m = {m} NOC rows; T² limit (report Eq. 13, corrected) = {t2_lim:.2f} at alpha {C.ALPHA0}; "
           f"NOC rows above it: {noc_above:.2f}% (expected about {100 * C.ALPHA0:g}%)")
     H.log(f"per-PC limits on T²_j (Eq. 13 with p = 1, k = number of parents, alpha {C.ALPHA_TERM}): "
           f"{term_lim.min():.3f} to {term_lim.max():.3f}; NOC rows above them: mean {noc_term_rate.mean():.2f}% per PC "
           f"(expected about {100 * C.ALPHA_TERM:g}%)")
-    H.log(f"Proposition 1 gap between sample-Σ T² (df {df_sample}) and the BN T²: median {np.median(gap[noc]):.3f} on NOC, "
+    H.log(f"overall T² = Zᵀ pinv(R) Z (TA's Main.py; rank of R {rank_s} of {p}); relative gap to the sum of the causal "
+          f"terms: median {np.median(gap[noc]):.3f} on NOC, "
           f"{np.median(gap[pre_eid > 0]) if (pre_eid > 0).any() else float('nan'):.3f} in pre-flare windows")
-    pd.DataFrame({"T2": t2, "T2_sample_sigma": t2_sample, "above_limit": t2 > t2_lim, "noc": noc, "flare_event": flare,
+    pd.DataFrame({"T2": t2, "T2_sum_terms": t2_terms, "above_limit": t2 > t2_lim, "noc": noc, "flare_event": flare,
                   "short_flare": short_flare, "preflare_event_id": pre_eid},
                  index=Z.index).to_parquet(d["t2"] / "t2_all_rows.parquet")
 
@@ -104,7 +105,8 @@ def main() -> None:
                    "pct_noc_above_t2_limit": noc_above, "pct_noc_above_term_limit_mean": float(noc_term_rate.mean()),
                    "pct_preflare_above_t2_limit": 100 * float((t2[w] > t2_lim).mean()) if w.any() else float("nan"),
                    "sum_identity_max_rel_error": identity_err,
-                   "gap_sample_vs_bn_median_noc": float(np.median(gap[noc]))}]).to_csv(d["t2"] / "limits.csv", index=False)
+                   "gap_t2_vs_sum_terms_median_noc": float(np.median(gap[noc]))}]).to_csv(d["t2"] / "limits.csv",
+                                                                                           index=False)
     H.log("pipeline finished")
 
 

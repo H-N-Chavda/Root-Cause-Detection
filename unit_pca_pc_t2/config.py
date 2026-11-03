@@ -23,7 +23,8 @@ VAR_EXPLAINED_THRESHOLD = None         # e.g. 0.90: keep the fewest PCs reaching
 
 # ---- FLARE TAG (flare_net = FLARE_1_TAG + FLARE_2_TAG - FLARE_RECOVERY_TAG, names in .env) ----
 FLARE_NET = "flare_net"
-FLARE_RECOVERY_MISSING = "zero"        # recovery tag has no value: "zero" = no recovery, "drop" = row left out
+FLARE_MAX_MISSING = 0.50               # TA drops flare tags above this missing share; here only a warning (formula
+                                       # tags are kept and gap-filled with the spline method like all other tags)
 
 # ---- FLARE EVENTS AND WINDOWS ----
 FLARE_USE_MAD_THRESHOLD = False        # True: threshold = median + K * 1.4826 * MAD; False: FLARE_THRESHOLD below
@@ -40,11 +41,13 @@ TA_CHECK_END = "2025-06-01"
 TA_FLARE_COUNT = 2
 TA_FLARE_MINUTES = 5
 
-# ---- CLEANING (unchanged from the earlier pipeline) ----
+# ---- TIME GRID AND CLEANING (grid, missing limit and gap filling as in the TA's notebook) ----
+GRID_FREQ = "1min"                     # outer join on time, then reindex to a complete grid of this step (no resampling)
 SENTINELS = [-999.0, -9999.0, -99999.0, 99999.0]
-FFILL_MAX_GAP = 5                      # samples; only NaN runs this short are forward-filled
-MAX_MISSING = 0.30                     # drop tags with more missing than this after the fill
-MIN_ROW_COMPLETE = 0.90                # keep rows with at least this share of tags observed
+MAX_MISSING = 0.10                     # drop tags with more than 10 % missing on the grid (TA: max_missing_pct=10)
+SPLINE_ORDER = 3                       # gaps filled by interpolate(method='spline', order=3, limit_direction='both'),
+                                       # then ffill / bfill (TA's clean_and_impute)
+MIN_ROW_COMPLETE = 0.90                # keep rows with at least this share of tags observed (no effect after filling)
 NEAR_CONSTANT_SHARE = 0.99             # near-constant = one value covers more than 99 % of samples
 
 # ---- PC ALGORITHM ----
@@ -99,15 +102,15 @@ def load_paths() -> SimpleNamespace:
         against unit_pca_pc_t2/.
 
     Raises:
-        SystemExit: If a required .env entry is empty, or FLARE_RECOVERY_MISSING / N_PCS_PER_UNIT is invalid.
+        SystemExit: If a required .env entry is empty, or N_PCS_PER_UNIT is below 1.
     """
     from dotenv import load_dotenv
     load_dotenv(PROJECT / ".env")
     missing = [k for k in REQUIRED_ENV if not os.environ.get(k, "").strip()]
     if missing:
         sys.exit(f"Set {', '.join(missing)} in unit_pca_pc_t2/.env before running the pipeline.")
-    if FLARE_RECOVERY_MISSING not in ("drop", "zero") or N_PCS_PER_UNIT < 1:
-        sys.exit("config.py: FLARE_RECOVERY_MISSING must be 'drop' or 'zero' and N_PCS_PER_UNIT >= 1.")
+    if N_PCS_PER_UNIT < 1:
+        sys.exit("config.py: N_PCS_PER_UNIT must be >= 1.")
     env = {k: os.environ[k].strip().strip("'\"") for k in REQUIRED_ENV}
     return SimpleNamespace(
         data_root=resolve_path(env["DATA_ROOT"]), out=resolve_path(env["OUT_DIR"]),

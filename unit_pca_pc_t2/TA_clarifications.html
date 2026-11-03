@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Questions on the TA code</title>
+<style>
+  @page { size: A4; margin: 16mm 15mm; }
+  body { font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; font-size: 10.5pt; line-height: 1.45; color: #1a1a1a; }
+  h1 { font-size: 17pt; margin: 0 0 2px; }
+  .sub { color: #555; margin: 0 0 14px; font-size: 9.5pt; }
+  h2 { font-size: 12pt; margin: 16px 0 6px; padding-bottom: 3px; border-bottom: 1px solid #ccc; }
+  .q { margin: 0 0 12px; page-break-inside: avoid; }
+  section { break-inside: avoid; page-break-inside: avoid; }
+  .where { font-family: Menlo, Consolas, monospace; font-size: 8.8pt; background: #f2f4f7; padding: 5px 7px; border-left: 3px solid #1f5fa8; margin: 4px 0 6px; white-space: pre-wrap; }
+  .ask { font-weight: 600; }
+  code { font-family: Menlo, Consolas, monospace; font-size: 9pt; background: #f2f4f7; padding: 0 3px; }
+  ul { margin: 4px 0 0 18px; padding: 0; }
+  li { margin: 2px 0; }
+  .note { color: #444; font-size: 9.5pt; }
+</style>
+</head>
+<body>
+<h1>Questions on the TA code</h1>
+<p class="sub">From comparing <code>references/CodeByTA/</code> (<code>main_whole_data_PCA_batch.ipynb</code>, <code>Main.py</code>,
+<code>Digraph_generation_PC.R</code>, <code>Diagraph_generation_PC.R</code>) with our pipeline. Notebook lines are counted
+inside the cell (cell number in file order, cell id in brackets).</p>
+
+<h2>Data cleaning</h2>
+<div class="q">
+<p class="ask">Q1. Why are tags with any negative value dropped?</p>
+<div class="where">main_whole_data_PCA_batch.ipynb, cell 7 (df710e59), lines 86–94:
+    negative_cols = df_num.columns[(df_num &lt; 0).any()].tolist()
+    df_num = df_num.drop(columns=negative_cols)</div>
+<p>This removes 63 tags (cell 8 output), including pressure and differential-pressure tags that can be negative in
+normal operation (e.g. <code>02PDI215.PV</code>, <code>PDI3215A.PV</code>, <code>71PC1701.PV</code>). A single negative
+sample removes the whole tag. Is this meant to remove faulty sensors, or are negative readings invalid for these
+tags? We have not applied this rule yet.</p>
+</div>
+
+<h2>T² threshold</h2>
+<div class="q">
+<p class="ask">Q2. Why is the T² limit multiplied by 1.2 (and 1.5) instead of using the base formula?</p>
+<div class="where">main_whole_data_PCA_batch.ipynb, cell 12 (3e429421), lines 58–64:
+    T2_limit = (1.2 * (p*(n-1)*(n+1) / (n*(n-p))) * f.ppf(0.99, p, n-p))
+cell 13 (834edfcf), line 58:  T2_limit = (1.5 * ...)
+Main.py, lines 258–259:
+    Tsq_thrs[P] = (((WL + P) * (WL - P)) / (WL * (WL - P))) * f.ppf(1 - alpha1, P, WL - P)</div>
+<ul>
+<li>How was the factor chosen (to reduce the number of alarms?), and which one should be used?</li>
+<li>The notebook uses the 0.99 quantile, while <code>Main.py</code> takes α from the user (line 46, e.g. 0.05). Which α is intended?</li>
+<li>The notebook formula has the factor p; <code>Main.py</code> lines 258–259 (and report Eq. 13) do not. Without p,
+the limit is about 1–2 while a normal T² averages about P. Which form is intended?</li>
+</ul>
+<p class="note">We currently use the base form p(m+1)(m−1)/(m(m−p))·F(1−α; p, m−p) with α = 0.05 and no multiplier.</p>
+</div>
+
+<section>
+<h2>PC algorithm</h2>
+<div class="q">
+<p class="ask">Q3. The test is the same (pcalg <code>gaussCItest</code> = Fisher-Z partial correlation, which we also use). Only the parameters differ:</p>
+<div class="where">Digraph_generation_PC.R, line 12: alpha1 &lt;- 0.05 ; lines 27–29:
+    pc(suffStat = list(C = cor(data), n = n), indepTest = gaussCItest,
+       alpha = alpha1, fixedEdges = NULL, fixedGaps = FG, labels = V, verbose = FALSE)
+lines 15, 23: FG from Fixed_gaps.xlsx   (Diagraph_generation_PC.R: lines 8, 19, 22–24)
+Main.py, line 160: the same alpha1 is passed to PC and used for the T² limits</div>
+<ul>
+<li><b>α:</b> you use 0.05 for PC and for T². We use 0.01 for PC (with this many rows Fisher-Z keeps very weak edges at 0.05). Is one α for both intended?</li>
+<li><b>fixedGaps:</b> which edges does <code>Fixed_gaps.xlsx</code> forbid, and from what knowledge? Is there one for the 13-unit flare case? We forbid none.</li>
+<li><b>Depth and rows:</b> pcalg runs with no limit on the conditioning-set size (<code>m.max = Inf</code>) on every row. For speed we cap it at 3 and use every 10th row (1-min data are strongly autocorrelated). Is that acceptable?</li>
+<li><b>Orientation options:</b> you use pcalg defaults (<code>u2pd = "relaxed"</code>, <code>conservative = FALSE</code>, <code>maj.rule = FALSE</code>, <code>solve.confl = FALSE</code>)? We use causal-learn's <code>uc_rule = 0</code>, <code>uc_priority = 2</code>.</li>
+</ul>
+</div>
+</section>
+
+<h2>Graph orientation (for your information)</h2>
+<div class="q">
+<p class="ask">Q4. We orient the PC output automatically with Dor–Tarsi instead of stopping on a cycle. Is that acceptable?</p>
+<div class="where">Digraph_generation_PC.R, line 42: adj_matrix &lt;- as(pc.fit@graph, "matrix")
+Main.py, lines 194–197 and 364–365: any cycle -&gt; "Digraph has cycle: Construct New Adjancy matrix"</div>
+<p>In <code>as(pc.fit@graph, "matrix")</code> an undirected edge appears in both directions, so <code>nx.simple_cycles</code>
+finds a 2-cycle and the run stops until the matrix is fixed by hand. We turn the PC output (a CPDAG) into a DAG with
+Dor &amp; Tarsi (1992), the same algorithm as pcalg's <code>pdag2dag()</code>. It picks one DAG of the equivalence class
+without adding or removing edges. If no consistent DAG exists, we take the sink with the fewest violations, and
+reverse the fewest edges to break directed cycles. Both are logged and counted.</p>
+</div>
+
+<h2>Overall T² (adopted) and a request</h2>
+<div class="q">
+<p class="ask">Q5. We now compute the overall T² as you do. Please share <code>function_file/</code> so we can check the decomposition.</p>
+<div class="where">Main.py, lines 229–231 and 243 (moving window: 302–304, 315):
+    Cov_mat = np.corrcoef(Window_normal, rowvar=False)
+    Tsq_sample = diag(Mat_normalized · pinv(Cov_mat) · Mat_normalizedᵀ)
+Main.py, lines 9–15: tsq_decomp, NAN_remove, copula_transformed, tsq_stats (not included)</div>
+<p>T² = Zᵀ pinv(R) Z with the sample correlation R matches Eq. 7 of Li, Jin &amp; Shi (2008), so we adopted it. With a
+sample R and a learned graph, the per-variable terms only add up to this T² when the graph is exactly right (their
+Proposition 1). Does <code>Tsq_decomp</code> (Main.py lines 246, 319) use each variable's parents from
+<code>adj_matrix</code> only, and does <code>Lcond</code> equal the number of parents?</p>
+</div>
+</body>
+</html>
