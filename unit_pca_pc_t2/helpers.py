@@ -1038,7 +1038,8 @@ def plot_flare_overview(D, spans, sections, path):
     col, f, events, thr, iv = C.PLOT_COLORS, D["flare"], D["events"], D["thr"], D["interval"]
     net = f[C.FLARE_NET]
     n = len(sections) + 2
-    fig, axes = plt.subplots(n, 1, figsize=(C.PLOT_WIDTH_IN, 2.8 * n), squeeze=False)
+    fig, axes = plt.subplots(n, 1, figsize=(C.PLOT_WIDTH_IN, C.PLOT_ROW_HEIGHT_IN * n), squeeze=False,
+                             gridspec_kw={"hspace": C.PLOT_ROW_GAP})
     axes = axes[:, 0]
     ax = axes[0]
     ax.plot(net.index, net.to_numpy(), color=col["flare"], lw=0.5)
@@ -1081,7 +1082,8 @@ def plot_t2_overview(D, spans, sections, peaks, path):
     col, lim = C.PLOT_COLORS, D["t2_lim"]
     t2 = D["t2"]["T2"].clip(lower=1e-3)
     n = len(sections) + 1
-    fig, axes = plt.subplots(n, 1, figsize=(C.PLOT_WIDTH_IN, 3.2 * n), squeeze=False)
+    fig, axes = plt.subplots(n, 1, figsize=(C.PLOT_WIDTH_IN, C.PLOT_ROW_HEIGHT_IN * n), squeeze=False,
+                             gridspec_kw={"hspace": C.PLOT_ROW_GAP})
     axes = axes[:, 0]
     ax = axes[0]
     ax.plot(t2.index, t2.to_numpy(), color=col["t2"], lw=0.4)
@@ -1128,8 +1130,8 @@ def plot_event_zooms(D, path):
         ev = ev.nlargest(C.PLOT_MAX_EVENTS, "peak_flare_net").sort_values("start")
     ncol = 2 if len(ev) > 1 else 1
     nrow = int(np.ceil(len(ev) / ncol))
-    fig = plt.figure(figsize=(C.PLOT_WIDTH_IN, 8 * nrow), constrained_layout=True)
-    subs = np.atleast_1d(fig.subfigures(nrow, ncol)).ravel()
+    fig = plt.figure(figsize=(C.PLOT_WIDTH_IN, C.PLOT_EVENT_HEIGHT_IN * nrow), constrained_layout=True)
+    subs = np.atleast_1d(fig.subfigures(nrow, ncol, hspace=0.04, wspace=0.03)).ravel()
     before, after = pd.Timedelta(minutes=C.PLOT_ZOOM_BEFORE_MIN), pd.Timedelta(minutes=C.PLOT_ZOOM_AFTER_MIN)
     pre = pd.Timedelta(minutes=C.FLARE_PRE_WINDOW_MIN)
     net, t2, terms = D["flare"][C.FLARE_NET], D["t2"]["T2"], D["terms"]
@@ -1176,7 +1178,8 @@ def plot_pc_terms(D, peaks, spans, path):
         return
     col, z, terms = C.PLOT_COLORS, D["z_lim"], D["terms"]
     pcs = list(peaks["top_pc"].value_counts().index[:C.PLOT_MAX_PCS])
-    fig, axes = plt.subplots(len(pcs), 1, figsize=(C.PLOT_WIDTH_IN, 2.6 * len(pcs)), squeeze=False, sharex=True)
+    fig, axes = plt.subplots(len(pcs), 1, figsize=(C.PLOT_WIDTH_IN, C.PLOT_ROW_HEIGHT_IN * len(pcs)), squeeze=False,
+                             sharex=True, gridspec_kw={"hspace": C.PLOT_ROW_GAP})
     for ax, pc in zip(axes[:, 0], pcs):
         s = terms[pc].astype(np.float64)
         own = peaks[peaks["top_pc"] == pc]

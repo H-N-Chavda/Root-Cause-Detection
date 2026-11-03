@@ -65,6 +65,9 @@ PLOT_TOP_PCS_ZOOM = 5                  # PCs drawn separately in the T² share p
 PLOT_MAX_EVENTS = 30                   # events in Figure 3 (largest flare_net peaks if there are more)
 PLOT_MAX_PCS = 40                      # PCs in Figure 4 (most often labelled first)
 PLOT_WIDTH_IN = 22
+PLOT_ROW_HEIGHT_IN = 3.6               # height of one row (section / PC) in Figures 1, 2 and 4
+PLOT_ROW_GAP = 0.75                    # vertical gap between rows, as a fraction of the row height
+PLOT_EVENT_HEIGHT_IN = 10              # height of one event block in Figure 3
 PLOT_DPI = 120
 PLOT_COLORS = {"flare": "#c0392b", "t2": "#1f5fa8", "event": "#e67e22", "preflare": "#d62728", "noc": "#2ca02c",
                "limit": "#222222", "missing": "#9e9e9e"}
