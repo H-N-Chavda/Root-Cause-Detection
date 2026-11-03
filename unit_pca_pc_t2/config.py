@@ -1,4 +1,6 @@
 """Parameters and tuning of the unit-wise PCA -> PC -> causation-based T² pipeline, plus the .env loader (paths only)."""
+from __future__ import annotations
+
 import os
 import sys
 from pathlib import Path
@@ -11,8 +13,8 @@ REQUIRED_ENV = ["DATA_ROOT", "UNIT_FOLDERS", "FLARE_FOLDER", "ALL_TAGS_FOLDER", 
                 "FLARE_1_TAG", "FLARE_2_TAG", "FLARE_RECOVERY_TAG"]
 
 # ---- TIME WINDOW ----
-WINDOW_START = "2025-05-01"            # rows with WINDOW_START <= time < WINDOW_END are read; None = no bound
-WINDOW_END = "2025-06-01"
+WINDOW_START = "2025-07-01"            # rows with WINDOW_START <= time < WINDOW_END are read; None = no bound
+WINDOW_END = "2025-11-01"              # 4 months: July to October 2025
 
 # ---- UNIT-WISE PCA ----
 N_PCS_PER_UNIT = 16                    # x = PCs kept per unit (capped by the unit's tag count and numerical rank)
@@ -27,11 +29,13 @@ FLARE_RECOVERY_MISSING = "zero"        # recovery tag has no value: "zero" = no 
 FLARE_USE_MAD_THRESHOLD = False        # True: threshold = median + K * 1.4826 * MAD; False: FLARE_THRESHOLD below
 FLARE_THRESHOLD = 1.5                  # t/h; flaring = flare_net > this value (used when the flag above is False)
 FLARE_MAD_K = 3.0                      # K of the median + K * MAD rule (used when the flag above is True)
-EVENT_GAP = 5                          # samples; flagged rows at most this far apart form one event
-FLARE_PRE_WINDOW_MIN = 30              # flare region = [onset - 30 min, onset)
+EVENT_GAP = 5                          # samples; flagged rows at most this far apart form one run
+FLARE_MIN_DURATION_MIN = 30            # a run is a flare event only if it lasts at least this long; shorter runs are
+                                       # not events but are kept out of NOC
+FLARE_PRE_WINDOW_MIN = 30              # flare region = [onset - 30 min, onset); an event is "found" if T² > limit there
 FLARE_BUFFER_MIN = 120                 # NOC excludes [onset - 120 min, end + 120 min] of every event
 TRAIN_FRAC = 0.60                      # NOC is drawn from the first 60 % of the window
-TA_CHECK_START = "2025-05-01"          # TA's account to cross-check: 2 flares of about 5 min in May 2025
+TA_CHECK_START = "2025-05-01"          # TA's account (2 flares of about 5 min in May 2025); skipped when outside the window
 TA_CHECK_END = "2025-06-01"
 TA_FLARE_COUNT = 2
 TA_FLARE_MINUTES = 5
@@ -59,6 +63,7 @@ IDENTITY_TOL = 1e-6                    # max relative error allowed in the sum i
 
 # ---- PLOTS (plots.py) ----
 PLOT_SECTION_HOURS = 48                # each section row of Figures 1-2 covers this many hours at 1-min resolution
+PLOT_PC_SECTION_HOURS = 168            # section length in the 'individual PCs' figures (one week per row)
 PLOT_PEAK_MIN_SEP_MIN = 60             # labelled T² peaks are at least this far apart
 PLOT_MAX_LABELS_PER_SECTION = 8        # labelled T² peaks per section row
 PLOT_TOP_TAGS = 2                      # tags named per PC label
@@ -76,8 +81,18 @@ PLOT_COLORS = {"flare": "#c0392b", "t2": "#1f5fa8", "event": "#e67e22", "preflar
                "limit": "#222222", "missing": "#9e9e9e"}
 
 
-def load_paths():
-    """Read folder paths and flare tag names from .env and stop if any is missing."""
+def load_paths() -> SimpleNamespace:
+    """Read the data paths and flare tag names from unit_pca_pc_t2/.env and check the settings in this file.
+
+    Returns:
+        Namespace with data_root (folder holding the unit folders), out (output folder), unit_folders (the 13 unit
+        folder names), flare_folder, all_tags_folder, control_folder, and flare_1_tag / flare_2_tag /
+        flare_recovery_tag (exact column names in flare_data used for flare_net). Relative paths are resolved
+        against unit_pca_pc_t2/.
+
+    Raises:
+        SystemExit: If a required .env entry is empty, or FLARE_RECOVERY_MISSING / N_PCS_PER_UNIT is invalid.
+    """
     from dotenv import load_dotenv
     load_dotenv(PROJECT / ".env")
     missing = [k for k in REQUIRED_ENV if not os.environ.get(k, "").strip()]
@@ -93,12 +108,23 @@ def load_paths():
         flare_1_tag=env["FLARE_1_TAG"], flare_2_tag=env["FLARE_2_TAG"], flare_recovery_tag=env["FLARE_RECOVERY_TAG"])
 
 
-def resolve_path(value):
-    """Absolute path; a relative one is read relative to this folder."""
+def resolve_path(value: str) -> Path:
+    """Turn a path from .env into an absolute path.
+
+    Args:
+        value: Path text from .env (DATA_ROOT or OUT_DIR).
+
+    Returns:
+        The path itself if absolute, else the path relative to unit_pca_pc_t2/.
+    """
     p = Path(value)
     return p if p.is_absolute() else (PROJECT / p).resolve()
 
 
-def window_bounds():
-    """WINDOW_START and WINDOW_END as timestamps (None when unset)."""
+def window_bounds() -> tuple[pd.Timestamp | None, pd.Timestamp | None]:
+    """The analysis window as timestamps.
+
+    Returns:
+        A tuple (WINDOW_START, WINDOW_END) as pd.Timestamp, None for an unset bound.
+    """
     return (pd.Timestamp(WINDOW_START) if WINDOW_START else None, pd.Timestamp(WINDOW_END) if WINDOW_END else None)

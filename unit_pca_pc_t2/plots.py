@@ -3,14 +3,22 @@ import config as C
 import helpers as H
 
 
-def main():
-    """Read outputs/, label the T² peaks, draw Figures 1-5 and one PNG per PC in 'individual PCs'."""
+def main() -> None:
+    """Read outputs/, label the T² peaks, write the root-cause table and draw Figures 1-5 plus 'individual PCs'.
+
+    Outputs: tables/t2_peaks.csv, tables/root_cause_by_event.csv, figures/fig1_flare.png, fig2_t2_overall.png,
+    fig3_event_zooms.png, fig4_pc_terms.png, fig5_causal_graph.png and figures/individual PCs/*.png.
+
+    Raises:
+        SystemExit: If main.py's outputs are missing.
+    """
     H.check_packages()
     P = C.load_paths()
     d = H.make_output_dirs(P.out)
     H.start_log(d["logs"] / "plots.log")
     D = H.load_plot_inputs(P.out)
-    sections = H.time_sections(D["flare"].index.min(), D["flare"].index.max())
+    start, end = D["flare"].index.min(), D["flare"].index.max()
+    sections = H.time_sections(start, end)
     spans = H.context_spans(D)
     peaks = H.label_t2_peaks(D, sections)
     peaks.to_csv(d["tables"] / "t2_peaks.csv", index=False)
@@ -20,7 +28,8 @@ def main():
     H.plot_event_zooms(D, d["figures"] / "fig3_event_zooms.png")
     H.plot_pc_terms(D, peaks, spans, d["figures"] / "fig4_pc_terms.png")
     H.plot_causal_graph(D, d["figures"] / "fig5_causal_graph.png")
-    H.plot_individual_pcs(D, peaks, spans, sections, d["figures"] / "individual PCs")
+    H.plot_individual_pcs(D, peaks, spans, H.time_sections(start, end, C.PLOT_PC_SECTION_HOURS),
+                          d["figures"] / "individual PCs")
     H.log("figures finished")
 
 

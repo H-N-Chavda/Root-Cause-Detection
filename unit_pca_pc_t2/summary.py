@@ -3,8 +3,12 @@ import config as C
 import helpers as H
 
 
-def main():
-    """Read outputs/ and write SUMMARY.md (data and cleaning, PCA variance, graph and loops, T² and root causes)."""
+def main() -> None:
+    """Read outputs/ and write SUMMARY.md (data and cleaning, PCA variance, graph and loops, T² detection and causes).
+
+    Raises:
+        SystemExit: If main.py's outputs are missing.
+    """
     H.check_packages()
     P = C.load_paths()
     d = H.make_output_dirs(P.out)
