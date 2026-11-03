@@ -300,7 +300,7 @@ def detect_flare_events(net, interval):
     """Flag flare_net > median + K·MAD and merge flags at most EVENT_GAP samples apart into events (onset = first flag)."""
     med = float(net.median())
     mad = 1.4826 * float((net - med).abs().median())
-    thr = med + C.FLARE_MAD_K * mad
+    thr = med + C.FLARE_MAD_K * mad if C.FLARE_USE_MAD_THRESHOLD else float(C.FLARE_THRESHOLD)
     flagged = (net > thr).to_numpy()
     t = pd.DatetimeIndex(net.index)[flagged]
     v = net.to_numpy()[flagged]
@@ -311,8 +311,8 @@ def detect_flare_events(net, interval):
                            "peak_flare_net": g["v"].max()}).reset_index(drop=True)
     events.insert(0, "event_id", np.arange(1, len(events) + 1))
     events["duration_min"] = (events["end"] - events["start"] + interval) / pd.Timedelta(minutes=1)
-    log(f"flare threshold = median {med:.3f} + {C.FLARE_MAD_K:g} x MAD {mad:.3f} = {thr:.3f}; flagged rows "
-        f"{100 * flagged.mean():.2f}%; flare events: {len(events)} (flags <= {C.EVENT_GAP} samples apart merged)")
+    log(f"flare threshold {thr:.3f} ({'median + K x MAD' if C.FLARE_USE_MAD_THRESHOLD else 'FLARE_THRESHOLD, manual'}; "
+        f"median {med:.3f}, MAD {mad:.3f}); flagged rows {100 * flagged.mean():.2f}%; events: {len(events)}")
     return events, thr
 
 

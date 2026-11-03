@@ -5,7 +5,7 @@ Paper: Li, Jin & Shi (2008), J. Quality Technology 40(1) 46-58 (`references/pape
 | # | Quantity | Equation | Symbols | Source | Code |
 |---|---|---|---|---|---|
 | 1 | flare_net | $F_t = f_{1,t} + f_{2,t} - r_t$, $r_t := 0$ if missing | $f_1, f_2$: flare mass flows; $r$: recovered gas (t/h), tags in `.env` | Project | [helpers.py:285](helpers.py#L285) |
-| 2 | Flare threshold | $\tau = \operatorname{med}(F) + K \cdot 1.4826\,\operatorname{med}\lvert F - \operatorname{med}(F)\rvert$ | $K$ = `FLARE_MAD_K` = 3 | Project | [helpers.py:303](helpers.py#L303) |
+| 2 | Flare threshold | `FLARE_USE_MAD_THRESHOLD` = False: $\tau$ = `FLARE_THRESHOLD` (1.5 t/h); True: $\tau = \operatorname{med}(F) + K \cdot 1.4826\,\operatorname{med}\lvert F - \operatorname{med}(F)\rvert$ | $K$ = `FLARE_MAD_K` = 3 | Project | [helpers.py:303](helpers.py#L303) |
 | 3 | Flare events | flags $F_t > \tau$ with gap $\le g\Delta$ form one event; onset $t_e$ = first flag | $g$ = `EVENT_GAP` = 5; $\Delta$ = measured sampling interval | Project | [helpers.py:308](helpers.py#L308) |
 | 4 | Pre-flare window | $W_e = \{t : t_e - n\Delta \le t < t_e\} \setminus \text{flare rows}$, $n = \operatorname{round}(30\,\text{min}/\Delta)$ | $t_e$: onset of event $e$ | Project | [helpers.py:360](helpers.py#L360), [:371](helpers.py#L371) |
 | 5 | NOC rows | $t < t_0 + 0.6\,(t_N - t_0)$ and $t \notin [t_e - 2\text{h},\, t^{end}_e + 2\text{h}]\ \forall e$ | $t_0, t_N$: first/last row | Project | [helpers.py:344](helpers.py#L344) |

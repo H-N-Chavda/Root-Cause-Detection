@@ -24,7 +24,9 @@ FLARE_NET = "flare_net"
 FLARE_RECOVERY_MISSING = "zero"        # recovery tag has no value: "zero" = no recovery, "drop" = row left out
 
 # ---- FLARE EVENTS AND WINDOWS ----
-FLARE_MAD_K = 3.0                      # flaring = flare_net > median + K * 1.4826 * MAD
+FLARE_USE_MAD_THRESHOLD = False        # True: threshold = median + K * 1.4826 * MAD; False: FLARE_THRESHOLD below
+FLARE_THRESHOLD = 1.5                  # t/h; flaring = flare_net > this value (used when the flag above is False)
+FLARE_MAD_K = 3.0                      # K of the median + K * MAD rule (used when the flag above is True)
 EVENT_GAP = 5                          # samples; flagged rows at most this far apart form one event
 FLARE_PRE_WINDOW_MIN = 30              # flare region = [onset - 30 min, onset)
 FLARE_BUFFER_MIN = 120                 # NOC excludes [onset - 120 min, end + 120 min] of every event
