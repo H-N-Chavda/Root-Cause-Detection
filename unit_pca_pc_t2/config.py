@@ -45,6 +45,8 @@ TA_FLARE_MINUTES = 5
 GRID_FREQ = "1min"                     # outer join on time, then reindex to a complete grid of this step (no resampling)
 SENTINELS = [-999.0, -9999.0, -99999.0, 99999.0]
 MAX_MISSING = 0.10                     # drop tags with more than 10 % missing on the grid (TA: max_missing_pct=10)
+DROP_NEGATIVE_TAGS = True              # drop any process tag with a negative value (TA notebook cell 7, lines 86-94);
+                                       # flare_net is never dropped. Reason pending: TA_clarifications Q1
 SPLINE_ORDER = 3                       # gaps filled by interpolate(method='spline', order=3, limit_direction='both'),
                                        # then ffill / bfill (TA's clean_and_impute)
 MIN_ROW_COMPLETE = 0.90                # keep rows with at least this share of tags observed (no effect after filling)

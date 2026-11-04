@@ -703,7 +703,8 @@ def clean_matrix(X: pd.DataFrame, reg: pd.DataFrame, status: dict[str, str]) -> 
     """Clean the joined matrix; flare_net is never dropped.
 
     Steps: drop tags with more than MAX_MISSING missing (10 %, as the TA); drop rows without flare_net; drop constant
-    and near-constant tags; fill every remaining gap with impute_spline() (the TA's method); drop rows with fewer than
+    and near-constant tags; drop tags with any negative value when DROP_NEGATIVE_TAGS (the TA's rule, flare_net
+    exempt); fill every remaining gap with impute_spline() (the TA's method); drop rows with fewer than
     MIN_ROW_COMPLETE of tags observed (nothing is left to drop after the fill); drop duplicate columns.
 
     Args:
@@ -738,6 +739,10 @@ def clean_matrix(X: pd.DataFrame, reg: pd.DataFrame, status: dict[str, str]) -> 
     near = [c for c in X.columns if top_share[c] > C.NEAR_CONSTANT_SHARE]
     X = drop(X, [c for c in near if not is_flare[c]],
              lambda c: f"near-constant ({100 * top_share[c]:.2f}% one value > {C.NEAR_CONSTANT_SHARE:.0%})")
+    if C.DROP_NEGATIVE_TAGS:
+        neg = [c for c in X.columns if c != C.FLARE_NET and bool((X[c] < 0).any())]
+        X = drop(X, neg, lambda c: f"has negative values (min {float(X[c].min()):.3g})")
+        log(f"tags dropped for negative values (TA rule): {len(neg)}")
     n_missing = int(X.isna().to_numpy().sum())
     X = impute_spline(X)
     log(f"filled {n_missing} missing values ({100 * n_missing / X.size:.2f}% of the matrix) by cubic spline + "
@@ -2006,7 +2011,7 @@ def drop_reason(status: str) -> str:
     Returns:
         One of 'constant in NOC', 'too much missing', 'near-constant', 'duplicate column', 'constant', or the status.
     """
-    for key, name in (("within NOC", "constant in NOC"), ("missing", "too much missing"),
+    for key, name in (("negative", "negative values"), ("within NOC", "constant in NOC"), ("missing", "too much missing"),
                       ("near-constant", "near-constant"), ("duplicate", "duplicate column"), ("constant", "constant")):
         if key in str(status):
             return name
