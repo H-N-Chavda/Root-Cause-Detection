@@ -1,382 +1,382 @@
-tag,source_folder,unit,is_flare,file,missing_pct_raw,status
-11PI3010.DACA.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/11PI3010.DACA.PV.parquet,0.0,used_in_pca
-11PI7802N.DACA.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/11PI7802N.DACA.PV.parquet,0.0,used_in_pca
-11TI3102.DACA.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/11TI3102.DACA.PV.parquet,0.0,used_in_pca
-11TI4710.DACA.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/11TI4710.DACA.PV.parquet,0.0,used_in_pca
-11TI701.DACA.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/11TI701.DACA.PV.parquet,0.0,used_in_pca
-17PT101.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/17PT101.PV.parquet,0.0,used_in_pca
-17PT112.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/17PT112.PV.parquet,0.0,used_in_pca
-17TI105.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/17TI105.PV.parquet,0.0,used_in_pca
-17TI115.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/17TI115.PV.parquet,0.0,used_in_pca
-24TI1602.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/24TI1602.PV.parquet,0.0,used_in_pca
-24TI3301.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/24TI3301.PV.parquet,0.0,used_in_pca
-24TI3501.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/24TI3501.PV.parquet,0.0,used_in_pca
-THPC401.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/THPC401.PV.parquet,0.0,used_in_pca
-THTI402.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/THTI402.PV.parquet,0.0,used_in_pca
-98PI2002.DACA.PV,DAK,DAK,False,DAK/98PI2002.DACA.PV.parquet,0.0,used_in_pca
-98PIC1102.DACA.PV,DAK,DAK,False,DAK/98PIC1102.DACA.PV.parquet,0.0,used_in_pca
-98PIC1601.DACA.PV,DAK,DAK,False,DAK/98PIC1601.DACA.PV.parquet,0.0,used_in_pca
-98PIC2601.DACA.PV,DAK,DAK,False,DAK/98PIC2601.DACA.PV.parquet,0.004,used_in_pca
-98PIC3307.DACA.PV,DAK,DAK,False,DAK/98PIC3307.DACA.PV.parquet,0.0,used_in_pca
-71PC0001.PV,DIU,DIU,False,DIU/71PC0001.PV.parquet,0.0,used_in_pca
-71PC1601.PV,DIU,DIU,False,DIU/71PC1601.PV.parquet,0.0,used_in_pca
-71PC1701.PV,DIU,DIU,False,DIU/71PC1701.PV.parquet,0.0,dropped_s1: constant
-71PC8401.PV,DIU,DIU,False,DIU/71PC8401.PV.parquet,0.0,used_in_pca
-71PC9101.PV,DIU,DIU,False,DIU/71PC9101.PV.parquet,0.0,used_in_pca
-71PC9801.PV,DIU,DIU,False,DIU/71PC9801.PV.parquet,0.0,used_in_pca
-71PI8703.PV,DIU,DIU,False,DIU/71PI8703.PV.parquet,0.0,used_in_pca
-71PI9902.PV,DIU,DIU,False,DIU/71PI9902.PV.parquet,0.0,used_in_pca
-71TC8702.PV,DIU,DIU,False,DIU/71TC8702.PV.parquet,0.0,used_in_pca
-71TI0405.PV,DIU,DIU,False,DIU/71TI0405.PV.parquet,0.0,used_in_pca
-71TI0506.PV,DIU,DIU,False,DIU/71TI0506.PV.parquet,0.0,used_in_pca
-71TI1603.PV,DIU,DIU,False,DIU/71TI1603.PV.parquet,0.0,used_in_pca
-71TI1703.PV,DIU,DIU,False,DIU/71TI1703.PV.parquet,0.0,used_in_pca
-71TI8403.PV,DIU,DIU,False,DIU/71TI8403.PV.parquet,0.0,used_in_pca
-71TI9102.PV,DIU,DIU,False,DIU/71TI9102.PV.parquet,0.0,used_in_pca
-71TI9701A.PV,DIU,DIU,False,DIU/71TI9701A.PV.parquet,0.0,used_in_pca
-71TI9702B.PV,DIU,DIU,False,DIU/71TI9702B.PV.parquet,0.0,used_in_pca
-71TI9904.PV,DIU,DIU,False,DIU/71TI9904.PV.parquet,0.0,used_in_pca
-103PC1101.daca.pv,ISOM,ISOM,False,ISOM/103PC1101.daca.pv.parquet,0.0,used_in_pca
-103PC1707.daca.pv,ISOM,ISOM,False,ISOM/103PC1707.daca.pv.parquet,0.0,used_in_pca
-103PC5101.daca.pv,ISOM,ISOM,False,ISOM/103PC5101.daca.pv.parquet,0.0,used_in_pca
-103PC6201.daca.pv,ISOM,ISOM,False,ISOM/103PC6201.daca.pv.parquet,0.0,used_in_pca
-103PC6901.daca.pv,ISOM,ISOM,False,ISOM/103PC6901.daca.pv.parquet,0.0,used_in_pca
-103PI1657A.daca.pv,ISOM,ISOM,False,ISOM/103PI1657A.daca.pv.parquet,0.0,used_in_pca
-103PI1657B.daca.pv,ISOM,ISOM,False,ISOM/103PI1657B.daca.pv.parquet,0.0,used_in_pca
-103PI5301A.pv,ISOM,ISOM,False,ISOM/103PI5301A.pv.parquet,0.0,used_in_pca
-103PI5301B.pv,ISOM,ISOM,False,ISOM/103PI5301B.pv.parquet,0.0,used_in_pca
-103PI5421CN.pv,ISOM,ISOM,False,ISOM/103PI5421CN.pv.parquet,0.0,used_in_pca
-103PI5423CN.pv,ISOM,ISOM,False,ISOM/103PI5423CN.pv.parquet,0.0,used_in_pca
-103PI5601.daca.pv,ISOM,ISOM,False,ISOM/103PI5601.daca.pv.parquet,0.0,used_in_pca
-103PI5802.daca.pv,ISOM,ISOM,False,ISOM/103PI5802.daca.pv.parquet,0.0,used_in_pca
-103PI5803.daca.pv,ISOM,ISOM,False,ISOM/103PI5803.daca.pv.parquet,0.0,used_in_pca
-103PI5805.daca.pv,ISOM,ISOM,False,ISOM/103PI5805.daca.pv.parquet,0.0,used_in_pca
-103PI5915.daca.pv,ISOM,ISOM,False,ISOM/103PI5915.daca.pv.parquet,0.0,used_in_pca
-103PI7009N.pv,ISOM,ISOM,False,ISOM/103PI7009N.pv.parquet,0.0,used_in_pca
-103PI8208N.pv,ISOM,ISOM,False,ISOM/103PI8208N.pv.parquet,0.0,used_in_pca
-103PI8501.daca.pv,ISOM,ISOM,False,ISOM/103PI8501.daca.pv.parquet,0.0,used_in_pca
-103PIC5120N.pida.pv,ISOM,ISOM,False,ISOM/103PIC5120N.pida.pv.parquet,0.0,used_in_pca
-103PIC5711BN.pida.pv,ISOM,ISOM,False,ISOM/103PIC5711BN.pida.pv.parquet,0.0,used_in_pca
-103PIC6311N.pida.pv,ISOM,ISOM,False,ISOM/103PIC6311N.pida.pv.parquet,0.0,used_in_pca
-103TC5604.daca.pv,ISOM,ISOM,False,ISOM/103TC5604.daca.pv.parquet,0.0,used_in_pca
-103TC6001.daca.pv,ISOM,ISOM,False,ISOM/103TC6001.daca.pv.parquet,0.0,used_in_pca
-103TI1503.daca.pv,ISOM,ISOM,False,ISOM/103TI1503.daca.pv.parquet,0.0,used_in_pca
-103TI1667A.daca.pv,ISOM,ISOM,False,ISOM/103TI1667A.daca.pv.parquet,0.0,used_in_pca
-103TI1667B.daca.pv,ISOM,ISOM,False,ISOM/103TI1667B.daca.pv.parquet,0.0,used_in_pca
-103TI1709.daca.pv,ISOM,ISOM,False,ISOM/103TI1709.daca.pv.parquet,0.0,used_in_pca
-103TI5101.daca.pv,ISOM,ISOM,False,ISOM/103TI5101.daca.pv.parquet,0.0,used_in_pca
-103TI5303A.daca.pv,ISOM,ISOM,False,ISOM/103TI5303A.daca.pv.parquet,0.0,used_in_pca
-103TI5303B.daca.pv,ISOM,ISOM,False,ISOM/103TI5303B.daca.pv.parquet,0.0,used_in_pca
-103TI5466A.pv,ISOM,ISOM,False,ISOM/103TI5466A.pv.parquet,0.0,used_in_pca
-103TI5466B.pv,ISOM,ISOM,False,ISOM/103TI5466B.pv.parquet,0.0,used_in_pca
-103TI5470A.pv,ISOM,ISOM,False,ISOM/103TI5470A.pv.parquet,0.0,used_in_pca
-103TI5470B.pv,ISOM,ISOM,False,ISOM/103TI5470B.pv.parquet,0.0,used_in_pca
-103TI5605.daca.pv,ISOM,ISOM,False,ISOM/103TI5605.daca.pv.parquet,0.0,used_in_pca
-103TI5608.daca.pv,ISOM,ISOM,False,ISOM/103TI5608.daca.pv.parquet,0.0,used_in_pca
-103TI5909.daca.pv,ISOM,ISOM,False,ISOM/103TI5909.daca.pv.parquet,0.0,used_in_pca
-103TI6302.daca.pv,ISOM,ISOM,False,ISOM/103TI6302.daca.pv.parquet,0.0,used_in_pca
-103TI7003.daca.pv,ISOM,ISOM,False,ISOM/103TI7003.daca.pv.parquet,0.0,used_in_pca
-103TI7015N.pv,ISOM,ISOM,False,ISOM/103TI7015N.pv.parquet,0.0,used_in_pca
-103TI7102.daca.pv,ISOM,ISOM,False,ISOM/103TI7102.daca.pv.parquet,0.0,used_in_pca
-103TI8208N.pv,ISOM,ISOM,False,ISOM/103TI8208N.pv.parquet,0.0,used_in_pca
-103TI8502.daca.pv,ISOM,ISOM,False,ISOM/103TI8502.daca.pv.parquet,0.0,used_in_pca
-103TIC5122N.pida.pv,ISOM,ISOM,False,ISOM/103TIC5122N.pida.pv.parquet,0.0,used_in_pca
-14PT304.PV,ISOM_3,ISOM_3,False,ISOM_3/14PT304.PV.parquet,0.0,used_in_pca
-14PT601X.PV,ISOM_3,ISOM_3,False,ISOM_3/14PT601X.PV.parquet,0.0,used_in_pca
-14TI303.PV,ISOM_3,ISOM_3,False,ISOM_3/14TI303.PV.parquet,0.0,used_in_pca
-14TI422.pv,ISOM_3,ISOM_3,False,ISOM_3/14TI422.pv.parquet,0.0,used_in_pca
-14TI501.PV,ISOM_3,ISOM_3,False,ISOM_3/14TI501.PV.parquet,0.0,used_in_pca
-14TI511.PV,ISOM_3,ISOM_3,False,ISOM_3/14TI511.PV.parquet,0.0,used_in_pca
-14TI606.PV,ISOM_3,ISOM_3,False,ISOM_3/14TI606.PV.parquet,0.0,used_in_pca
-14TI614.PV,ISOM_3,ISOM_3,False,ISOM_3/14TI614.PV.parquet,0.0,used_in_pca
-14TI808.PV,ISOM_3,ISOM_3,False,ISOM_3/14TI808.PV.parquet,0.0,used_in_pca
-16TT110.pv,ISOM_3,ISOM_3,False,ISOM_3/16TT110.pv.parquet,0.0,used_in_pca
-16TT201.pv,ISOM_3,ISOM_3,False,ISOM_3/16TT201.pv.parquet,0.0,used_in_pca
-19pt102.pv,ISOM_3,ISOM_3,False,ISOM_3/19pt102.pv.parquet,0.0,used_in_pca
-20PT103.PV,ISOM_3,ISOM_3,False,ISOM_3/20PT103.PV.parquet,0.0,used_in_pca
-20TI102.PV,ISOM_3,ISOM_3,False,ISOM_3/20TI102.PV.parquet,0.0,used_in_pca
-700TI3219N,ISOM_4,ISOM_4,False,ISOM_4/700TI3219N.parquet,0.0,used_in_pca
-700TI3932N,ISOM_4,ISOM_4,False,ISOM_4/700TI3932N.parquet,0.0,used_in_pca
-700TI3936N,ISOM_4,ISOM_4,False,ISOM_4/700TI3936N.parquet,0.0,used_in_pca
-99PC1527.DACA.PV,LOUP,LOUP,False,LOUP/99PC1527.DACA.PV.parquet,0.0,used_in_pca
-99PC3704.DACA.PV,LOUP,LOUP,False,LOUP/99PC3704.DACA.PV.parquet,0.0,used_in_pca
-99PI1206.DACA.PV,LOUP,LOUP,False,LOUP/99PI1206.DACA.PV.parquet,0.0,used_in_pca
-99PI1260A.PV,LOUP,LOUP,False,LOUP/99PI1260A.PV.parquet,0.0,dropped_s1: constant
-99PI1260B.PV,LOUP,LOUP,False,LOUP/99PI1260B.PV.parquet,0.0,dropped_s1: near-constant (99.98% one value > 99%)
-99PI1320.DACA.PV,LOUP,LOUP,False,LOUP/99PI1320.DACA.PV.parquet,0.0,used_in_pca
-99PI1327.DACA.PV,LOUP,LOUP,False,LOUP/99PI1327.DACA.PV.parquet,0.0,used_in_pca
-99PI1342.DACA.PV,LOUP,LOUP,False,LOUP/99PI1342.DACA.PV.parquet,0.0,used_in_pca
-99PI1405.DACA.PV,LOUP,LOUP,False,LOUP/99PI1405.DACA.PV.parquet,0.0,used_in_pca
-99PI1410.DACA.PV,LOUP,LOUP,False,LOUP/99PI1410.DACA.PV.parquet,0.0,used_in_pca
-99PI1506.DACA.PV,LOUP,LOUP,False,LOUP/99PI1506.DACA.PV.parquet,0.0,used_in_pca
-99PI1520.DACA.PV,LOUP,LOUP,False,LOUP/99PI1520.DACA.PV.parquet,0.0,used_in_pca
-99PI1542.DACA.PV,LOUP,LOUP,False,LOUP/99PI1542.DACA.PV.parquet,0.0,dropped_s1: constant
-99PI1566.PV,LOUP,LOUP,False,LOUP/99PI1566.PV.parquet,0.0,dropped_s1: near-constant (99.15% one value > 99%)
-99PI1605.DACA.PV,LOUP,LOUP,False,LOUP/99PI1605.DACA.PV.parquet,0.0,used_in_pca
-99PI1610.DACA.PV,LOUP,LOUP,False,LOUP/99PI1610.DACA.PV.parquet,0.0,used_in_pca
-99PI1909.DACA.PV,LOUP,LOUP,False,LOUP/99PI1909.DACA.PV.parquet,0.0,used_in_pca
-99PI2251.DACA.PV,LOUP,LOUP,False,LOUP/99PI2251.DACA.PV.parquet,0.0,used_in_pca
-99PI2252.DACA.PV,LOUP,LOUP,False,LOUP/99PI2252.DACA.PV.parquet,0.0,used_in_pca
-99PI2304.DACA.PV,LOUP,LOUP,False,LOUP/99PI2304.DACA.PV.parquet,0.0,used_in_pca
-99PI2310.DACA.PV,LOUP,LOUP,False,LOUP/99PI2310.DACA.PV.parquet,0.0,used_in_pca
-99PI2314.PV,LOUP,LOUP,False,LOUP/99PI2314.PV.parquet,0.0,used_in_pca
-99PI2360A.PV,LOUP,LOUP,False,LOUP/99PI2360A.PV.parquet,0.0,used_in_pca
-99PI2360B.PV,LOUP,LOUP,False,LOUP/99PI2360B.PV.parquet,0.0,used_in_pca
-99PI2402.daca.pv,LOUP,LOUP,False,LOUP/99PI2402.daca.pv.parquet,0.0,used_in_pca
-99PI3102.DACA.PV,LOUP,LOUP,False,LOUP/99PI3102.DACA.PV.parquet,0.0,used_in_pca
-99PI3213.PV,LOUP,LOUP,False,LOUP/99PI3213.PV.parquet,0.0,dropped_s1: constant
-99PI3219.DACA.PV,LOUP,LOUP,False,LOUP/99PI3219.DACA.PV.parquet,0.0,used_in_pca
-99PI3227.PV,LOUP,LOUP,False,LOUP/99PI3227.PV.parquet,0.0,dropped_s1: constant
-99PI3233.DACA.PV,LOUP,LOUP,False,LOUP/99PI3233.DACA.PV.parquet,0.0,used_in_pca
-99PI3262.PV,LOUP,LOUP,False,LOUP/99PI3262.PV.parquet,0.0,used_in_pca
-99PI3265.PV,LOUP,LOUP,False,LOUP/99PI3265.PV.parquet,0.0,dropped_s1: constant within the reference period
-99PI3281A.DACA.PV,LOUP,LOUP,False,LOUP/99PI3281A.DACA.PV.parquet,0.0,dropped_s1: near-constant (100.00% one value > 99%)
-99PI3281B.DACA.PV,LOUP,LOUP,False,LOUP/99PI3281B.DACA.PV.parquet,0.0,used_in_pca
-99PI3303.DACA.PV,LOUP,LOUP,False,LOUP/99PI3303.DACA.PV.parquet,0.0,used_in_pca
-99PI3413.DACA.PV,LOUP,LOUP,False,LOUP/99PI3413.DACA.PV.parquet,0.0,used_in_pca
-99PI3705.DACA.PV,LOUP,LOUP,False,LOUP/99PI3705.DACA.PV.parquet,0.0,used_in_pca
-99PI3805.DACA.PV,LOUP,LOUP,False,LOUP/99PI3805.DACA.PV.parquet,0.0,used_in_pca
-99PI4013.PV,LOUP,LOUP,False,LOUP/99PI4013.PV.parquet,0.0,used_in_pca
-99PI4103.DACA.PV,LOUP,LOUP,False,LOUP/99PI4103.DACA.PV.parquet,0.0,used_in_pca
-99PI4104.DACA.PV,LOUP,LOUP,False,LOUP/99PI4104.DACA.PV.parquet,0.0,used_in_pca
-99PI4120.DACA.PV,LOUP,LOUP,False,LOUP/99PI4120.DACA.PV.parquet,0.0,used_in_pca
-99PI4151.DACA.PV,LOUP,LOUP,False,LOUP/99PI4151.DACA.PV.parquet,0.0,used_in_pca
-99PI4152.DACA.PV,LOUP,LOUP,False,LOUP/99PI4152.DACA.PV.parquet,0.0,used_in_pca
-99PI4153.DACA.PV,LOUP,LOUP,False,LOUP/99PI4153.DACA.PV.parquet,0.0,dropped_s1: near-constant (99.66% one value > 99%)
-99PI4405.DACA.PV,LOUP,LOUP,False,LOUP/99PI4405.DACA.PV.parquet,0.0,used_in_pca
-99PI5406.DACA.PV,LOUP,LOUP,False,LOUP/99PI5406.DACA.PV.parquet,0.0,used_in_pca
-99TI1320.DACA.PV,LOUP,LOUP,False,LOUP/99TI1320.DACA.PV.parquet,0.0,used_in_pca
-99TI1321.DACA.PV,LOUP,LOUP,False,LOUP/99TI1321.DACA.PV.parquet,0.0,used_in_pca
-99TI1362.DACA.PV,LOUP,LOUP,False,LOUP/99TI1362.DACA.PV.parquet,0.0,used_in_pca
-99TI1407.DACA.PV,LOUP,LOUP,False,LOUP/99TI1407.DACA.PV.parquet,0.0,used_in_pca
-99TI1502A.DACA.PV,LOUP,LOUP,False,LOUP/99TI1502A.DACA.PV.parquet,0.0,used_in_pca
-99TI1505A.DACA.PV,LOUP,LOUP,False,LOUP/99TI1505A.DACA.PV.parquet,0.0,used_in_pca
-99TI1515.DACA.PV,LOUP,LOUP,False,LOUP/99TI1515.DACA.PV.parquet,0.0,used_in_pca
-99TI1562.DACA.PV,LOUP,LOUP,False,LOUP/99TI1562.DACA.PV.parquet,0.0,used_in_pca
-99TI1602E.DACA.PV,LOUP,LOUP,False,LOUP/99TI1602E.DACA.PV.parquet,0.0,used_in_pca
-99TI1607.DACA.PV,LOUP,LOUP,False,LOUP/99TI1607.DACA.PV.parquet,0.0,used_in_pca
-99TI2106.DACA.PV,LOUP,LOUP,False,LOUP/99TI2106.DACA.PV.parquet,0.0,used_in_pca
-99TI2301.DACA.PV,LOUP,LOUP,False,LOUP/99TI2301.DACA.PV.parquet,0.0,used_in_pca
-99TI2321.DACA.PV,LOUP,LOUP,False,LOUP/99TI2321.DACA.PV.parquet,0.0,used_in_pca
-99TI2366A.DACA.PV,LOUP,LOUP,False,LOUP/99TI2366A.DACA.PV.parquet,0.0,used_in_pca
-99TI2366B.DACA.PV,LOUP,LOUP,False,LOUP/99TI2366B.DACA.PV.parquet,0.0,used_in_pca
-99TI2401.DACA.PV,LOUP,LOUP,False,LOUP/99TI2401.DACA.PV.parquet,0.0,used_in_pca
-99TI3018.DACA.PV,LOUP,LOUP,False,LOUP/99TI3018.DACA.PV.parquet,0.0,used_in_pca
-99TI3202A.DACA.PV,LOUP,LOUP,False,LOUP/99TI3202A.DACA.PV.parquet,0.0,used_in_pca
-99TI3202C.DACA.PV,LOUP,LOUP,False,LOUP/99TI3202C.DACA.PV.parquet,0.0,used_in_pca
-99TI3205.DACA.PV,LOUP,LOUP,False,LOUP/99TI3205.DACA.PV.parquet,0.0,used_in_pca
-99TI3208.DACA.PV,LOUP,LOUP,False,LOUP/99TI3208.DACA.PV.parquet,0.0,used_in_pca
-99TI3258.DACA.PV,LOUP,LOUP,False,LOUP/99TI3258.DACA.PV.parquet,0.0,used_in_pca
-99TI3269.DACA.PV,LOUP,LOUP,False,LOUP/99TI3269.DACA.PV.parquet,0.0,used_in_pca
-99TI3410.DACA.PV,LOUP,LOUP,False,LOUP/99TI3410.DACA.PV.parquet,0.0,used_in_pca
-99TI4105.DACA.PV,LOUP,LOUP,False,LOUP/99TI4105.DACA.PV.parquet,0.0,used_in_pca
-99TI4106.DACA.PV,LOUP,LOUP,False,LOUP/99TI4106.DACA.PV.parquet,0.0,used_in_pca
-99TI4107.DACA.PV,LOUP,LOUP,False,LOUP/99TI4107.DACA.PV.parquet,0.0,used_in_pca
-99TI4140.DACA.PV,LOUP,LOUP,False,LOUP/99TI4140.DACA.PV.parquet,0.0,used_in_pca
-99TI4404.DACA.PV,LOUP,LOUP,False,LOUP/99TI4404.DACA.PV.parquet,0.0,used_in_pca
-99TI5406.DACA.PV,LOUP,LOUP,False,LOUP/99TI5406.DACA.PV.parquet,0.0,used_in_pca
-99TI5801.DACA.PV,LOUP,LOUP,False,LOUP/99TI5801.DACA.PV.parquet,0.0,used_in_pca
-99TI5905.DACA.PV,LOUP,LOUP,False,LOUP/99TI5905.DACA.PV.parquet,0.0,used_in_pca
-101PC1105.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/101PC1105.DACA.PV.parquet,64.514,dropped_s1: 64.5% missing after ffill (> 30%)
-101PC1302.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/101PC1302.DACA.PV.parquet,0.0,used_in_pca
-101PC1603B.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/101PC1603B.DACA.PV.parquet,0.0,used_in_pca
-101TC1103.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/101TC1103.DACA.PV.parquet,0.0,used_in_pca
-101TI1602.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/101TI1602.PV.parquet,0.0,used_in_pca
-102PC1201R.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PC1201R.DACA.PV.parquet,0.0,used_in_pca
-102PC4101.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PC4101.DACA.PV.parquet,0.0,used_in_pca
-102PC4302R.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PC4302R.DACA.PV.parquet,64.514,dropped_s1: 64.5% missing after ffill (> 30%)
-102PC4602R.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PC4602R.DACA.PV.parquet,100.0,dropped_s1: 100.0% missing after ffill (> 30%)
-102PC4702.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PC4702.DACA.PV.parquet,0.0,used_in_pca
-102PC5101R.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PC5101R.DACA.PV.parquet,0.0,used_in_pca
-102PC6702.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PC6702.DACA.PV.parquet,0.0,used_in_pca
-102PI1457A.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI1457A.DACA.PV.parquet,0.0,used_in_pca
-102PI1457B.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI1457B.DACA.PV.parquet,0.0,used_in_pca
-102PI1502.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI1502.DACA.PV.parquet,0.0,used_in_pca
-102PI1507.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI1507.DACA.PV.parquet,0.0,used_in_pca
-102PI3906N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI3906N.DACA.PV.parquet,0.0,used_in_pca
-102PI4244AN.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4244AN.PV.parquet,100.0,dropped_s1: 100.0% missing after ffill (> 30%)
-102PI4457.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4457.DACA.PV.parquet,100.0,dropped_s1: 100.0% missing after ffill (> 30%)
-102PI4459.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4459.DACA.PV.parquet,35.484,dropped_s1: 35.5% missing after ffill (> 30%)
-102PI4557.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4557.DACA.PV.parquet,0.0,used_in_pca
-102PI4559.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4559.DACA.PV.parquet,100.0,dropped_s1: 100.0% missing after ffill (> 30%)
-102PI4754R.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4754R.DACA.PV.parquet,0.0,used_in_pca
-102PI4758R.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4758R.DACA.PV.parquet,0.0,used_in_pca
-102PI4766N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4766N.DACA.PV.parquet,0.0,used_in_pca
-102PI4767N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4767N.DACA.PV.parquet,0.0,used_in_pca
-102PI4769N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4769N.DACA.PV.parquet,0.0,used_in_pca
-102PI4770N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4770N.DACA.PV.parquet,0.0,used_in_pca
-102PI4772N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4772N.DACA.PV.parquet,0.0,used_in_pca
-102PI5001.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI5001.DACA.PV.parquet,0.0,dropped_s1: near-constant (99.98% one value > 99%)
-102PI5006.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI5006.DACA.PV.parquet,0.0,used_in_pca
-102PI7903.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI7903.DACA.PV.parquet,0.0,used_in_pca
-102PI8507N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI8507N.DACA.PV.parquet,0.0,used_in_pca
-102PI9003.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI9003.DACA.PV.parquet,0.0,used_in_pca
-102PI9004.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI9004.DACA.PV.parquet,0.0,used_in_pca
-102PI9607.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI9607.DACA.PV.parquet,0.0,used_in_pca
-102PIC4771N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PIC4771N.DACA.PV.parquet,0.0,used_in_pca
-102PY6708.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PY6708.PV.parquet,0.0,dropped_s1: constant
-102TI0503.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI0503.DACA.PV.parquet,0.0,used_in_pca
-102TI0701.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI0701.DACA.PV.parquet,0.0,used_in_pca
-102TI1402A.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI1402A.DACA.PV.parquet,0.0,used_in_pca
-102TI1408A.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI1408A.DACA.PV.parquet,0.0,used_in_pca
-102TI1504.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI1504.DACA.PV.parquet,0.0,used_in_pca
-102TI1515.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI1515.DACA.PV.parquet,0.0,used_in_pca
-102TI3903.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI3903.DACA.PV.parquet,0.0,used_in_pca
-102TI4250.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4250.DACA.PV.parquet,0.0,used_in_pca
-102TI4301.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4301.DACA.PV.parquet,100.0,dropped_s1: 100.0% missing after ffill (> 30%)
-102TI4351N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4351N.DACA.PV.parquet,35.484,dropped_s1: 35.5% missing after ffill (> 30%)
-102TI4405.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4405.DACA.PV.parquet,35.484,dropped_s1: 35.5% missing after ffill (> 30%)
-102TI4406.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4406.DACA.PV.parquet,0.0,used_in_pca
-102TI4602.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4602.DACA.PV.parquet,100.0,dropped_s1: 100.0% missing after ffill (> 30%)
-102TI4651N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4651N.DACA.PV.parquet,100.0,dropped_s1: 100.0% missing after ffill (> 30%)
-102TI4652N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4652N.DACA.PV.parquet,0.0,used_in_pca
-102TI4742N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4742N.DACA.PV.parquet,0.0,used_in_pca
-102TI4745N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4745N.DACA.PV.parquet,0.0,used_in_pca
-102TI4746N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4746N.DACA.PV.parquet,0.0,used_in_pca
-102TI4752R.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4752R.DACA.PV.parquet,0.0,used_in_pca
-102TI4764R.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4764R.DACA.PV.parquet,0.0,used_in_pca
-102TI4786N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4786N.DACA.PV.parquet,0.0,used_in_pca
-102TI4787N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4787N.DACA.PV.parquet,0.0,used_in_pca
-102TI4788N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4788N.DACA.PV.parquet,0.0,used_in_pca
-102TI4789N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4789N.DACA.PV.parquet,0.0,used_in_pca
-102TI4790N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4790N.DACA.PV.parquet,0.0,used_in_pca
-102TI4951N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4951N.DACA.PV.parquet,0.0,used_in_pca
-102TI4952N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4952N.DACA.PV.parquet,0.0,used_in_pca
-102TI5002.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI5002.DACA.PV.parquet,0.0,used_in_pca
-102TI5102.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI5102.DACA.PV.parquet,0.0,used_in_pca
-102TI5104.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI5104.DACA.PV.parquet,0.0,used_in_pca
-102TI5151N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI5151N.DACA.PV.parquet,0.0,used_in_pca
-102TI6701.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI6701.DACA.PV.parquet,0.0,used_in_pca
-102TI8601.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI8601.DACA.PV.parquet,0.0,used_in_pca
-102TI8602.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI8602.DACA.PV.parquet,0.0,used_in_pca
-102TI9607.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI9607.DACA.PV.parquet,0.0,used_in_pca
-508PC5102.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/508PC5102.DACA.PV.parquet,0.0,used_in_pca
-508PC5103.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/508PC5103.DACA.PV.parquet,0.0,used_in_pca
-508PC5104.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/508PC5104.DACA.PV.parquet,0.0,used_in_pca
-508TI5101.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/508TI5101.DACA.PV.parquet,0.0,used_in_pca
-508TI5102.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/508TI5102.DACA.PV.parquet,0.0,used_in_pca
-41PI4110.pv,PDA,PDA,False,PDA/41PI4110.pv.parquet,0.0,used_in_pca
-41PI41101A.pv,PDA,PDA,False,PDA/41PI41101A.pv.parquet,0.0,used_in_pca
-41PI41102.pv,PDA,PDA,False,PDA/41PI41102.pv.parquet,0.0,used_in_pca
-41PI4111.pv,PDA,PDA,False,PDA/41PI4111.pv.parquet,0.0,used_in_pca
-41PI41121.pv,PDA,PDA,False,PDA/41PI41121.pv.parquet,0.0,used_in_pca
-41PI41129.pv,PDA,PDA,False,PDA/41PI41129.pv.parquet,0.0,used_in_pca
-41PI41136.pv,PDA,PDA,False,PDA/41PI41136.pv.parquet,0.0,used_in_pca
-41PI4114.pv,PDA,PDA,False,PDA/41PI4114.pv.parquet,0.0,used_in_pca
-41PT4104.pv,PDA,PDA,False,PDA/41PT4104.pv.parquet,0.0,used_in_pca
-41TI41109.pv,PDA,PDA,False,PDA/41TI41109.pv.parquet,0.0,used_in_pca
-41TI41111B.pv,PDA,PDA,False,PDA/41TI41111B.pv.parquet,0.0,used_in_pca
-41TI41116B.pv,PDA,PDA,False,PDA/41TI41116B.pv.parquet,0.0,used_in_pca
-41TI41122.pv,PDA,PDA,False,PDA/41TI41122.pv.parquet,0.0,used_in_pca
-41TI41124.pv,PDA,PDA,False,PDA/41TI41124.pv.parquet,0.0,used_in_pca
-41TI41130.pv,PDA,PDA,False,PDA/41TI41130.pv.parquet,0.0,used_in_pca
-41TI41136.pv,PDA,PDA,False,PDA/41TI41136.pv.parquet,0.0,used_in_pca
-41TI4123.pv,PDA,PDA,False,PDA/41TI4123.pv.parquet,0.0,used_in_pca
-41TI4124.pv,PDA,PDA,False,PDA/41TI4124.pv.parquet,0.0,used_in_pca
-41TI4125.pv,PDA,PDA,False,PDA/41TI4125.pv.parquet,0.0,used_in_pca
-41TI4132.pv,PDA,PDA,False,PDA/41TI4132.pv.parquet,0.0,used_in_pca
-41TI4133.pv,PDA,PDA,False,PDA/41TI4133.pv.parquet,0.0,used_in_pca
-41TI4134.pv,PDA,PDA,False,PDA/41TI4134.pv.parquet,0.0,used_in_pca
-41TI4136.pv,PDA,PDA,False,PDA/41TI4136.pv.parquet,0.0,used_in_pca
-41TI4137.pv,PDA,PDA,False,PDA/41TI4137.pv.parquet,0.0,used_in_pca
-41TI4140.pv,PDA,PDA,False,PDA/41TI4140.pv.parquet,0.0,used_in_pca
-41TI4141.pv,PDA,PDA,False,PDA/41TI4141.pv.parquet,0.0,used_in_pca
-41TI4142.pv,PDA,PDA,False,PDA/41TI4142.pv.parquet,0.0,used_in_pca
-41TI4144.pv,PDA,PDA,False,PDA/41TI4144.pv.parquet,0.0,used_in_pca
-105PC1113.DACA.PV,PG,PG,False,PG/105PC1113.DACA.PV.parquet,0.0,used_in_pca
-105PC1601.DACA.PV,PG,PG,False,PG/105PC1601.DACA.PV.parquet,0.0,used_in_pca
-105PC2403.DACA.PV,PG,PG,False,PG/105PC2403.DACA.PV.parquet,0.0,used_in_pca
-105PI1204.DACA.PV,PG,PG,False,PG/105PI1204.DACA.PV.parquet,0.0,used_in_pca
-105PI1303.DACA.PV,PG,PG,False,PG/105PI1303.DACA.PV.parquet,0.0,used_in_pca
-105PI1403.DACA.PV,PG,PG,False,PG/105PI1403.DACA.PV.parquet,0.0,used_in_pca
-105PI1518AN.PV,PG,PG,False,PG/105PI1518AN.PV.parquet,0.0,used_in_pca
-105PI1607.DACA.PV,PG,PG,False,PG/105PI1607.DACA.PV.parquet,0.0,used_in_pca
-105PI2001.DACA.PV,PG,PG,False,PG/105PI2001.DACA.PV.parquet,0.0,used_in_pca
-105PI2201.DACA.PV,PG,PG,False,PG/105PI2201.DACA.PV.parquet,0.0,used_in_pca
-105PI2608.DACA.PV,PG,PG,False,PG/105PI2608.DACA.PV.parquet,0.0,used_in_pca
-105PI2703.DACA.PV,PG,PG,False,PG/105PI2703.DACA.PV.parquet,0.0,used_in_pca
-105PI2803.DACA.PV,PG,PG,False,PG/105PI2803.DACA.PV.parquet,0.0,dropped_s1: constant
-105PI2804N.PV,PG,PG,False,PG/105PI2804N.PV.parquet,0.0,used_in_pca
-105PI2811N.PV,PG,PG,False,PG/105PI2811N.PV.parquet,0.0,used_in_pca
-105PI2827N.PV,PG,PG,False,PG/105PI2827N.PV.parquet,0.0,used_in_pca
-105PI2838AN.PV,PG,PG,False,PG/105PI2838AN.PV.parquet,0.0,used_in_pca
-105PI2901.daca.pv,PG,PG,False,PG/105PI2901.daca.pv.parquet,0.0,used_in_pca
-105PI5804N.PV,PG,PG,False,PG/105PI5804N.PV.parquet,0.0,used_in_pca
-105PIC3010N.PV,PG,PG,False,PG/105PIC3010N.PV.parquet,0.0,used_in_pca
-105TI1105.DACA.PV,PG,PG,False,PG/105TI1105.DACA.PV.parquet,0.0,used_in_pca
-105TI1203.DACA.PV,PG,PG,False,PG/105TI1203.DACA.PV.parquet,0.0,used_in_pca
-105TI1313N.PV,PG,PG,False,PG/105TI1313N.PV.parquet,64.514,dropped_s1: 64.5% missing after ffill (> 30%)
-105TI1602.DACA.PV,PG,PG,False,PG/105TI1602.DACA.PV.parquet,0.0,used_in_pca
-105TI1604.DACA.PV,PG,PG,False,PG/105TI1604.DACA.PV.parquet,0.0,used_in_pca
-105TI1606.DACA.PV,PG,PG,False,PG/105TI1606.DACA.PV.parquet,0.0,used_in_pca
-105TI2401.DACA.PV,PG,PG,False,PG/105TI2401.DACA.PV.parquet,0.0,dropped_s1: constant
-105TI2602.DACA.PV,PG,PG,False,PG/105TI2602.DACA.PV.parquet,0.0,used_in_pca
-105TI2806N.PV,PG,PG,False,PG/105TI2806N.PV.parquet,0.0,used_in_pca
-105TI2809N.PV,PG,PG,False,PG/105TI2809N.PV.parquet,0.0,used_in_pca
-105TI2810N.PV,PG,PG,False,PG/105TI2810N.PV.parquet,0.0,used_in_pca
-105TI2813N.PV,PG,PG,False,PG/105TI2813N.PV.parquet,0.0,used_in_pca
-105TI2901.DACA.PV,PG,PG,False,PG/105TI2901.DACA.PV.parquet,0.0,used_in_pca
-105TI5803N.PV,PG,PG,False,PG/105TI5803N.PV.parquet,0.0,used_in_pca
-105TIC1421N.PV,PG,PG,False,PG/105TIC1421N.PV.parquet,0.0,used_in_pca
-105TIC2015N.PV,PG,PG,False,PG/105TIC2015N.PV.parquet,0.0,used_in_pca
-105TIC2215N.PV,PG,PG,False,PG/105TIC2215N.PV.parquet,0.0,used_in_pca
-105TIC2828N.PV,PG,PG,False,PG/105TIC2828N.PV.parquet,0.0,used_in_pca
-02PC201A.PV,SEU1,SEU1,False,SEU1/02PC201A.PV.parquet,0.0,used_in_pca
-02PC201B.PV,SEU1,SEU1,False,SEU1/02PC201B.PV.parquet,0.0,used_in_pca
-02PC208.PV,SEU1,SEU1,False,SEU1/02PC208.PV.parquet,0.0,used_in_pca
-02PC215.PV,SEU1,SEU1,False,SEU1/02PC215.PV.parquet,0.0,used_in_pca
-02PDI215.PV,SEU1,SEU1,False,SEU1/02PDI215.PV.parquet,0.0,used_in_pca
-02PI205.PV,SEU1,SEU1,False,SEU1/02PI205.PV.parquet,0.0,used_in_pca
-02PI206.PV,SEU1,SEU1,False,SEU1/02PI206.PV.parquet,0.0,used_in_pca
-02PI207.PV,SEU1,SEU1,False,SEU1/02PI207.PV.parquet,0.0,used_in_pca
-02PI213.PV,SEU1,SEU1,False,SEU1/02PI213.PV.parquet,0.0,used_in_pca
-02PI221B.PV,SEU1,SEU1,False,SEU1/02PI221B.PV.parquet,0.0,used_in_pca
-02PI237.PV,SEU1,SEU1,False,SEU1/02PI237.PV.parquet,0.0,used_in_pca
-02TC205W.PV,SEU1,SEU1,False,SEU1/02TC205W.PV.parquet,0.0,used_in_pca
-02TI219.PV,SEU1,SEU1,False,SEU1/02TI219.PV.parquet,0.0,used_in_pca
-02TI227.PV,SEU1,SEU1,False,SEU1/02TI227.PV.parquet,0.0,used_in_pca
-04PI421C.PV,SEU1,SEU1,False,SEU1/04PI421C.PV.parquet,0.0,used_in_pca
-05PC501.PV,SEU1,SEU1,False,SEU1/05PC501.PV.parquet,0.0,used_in_pca
-05PC502.PV,SEU1,SEU1,False,SEU1/05PC502.PV.parquet,0.0,used_in_pca
-05TI508.PV,SEU1,SEU1,False,SEU1/05TI508.PV.parquet,0.0,used_in_pca
-05TI509.PV,SEU1,SEU1,False,SEU1/05TI509.PV.parquet,0.0,used_in_pca
-K604BTI1.PV,SEU1,SEU1,False,SEU1/K604BTI1.PV.parquet,0.0,used_in_pca
-K604BTI2.PV,SEU1,SEU1,False,SEU1/K604BTI2.PV.parquet,0.0,used_in_pca
-LHC215.PV,SEU1,SEU1,False,SEU1/LHC215.PV.parquet,0.0,used_in_pca
-LHC222.PV,SEU1,SEU1,False,SEU1/LHC222.PV.parquet,0.0,used_in_pca
-PDI3215A.PV,SEU2,SEU2,False,SEU2/PDI3215A.PV.parquet,0.0,dropped_s1: near-constant (99.71% one value > 99%)
-PPC3215.PV,SEU2,SEU2,False,SEU2/PPC3215.PV.parquet,0.0,used_in_pca
-PPC3401.PV,SEU2,SEU2,False,SEU2/PPC3401.PV.parquet,0.0,used_in_pca
-PPC3501.pv,SEU2,SEU2,False,SEU2/PPC3501.pv.parquet,0.0,used_in_pca
-PPC3502.pv,SEU2,SEU2,False,SEU2/PPC3502.pv.parquet,0.0,used_in_pca
-PPI3205.PV,SEU2,SEU2,False,SEU2/PPI3205.PV.parquet,0.0,used_in_pca
-PPI3206.PV,SEU2,SEU2,False,SEU2/PPI3206.PV.parquet,0.0,used_in_pca
-PPI3207.PV,SEU2,SEU2,False,SEU2/PPI3207.PV.parquet,0.0,used_in_pca
-PPI3213.PV,SEU2,SEU2,False,SEU2/PPI3213.PV.parquet,0.0,used_in_pca
-PPI3239.PV,SEU2,SEU2,False,SEU2/PPI3239.PV.parquet,0.0,dropped_s1: constant
-PPI3241.PV,SEU2,SEU2,False,SEU2/PPI3241.PV.parquet,0.0,dropped_s1: constant
-PTC3208.PV,SEU2,SEU2,False,SEU2/PTC3208.PV.parquet,0.0,used_in_pca
-PTC3209.PV,SEU2,SEU2,False,SEU2/PTC3209.PV.parquet,0.0,used_in_pca
-PTI3201A.PV,SEU2,SEU2,False,SEU2/PTI3201A.PV.parquet,0.0,used_in_pca
-PTI3201H.PV,SEU2,SEU2,False,SEU2/PTI3201H.PV.parquet,0.0,used_in_pca
-PTI3231.PV,SEU2,SEU2,False,SEU2/PTI3231.PV.parquet,0.0,used_in_pca
-PTI3280.PV,SEU2,SEU2,False,SEU2/PTI3280.PV.parquet,0.0,used_in_pca
-42PC4204.PV,SEU3,SEU3,False,SEU3/42PC4204.PV.parquet,0.0,used_in_pca
-42PC4208.PV,SEU3,SEU3,False,SEU3/42PC4208.PV.parquet,0.0,used_in_pca
-42PC4215.PV,SEU3,SEU3,False,SEU3/42PC4215.PV.parquet,0.0,used_in_pca
-42PC4220.PV,SEU3,SEU3,False,SEU3/42PC4220.PV.parquet,0.0,used_in_pca
-42PC4275.PV,SEU3,SEU3,False,SEU3/42PC4275.PV.parquet,0.0,used_in_pca
-42PC4501.PV,SEU3,SEU3,False,SEU3/42PC4501.PV.parquet,0.0,used_in_pca
-42PC4502.PV,SEU3,SEU3,False,SEU3/42PC4502.PV.parquet,0.0,used_in_pca
-42PI4205.PV,SEU3,SEU3,False,SEU3/42PI4205.PV.parquet,0.0,used_in_pca
-42PI4213.PV,SEU3,SEU3,False,SEU3/42PI4213.PV.parquet,0.0,used_in_pca
-42PI4304.PV,SEU3,SEU3,False,SEU3/42PI4304.PV.parquet,0.0,used_in_pca
-42TI4277.PV,SEU3,SEU3,False,SEU3/42TI4277.PV.parquet,0.0,used_in_pca
-42TI4507.PV,SEU3,SEU3,False,SEU3/42TI4507.PV.parquet,0.0,used_in_pca
-44PI4410.PV,SEU3,SEU3,False,SEU3/44PI4410.PV.parquet,0.0,used_in_pca
-44PI4411.PV,SEU3,SEU3,False,SEU3/44PI4411.PV.parquet,0.0,used_in_pca
-(44ft2505.pv*509mw5101.daca.pv/22.414)/1000,flare_data,flare_data,True,flare_data/(44ft2505.pv_509mw5101.daca.pv_22.414)_1000.parquet,,used_in_flare_net
-(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000,flare_data,flare_data,True,flare_data/(LRflare.pv+LREflare.pv+99fi4601.daca.pv)_1000.parquet,,used_in_flare_net
-509fi5201.daca.pv/1000,flare_data,flare_data,True,flare_data/509fi5201.daca.pv_1000.parquet,,used_in_flare_net
-509mw5101.daca.pv,flare_data,flare_data,True,flare_data/509mw5101.daca.pv.parquet,,not used: flare tag outside the flare_net formula
-flare_net,flare_data,flare_data,True,flare_net = (LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000 + 509fi5201.daca.pv/1000 - (44ft2505.pv*509mw5101.daca.pv/22.414)/1000,0.0,in_matrix
+tag,source_folder,unit,is_flare,file,status
+11PI3010.DACA.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/11PI3010.DACA.PV.parquet,used_in_pca
+11PI7802N.DACA.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/11PI7802N.DACA.PV.parquet,used_in_pca
+11TI3102.DACA.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/11TI3102.DACA.PV.parquet,used_in_pca
+11TI4710.DACA.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/11TI4710.DACA.PV.parquet,used_in_pca
+11TI701.DACA.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/11TI701.DACA.PV.parquet,used_in_pca
+17PT101.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/17PT101.PV.parquet,used_in_pca
+17PT112.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/17PT112.PV.parquet,dropped: has negative values (min -0.01)
+17TI105.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/17TI105.PV.parquet,used_in_pca
+17TI115.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/17TI115.PV.parquet,used_in_pca
+24TI1602.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/24TI1602.PV.parquet,used_in_pca
+24TI3301.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/24TI3301.PV.parquet,used_in_pca
+24TI3501.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/24TI3501.PV.parquet,used_in_pca
+THPC401.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/THPC401.PV.parquet,dropped: has negative values (min -0.1)
+THTI402.PV,APS_NVPS_LEU,APS_NVPS_LEU,False,APS_NVPS_LEU/THTI402.PV.parquet,used_in_pca
+98PI2002.DACA.PV,DAK,DAK,False,DAK/98PI2002.DACA.PV.parquet,used_in_pca
+98PIC1102.DACA.PV,DAK,DAK,False,DAK/98PIC1102.DACA.PV.parquet,used_in_pca
+98PIC1601.DACA.PV,DAK,DAK,False,DAK/98PIC1601.DACA.PV.parquet,dropped: has negative values (min -877)
+98PIC2601.DACA.PV,DAK,DAK,False,DAK/98PIC2601.DACA.PV.parquet,dropped: has negative values (min -731)
+98PIC3307.DACA.PV,DAK,DAK,False,DAK/98PIC3307.DACA.PV.parquet,used_in_pca
+71PC0001.PV,DIU,DIU,False,DIU/71PC0001.PV.parquet,used_in_pca
+71PC1601.PV,DIU,DIU,False,DIU/71PC1601.PV.parquet,used_in_pca
+71PC1701.PV,DIU,DIU,False,DIU/71PC1701.PV.parquet,dropped: has negative values (min -0.06)
+71PC8401.PV,DIU,DIU,False,DIU/71PC8401.PV.parquet,used_in_pca
+71PC9101.PV,DIU,DIU,False,DIU/71PC9101.PV.parquet,used_in_pca
+71PC9801.PV,DIU,DIU,False,DIU/71PC9801.PV.parquet,used_in_pca
+71PI8703.PV,DIU,DIU,False,DIU/71PI8703.PV.parquet,used_in_pca
+71PI9902.PV,DIU,DIU,False,DIU/71PI9902.PV.parquet,used_in_pca
+71TC8702.PV,DIU,DIU,False,DIU/71TC8702.PV.parquet,used_in_pca
+71TI0405.PV,DIU,DIU,False,DIU/71TI0405.PV.parquet,used_in_pca
+71TI0506.PV,DIU,DIU,False,DIU/71TI0506.PV.parquet,used_in_pca
+71TI1603.PV,DIU,DIU,False,DIU/71TI1603.PV.parquet,used_in_pca
+71TI1703.PV,DIU,DIU,False,DIU/71TI1703.PV.parquet,used_in_pca
+71TI8403.PV,DIU,DIU,False,DIU/71TI8403.PV.parquet,used_in_pca
+71TI9102.PV,DIU,DIU,False,DIU/71TI9102.PV.parquet,used_in_pca
+71TI9701A.PV,DIU,DIU,False,DIU/71TI9701A.PV.parquet,used_in_pca
+71TI9702B.PV,DIU,DIU,False,DIU/71TI9702B.PV.parquet,used_in_pca
+71TI9904.PV,DIU,DIU,False,DIU/71TI9904.PV.parquet,used_in_pca
+103PC1101.daca.pv,ISOM,ISOM,False,ISOM/103PC1101.daca.pv.parquet,used_in_pca
+103PC1707.daca.pv,ISOM,ISOM,False,ISOM/103PC1707.daca.pv.parquet,used_in_pca
+103PC5101.daca.pv,ISOM,ISOM,False,ISOM/103PC5101.daca.pv.parquet,used_in_pca
+103PC6201.daca.pv,ISOM,ISOM,False,ISOM/103PC6201.daca.pv.parquet,used_in_pca
+103PC6901.daca.pv,ISOM,ISOM,False,ISOM/103PC6901.daca.pv.parquet,used_in_pca
+103PI1657A.daca.pv,ISOM,ISOM,False,ISOM/103PI1657A.daca.pv.parquet,used_in_pca
+103PI1657B.daca.pv,ISOM,ISOM,False,ISOM/103PI1657B.daca.pv.parquet,used_in_pca
+103PI5301A.pv,ISOM,ISOM,False,ISOM/103PI5301A.pv.parquet,used_in_pca
+103PI5301B.pv,ISOM,ISOM,False,ISOM/103PI5301B.pv.parquet,used_in_pca
+103PI5421CN.pv,ISOM,ISOM,False,ISOM/103PI5421CN.pv.parquet,dropped: has negative values (min -0.29)
+103PI5423CN.pv,ISOM,ISOM,False,ISOM/103PI5423CN.pv.parquet,dropped: has negative values (min -0.18)
+103PI5601.daca.pv,ISOM,ISOM,False,ISOM/103PI5601.daca.pv.parquet,used_in_pca
+103PI5802.daca.pv,ISOM,ISOM,False,ISOM/103PI5802.daca.pv.parquet,used_in_pca
+103PI5803.daca.pv,ISOM,ISOM,False,ISOM/103PI5803.daca.pv.parquet,used_in_pca
+103PI5805.daca.pv,ISOM,ISOM,False,ISOM/103PI5805.daca.pv.parquet,used_in_pca
+103PI5915.daca.pv,ISOM,ISOM,False,ISOM/103PI5915.daca.pv.parquet,used_in_pca
+103PI7009N.pv,ISOM,ISOM,False,ISOM/103PI7009N.pv.parquet,dropped: has negative values (min -0.27)
+103PI8208N.pv,ISOM,ISOM,False,ISOM/103PI8208N.pv.parquet,used_in_pca
+103PI8501.daca.pv,ISOM,ISOM,False,ISOM/103PI8501.daca.pv.parquet,used_in_pca
+103PIC5120N.pida.pv,ISOM,ISOM,False,ISOM/103PIC5120N.pida.pv.parquet,used_in_pca
+103PIC5711BN.pida.pv,ISOM,ISOM,False,ISOM/103PIC5711BN.pida.pv.parquet,used_in_pca
+103PIC6311N.pida.pv,ISOM,ISOM,False,ISOM/103PIC6311N.pida.pv.parquet,dropped: has negative values (min -0.06)
+103TC5604.daca.pv,ISOM,ISOM,False,ISOM/103TC5604.daca.pv.parquet,used_in_pca
+103TC6001.daca.pv,ISOM,ISOM,False,ISOM/103TC6001.daca.pv.parquet,used_in_pca
+103TI1503.daca.pv,ISOM,ISOM,False,ISOM/103TI1503.daca.pv.parquet,used_in_pca
+103TI1667A.daca.pv,ISOM,ISOM,False,ISOM/103TI1667A.daca.pv.parquet,used_in_pca
+103TI1667B.daca.pv,ISOM,ISOM,False,ISOM/103TI1667B.daca.pv.parquet,used_in_pca
+103TI1709.daca.pv,ISOM,ISOM,False,ISOM/103TI1709.daca.pv.parquet,used_in_pca
+103TI5101.daca.pv,ISOM,ISOM,False,ISOM/103TI5101.daca.pv.parquet,used_in_pca
+103TI5303A.daca.pv,ISOM,ISOM,False,ISOM/103TI5303A.daca.pv.parquet,used_in_pca
+103TI5303B.daca.pv,ISOM,ISOM,False,ISOM/103TI5303B.daca.pv.parquet,used_in_pca
+103TI5466A.pv,ISOM,ISOM,False,ISOM/103TI5466A.pv.parquet,used_in_pca
+103TI5466B.pv,ISOM,ISOM,False,ISOM/103TI5466B.pv.parquet,used_in_pca
+103TI5470A.pv,ISOM,ISOM,False,ISOM/103TI5470A.pv.parquet,used_in_pca
+103TI5470B.pv,ISOM,ISOM,False,ISOM/103TI5470B.pv.parquet,used_in_pca
+103TI5605.daca.pv,ISOM,ISOM,False,ISOM/103TI5605.daca.pv.parquet,used_in_pca
+103TI5608.daca.pv,ISOM,ISOM,False,ISOM/103TI5608.daca.pv.parquet,used_in_pca
+103TI5909.daca.pv,ISOM,ISOM,False,ISOM/103TI5909.daca.pv.parquet,used_in_pca
+103TI6302.daca.pv,ISOM,ISOM,False,ISOM/103TI6302.daca.pv.parquet,used_in_pca
+103TI7003.daca.pv,ISOM,ISOM,False,ISOM/103TI7003.daca.pv.parquet,used_in_pca
+103TI7015N.pv,ISOM,ISOM,False,ISOM/103TI7015N.pv.parquet,used_in_pca
+103TI7102.daca.pv,ISOM,ISOM,False,ISOM/103TI7102.daca.pv.parquet,used_in_pca
+103TI8208N.pv,ISOM,ISOM,False,ISOM/103TI8208N.pv.parquet,used_in_pca
+103TI8502.daca.pv,ISOM,ISOM,False,ISOM/103TI8502.daca.pv.parquet,used_in_pca
+103TIC5122N.pida.pv,ISOM,ISOM,False,ISOM/103TIC5122N.pida.pv.parquet,used_in_pca
+14PT304.PV,ISOM_3,ISOM_3,False,ISOM_3/14PT304.PV.parquet,used_in_pca
+14PT601X.PV,ISOM_3,ISOM_3,False,ISOM_3/14PT601X.PV.parquet,used_in_pca
+14TI303.PV,ISOM_3,ISOM_3,False,ISOM_3/14TI303.PV.parquet,used_in_pca
+14TI422.pv,ISOM_3,ISOM_3,False,ISOM_3/14TI422.pv.parquet,used_in_pca
+14TI501.PV,ISOM_3,ISOM_3,False,ISOM_3/14TI501.PV.parquet,used_in_pca
+14TI511.PV,ISOM_3,ISOM_3,False,ISOM_3/14TI511.PV.parquet,used_in_pca
+14TI606.PV,ISOM_3,ISOM_3,False,ISOM_3/14TI606.PV.parquet,used_in_pca
+14TI614.PV,ISOM_3,ISOM_3,False,ISOM_3/14TI614.PV.parquet,used_in_pca
+14TI808.PV,ISOM_3,ISOM_3,False,ISOM_3/14TI808.PV.parquet,used_in_pca
+16TT110.pv,ISOM_3,ISOM_3,False,ISOM_3/16TT110.pv.parquet,used_in_pca
+16TT201.pv,ISOM_3,ISOM_3,False,ISOM_3/16TT201.pv.parquet,used_in_pca
+19pt102.pv,ISOM_3,ISOM_3,False,ISOM_3/19pt102.pv.parquet,used_in_pca
+20PT103.PV,ISOM_3,ISOM_3,False,ISOM_3/20PT103.PV.parquet,used_in_pca
+20TI102.PV,ISOM_3,ISOM_3,False,ISOM_3/20TI102.PV.parquet,used_in_pca
+700TI3219N,ISOM_4,ISOM_4,False,ISOM_4/700TI3219N.parquet,dropped: 24.4% missing (> 10%)
+700TI3932N,ISOM_4,ISOM_4,False,ISOM_4/700TI3932N.parquet,used_in_pca
+700TI3936N,ISOM_4,ISOM_4,False,ISOM_4/700TI3936N.parquet,dropped: 25.2% missing (> 10%)
+99PC1527.DACA.PV,LOUP,LOUP,False,LOUP/99PC1527.DACA.PV.parquet,used_in_pca
+99PC3704.DACA.PV,LOUP,LOUP,False,LOUP/99PC3704.DACA.PV.parquet,used_in_pca
+99PI1206.DACA.PV,LOUP,LOUP,False,LOUP/99PI1206.DACA.PV.parquet,dropped: has negative values (min -0.26)
+99PI1260A.PV,LOUP,LOUP,False,LOUP/99PI1260A.PV.parquet,used_in_pca
+99PI1260B.PV,LOUP,LOUP,False,LOUP/99PI1260B.PV.parquet,used_in_pca
+99PI1320.DACA.PV,LOUP,LOUP,False,LOUP/99PI1320.DACA.PV.parquet,used_in_pca
+99PI1327.DACA.PV,LOUP,LOUP,False,LOUP/99PI1327.DACA.PV.parquet,used_in_pca
+99PI1342.DACA.PV,LOUP,LOUP,False,LOUP/99PI1342.DACA.PV.parquet,used_in_pca
+99PI1405.DACA.PV,LOUP,LOUP,False,LOUP/99PI1405.DACA.PV.parquet,dropped: has negative values (min -0.06)
+99PI1410.DACA.PV,LOUP,LOUP,False,LOUP/99PI1410.DACA.PV.parquet,dropped: has negative values (min -0.1)
+99PI1506.DACA.PV,LOUP,LOUP,False,LOUP/99PI1506.DACA.PV.parquet,used_in_pca
+99PI1520.DACA.PV,LOUP,LOUP,False,LOUP/99PI1520.DACA.PV.parquet,used_in_pca
+99PI1542.DACA.PV,LOUP,LOUP,False,LOUP/99PI1542.DACA.PV.parquet,dropped: constant
+99PI1566.PV,LOUP,LOUP,False,LOUP/99PI1566.PV.parquet,used_in_pca
+99PI1605.DACA.PV,LOUP,LOUP,False,LOUP/99PI1605.DACA.PV.parquet,used_in_pca
+99PI1610.DACA.PV,LOUP,LOUP,False,LOUP/99PI1610.DACA.PV.parquet,dropped: has negative values (min -0.18)
+99PI1909.DACA.PV,LOUP,LOUP,False,LOUP/99PI1909.DACA.PV.parquet,dropped: has negative values (min -0.15)
+99PI2251.DACA.PV,LOUP,LOUP,False,LOUP/99PI2251.DACA.PV.parquet,dropped: near-constant (99.88% one value > 99%)
+99PI2252.DACA.PV,LOUP,LOUP,False,LOUP/99PI2252.DACA.PV.parquet,dropped: has negative values (min -0.11)
+99PI2304.DACA.PV,LOUP,LOUP,False,LOUP/99PI2304.DACA.PV.parquet,used_in_pca
+99PI2310.DACA.PV,LOUP,LOUP,False,LOUP/99PI2310.DACA.PV.parquet,dropped: has negative values (min -0.06)
+99PI2314.PV,LOUP,LOUP,False,LOUP/99PI2314.PV.parquet,used_in_pca
+99PI2360A.PV,LOUP,LOUP,False,LOUP/99PI2360A.PV.parquet,dropped: has negative values (min -0.04)
+99PI2360B.PV,LOUP,LOUP,False,LOUP/99PI2360B.PV.parquet,dropped: has negative values (min -0.06)
+99PI2402.daca.pv,LOUP,LOUP,False,LOUP/99PI2402.daca.pv.parquet,dropped: has negative values (min -0.01)
+99PI3102.DACA.PV,LOUP,LOUP,False,LOUP/99PI3102.DACA.PV.parquet,used_in_pca
+99PI3213.PV,LOUP,LOUP,False,LOUP/99PI3213.PV.parquet,used_in_pca
+99PI3219.DACA.PV,LOUP,LOUP,False,LOUP/99PI3219.DACA.PV.parquet,used_in_pca
+99PI3227.PV,LOUP,LOUP,False,LOUP/99PI3227.PV.parquet,used_in_pca
+99PI3233.DACA.PV,LOUP,LOUP,False,LOUP/99PI3233.DACA.PV.parquet,dropped: has negative values (min -0.17)
+99PI3262.PV,LOUP,LOUP,False,LOUP/99PI3262.PV.parquet,dropped: has negative values (min -0.01)
+99PI3265.PV,LOUP,LOUP,False,LOUP/99PI3265.PV.parquet,used_in_pca
+99PI3281A.DACA.PV,LOUP,LOUP,False,LOUP/99PI3281A.DACA.PV.parquet,dropped: has negative values (min -0.11)
+99PI3281B.DACA.PV,LOUP,LOUP,False,LOUP/99PI3281B.DACA.PV.parquet,dropped: has negative values (min -0.04)
+99PI3303.DACA.PV,LOUP,LOUP,False,LOUP/99PI3303.DACA.PV.parquet,used_in_pca
+99PI3413.DACA.PV,LOUP,LOUP,False,LOUP/99PI3413.DACA.PV.parquet,dropped: 25.2% missing (> 10%)
+99PI3705.DACA.PV,LOUP,LOUP,False,LOUP/99PI3705.DACA.PV.parquet,used_in_pca
+99PI3805.DACA.PV,LOUP,LOUP,False,LOUP/99PI3805.DACA.PV.parquet,used_in_pca
+99PI4013.PV,LOUP,LOUP,False,LOUP/99PI4013.PV.parquet,used_in_pca
+99PI4103.DACA.PV,LOUP,LOUP,False,LOUP/99PI4103.DACA.PV.parquet,dropped: has negative values (min -0.48)
+99PI4104.DACA.PV,LOUP,LOUP,False,LOUP/99PI4104.DACA.PV.parquet,dropped: has negative values (min -1.04)
+99PI4120.DACA.PV,LOUP,LOUP,False,LOUP/99PI4120.DACA.PV.parquet,dropped: has negative values (min -0.4)
+99PI4151.DACA.PV,LOUP,LOUP,False,LOUP/99PI4151.DACA.PV.parquet,dropped: has negative values (min -0.08)
+99PI4152.DACA.PV,LOUP,LOUP,False,LOUP/99PI4152.DACA.PV.parquet,dropped: has negative values (min -0.04)
+99PI4153.DACA.PV,LOUP,LOUP,False,LOUP/99PI4153.DACA.PV.parquet,dropped: has negative values (min -0.06)
+99PI4405.DACA.PV,LOUP,LOUP,False,LOUP/99PI4405.DACA.PV.parquet,used_in_pca
+99PI5406.DACA.PV,LOUP,LOUP,False,LOUP/99PI5406.DACA.PV.parquet,dropped: has negative values (min -0.01)
+99TI1320.DACA.PV,LOUP,LOUP,False,LOUP/99TI1320.DACA.PV.parquet,used_in_pca
+99TI1321.DACA.PV,LOUP,LOUP,False,LOUP/99TI1321.DACA.PV.parquet,used_in_pca
+99TI1362.DACA.PV,LOUP,LOUP,False,LOUP/99TI1362.DACA.PV.parquet,used_in_pca
+99TI1407.DACA.PV,LOUP,LOUP,False,LOUP/99TI1407.DACA.PV.parquet,used_in_pca
+99TI1502A.DACA.PV,LOUP,LOUP,False,LOUP/99TI1502A.DACA.PV.parquet,used_in_pca
+99TI1505A.DACA.PV,LOUP,LOUP,False,LOUP/99TI1505A.DACA.PV.parquet,used_in_pca
+99TI1515.DACA.PV,LOUP,LOUP,False,LOUP/99TI1515.DACA.PV.parquet,used_in_pca
+99TI1562.DACA.PV,LOUP,LOUP,False,LOUP/99TI1562.DACA.PV.parquet,used_in_pca
+99TI1602E.DACA.PV,LOUP,LOUP,False,LOUP/99TI1602E.DACA.PV.parquet,used_in_pca
+99TI1607.DACA.PV,LOUP,LOUP,False,LOUP/99TI1607.DACA.PV.parquet,used_in_pca
+99TI2106.DACA.PV,LOUP,LOUP,False,LOUP/99TI2106.DACA.PV.parquet,used_in_pca
+99TI2301.DACA.PV,LOUP,LOUP,False,LOUP/99TI2301.DACA.PV.parquet,used_in_pca
+99TI2321.DACA.PV,LOUP,LOUP,False,LOUP/99TI2321.DACA.PV.parquet,used_in_pca
+99TI2366A.DACA.PV,LOUP,LOUP,False,LOUP/99TI2366A.DACA.PV.parquet,used_in_pca
+99TI2366B.DACA.PV,LOUP,LOUP,False,LOUP/99TI2366B.DACA.PV.parquet,dropped: has negative values (min -2.89)
+99TI2401.DACA.PV,LOUP,LOUP,False,LOUP/99TI2401.DACA.PV.parquet,used_in_pca
+99TI3018.DACA.PV,LOUP,LOUP,False,LOUP/99TI3018.DACA.PV.parquet,used_in_pca
+99TI3202A.DACA.PV,LOUP,LOUP,False,LOUP/99TI3202A.DACA.PV.parquet,used_in_pca
+99TI3202C.DACA.PV,LOUP,LOUP,False,LOUP/99TI3202C.DACA.PV.parquet,used_in_pca
+99TI3205.DACA.PV,LOUP,LOUP,False,LOUP/99TI3205.DACA.PV.parquet,used_in_pca
+99TI3208.DACA.PV,LOUP,LOUP,False,LOUP/99TI3208.DACA.PV.parquet,used_in_pca
+99TI3258.DACA.PV,LOUP,LOUP,False,LOUP/99TI3258.DACA.PV.parquet,used_in_pca
+99TI3269.DACA.PV,LOUP,LOUP,False,LOUP/99TI3269.DACA.PV.parquet,used_in_pca
+99TI3410.DACA.PV,LOUP,LOUP,False,LOUP/99TI3410.DACA.PV.parquet,used_in_pca
+99TI4105.DACA.PV,LOUP,LOUP,False,LOUP/99TI4105.DACA.PV.parquet,used_in_pca
+99TI4106.DACA.PV,LOUP,LOUP,False,LOUP/99TI4106.DACA.PV.parquet,dropped: has negative values (min -2.9)
+99TI4107.DACA.PV,LOUP,LOUP,False,LOUP/99TI4107.DACA.PV.parquet,used_in_pca
+99TI4140.DACA.PV,LOUP,LOUP,False,LOUP/99TI4140.DACA.PV.parquet,used_in_pca
+99TI4404.DACA.PV,LOUP,LOUP,False,LOUP/99TI4404.DACA.PV.parquet,used_in_pca
+99TI5406.DACA.PV,LOUP,LOUP,False,LOUP/99TI5406.DACA.PV.parquet,used_in_pca
+99TI5801.DACA.PV,LOUP,LOUP,False,LOUP/99TI5801.DACA.PV.parquet,used_in_pca
+99TI5905.DACA.PV,LOUP,LOUP,False,LOUP/99TI5905.DACA.PV.parquet,dropped: has negative values (min -2.62)
+101PC1105.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/101PC1105.DACA.PV.parquet,used_in_pca
+101PC1302.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/101PC1302.DACA.PV.parquet,used_in_pca
+101PC1603B.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/101PC1603B.DACA.PV.parquet,dropped: 25.2% missing (> 10%)
+101TC1103.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/101TC1103.DACA.PV.parquet,used_in_pca
+101TI1602.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/101TI1602.PV.parquet,used_in_pca
+102PC1201R.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PC1201R.DACA.PV.parquet,used_in_pca
+102PC4101.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PC4101.DACA.PV.parquet,dropped: 16.3% missing (> 10%)
+102PC4302R.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PC4302R.DACA.PV.parquet,dropped: 25.2% missing (> 10%)
+102PC4602R.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PC4602R.DACA.PV.parquet,used_in_pca
+102PC4702.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PC4702.DACA.PV.parquet,used_in_pca
+102PC5101R.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PC5101R.DACA.PV.parquet,used_in_pca
+102PC6702.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PC6702.DACA.PV.parquet,used_in_pca
+102PI1457A.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI1457A.DACA.PV.parquet,used_in_pca
+102PI1457B.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI1457B.DACA.PV.parquet,used_in_pca
+102PI1502.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI1502.DACA.PV.parquet,dropped: 25.2% missing (> 10%)
+102PI1507.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI1507.DACA.PV.parquet,dropped: 16.3% missing (> 10%)
+102PI3906N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI3906N.DACA.PV.parquet,used_in_pca
+102PI4244AN.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4244AN.PV.parquet,used_in_pca
+102PI4457.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4457.DACA.PV.parquet,used_in_pca
+102PI4459.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4459.DACA.PV.parquet,dropped: 40.6% missing (> 10%)
+102PI4557.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4557.DACA.PV.parquet,dropped: 65.9% missing (> 10%)
+102PI4559.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4559.DACA.PV.parquet,dropped: 34.1% missing (> 10%)
+102PI4754R.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4754R.DACA.PV.parquet,used_in_pca
+102PI4758R.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4758R.DACA.PV.parquet,used_in_pca
+102PI4766N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4766N.DACA.PV.parquet,used_in_pca
+102PI4767N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4767N.DACA.PV.parquet,used_in_pca
+102PI4769N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4769N.DACA.PV.parquet,used_in_pca
+102PI4770N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4770N.DACA.PV.parquet,dropped: has negative values (min -0.02)
+102PI4772N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI4772N.DACA.PV.parquet,dropped: has negative values (min -0.05)
+102PI5001.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI5001.DACA.PV.parquet,dropped: near-constant (100.00% one value > 99%)
+102PI5006.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI5006.DACA.PV.parquet,used_in_pca
+102PI7903.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI7903.DACA.PV.parquet,used_in_pca
+102PI8507N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI8507N.DACA.PV.parquet,dropped: has negative values (min -0.02)
+102PI9003.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI9003.DACA.PV.parquet,used_in_pca
+102PI9004.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI9004.DACA.PV.parquet,used_in_pca
+102PI9607.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PI9607.DACA.PV.parquet,used_in_pca
+102PIC4771N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PIC4771N.DACA.PV.parquet,used_in_pca
+102PY6708.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102PY6708.PV.parquet,dropped: constant
+102TI0503.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI0503.DACA.PV.parquet,used_in_pca
+102TI0701.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI0701.DACA.PV.parquet,used_in_pca
+102TI1402A.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI1402A.DACA.PV.parquet,used_in_pca
+102TI1408A.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI1408A.DACA.PV.parquet,dropped: 16.3% missing (> 10%)
+102TI1504.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI1504.DACA.PV.parquet,dropped: 40.6% missing (> 10%)
+102TI1515.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI1515.DACA.PV.parquet,dropped: 25.2% missing (> 10%)
+102TI3903.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI3903.DACA.PV.parquet,dropped: 25.2% missing (> 10%)
+102TI4250.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4250.DACA.PV.parquet,dropped: 16.3% missing (> 10%)
+102TI4301.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4301.DACA.PV.parquet,used_in_pca
+102TI4351N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4351N.DACA.PV.parquet,dropped: 40.6% missing (> 10%)
+102TI4405.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4405.DACA.PV.parquet,dropped: 40.6% missing (> 10%)
+102TI4406.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4406.DACA.PV.parquet,dropped: 65.9% missing (> 10%)
+102TI4602.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4602.DACA.PV.parquet,used_in_pca
+102TI4651N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4651N.DACA.PV.parquet,used_in_pca
+102TI4652N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4652N.DACA.PV.parquet,used_in_pca
+102TI4742N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4742N.DACA.PV.parquet,dropped: has negative values (min -1.88)
+102TI4745N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4745N.DACA.PV.parquet,used_in_pca
+102TI4746N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4746N.DACA.PV.parquet,used_in_pca
+102TI4752R.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4752R.DACA.PV.parquet,dropped: has negative values (min -0.96)
+102TI4764R.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4764R.DACA.PV.parquet,used_in_pca
+102TI4786N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4786N.DACA.PV.parquet,used_in_pca
+102TI4787N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4787N.DACA.PV.parquet,used_in_pca
+102TI4788N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4788N.DACA.PV.parquet,used_in_pca
+102TI4789N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4789N.DACA.PV.parquet,dropped: has negative values (min -32.9)
+102TI4790N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4790N.DACA.PV.parquet,dropped: has negative values (min -35)
+102TI4951N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4951N.DACA.PV.parquet,used_in_pca
+102TI4952N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI4952N.DACA.PV.parquet,used_in_pca
+102TI5002.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI5002.DACA.PV.parquet,used_in_pca
+102TI5102.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI5102.DACA.PV.parquet,used_in_pca
+102TI5104.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI5104.DACA.PV.parquet,used_in_pca
+102TI5151N.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI5151N.DACA.PV.parquet,used_in_pca
+102TI6701.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI6701.DACA.PV.parquet,used_in_pca
+102TI8601.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI8601.DACA.PV.parquet,used_in_pca
+102TI8602.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI8602.DACA.PV.parquet,used_in_pca
+102TI9607.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/102TI9607.DACA.PV.parquet,used_in_pca
+508PC5102.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/508PC5102.DACA.PV.parquet,used_in_pca
+508PC5103.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/508PC5103.DACA.PV.parquet,used_in_pca
+508PC5104.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/508PC5104.DACA.PV.parquet,used_in_pca
+508TI5101.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/508TI5101.DACA.PV.parquet,used_in_pca
+508TI5102.DACA.PV,NSU_NHT_CCR,NSU_NHT_CCR,False,NSU_NHT_CCR/508TI5102.DACA.PV.parquet,used_in_pca
+41PI4110.pv,PDA,PDA,False,PDA/41PI4110.pv.parquet,used_in_pca
+41PI41101A.pv,PDA,PDA,False,PDA/41PI41101A.pv.parquet,used_in_pca
+41PI41102.pv,PDA,PDA,False,PDA/41PI41102.pv.parquet,used_in_pca
+41PI4111.pv,PDA,PDA,False,PDA/41PI4111.pv.parquet,used_in_pca
+41PI41121.pv,PDA,PDA,False,PDA/41PI41121.pv.parquet,used_in_pca
+41PI41129.pv,PDA,PDA,False,PDA/41PI41129.pv.parquet,used_in_pca
+41PI41136.pv,PDA,PDA,False,PDA/41PI41136.pv.parquet,used_in_pca
+41PI4114.pv,PDA,PDA,False,PDA/41PI4114.pv.parquet,used_in_pca
+41PT4104.pv,PDA,PDA,False,PDA/41PT4104.pv.parquet,used_in_pca
+41TI41109.pv,PDA,PDA,False,PDA/41TI41109.pv.parquet,used_in_pca
+41TI41111B.pv,PDA,PDA,False,PDA/41TI41111B.pv.parquet,used_in_pca
+41TI41116B.pv,PDA,PDA,False,PDA/41TI41116B.pv.parquet,used_in_pca
+41TI41122.pv,PDA,PDA,False,PDA/41TI41122.pv.parquet,used_in_pca
+41TI41124.pv,PDA,PDA,False,PDA/41TI41124.pv.parquet,used_in_pca
+41TI41130.pv,PDA,PDA,False,PDA/41TI41130.pv.parquet,used_in_pca
+41TI41136.pv,PDA,PDA,False,PDA/41TI41136.pv.parquet,used_in_pca
+41TI4123.pv,PDA,PDA,False,PDA/41TI4123.pv.parquet,used_in_pca
+41TI4124.pv,PDA,PDA,False,PDA/41TI4124.pv.parquet,used_in_pca
+41TI4125.pv,PDA,PDA,False,PDA/41TI4125.pv.parquet,used_in_pca
+41TI4132.pv,PDA,PDA,False,PDA/41TI4132.pv.parquet,used_in_pca
+41TI4133.pv,PDA,PDA,False,PDA/41TI4133.pv.parquet,used_in_pca
+41TI4134.pv,PDA,PDA,False,PDA/41TI4134.pv.parquet,used_in_pca
+41TI4136.pv,PDA,PDA,False,PDA/41TI4136.pv.parquet,used_in_pca
+41TI4137.pv,PDA,PDA,False,PDA/41TI4137.pv.parquet,used_in_pca
+41TI4140.pv,PDA,PDA,False,PDA/41TI4140.pv.parquet,used_in_pca
+41TI4141.pv,PDA,PDA,False,PDA/41TI4141.pv.parquet,used_in_pca
+41TI4142.pv,PDA,PDA,False,PDA/41TI4142.pv.parquet,used_in_pca
+41TI4144.pv,PDA,PDA,False,PDA/41TI4144.pv.parquet,used_in_pca
+105PC1113.DACA.PV,PG,PG,False,PG/105PC1113.DACA.PV.parquet,used_in_pca
+105PC1601.DACA.PV,PG,PG,False,PG/105PC1601.DACA.PV.parquet,used_in_pca
+105PC2403.DACA.PV,PG,PG,False,PG/105PC2403.DACA.PV.parquet,used_in_pca
+105PI1204.DACA.PV,PG,PG,False,PG/105PI1204.DACA.PV.parquet,used_in_pca
+105PI1303.DACA.PV,PG,PG,False,PG/105PI1303.DACA.PV.parquet,used_in_pca
+105PI1403.DACA.PV,PG,PG,False,PG/105PI1403.DACA.PV.parquet,used_in_pca
+105PI1518AN.PV,PG,PG,False,PG/105PI1518AN.PV.parquet,used_in_pca
+105PI1607.DACA.PV,PG,PG,False,PG/105PI1607.DACA.PV.parquet,used_in_pca
+105PI2001.DACA.PV,PG,PG,False,PG/105PI2001.DACA.PV.parquet,used_in_pca
+105PI2201.DACA.PV,PG,PG,False,PG/105PI2201.DACA.PV.parquet,used_in_pca
+105PI2608.DACA.PV,PG,PG,False,PG/105PI2608.DACA.PV.parquet,used_in_pca
+105PI2703.DACA.PV,PG,PG,False,PG/105PI2703.DACA.PV.parquet,used_in_pca
+105PI2803.DACA.PV,PG,PG,False,PG/105PI2803.DACA.PV.parquet,dropped: constant
+105PI2804N.PV,PG,PG,False,PG/105PI2804N.PV.parquet,dropped: has negative values (min -0.01)
+105PI2811N.PV,PG,PG,False,PG/105PI2811N.PV.parquet,used_in_pca
+105PI2827N.PV,PG,PG,False,PG/105PI2827N.PV.parquet,used_in_pca
+105PI2838AN.PV,PG,PG,False,PG/105PI2838AN.PV.parquet,dropped: has negative values (min -0.24)
+105PI2901.daca.pv,PG,PG,False,PG/105PI2901.daca.pv.parquet,used_in_pca
+105PI5804N.PV,PG,PG,False,PG/105PI5804N.PV.parquet,used_in_pca
+105PIC3010N.PV,PG,PG,False,PG/105PIC3010N.PV.parquet,used_in_pca
+105TI1105.DACA.PV,PG,PG,False,PG/105TI1105.DACA.PV.parquet,used_in_pca
+105TI1203.DACA.PV,PG,PG,False,PG/105TI1203.DACA.PV.parquet,used_in_pca
+105TI1313N.PV,PG,PG,False,PG/105TI1313N.PV.parquet,used_in_pca
+105TI1602.DACA.PV,PG,PG,False,PG/105TI1602.DACA.PV.parquet,used_in_pca
+105TI1604.DACA.PV,PG,PG,False,PG/105TI1604.DACA.PV.parquet,used_in_pca
+105TI1606.DACA.PV,PG,PG,False,PG/105TI1606.DACA.PV.parquet,used_in_pca
+105TI2401.DACA.PV,PG,PG,False,PG/105TI2401.DACA.PV.parquet,dropped: constant
+105TI2602.DACA.PV,PG,PG,False,PG/105TI2602.DACA.PV.parquet,used_in_pca
+105TI2806N.PV,PG,PG,False,PG/105TI2806N.PV.parquet,used_in_pca
+105TI2809N.PV,PG,PG,False,PG/105TI2809N.PV.parquet,used_in_pca
+105TI2810N.PV,PG,PG,False,PG/105TI2810N.PV.parquet,used_in_pca
+105TI2813N.PV,PG,PG,False,PG/105TI2813N.PV.parquet,used_in_pca
+105TI2901.DACA.PV,PG,PG,False,PG/105TI2901.DACA.PV.parquet,used_in_pca
+105TI5803N.PV,PG,PG,False,PG/105TI5803N.PV.parquet,used_in_pca
+105TIC1421N.PV,PG,PG,False,PG/105TIC1421N.PV.parquet,used_in_pca
+105TIC2015N.PV,PG,PG,False,PG/105TIC2015N.PV.parquet,used_in_pca
+105TIC2215N.PV,PG,PG,False,PG/105TIC2215N.PV.parquet,used_in_pca
+105TIC2828N.PV,PG,PG,False,PG/105TIC2828N.PV.parquet,used_in_pca
+02PC201A.PV,SEU1,SEU1,False,SEU1/02PC201A.PV.parquet,used_in_pca
+02PC201B.PV,SEU1,SEU1,False,SEU1/02PC201B.PV.parquet,used_in_pca
+02PC208.PV,SEU1,SEU1,False,SEU1/02PC208.PV.parquet,used_in_pca
+02PC215.PV,SEU1,SEU1,False,SEU1/02PC215.PV.parquet,used_in_pca
+02PDI215.PV,SEU1,SEU1,False,SEU1/02PDI215.PV.parquet,used_in_pca
+02PI205.PV,SEU1,SEU1,False,SEU1/02PI205.PV.parquet,used_in_pca
+02PI206.PV,SEU1,SEU1,False,SEU1/02PI206.PV.parquet,dropped: has negative values (min -0.03)
+02PI207.PV,SEU1,SEU1,False,SEU1/02PI207.PV.parquet,used_in_pca
+02PI213.PV,SEU1,SEU1,False,SEU1/02PI213.PV.parquet,dropped: has negative values (min -2.53)
+02PI221B.PV,SEU1,SEU1,False,SEU1/02PI221B.PV.parquet,dropped: has negative values (min -0.08)
+02PI237.PV,SEU1,SEU1,False,SEU1/02PI237.PV.parquet,used_in_pca
+02TC205W.PV,SEU1,SEU1,False,SEU1/02TC205W.PV.parquet,used_in_pca
+02TI219.PV,SEU1,SEU1,False,SEU1/02TI219.PV.parquet,used_in_pca
+02TI227.PV,SEU1,SEU1,False,SEU1/02TI227.PV.parquet,used_in_pca
+04PI421C.PV,SEU1,SEU1,False,SEU1/04PI421C.PV.parquet,dropped: has negative values (min -0.01)
+05PC501.PV,SEU1,SEU1,False,SEU1/05PC501.PV.parquet,used_in_pca
+05PC502.PV,SEU1,SEU1,False,SEU1/05PC502.PV.parquet,used_in_pca
+05TI508.PV,SEU1,SEU1,False,SEU1/05TI508.PV.parquet,used_in_pca
+05TI509.PV,SEU1,SEU1,False,SEU1/05TI509.PV.parquet,used_in_pca
+K604BTI1.PV,SEU1,SEU1,False,SEU1/K604BTI1.PV.parquet,used_in_pca
+K604BTI2.PV,SEU1,SEU1,False,SEU1/K604BTI2.PV.parquet,used_in_pca
+LHC215.PV,SEU1,SEU1,False,SEU1/LHC215.PV.parquet,used_in_pca
+LHC222.PV,SEU1,SEU1,False,SEU1/LHC222.PV.parquet,used_in_pca
+PDI3215A.PV,SEU2,SEU2,False,SEU2/PDI3215A.PV.parquet,dropped: has negative values (min -0.02)
+PPC3215.PV,SEU2,SEU2,False,SEU2/PPC3215.PV.parquet,used_in_pca
+PPC3401.PV,SEU2,SEU2,False,SEU2/PPC3401.PV.parquet,used_in_pca
+PPC3501.pv,SEU2,SEU2,False,SEU2/PPC3501.pv.parquet,used_in_pca
+PPC3502.pv,SEU2,SEU2,False,SEU2/PPC3502.pv.parquet,used_in_pca
+PPI3205.PV,SEU2,SEU2,False,SEU2/PPI3205.PV.parquet,used_in_pca
+PPI3206.PV,SEU2,SEU2,False,SEU2/PPI3206.PV.parquet,used_in_pca
+PPI3207.PV,SEU2,SEU2,False,SEU2/PPI3207.PV.parquet,used_in_pca
+PPI3213.PV,SEU2,SEU2,False,SEU2/PPI3213.PV.parquet,used_in_pca
+PPI3239.PV,SEU2,SEU2,False,SEU2/PPI3239.PV.parquet,dropped: constant
+PPI3241.PV,SEU2,SEU2,False,SEU2/PPI3241.PV.parquet,dropped: has negative values (min -0.01)
+PTC3208.PV,SEU2,SEU2,False,SEU2/PTC3208.PV.parquet,used_in_pca
+PTC3209.PV,SEU2,SEU2,False,SEU2/PTC3209.PV.parquet,used_in_pca
+PTI3201A.PV,SEU2,SEU2,False,SEU2/PTI3201A.PV.parquet,used_in_pca
+PTI3201H.PV,SEU2,SEU2,False,SEU2/PTI3201H.PV.parquet,used_in_pca
+PTI3231.PV,SEU2,SEU2,False,SEU2/PTI3231.PV.parquet,used_in_pca
+PTI3280.PV,SEU2,SEU2,False,SEU2/PTI3280.PV.parquet,used_in_pca
+42PC4204.PV,SEU3,SEU3,False,SEU3/42PC4204.PV.parquet,used_in_pca
+42PC4208.PV,SEU3,SEU3,False,SEU3/42PC4208.PV.parquet,used_in_pca
+42PC4215.PV,SEU3,SEU3,False,SEU3/42PC4215.PV.parquet,used_in_pca
+42PC4220.PV,SEU3,SEU3,False,SEU3/42PC4220.PV.parquet,used_in_pca
+42PC4275.PV,SEU3,SEU3,False,SEU3/42PC4275.PV.parquet,used_in_pca
+42PC4501.PV,SEU3,SEU3,False,SEU3/42PC4501.PV.parquet,used_in_pca
+42PC4502.PV,SEU3,SEU3,False,SEU3/42PC4502.PV.parquet,used_in_pca
+42PI4205.PV,SEU3,SEU3,False,SEU3/42PI4205.PV.parquet,used_in_pca
+42PI4213.PV,SEU3,SEU3,False,SEU3/42PI4213.PV.parquet,dropped: has negative values (min -760)
+42PI4304.PV,SEU3,SEU3,False,SEU3/42PI4304.PV.parquet,used_in_pca
+42TI4277.PV,SEU3,SEU3,False,SEU3/42TI4277.PV.parquet,used_in_pca
+42TI4507.PV,SEU3,SEU3,False,SEU3/42TI4507.PV.parquet,used_in_pca
+44PI4410.PV,SEU3,SEU3,False,SEU3/44PI4410.PV.parquet,used_in_pca
+44PI4411.PV,SEU3,SEU3,False,SEU3/44PI4411.PV.parquet,used_in_pca
+(44ft2505.pv*509mw5101.daca.pv/22.414)/1000,flare_data,flare_data,True,flare_data/(44ft2505.pv_509mw5101.daca.pv_22.414)_1000.parquet,used_in_flare_net
+(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000,flare_data,flare_data,True,flare_data/(LRflare.pv+LREflare.pv+99fi4601.daca.pv)_1000.parquet,used_in_flare_net
+509fi5201.daca.pv/1000,flare_data,flare_data,True,flare_data/509fi5201.daca.pv_1000.parquet,used_in_flare_net
+509mw5101.daca.pv,flare_data,flare_data,True,flare_data/509mw5101.daca.pv.parquet,not used: flare tag outside the flare_net formula
+flare_net,flare_data,flare_data,True,flare_net = (LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000 + 509fi5201.daca.pv/1000 - (44ft2505.pv*509mw5101.daca.pv/22.414)/1000,in_matrix

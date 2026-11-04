@@ -1,0 +1,2 @@
+p,n_noc_rows,t2_limit,alpha0,alpha_term,flare_threshold,flare_threshold_rule,interval,n_events,n_events_found,pct_noc_above_t2_limit,pct_noc_above_term_limit_mean,pct_preflare_above_t2_limit,sum_identity_max_rel_error,gap_t2_vs_sum_terms_median_noc
+24,12157,36.50873448579526,0.05,0.05,1.5,manual FLARE_THRESHOLD,0 days 00:01:00,620,532,11.696964711688738,4.972786597570672,78.0617603809257,3.1913159419941002e-15,0.14909006815487713
