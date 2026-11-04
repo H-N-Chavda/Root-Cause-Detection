@@ -1299,25 +1299,25 @@ def check_noc_terms(T: np.ndarray, noc: np.ndarray, nodes: list[str], floored: l
 
 # ---- PRE-FLARE EVALUATION ----
 def evaluate_preflare_windows(idx: pd.DatetimeIndex, pre_eid: np.ndarray, events: pd.DataFrame, T: np.ndarray,
-                              t2: np.ndarray, t2_lim: float, abs_lim: np.ndarray, nodes: list[str]) -> pd.DataFrame:
+                              t2: np.ndarray, t2_lim: float, term_lim: np.ndarray, nodes: list[str]) -> pd.DataFrame:
     """Decide for each flare event whether it was found: T² above its limit at least once in the 30 min before onset.
 
-    For found events, the first such minute is decomposed (paper Fig. 5): every PC whose |T_j·PA(j)| is above its own
-    limit is listed.
+    For found events, the first such minute is decomposed (paper Fig. 5): every PC whose T²_j·PA(j) is above its own
+    Eq. 13 limit is listed.
 
     Args:
         idx: Timestamps of the matrix.
         pre_eid: Pre-flare window labels from label_flare_rows().
         events: Flare events from detect_flare_events().
-        T: Causal terms from decompose_t2_causal().
-        t2: Overall T² from check_sum_identity().
+        T: Causal terms from decompose_t2_causal() (squared here to get T²_j·PA(j)).
+        t2: Overall T² from compute_t2().
         t2_lim: Overall T² limit from t2_threshold().
-        abs_lim: Per-PC limits on |T_j·PA(j)| (square roots of the per-PC t2_threshold() values).
+        term_lim: Per-PC limits on T²_j·PA(j), t2_threshold() with p = 1 and k = number of parents.
         nodes: PC names in T's column order.
 
     Returns:
         One row per event: window_rows, rows_t2_above_limit, detected, first_ooc, minutes_before_onset,
-        t2_at_first_ooc and significant_pcs (PC name and T value, largest first).
+        t2_at_first_ooc and significant_pcs (PC name, its T²_j and its limit, largest T²_j first).
     """
     rows = []
     for ev in events.itertuples(index=False):
@@ -1328,11 +1328,12 @@ def evaluate_preflare_windows(idx: pd.DatetimeIndex, pre_eid: np.ndarray, events
                "t2_at_first_ooc": np.nan, "significant_pcs": ""}
         if ooc.any():
             i0 = w[int(np.argmax(ooc))]
-            sig = np.flatnonzero(np.abs(T[i0]) > abs_lim)
-            sig = sig[np.argsort(-np.abs(T[i0, sig]))]
+            t2j = T[i0] ** 2
+            sig = np.flatnonzero(t2j > term_lim)
+            sig = sig[np.argsort(-t2j[sig])]
             row.update({"first_ooc": idx[i0], "minutes_before_onset": (ev.start - idx[i0]) / pd.Timedelta(minutes=1),
                         "t2_at_first_ooc": float(t2[i0]),
-                        "significant_pcs": "; ".join(f"{nodes[j]} ({T[i0, j]:+.2f})" for j in sig)})
+                        "significant_pcs": "; ".join(f"{nodes[j]} (T²_j {t2j[j]:.1f} > {term_lim[j]:.2f})" for j in sig)})
         rows.append(row)
     out = pd.DataFrame(rows, columns=["event_id", "onset", "window_rows", "rows_t2_above_limit", "detected",
                                       "first_ooc", "minutes_before_onset", "t2_at_first_ooc", "significant_pcs"])
@@ -1351,7 +1352,7 @@ def load_plot_inputs(out: Path) -> dict[str, Any]:
 
     Returns:
         Dict with flare (raw flare_net and its inputs), t2 (all-row T² table), events, terms (all-row causal terms),
-        loadings, dag (final graph edges), cpdag (PC output), thr, t2_lim, term_lim (per-PC |T| limit by name),
+        loadings, dag (final graph edges), cpdag (PC output), thr, t2_lim, term_lim (per-PC T²_j limit by name),
         limits (limits.csv row) and interval.
 
     Raises:
@@ -1370,7 +1371,7 @@ def load_plot_inputs(out: Path) -> dict[str, Any]:
             "terms": pd.read_parquet(files["terms"]), "loadings": pd.read_csv(files["loadings"], index_col=0),
             "dag": pd.read_csv(files["dag"], dtype=str), "cpdag": pd.read_csv(files["cpdag"], dtype=str),
             "thr": float(limits["flare_threshold"]), "t2_lim": float(limits["t2_limit"]),
-            "term_lim": pd.read_csv(files["term_limits"]).set_index("node")["abs_T_limit"], "limits": limits,
+            "term_lim": pd.read_csv(files["term_limits"]).set_index("node")["t2_limit"], "limits": limits,
             "interval": pd.Timedelta(limits["interval"])}
 
 
@@ -1494,32 +1495,38 @@ def node_unit(node: str) -> str:
 
 
 def label_t2_peaks(D: dict[str, Any], sections: list[tuple]) -> pd.DataFrame:
-    """Name each labelled T² peak by the PC with the largest |T_j·PA(j)| there, its unit, top tags and nearest event.
+    """Name each labelled T² peak by the PC whose T²_j·PA(j) is furthest above its own Eq. 13 limit there.
+
+    Each PC has its own limit, so PCs are compared by T²_j / own limit, not by raw T²_j.
 
     Args:
         D: Plot inputs from load_plot_inputs().
         sections: Figure sections from time_sections().
 
     Returns:
-        One row per peak: timestamp, T2, top_pc, unit, T_value, share_of_T2, significant (|T| above that PC's limit),
-        top_tags, preflare_event_id, in_flare_event, next_event_id, minutes_to_next_onset, peaks_labelled_by_pc.
+        One row per peak: timestamp, T2, top_pc, unit, T2_j (that PC's T²_j·PA(j)), T2_j_limit, ratio_to_limit,
+        share_of_T2, significant (T2_j above its limit), top_tags, preflare_event_id, in_flare_event, next_event_id,
+        minutes_to_next_onset, peaks_labelled_by_pc.
     """
     t2, terms, events = D["t2"]["T2"], D["terms"], D["events"]
+    lim_all = D["term_lim"].reindex(terms.columns).to_numpy(dtype=np.float64)
     rows = []
     for t in find_t2_peaks(t2, D["t2_lim"], sections):
-        tr = terms.loc[t].astype(np.float64)
-        pc = str(tr.abs().idxmax())
-        v = float(tr[pc])
+        sq = terms.loc[t].astype(np.float64) ** 2
+        ratio = sq / lim_all
+        pc = str(ratio.idxmax())
+        v, lim_pc = float(sq[pc]), float(D["term_lim"][pc])
         nxt = events[events["start"] >= t]
-        rows.append({"timestamp": t, "T2": float(t2[t]), "top_pc": pc, "unit": node_unit(pc), "T_value": v,
-                     "share_of_T2": v ** 2 / float((tr ** 2).sum()), "significant": abs(v) > float(D["term_lim"][pc]),
+        rows.append({"timestamp": t, "T2": float(t2[t]), "top_pc": pc, "unit": node_unit(pc), "T2_j": v,
+                     "T2_j_limit": lim_pc, "ratio_to_limit": v / lim_pc, "share_of_T2": v / float(sq.sum()),
+                     "significant": v > lim_pc,
                      "top_tags": top_tags_text(D["loadings"], pc),
                      "preflare_event_id": int(D["t2"].at[t, "preflare_event_id"]),
                      "in_flare_event": bool(D["t2"].at[t, "flare_event"]),
                      "next_event_id": int(nxt["event_id"].iloc[0]) if len(nxt) else -1,
                      "minutes_to_next_onset": (nxt["start"].iloc[0] - t) / pd.Timedelta(minutes=1) if len(nxt) else np.nan})
-    cols = ["timestamp", "T2", "top_pc", "unit", "T_value", "share_of_T2", "significant", "top_tags",
-            "preflare_event_id", "in_flare_event", "next_event_id", "minutes_to_next_onset"]
+    cols = ["timestamp", "T2", "top_pc", "unit", "T2_j", "T2_j_limit", "ratio_to_limit", "share_of_T2", "significant",
+            "top_tags", "preflare_event_id", "in_flare_event", "next_event_id", "minutes_to_next_onset"]
     peaks = pd.DataFrame(rows, columns=cols)
     peaks["peaks_labelled_by_pc"] = peaks["top_pc"].map(peaks["top_pc"].value_counts())
     log(f"labelled T² peaks: {len(peaks)}; top PC above its own limit at {int(peaks['significant'].sum())}; "
@@ -1605,7 +1612,7 @@ def save_figure(fig: Any, path: Path, plt: Any) -> None:
 
 
 def peak_label(r: Any) -> str:
-    """Two-line label of a T² peak: PC with its T value, then its top tag.
+    """Two-line label of a T² peak: PC with its T²_j and own limit, then its top tag.
 
     Args:
         r: One row (namedtuple) of the peak table from label_t2_peaks().
@@ -1613,7 +1620,7 @@ def peak_label(r: Any) -> str:
     Returns:
         Label text.
     """
-    return f"{r.top_pc} ({r.T_value:+.1f})\n{r.top_tags.split('; ')[0]}"
+    return f"{r.top_pc} (T²_j {r.T2_j:.1f} / lim {r.T2_j_limit:.1f})\n{r.top_tags.split('; ')[0]}"
 
 
 def plot_flare_overview(D: dict[str, Any], spans: dict[str, list[tuple]], sections: list[tuple], path: Path) -> None:
@@ -1780,7 +1787,7 @@ def plot_event_zooms(D: dict[str, Any], path: Path) -> None:
 
 
 def plot_pc_terms(D: dict[str, Any], peaks: pd.DataFrame, spans: dict[str, list[tuple]], path: Path) -> None:
-    """Figure 4: T_j·PA(j) over the whole window for each PC that labels a T² peak, with its own ± limit.
+    """Figure 4: T²_j·PA(j) over the whole window for each PC that labels a T² peak, with its own Eq. 13 limit.
 
     Args:
         D: Plot inputs from load_plot_inputs().
@@ -1798,20 +1805,19 @@ def plot_pc_terms(D: dict[str, Any], peaks: pd.DataFrame, spans: dict[str, list[
                              sharex=True, gridspec_kw={"hspace": C.PLOT_ROW_GAP})
     for ax, pc in zip(axes[:, 0], pcs):
         z = float(D["term_lim"][pc])
-        s = terms[pc].astype(np.float64)
+        s = terms[pc].astype(np.float64) ** 2
         own = peaks[peaks["top_pc"] == pc]
         shade(ax, spans["event"], col["event"], 0.3, "flare event")
         ax.plot(s.index, s.to_numpy(), color=col["t2"], lw=0.4)
-        ax.axhline(z, color=col["limit"], ls="--", lw=1, label=f"±√(T²_j limit, Eq. 13) = ±{z:.2f}")
-        ax.axhline(-z, color=col["limit"], ls="--", lw=1)
+        ax.axhline(z, color=col["limit"], ls="--", lw=1, label=f"T²_j limit (Eq. 13) = {z:.2f}")
         for t in peaks["timestamp"]:
             ax.axvline(t, color=col["missing"], lw=0.4, ls=":")
-        ax.plot(own["timestamp"], own["T_value"], "o", ms=5, color=col["preflare"], label="T² peaks labelled with this PC")
-        big = max(1.5 * z, float(np.nanpercentile(np.abs(s), 99.9)), 1.1 * float(own["T_value"].abs().max()))
-        ax.set_ylim(-big, big)
+        ax.plot(own["timestamp"], own["T2_j"], "o", ms=5, color=col["preflare"], label="T² peaks labelled with this PC")
+        big = max(1.5 * z, float(np.nanpercentile(s, 99.9)), 1.1 * float(own["T2_j"].max()))
+        ax.set_ylim(0, big)
         ax.set_title(f"{pc} (top tags: {own['top_tags'].iloc[0] or '-'}): labels {len(own)} T² peaks, "
-                     f"|T| above its limit at {int(own['significant'].sum())} of them", loc="left")
-        ax.set_ylabel("T_j·PA(j)")
+                     f"T²_j above its limit at {int(own['significant'].sum())} of them", loc="left")
+        ax.set_ylabel("T²_j·PA(j)")
         add_legend(ax)
     format_time_axis(axes[-1, 0], mdates, terms.index.min().floor("D"), terms.index.max().ceil("D"))
     save_figure(fig, path, plt)
@@ -1819,7 +1825,7 @@ def plot_pc_terms(D: dict[str, Any], peaks: pd.DataFrame, spans: dict[str, list[
 
 def plot_individual_pcs(D: dict[str, Any], peaks: pd.DataFrame, spans: dict[str, list[tuple]], sections: list[tuple],
                         folder: Path) -> None:
-    """One PNG per PC: T_j·PA(j) over the whole window, then per section, with its own ± limit and labelled peaks.
+    """One PNG per PC: T²_j·PA(j) over the whole window, then per section, with its own Eq. 13 limit and labelled peaks.
 
     Args:
         D: Plot inputs from load_plot_inputs().
@@ -1836,12 +1842,11 @@ def plot_individual_pcs(D: dict[str, Any], peaks: pd.DataFrame, spans: dict[str,
     windows = [(sections[0][0], sections[-1][1])] + list(sections)
     for i, pc in enumerate(terms.columns, start=1):
         z = float(D["term_lim"][pc])
-        s = terms[pc].astype(np.float64)
+        s = terms[pc].astype(np.float64) ** 2
         own = peaks[peaks["top_pc"] == pc]
         par = list(dag.loc[dag["target"] == pc, "source"])
         kids = [k for k in dag.loc[dag["source"] == pc, "target"] if k != C.FLARE_NET]
-        big = max(1.5 * z, float(np.nanpercentile(np.abs(s), 99.9)),
-                  1.1 * float(own["T_value"].abs().max()) if len(own) else 0.0)
+        big = max(1.5 * z, float(np.nanpercentile(s, 99.9)), 1.1 * float(own["T2_j"].max()) if len(own) else 0.0)
         fig, axes = plt.subplots(len(windows), 1, figsize=(C.PLOT_WIDTH_IN, C.PLOT_ROW_HEIGHT_IN * len(windows)),
                                  squeeze=False, gridspec_kw={"hspace": C.PLOT_ROW_GAP})
         for k, (ax, (a, b)) in enumerate(zip(axes[:, 0], windows)):
@@ -1850,13 +1855,12 @@ def plot_individual_pcs(D: dict[str, Any], peaks: pd.DataFrame, spans: dict[str,
             shade(ax, clip_spans(spans["preflare"], a, b), col["preflare"], 0.2, "30-min pre-flare window")
             shade(ax, clip_spans(spans["event"], a, b), col["event"], 0.3, "flare event")
             ax.plot(sel.index, sel.to_numpy(), color=col["t2"], lw=0.4 if k == 0 else 0.7)
-            ax.axhline(z, color=col["limit"], ls="--", lw=1, label=f"±√(T²_j limit, Eq. 13) = ±{z:.2f}")
-            ax.axhline(-z, color=col["limit"], ls="--", lw=1)
-            ax.plot(o["timestamp"], o["T_value"], "o", ms=5, color=col["preflare"], label="T² peaks labelled with this PC")
-            ax.set_ylim(-big, big)
-            ax.set_ylabel("T_j·PA(j)")
+            ax.axhline(z, color=col["limit"], ls="--", lw=1, label=f"T²_j limit (Eq. 13) = {z:.2f}")
+            ax.plot(o["timestamp"], o["T2_j"], "o", ms=5, color=col["preflare"], label="T² peaks labelled with this PC")
+            ax.set_ylim(0, big)
+            ax.set_ylabel("T²_j·PA(j)")
             if k == 0:
-                ax.set_title(f"{pc}: whole window; |T| > {z:.2f} in {100 * (s.abs() > z).mean():.2f}% of rows; labels "
+                ax.set_title(f"{pc}: whole window; T²_j > {z:.2f} in {100 * (s > z).mean():.2f}% of rows; labels "
                              f"{len(own)} T² peaks\nparents ({len(par)}): {', '.join(par[:10]) or 'none (root node)'}"
                              f"{' ...' if len(par) > 10 else ''}; PC children: {len(kids)}; top tags: "
                              f"{top_tags_text(D['loadings'], pc) or '-'}", loc="left")
@@ -1953,9 +1957,9 @@ def root_cause_table(D: dict[str, Any]) -> pd.DataFrame:
         D: Plot inputs from load_plot_inputs().
 
     Returns:
-        One row per (event, PC): rank, pc, unit, minutes_significant (minutes above its limit), window_rows,
-        first_significant, minutes_before_onset, T_at_first_significant, max_abs_T, significant_at_first_ooc
-        (above its limit at the first T² alarm), top_tags.
+        One row per (event, PC): rank, pc, unit, minutes_significant (minutes with T²_j above its Eq. 13 limit),
+        window_rows, first_significant, minutes_before_onset, T2_j_at_first_significant, max_T2_j, T2_j_limit,
+        significant_at_first_ooc (above its limit at the first T² alarm), top_tags.
     """
     t2, terms, lim = D["t2"], D["terms"], D["t2_lim"]
     rows = []
@@ -1963,8 +1967,8 @@ def root_cause_table(D: dict[str, Any]) -> pd.DataFrame:
         w = t2.index[t2["preflare_event_id"].to_numpy() == ev.event_id]
         if not len(w):
             continue
-        T = terms.loc[w].astype(np.float64)
-        sig = T.abs() > D["term_lim"].reindex(T.columns).to_numpy()
+        T = terms.loc[w].astype(np.float64) ** 2
+        sig = T > D["term_lim"].reindex(T.columns).to_numpy()
         above = t2.loc[w, "T2"].to_numpy() > lim
         first_ooc = w[int(np.argmax(above))] if above.any() else None
         for pc in sig.columns[sig.any().to_numpy()]:
@@ -1973,11 +1977,13 @@ def root_cause_table(D: dict[str, Any]) -> pd.DataFrame:
             rows.append({"event_id": ev.event_id, "onset": ev.start, "pc": pc, "unit": node_unit(pc),
                          "minutes_significant": int(s.sum()), "window_rows": len(w), "first_significant": w[i0],
                          "minutes_before_onset": (ev.start - w[i0]) / pd.Timedelta(minutes=1),
-                         "T_at_first_significant": float(T[pc].iloc[i0]), "max_abs_T": float(T[pc].abs().max()),
+                         "T2_j_at_first_significant": float(T[pc].iloc[i0]), "max_T2_j": float(T[pc].max()),
+                         "T2_j_limit": float(D["term_lim"][pc]),
                          "significant_at_first_ooc": bool(first_ooc is not None and sig.at[first_ooc, pc]),
                          "top_tags": top_tags_text(D["loadings"], pc)})
     cols = ["event_id", "onset", "pc", "unit", "minutes_significant", "window_rows", "first_significant",
-            "minutes_before_onset", "T_at_first_significant", "max_abs_T", "significant_at_first_ooc", "top_tags"]
+            "minutes_before_onset", "T2_j_at_first_significant", "max_T2_j", "T2_j_limit", "significant_at_first_ooc",
+            "top_tags"]
     out = pd.DataFrame(rows, columns=cols)
     if len(out):
         out = out.sort_values(["event_id", "minutes_significant", "minutes_before_onset"],
@@ -2114,12 +2120,12 @@ def limit_ratios(D: dict[str, Any]) -> pd.DataFrame:
     one threshold line; the ratios can.
 
     Args:
-        D: Plot inputs from load_plot_inputs(); uses terms (T_j·PA(j) per row) and term_lim (sqrt of each PC's limit).
+        D: Plot inputs from load_plot_inputs(); uses terms (T_j·PA(j) per row) and term_lim (each PC's T²_j limit).
 
     Returns:
         Table (rows = timestamps, columns = PCs) of ratios, float32.
     """
-    lim2 = D["term_lim"].reindex(D["terms"].columns).to_numpy(dtype=np.float64) ** 2
+    lim2 = D["term_lim"].reindex(D["terms"].columns).to_numpy(dtype=np.float64)
     return (D["terms"].astype(np.float64) ** 2 / lim2).astype(np.float32)
 
 

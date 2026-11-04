@@ -70,10 +70,9 @@ def main() -> None:
     p, m = len(nodes), int(noc.sum())
     t2_lim = H.t2_threshold(m, p, 0, C.ALPHA0)
     term_lim = np.array([H.t2_threshold(m, 1, len(pa[t]), C.ALPHA_TERM) for t in nodes])
-    abs_lim = np.sqrt(term_lim)
-    pd.DataFrame({"node": nodes, "n_parents": [len(pa[t]) for t in nodes], "sigma2": sigma2, "t2_limit": term_lim,
-                  "abs_T_limit": abs_lim}).to_csv(d["t2"] / "term_limits.csv", index=False)
-    noc_above, noc_term_rate = 100 * (t2[noc] > t2_lim).mean(), 100 * (np.abs(T[noc]) > abs_lim).mean(axis=0)
+    pd.DataFrame({"node": nodes, "n_parents": [len(pa[t]) for t in nodes], "sigma2": sigma2,
+                  "t2_limit": term_lim}).to_csv(d["t2"] / "term_limits.csv", index=False)
+    noc_above, noc_term_rate = 100 * (t2[noc] > t2_lim).mean(), 100 * (T[noc] ** 2 > term_lim).mean(axis=0)
     gap = np.abs(t2 - t2_terms) / np.maximum(t2, 1e-12)
     H.log(f"p = {p} PCs, m = {m} NOC rows; T² limit (report Eq. 13, corrected) = {t2_lim:.2f} at alpha {C.ALPHA0}; "
           f"NOC rows above it: {noc_above:.2f}% (expected about {100 * C.ALPHA0:g}%)")
@@ -96,7 +95,7 @@ def main() -> None:
     pd.DataFrame(T.astype(np.float32), index=Z.index, columns=nodes).to_parquet(d["t2"] / "terms_all_rows.parquet")
     pd.concat([net, parts], axis=1).to_parquet(d["tables"] / "flare_net_raw.parquet")
     scores.astype(np.float32).to_parquet(d["graph"] / "pc_scores.parquet")
-    first = H.evaluate_preflare_windows(Z.index, pre_eid, events, T, t2, t2_lim, abs_lim, nodes)
+    first = H.evaluate_preflare_windows(Z.index, pre_eid, events, T, t2, t2_lim, term_lim, nodes)
     first.to_csv(d["t2"] / "preflare_first_ooc.csv", index=False)
     rule = (f"median + {C.FLARE_MAD_K:g} x 1.4826 MAD" if C.FLARE_USE_MAD_THRESHOLD else "manual FLARE_THRESHOLD")
     pd.DataFrame([{"p": p, "n_noc_rows": m, "t2_limit": t2_lim, "alpha0": C.ALPHA0, "alpha_term": C.ALPHA_TERM,
