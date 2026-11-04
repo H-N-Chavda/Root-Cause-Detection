@@ -1,6 +1,6 @@
 # MATHS: unit-wise PCA → PC → causation-based T²
 
-Paper: Li, Jin & Shi (2008), J. Quality Technology 40(1) 46-58 (`references/papers/T^2 Decomposition.pdf`). Report: `references/papers/Work so far (report).pdf`. TA code: `references/CodeByTA/`. "Project" = in none of these. Window: Jul–Oct 2025 (`config.py`).
+Paper: Li, Jin & Shi (2008), J. Quality Technology 40(1) 46-58 (`references/Literature/T^2 Decomposition.pdf`). Report: `references/Previous Project Reports/Work so far (report).pdf`. TA code: `references/CodeByTA/`. "Project" = in none of these. Window: Jul–Oct 2025 (`config.py`).
 
 | # | Quantity | Equation | Symbols | Source | Code |
 |---|---|---|---|---|---|
