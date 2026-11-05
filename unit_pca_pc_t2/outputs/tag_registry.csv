@@ -375,42 +375,6 @@ PTI3280.PV,SEU2,SEU2,False,SEU2/PTI3280.PV.parquet,used_in_pca
 42TI4507.PV,SEU3,SEU3,False,SEU3/42TI4507.PV.parquet,used_in_pca
 44PI4410.PV,SEU3,SEU3,False,SEU3/44PI4410.PV.parquet,used_in_pca
 44PI4411.PV,SEU3,SEU3,False,SEU3/44PI4411.PV.parquet,used_in_pca
-101pc1302.pida.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/101pc1302.pida.op.parquet,dropped: 24.4% missing (> 10%)
-101pc1603b.pida.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/101pc1603b.pida.op.parquet,dropped: 16.3% missing (> 10%)
-102hc1201.pida.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/102hc1201.pida.op.parquet,dropped: 16.3% missing (> 10%)
-102pc0501.pida.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/102pc0501.pida.op.parquet,dropped: 40.6% missing (> 10%)
-102pc4302.pida.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/102pc4302.pida.op.parquet,used_in_pca
-102pc6701.pida.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/102pc6701.pida.op.parquet,dropped: 41.5% missing (> 10%)
-102pc6708.pida.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/102pc6708.pida.op.parquet,dropped: 50.4% missing (> 10%)
-103pc1101.pida.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/103pc1101.pida.op.parquet,used_in_pca
-103pc1805.pida.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/103pc1805.pida.op.parquet,dropped: 40.6% missing (> 10%)
-103pc5101.pida.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/103pc5101.pida.op.parquet,dropped: has negative values (min -2.59)
-103pic5120n.pida.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/103pic5120n.pida.op.parquet,dropped: 25.2% missing (> 10%)
-109pc1101b.pida.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/109pc1101b.pida.op.parquet,dropped: 49.6% missing (> 10%)
-114PC6301.pida.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/114PC6301.pida.op.parquet,dropped: 24.4% missing (> 10%)
-114pc417.pida.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/114pc417.pida.op.parquet,dropped: near-constant (99.92% one value > 99%)
-11pc402.pida.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/11pc402.pida.op.parquet,dropped: near-constant (99.93% one value > 99%)
-14pc417x.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/14pc417x.op.parquet,dropped: 16.3% missing (> 10%)
-14pc418x.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/14pc418x.op.parquet,dropped: has negative values (min -6.9)
-173py5501p.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/173py5501p.op.parquet,dropped: 41.5% missing (> 10%)
-173py5604ap.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/173py5604ap.op.parquet,dropped: 25.2% missing (> 10%)
-173py5703bp.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/173py5703bp.op.parquet,dropped: has negative values (min -5)
-17pc101b.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/17pc101b.op.parquet,dropped: has negative values (min -6.9)
-17pc112b.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/17pc112b.op.parquet,dropped: has negative values (min -6.9)
-24pc3301.pid.out.value,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/24pc3301.pid.out.value.parquet,dropped: 25.2% missing (> 10%)
-31pc402b.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/31pc402b.op.parquet,dropped: constant
-41pc4110.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/41pc4110.op.parquet,used_in_pca
-41pic4114.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/41pic4114.op.parquet,dropped: 16.3% missing (> 10%)
-508pc5101.pida.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/508pc5101.pida.op.parquet,dropped: 91.1% missing (> 10%)
-58pc105.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/58pc105.op.parquet,dropped: constant
-700py0701b.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/700py0701b.op.parquet,dropped: 25.2% missing (> 10%)
-700py3501b.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/700py3501b.op.parquet,used_in_pca
-700py6701b.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/700py6701b.op.parquet,dropped: 16.3% missing (> 10%)
-702pc1102a.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/702pc1102a.op.parquet,used_in_pca
-704pc3416.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/704pc3416.op.parquet,dropped: 65.9% missing (> 10%)
-71pc0001.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/71pc0001.op.parquet,dropped: has negative values (min -6.9)
-71pv8401b.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/71pv8401b.op.parquet,dropped: 24.4% missing (> 10%)
-71py9101b.op,unit_wise_control_data,unit_wise_control_data,False,unit_wise_control_data/71py9101b.op.parquet,dropped: 25.2% missing (> 10%)
 (44ft2505.pv*509mw5101.daca.pv/22.414)/1000,flare_data,flare_data,True,flare_data/(44ft2505.pv_509mw5101.daca.pv_22.414)_1000.parquet,used_in_flare_net
 (LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000,flare_data,flare_data,True,flare_data/(LRflare.pv+LREflare.pv+99fi4601.daca.pv)_1000.parquet,used_in_flare_net
 509fi5201.daca.pv/1000,flare_data,flare_data,True,flare_data/509fi5201.daca.pv_1000.parquet,used_in_flare_net

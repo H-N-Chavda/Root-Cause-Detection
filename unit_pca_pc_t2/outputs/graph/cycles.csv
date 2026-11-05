@@ -1,4 +1,1 @@
 graph,length,cycle
-PC output (directed edges),3,SEU1_PC1 -> PDA_PC1 -> LOUP_PC1 -> SEU1_PC1
-PC output (directed edges),4,SEU1_PC1 -> PDA_PC1 -> LOUP_PC1 -> unit_wise_control_data_PC1 -> SEU1_PC1
-PC output (directed edges),3,LOUP_PC1 -> unit_wise_control_data_PC1 -> PDA_PC1 -> LOUP_PC1

@@ -1,20 +1,12 @@
 metric,value
-actual flare events (scored),591.0
-flare events not scored,29.0
-alarms (activations),792.0
-alarms during a flare (not predictions),377.0
-predicted flare events (alarms outside flares),415.0
-correct predictions (TP alarms),76.0
-incorrect predictions (FP alarms),339.0
-TP (events detected),74.0
-FN (events missed),517.0
-FN: no alarm,157.0
-FN: already in alarm,360.0
-"TN (30-min flare-free blocks, no alarm)",728.0
-30-min blocks with an FP activation,209.0
-30-min blocks inside a standing alarm (not counted),431.0
-FP alarm minutes,21740.0
-base accuracy (TP+TN)/(TP+FN+FP+TN),0.4837153196622437
-precision TP alarms/(TP+FP alarms),0.18313253012048192
-recall TP events/(TP+FN events),0.12521150592216582
-median lead time TP (min),13.5
+flare events (>= 30 min),620.0
+flare events not scored (no T² in the window),33.0
+flare events scored,587.0
+TP (flare events with T² above the limit in the window),519.0
+FN (flare events without),68.0
+non-flare blocks,270.0
+non-flare blocks not scored,4.0
+FP (non-flare blocks with T² above the limit),250.0
+F1 = 2TP / (2TP + FP + FN),0.7654867256637168
+TP: T² already above the limit when the window opened,394.0
+median minutes from first T² above the limit to onset (TP),45.0
