@@ -1,22 +1,27 @@
-"""Week 10 deck: unit-wise PCA -> PC -> causation-based T2 on Jul-Oct 2025 plant data.
+"""Week 10 deck: unit-wise PCA -> PC -> causation-based T2 on Jul-Oct 2025 plant data (lab run 2f3c75a).
 
-Built on the TA's reference deck (HPCL Project_08072026_external.pptx) so the
-master, theme, title bar and fonts are the TA's own. Reads only the committed
-unit_pca_pc_t2/outputs/ (no plant data). Run from the repo root:
+Built on the TA's reference deck (HPCL Project_08072026_external.pptx) so the master, theme, title bar and fonts
+are the TA's own. Reads only the committed unit_pca_pc_t2/outputs/ (no plant data); the previous run (commit
+eaebb1e) is read with `git show` for the loop slides. Run from the repo root:
 
     .venv/bin/python presentations/week10/build_deck.py
 """
 
 import copy
+import io
+import subprocess
 from pathlib import Path
 
 import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.dates as mdates
+import matplotlib.ticker
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 from lxml import etree
+from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 from PIL import ImageFont
 from pptx import Presentation
@@ -32,188 +37,439 @@ HERE = Path(__file__).resolve().parent
 ASSETS = HERE / "assets"
 REF = ROOT / "references" / "Previous Project Reports" / "HPCL Project_08072026_external.pptx"
 DECK = HERE / "HPCL Project_05112026_flare_RCA.pptx"
-CASE_EVENTS = [10, 144, 449]
-TITLE_PT = 28  # descriptive titles are full sentences; 44 pt (TA master) fits only short labels
-SRC = "Lab run of unit_pca_pc_t2, 1-min data, 1 Jul – 31 Oct 2025."
+OLD = "eaebb1e"  # previous lab run (14 units, NOC with 120-min buffer)
+CASE_EVENTS = [144, 449]
+PC_DEEP = ["DAK_PC1", "APS_NVPS_LEU_PC1"]
+TITLE_PT = 28
+SRC = "Lab run of unit_pca_pc_t2 (commit 2f3c75a), 1-min data, 1 Jul – 31 Oct 2025."
+W_IN = 60  # minutes in the pre-flare window
+FN_CUT = 8  # t/h: flare_net axis cut in the four-month chart
 
-# ---------------------------------------------------------------- data
-ev = pd.read_csv(OUT / "tables" / "event_outcomes.csv")
-alarms = pd.read_csv(OUT / "tables" / "alarms.csv", parse_dates=["activation", "end"])
-flare_events = pd.read_csv(OUT / "tables" / "flare_events.csv", parse_dates=["start", "end"])
-metrics = pd.read_csv(OUT / "tables" / "metrics.csv").set_index("metric")["value"]
-limits = pd.read_csv(OUT / "t2" / "limits.csv").iloc[0]
+# ---------------------------------------------------------------- data (current run)
+ev = pd.read_csv(OUT / "tables" / "event_outcomes.csv",
+                 parse_dates=["onset", "end", "window_start", "first_above", "analysed_minute"])
+bl = pd.read_csv(OUT / "tables" / "nonflare_blocks.csv", parse_dates=["start", "end", "first_above"])
+fe = pd.read_csv(OUT / "tables" / "flare_events.csv", parse_dates=["start", "end"])
+M = pd.read_csv(OUT / "tables" / "metrics.csv").set_index("metric")["value"]
+lim = pd.read_csv(OUT / "t2" / "limits.csv").iloc[0]
+tl = pd.read_csv(OUT / "t2" / "term_limits.csv").set_index("node")
 dag = pd.read_csv(OUT / "graph" / "dag_edges.csv")
-registry = pd.read_csv(OUT / "tag_registry.csv")
-M = {k: metrics[k] for k in metrics.index}
+pce = pd.read_csv(OUT / "graph" / "pc_edges.csv")
+pcu = pd.read_csv(OUT / "tables" / "pcs_per_unit.csv")
+load = pd.read_csv(OUT / "tables" / "pca_loadings.csv", index_col=0)
+scores = pd.read_parquet(OUT / "graph" / "pc_scores.parquet")
+terms = pd.read_parquet(OUT / "t2" / "terms_all_rows.parquet")
+t2 = pd.read_parquet(OUT / "t2" / "t2_all_rows.parquet")
+fn = pd.read_parquet(OUT / "tables" / "flare_net_raw.parquet")["flare_net"]
 
-tp_ev = ev[ev.outcome == "TP"]
-fp_al = alarms[alarms["class"] == "FP"]
-tp_al = alarms[alarms["class"] == "TP"]
-top1_tp = tp_ev.pc1.value_counts()
-top1_fp = fp_al.pc1.value_counts()
-n_tp_below = int((tp_ev.ratio1 < 1).sum())
-lead_min, lead_max = int(tp_al.lead_min.min()), int(tp_al.lead_min.max())
-pct_noc_above = float(limits.pct_noc_above_t2_limit)
-assert int(M["TP (events detected)"]) == 74 and len(flare_events) == 620
+TP, FN, FP = int(M["TP (flare events with T² above the limit in the window)"]), int(M["FN (flare events without)"]), \
+    int(M["FP (non-flare blocks with T² above the limit)"])
+F1 = float(M["F1 = 2TP / (2TP + FP + FN)"])
+N_NS = int(M["flare events not scored (no T² in the window)"])
+N_BL, N_BL_NS = int(M["non-flare blocks"]), int(M["non-flare blocks not scored"])
+N_SC_BL = N_BL - N_BL_NS
+N_ALREADY = int(M["TP: T² already above the limit when the window opened"])
+LEAD_MED = float(M["median minutes from first T² above the limit to onset (TP)"])
+assert (TP, FN, FP, len(fe)) == (519, 68, 250, 620), "outputs changed: re-check every number in this script"
+F1_ALWAYS = 2 * (TP + FN) / (2 * (TP + FN) + N_SC_BL)  # T² above the limit at every scored minute
+tp = ev[ev.outcome == "TP"]
+fpb = bl[bl.outcome == "FP"]
+rose = tp[~tp.above_at_window_start.astype(bool)]
+top1_tp, top1_fp = tp.pc1.value_counts(), fpb.pc1.value_counts()
+N_PCS, N_UNITS, N_TAGS = int(pcu.n_pcs.sum()), len(pcu), int(pcu.n_tags.sum())
+VAR_ALL = 100 * float((pcu.variance_kept * pcu.n_tags).sum() / pcu.n_tags.sum())
+pc_dag = dag[dag.target != "flare_net"]
+N_EDGES, N_CROSS = len(pc_dag), int((pc_dag.source.str.rsplit("_PC", n=1).str[0]
+                                     != pc_dag.target.str.rsplit("_PC", n=1).str[0]).sum())
+N_DIR, N_UND = int((pce.type == "->").sum()), int((pce.type != "->").sum())
+n_par = pc_dag.groupby("target").size().reindex(tl.index, fill_value=0)
+scored = t2.scored.to_numpy()
+nf = ~(t2.flare_event | t2.short_flare)
+PCT_NOC_ABOVE = float(lim.pct_noc_above_t2_limit)
+PCT_NF_ABOVE = 100 * float(t2.above_limit[t2.scored & nf].mean())
+N_UNSCORED = int((~t2.scored).sum())
+FIRST_SCORED = t2.index[scored.argmax()]
+ratio = (terms.astype(np.float64) ** 2) / tl.t2_limit
+assert abs(VAR_ALL - 46.7) < 0.05 and N_EDGES == 75 and N_PCS == 24
+
+# share of minutes each PC is above its own limit, by period (whole four months)
+in_pre = (t2.preflare_event_id > 0) & t2.scored
+in_flare = t2.flare_event & t2.scored
+normal = t2.scored & nf & ~(t2.preflare_event_id > 0)
+PCAVG = pd.DataFrame({"pre": 100 * (ratio[in_pre] > 1).mean(), "flare": 100 * (ratio[in_flare] > 1).mean(),
+                      "normal": 100 * (ratio[normal] > 1).mean()})
+PCAVG["lift"] = PCAVG.pre / PCAVG.normal
+LIFT = PCAVG[PCAVG.pre >= 5].sort_values("lift", ascending=False)
+unit_tp = tp.pc1.str.rsplit("_PC", n=1).str[0].value_counts()
+unit_fp = fpb.pc1.str.rsplit("_PC", n=1).str[0].value_counts()
 
 
-def parents(pc):
-    return sorted(dag[dag.target == pc].source)
+def git_csv(path):
+    return pd.read_csv(io.StringIO(subprocess.check_output(["git", "-C", str(ROOT), "show", f"{OLD}:{path}"]).decode()))
 
 
-def cat(status):
-    for key, name in [("used", "kept"), ("missing", "missing"), ("near", "near"),
-                      ("constant", "constant"), ("negative", "negative")]:
-        if key in status:
-            return name
-    return "other"
+def git_text(path):
+    return subprocess.check_output(["git", "-C", str(ROOT), "show", f"{OLD}:{path}"]).decode()
 
 
-registry["c"] = registry.status.map(cat)
-reg_units = registry[registry.unit != "flare_data"]
-by_unit = pd.crosstab(reg_units.unit, reg_units.c)
-pca_units = [  # (unit, tags, PCs kept, variance captured) from SUMMARY.md / run.log
-    ("APS_NVPS_LEU", 12, 2, 61.4), ("DAK", 3, 1, 100.0), ("DIU", 17, 2, 38.6),
-    ("ISOM", 41, 2, 38.1), ("ISOM_3", 14, 2, 54.7), ("ISOM_4", 1, 1, 100.0),
-    ("LOUP", 52, 2, 69.3), ("NSU_NHT_CCR", 53, 2, 42.4), ("PDA", 28, 2, 45.7),
-    ("PG", 34, 2, 51.6), ("SEU1", 19, 2, 60.3), ("SEU2", 14, 2, 52.8),
-    ("SEU3", 13, 2, 43.8), ("unit_wise_control_data", 5, 2, 65.2)]
-for u, tags, _, _ in pca_units:
-    assert by_unit.loc[u, "kept"] == tags, u
+old_pce = git_csv("unit_pca_pc_t2/outputs/graph/pc_edges.csv")
+old_dag = git_csv("unit_pca_pc_t2/outputs/graph/dag_edges.csv")
+old_cyc = git_csv("unit_pca_pc_t2/outputs/graph/cycles.csv")
+old_stats = git_csv("unit_pca_pc_t2/outputs/graph/dag_stats.csv").iloc[0]
+old_pcu = git_csv("unit_pca_pc_t2/outputs/tables/pcs_per_unit.csv")
+old_dir = {(s, t) for s, t, ty in old_pce.itertuples(index=False) if ty == "->"}
+old_dg = {(s, t) for s, t in old_dag.itertuples(index=False)}
+OLD_REV = sorted(e for e in old_dir if (e[1], e[0]) in old_dg)
+OLD_CYC = old_cyc[old_cyc.graph.str.startswith("PC output")]
+assert len(OLD_CYC) == 3 and int(old_stats.n_reversed_edges) == 2
+assert OLD_REV == [("ISOM_3_PC2", "unit_wise_control_data_PC1"), ("PDA_PC1", "LOUP_PC1")]
+assert "NOC rows 12157" in git_text("unit_pca_pc_t2/outputs/logs/run.log")
+assert len(pd.read_csv(OUT / "graph" / "cycles.csv")) == 0
+
+
+def top_tags(pc, n=3):
+    w = load.loc[pc] ** 2
+    w = w[w > 0].sort_values(ascending=False) / w.sum()
+    return [(t, 100 * v) for t, v in w.head(n).items()]
+
 
 # ---------------------------------------------------------------- figures (TA's matplotlib look)
 ASSETS.mkdir(exist_ok=True)
-fn = pd.read_parquet(OUT / "tables" / "flare_net_raw.parquet")["flare_net"]
-t2 = pd.read_parquet(OUT / "t2" / "t2_all_rows.parquet")
+for old in ASSETS.glob("*.png"):
+    old.unlink()
+plt.rcParams.update({"font.size": 12, "axes.titlesize": 13, "axes.labelsize": 12, "legend.fontsize": 11,
+                     "xtick.labelsize": 11, "ytick.labelsize": 11, "axes.titlelocation": "left"})
 T0, T1 = fn.index[0], fn.index[-1]
-SPAN = f"{T0:%d %b %Y %H:%M} – {T1:%d %b %Y %H:%M}"
+DPI = 150
+C_PC = ["#8e44ad", "#16a085", "#d35400"]  # colours of the 1st, 2nd and 3rd PC
 
 
-def date_time_axis(ax):
+def figure(rows, cols, h, w=12.9, **kw):
+    return plt.subplots(rows, cols, figsize=(w, h), layout="constrained", **kw)
+
+
+def leg(ax, ncol=4, handles=None, labels=None):
+    """Legend in one row just above the axes, never on the data."""
+    args = (handles, labels) if handles is not None else ()
+    ax.legend(*args, loc="lower left", bbox_to_anchor=(0, 1.0), ncol=ncol, frameon=False, borderaxespad=0.15,
+              handlelength=1.6, columnspacing=1.4)
+
+
+def title(fig, text):
+    fig.suptitle(text, x=0.005, ha="left", fontsize=13)
+
+
+def date_axis(ax):
     ax.xaxis.set_major_locator(mdates.DayLocator(bymonthday=[1, 11, 21]))
-    ax.xaxis.set_major_formatter(mdates.DateFormatter("%d %b %Y\n%H:%M"))
-
-
-def fig_flare_events(path):
-    fig, ax = plt.subplots(figsize=(16, 4.9), dpi=120)
-    for s, e in zip(flare_events.start, flare_events.end):
-        ax.axvspan(s, e, color="orange", alpha=0.25, lw=0)
-    ax.plot(fn.index, fn.values, color="blue", lw=0.5, label="flare_net (1-min)")
-    ax.axhline(1.5, color="red", ls="--", lw=1.2, label="Threshold 1.5 t/h")
-    ax.set_title(f"Flare flowrate (flare_net) and flare events, {SPAN}")
-    ax.set_ylabel("flare_net (t/h)")
-    ax.set_xlabel("Date and time")
-    ax.grid(alpha=0.3)
-    h, lab = ax.get_legend_handles_labels()
-    ax.legend(h + [Patch(color="orange", alpha=0.25)], lab + ["Flare event (≥ 30 min above threshold)"],
-              loc="upper left")
-    ax.text(0.995, 0.97, f"Threshold : 1.5 t/h\nMin Duration : 30 min\nFlare Events : {len(flare_events)}",
-            transform=ax.transAxes, ha="right", va="top", fontsize=9,
-            bbox=dict(facecolor="white", edgecolor="black"))
-    date_time_axis(ax)
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%d %b"))
     ax.set_xlim(T0, T1)
-    fig.tight_layout()
-    fig.savefig(path)
+
+
+def minute_axis(ax, a, b, step=30):
+    ax.xaxis.set_major_locator(mdates.MinuteLocator(byminute=list(range(0, 60, step))))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%H:%M"))
+    ax.set_xlim(a, b)
+
+
+def save(fig, name):
+    for ax in fig.axes:
+        if ax.get_yscale() == "log":
+            ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
+    fig.savefig(ASSETS / name, dpi=DPI)
     plt.close(fig)
+    return ASSETS / name
 
 
-def fig_results(path):
-    fig, axs = plt.subplots(3, 1, figsize=(16, 7.2), dpi=120, sharex=True,
-                            gridspec_kw=dict(height_ratios=[1.2, 1.2, 0.6]))
-    axs[0].plot(fn.index, fn.values, color="blue", lw=0.5, label="flare_net (1-min)")
-    axs[0].axhline(1.5, color="red", ls="--", lw=1.2, label="Threshold 1.5 t/h")
+def shade_events(ax, alpha=0.18):
+    for s, e in zip(fe.start, fe.end):
+        ax.axvspan(s, e, color="orange", alpha=alpha, lw=0)
+
+
+def runs(mask):
+    e = np.flatnonzero(np.diff(np.r_[0, mask.astype(int), 0]))
+    return [(a, b - 1) for a, b in zip(e[::2], e[1::2])]
+
+
+def fig_counts():
+    fig, ax = figure(1, 1, 4.6, 6.6)
+    vals = [TP, FN, FP]
+    ax.bar(["TP\nflare events caught", "FN\nflare events missed", "FP\ngaps with a false rise"], vals,
+           color=["#2ca02c", "#c0392b", "#e67e22"], width=0.6)
+    for x, v in enumerate(vals):
+        ax.text(x, v + 8, str(v), ha="center", va="bottom", fontsize=15, fontweight="bold")
+    ax.set_ylim(0, max(vals) * 1.18)
+    ax.set_ylabel("count")
+    ax.grid(axis="y", alpha=0.3)
+    ax.set_title(f"F1 = 2TP / (2TP + FP + FN) = {F1:.3f}", fontweight="bold")
+    return save(fig, "counts.png")
+
+
+def fig_daily_above():
+    d = 100 * t2[t2.scored & nf].above_limit.resample("1D").mean()
+    fig, ax = figure(1, 1, 3.9)
+    ax.bar(d.index, d.values, width=0.8, color="#1f5fa8", label="flare-free scored minutes above the T² limit (%)")
+    ax.axhline(5, color="red", ls="--", lw=1.2, label="5 % expected by chance (α = 0.05)")
+    ax.axhline(PCT_NF_ABOVE, color="black", ls=":", lw=1.2, label=f"four-month average {PCT_NF_ABOVE:.1f} %")
+    ax.set_ylabel("% of the day's minutes")
+    ax.set_ylim(0, 100)
+    ax.grid(alpha=0.3)
+    leg(ax, 3)
+    date_axis(ax)
+    title(fig, "Daily share of flare-free minutes with overall T² above its limit")
+    return save(fig, "daily_above.png")
+
+
+def fig_lead():
+    bins = np.arange(0.5, W_IN + 1.5, 1)
+    fig, ax = figure(1, 1, 4.9, 7.4)
+    ax.hist([rose.lead_min, tp[tp.above_at_window_start.astype(bool)].lead_min], bins=bins, stacked=True,
+            color=["#2ca02c", "#9e9e9e"], label=[f"T² crossed inside the window (n = {len(rose)})",
+                                                  f"T² already above when the window opened (n = {N_ALREADY})"])
+    ax.set_xlabel("minutes from first T² above the limit to flare onset")
+    ax.set_ylabel("TP flare events")
+    ax.set_xlim(0, W_IN + 1)
+    ax.grid(alpha=0.3)
+    leg(ax, 1)
+    title(fig, f"Warning time of the {TP} TP events")
+    return save(fig, "lead.png")
+
+
+def fig_pca_var():
+    p = pcu.sort_values("variance_kept")
+    fig, ax = figure(1, 1, 5.4, 6.0)
+    ax.barh(p.unit, 100 * p.variance_kept, color="#5B9BD5")
+    for y, (v, k, n) in enumerate(zip(p.variance_kept, p.n_pcs, p.n_tags)):
+        ax.text(100 * v + 1, y, f"{100 * v:.0f}%  ({k} PC{'s' if k > 1 else ''}, {n} tag{'s' if n > 1 else ''})",
+                va="center", fontsize=10)
+    ax.set_xlim(0, 140)
+    ax.set_xticks([0, 25, 50, 75, 100])
+    ax.set_xlabel("variance of the unit kept by its PCs (%, NOC rows)")
+    ax.grid(axis="x", alpha=0.3)
+    ax.set_title(f"{N_PCS} PCs from {N_UNITS} units keep {VAR_ALL:.1f} % overall")
+    return save(fig, "pca_var.png")
+
+
+def fig_t2_overall():
+    fig, axs = figure(2, 1, 5.0, sharex=True, gridspec_kw=dict(height_ratios=[1, 1.25]))
+    n_cut = int((fn > FN_CUT).sum())
+    axs[0].plot(fn.index, fn.clip(upper=FN_CUT).values, color="#7FA7E0", lw=0.3, label="flare_net (1-min)")
+    hm = fn.resample("1h").median()
+    axs[0].plot(hm.index, hm.values, color="#0B2C8A", lw=0.9, label="hourly median")
+    axs[0].axhline(1.5, color="red", ls="--", lw=1.2, label="threshold 1.5 t/h")
+    axs[0].set_ylim(-1, FN_CUT)
     axs[0].set_ylabel("flare_net (t/h)")
-    axs[0].legend(loc="upper left")
-    axs[0].text(0.995, 0.96,
-                f"Flare Events : {len(flare_events)}\nScored : {int(M['actual flare events (scored)'])}\n"
-                f"T² Alarms : {int(M['alarms (activations)'])}\nDetected : {int(M['TP (events detected)'])}\n"
-                f"Missed : {int(M['FN (events missed)'])}\nFalse Alarms : {int(M['incorrect predictions (FP alarms)'])}\n"
-                f"Recall : {100 * M['recall TP events/(TP+FN events)']:.1f}%",
-                transform=axs[0].transAxes, ha="right", va="top", fontsize=8.5, family="monospace",
-                bbox=dict(facecolor="white", edgecolor="black"))
-    axs[1].plot(t2.index, t2["T2"], color="green", lw=0.5, label="Overall T² (moving-window baseline)")
-    axs[1].axhline(limits.t2_limit, color="red", ls="--", lw=1.2, label=f"T² limit {limits.t2_limit:.2f} (× 2)")
+    h, l_ = axs[0].get_legend_handles_labels()
+    leg(axs[0], 4, h + [Line2D([], [], color="none")],
+        l_ + [f"axis cut at {FN_CUT} t/h: {n_cut} min ({100 * n_cut / len(fn):.2f} %) above, max {fn.max():.1f} t/h"])
+    axs[1].plot(t2.index, t2["T2"], color="green", lw=0.4, label="overall T² (moving-window baseline)")
+    axs[1].axhline(lim.t2_limit, color="red", ls="--", lw=1.2, label=f"T² limit {lim.t2_limit:.1f}")
+    for a, b in runs(~scored):
+        axs[1].axvspan(t2.index[a], t2.index[b], color="#9e9e9e", alpha=0.35, lw=0)
     axs[1].set_yscale("log")
     axs[1].set_ylabel("T² (log scale)")
-    axs[1].legend(loc="upper left")
-    on = pd.Series(0, index=t2.index)
-    for s, e in zip(alarms.activation, alarms.end):
-        on[s:e] = 1
-    axs[2].plot(on.index, on.values, color="black", lw=0.5, label=f"Alarm on ({len(alarms)} alarms)")
-    axs[2].plot(tp_al.activation, [1] * len(tp_al), "o", color="red", ms=3,
-                label=f"Alarm followed by a flare within 30 min (TP, n = {len(tp_al)})")
-    axs[2].set_ylabel("Alarm (1 = on)")
-    axs[2].set_yticks([0, 1])
-    axs[2].legend(loc="upper left", fontsize=8)
-    axs[2].set_xlabel("Date and time")
+    h, l_ = axs[1].get_legend_handles_labels()
+    leg(axs[1], 3, h + [Patch(color="#9e9e9e", alpha=0.35)], l_ + ["no T² (too few flare-free minutes)"])
     for a in axs:
         a.grid(alpha=0.3)
-    axs[0].set_title(f"flare_net, overall T² and alarms, {SPAN}", fontweight="bold")
-    date_time_axis(axs[2])
-    axs[0].set_xlim(T0, T1)
-    fig.tight_layout()
-    fig.savefig(path)
-    plt.close(fig)
+    date_axis(axs[1])
+    return save(fig, "t2_overall.png")
 
 
-def fig_equation(path, heading, lines, width=5.2):
-    """Equation card in the look of the TA's slide 48 images."""
-    fig = plt.figure(figsize=(width, 0.55 + 0.5 * len(lines)), dpi=200)
+def fig_rootcause():
+    d = pd.DataFrame({"tp": top1_tp.reindex(tl.index, fill_value=0), "fp": top1_fp.reindex(tl.index, fill_value=0)})
+    d = d.sort_values(["tp", "fp"], ascending=False)
+    x = np.arange(len(d))
+    fig, ax = figure(1, 1, 4.6)
+    ax.bar(x - 0.2, d.tp, 0.4, color="#1f5fa8", label=f"top-1 PC of a TP flare event ({TP} events)")
+    ax.bar(x + 0.2, d.fp, 0.4, color="#c0392b", label=f"top-1 PC of an FP gap ({FP} gaps)")
+    ax.set_xticks(x, d.index, rotation=40, ha="right", fontsize=10)
+    ax.set_ylabel("count")
+    ax.grid(axis="y", alpha=0.3)
+    leg(ax, 2)
+    title(fig, "How often each PC has the largest T²_j / own limit at the first minute above the overall limit")
+    return save(fig, "rootcause.png")
+
+
+def fig_pc_avg():
+    d = PCAVG.sort_values("pre", ascending=False)
+    x = np.arange(len(d))
+    fig, ax = figure(1, 1, 4.6)
+    ax.bar(x - 0.27, d.pre, 0.27, color="#d62728", label="60 min before a flare")
+    ax.bar(x, d.normal, 0.27, color="#1f5fa8", label="normal time (no flare, not before one)")
+    ax.bar(x + 0.27, d.flare, 0.27, color="#e67e22", label="during a flare")
+    ax.axhline(5, color="black", ls="--", lw=1.1, label="5 % (α = 0.05)")
+    ax.set_xticks(x, d.index, rotation=40, ha="right", fontsize=10)
+    ax.set_ylabel("% of minutes above own limit")
+    ax.grid(axis="y", alpha=0.3)
+    leg(ax, 4)
+    title(fig, "Share of minutes each PC is above its own limit, Jul – Oct 2025 (scored minutes only)")
+    return save(fig, "pc_avg.png")
+
+
+def fig_top_raw(pcs):
+    fig, axs = figure(len(pcs), 1, 4.7, sharex=True)
+    for ax, pc, c in zip(axs, pcs, ["#1f5fa8", "#8e44ad", "#16a085"]):
+        shade_events(ax, 0.12)
+        s = scores[pc]
+        ax.plot(s.index, s.values, color=c, lw=0.3, alpha=0.45)
+        ax.plot(s.index, s.rolling("6h").median().values, color=c, lw=1.4)
+        ax.set_ylabel(pc, fontsize=10)
+        ax.grid(alpha=0.3)
+    date_axis(axs[-1])
+    title(fig, "Raw PC scores (standardised with NOC mean and std): light = 1-min, dark = 6-h median; "
+               "orange = flare events")
+    return save(fig, "top_raw.png")
+
+
+def fig_pc_deep(pc):
+    fig, axs = figure(2, 1, 4.4, sharex=True)
+    shade_events(axs[0], 0.12)
+    s = scores[pc]
+    axs[0].plot(s.index, s.values, color="#1f5fa8", lw=0.5)
+    axs[0].set_ylabel(pc, fontsize=11)
+    r = ratio[pc].resample("1h").max()
+    axs[1].plot(r.index, r.clip(lower=1e-3).values, color="#8e44ad", lw=0.7, label="T²_j / own limit (hourly max)")
+    axs[1].axhline(1, color="red", ls="--", lw=1.2, label="own limit (ratio 1)")
+    axs[1].set_yscale("log")
+    axs[1].set_ylabel(f"{pc}\nT²_j / limit", fontsize=11)
+    leg(axs[1], 2)
+    for a in axs:
+        a.grid(alpha=0.3)
+    date_axis(axs[1])
+    title(fig, f"{pc}: raw score (top, orange = flare events) and causal T² term (bottom), four months")
+    return save(fig, f"pc_{pc}.png")
+
+
+def shade_window(ax, r, mark=True):
+    ax.axvspan(r.onset - pd.Timedelta(minutes=W_IN), r.onset, color="#d62728", alpha=0.10, lw=0)
+    ax.axvspan(r.onset, r.end + pd.Timedelta(minutes=1), color="orange", alpha=0.22, lw=0)
+    if mark and pd.notna(r.first_above):
+        ax.axvline(r.first_above, color="black", ls=":", lw=1.4)
+
+
+def win_patches():
+    return [Patch(color="#d62728", alpha=0.1), Patch(color="orange", alpha=0.22),
+            Line2D([], [], color="black", ls=":", lw=1.4)], ["60 min before onset", "flare event",
+                                                               "first minute above the T² limit"]
+
+
+def fig_event_overview(r):
+    a, b = r.onset - pd.Timedelta(minutes=180), r.onset + pd.Timedelta(minutes=150)
+    pcs = [r.pc1, r.pc2, r.pc3]
+    fig, axs = figure(3, 1, 5.05, sharex=True, gridspec_kw=dict(height_ratios=[1, 1, 1.3]))
+    f = fn.loc[a:b]
+    axs[0].plot(f.index, f.values, color="blue", lw=1.2, label="flare_net")
+    axs[0].axhline(1.5, color="red", ls="--", lw=1.1, label="threshold 1.5 t/h")
+    axs[0].set_ylabel("flare_net\n(t/h)")
+    hw, lw_ = win_patches()
+    h, l_ = axs[0].get_legend_handles_labels()
+    leg(axs[0], 5, h + hw, l_ + lw_)
+    t = t2["T2"].loc[a:b]
+    axs[1].plot(t.index, t.values, color="green", lw=1.2, label="overall T²")
+    axs[1].axhline(lim.t2_limit, color="red", ls="--", lw=1.1, label=f"T² limit {lim.t2_limit:.1f}")
+    axs[1].set_yscale("log")
+    axs[1].set_ylabel("overall T²\n(log)")
+    leg(axs[1], 2)
+    for pc, c in zip(pcs, C_PC):
+        y = ratio[pc].loc[a:b].clip(lower=1e-3)
+        axs[2].plot(y.index, y.values, color=c, lw=1.2, label=pc)
+    axs[2].axhline(1, color="red", ls="--", lw=1.1, label="own limit")
+    axs[2].set_yscale("log")
+    axs[2].set_ylabel("T²_j / own limit\n(log)")
+    leg(axs[2], 4)
+    for ax in axs:
+        shade_window(ax, r)
+        ax.grid(alpha=0.3)
+    minute_axis(axs[-1], a, b)
+    axs[-1].set_xlabel(f"{r.onset:%d %b %Y}")
+    return save(fig, f"E{r.event_id}_overview.png")
+
+
+def fig_event_zoom(r):
+    a, b = r.onset - pd.Timedelta(minutes=110), r.onset + pd.Timedelta(minutes=20)
+    pcs = [r.pc1, r.pc2, r.pc3]
+    fig, axs = figure(3, 2, 5.05, sharex=True)
+    for i, (pc, c) in enumerate(zip(pcs, C_PC)):
+        y = ratio[pc].loc[a:b].clip(lower=1e-3)
+        axs[i, 0].plot(y.index, y.values, color=c, lw=1.4)
+        axs[i, 0].axhline(1, color="red", ls="--", lw=1.0)
+        axs[i, 0].set_yscale("log")
+        axs[i, 0].set_ylabel(f"{pc}\nT²_j / limit", fontsize=10)
+        s = scores[pc].loc[a:b]
+        axs[i, 1].plot(s.index, s.values, color=c, lw=1.4)
+        axs[i, 1].set_ylabel(pc, fontsize=10)
+        for ax in axs[i]:
+            shade_window(ax, r)
+            ax.grid(alpha=0.3)
+    axs[0, 0].set_title("Causal T² term / own limit (log; red dashed = limit)", fontsize=12)
+    axs[0, 1].set_title("Raw PC score", fontsize=12)
+    for ax in axs[-1]:
+        minute_axis(ax, a, b, step=20)
+        ax.set_xlabel(f"{r.onset:%d %b %Y}")
+    return save(fig, f"E{r.event_id}_zoom.png")
+
+
+def fig_equation(name, heading, lines, width=5.6):
+    h = 0.55 + 0.5 * len(lines)
+    fig = plt.figure(figsize=(width, h), dpi=200)
     fig.patch.set_facecolor("#F8F8F8")
-    fig.text(0.03, 1 - 0.3 / (0.55 + 0.5 * len(lines)), heading, fontsize=11, fontweight="bold", va="center")
+    fig.text(0.03, 1 - 0.3 / h, heading, fontsize=11, fontweight="bold", va="center")
     for i, (txt, size, x) in enumerate(lines):
-        y = 1 - (0.75 + 0.5 * i) / (0.55 + 0.5 * len(lines))
-        fig.text(x, y, txt, fontsize=size, va="center")
-    fig.savefig(path, facecolor=fig.get_facecolor())
+        fig.text(x, 1 - (0.75 + 0.5 * i) / h, txt, fontsize=size, va="center")
+    fig.savefig(ASSETS / name, facecolor=fig.get_facecolor())
     plt.close(fig)
+    return ASSETS / name
 
 
-fig_flare_events(ASSETS / "flare_events.png")
-fig_results(ASSETS / "t2_overall.png")
-fig_equation(ASSETS / "eq_overall.png", "1. Overall T² (26 PCs)", [
-    ("For the standardised PC scores $\\mathbf{z}$ at minute $t$,", 9.5, 0.05),
-    ("$T^2 = \\mathbf{z}^{\\top}\\,\\mathrm{pinv}(R)\\,\\mathbf{z}$", 15, 0.30),
-    ("$R$ = correlation of the PCs in the baseline window", 9.5, 0.05)])
-fig_equation(ASSETS / "eq_term.png", "2. Causal term of each PC", [
-    ("$\\beta_j = R_{PP}^{-1}R_{Pj}$,   $\\mu_{j\\cdot PA(j)} = \\sum_k \\beta_{jk}\\, z_{pa_k}$", 12, 0.05),
-    ("$\\sigma^2_{j\\cdot PA(j)} = 1 - \\sum_k \\beta_{jk}\\,\\rho(z_j, z_{pa_k})$", 12, 0.05),
-    ("$T^2_{j\\cdot PA(j)} = \\left(\\frac{z_j - \\mu_{j\\cdot PA(j)}}{\\sigma_{j\\cdot PA(j)}}\\right)^2$", 15, 0.25),
-    ("$PA(j)$ = parents of PC $j$ in the causal graph; root PC: $T_j = z_j$", 9.5, 0.05)])
-fig_equation(ASSETS / "eq_limit.png", "3. Control Limit (report Eq. 13)", [
-    ("$T^2_{lim} = \\frac{p\\,(m+1)(m-1)}{m\\,(m-k-p)}\\,F_{1-\\alpha;\\,p,\\,m-k-p}$", 15, 0.12),
-    ("overall: $p$ = 26, $k$ = 0;   per PC: $p$ = 1, $k$ = number of parents", 9.5, 0.05),
-    ("$m$ = baseline rows, $\\alpha$ = 0.05; every limit is multiplied by 2", 9.5, 0.05)], width=5.9)
-fig_equation(ASSETS / "eq_rule.png", "4. Decision Rule", [
-    ("$T^2 > T^2_{lim}$ for 3 min  $\\Rightarrow$  Alarm on", 13, 0.12),
-    ("$T^2 \\leq T^2_{lim}$ for 10 min  $\\Rightarrow$  Alarm off", 13, 0.12)], width=5.9)
+FIG = {"counts": fig_counts(), "daily": fig_daily_above(), "lead": fig_lead(), "pca": fig_pca_var(),
+       "t2": fig_t2_overall(), "rc": fig_rootcause(), "avg": fig_pc_avg(), "raw": fig_top_raw(list(top1_tp.index[:3]))}
+for pc in PC_DEEP:
+    FIG[pc] = fig_pc_deep(pc)
+CASES = {e: ev[ev.event_id == e].iloc[0] for e in CASE_EVENTS}
+for e, r in CASES.items():
+    assert r.outcome == "TP"
+    FIG[f"E{e}_a"], FIG[f"E{e}_b"] = fig_event_overview(r), fig_event_zoom(r)
+FIG["eq_pca"] = fig_equation("eq_pca.png", "PCA of one unit (fitted on NOC rows only)", [
+    ("$z_i = (x_i - \\mu_i^{NOC}) \\,/\\, \\sigma_i^{NOC}$   for every tag $i$ of the unit", 13, 0.05),
+    ("$t_k = \\mathbf{w}_k^{\\top}\\,\\mathbf{z}$,   $k = 1, 2$", 15, 0.25),
+    ("$\\mathbf{w}_k$ = $k$-th eigenvector of the unit's NOC correlation matrix", 10.5, 0.05)])
+FIG["eq_overall"] = fig_equation("eq_overall.png", f"1. Overall T² ({N_PCS} PCs)", [
+    ("For the standardised PC scores $\\mathbf{z}$ at minute $t$:", 10.5, 0.05),
+    ("$T^2 = \\mathbf{z}^{\\top} R^{-1}\\, \\mathbf{z}$", 16, 0.30),
+    ("$R$ = correlation of the PCs in the baseline window", 10.5, 0.05)])
+FIG["eq_term"] = fig_equation("eq_term.png", "2. Causal T² term of each PC", [
+    ("$\\beta_j = R_{PP}^{-1}R_{Pj}$,   $\\sigma^2_{j\\cdot PA(j)} = 1 - \\beta_j^{\\top} R_{Pj}$", 13, 0.05),
+    ("$T^2_{j\\cdot PA(j)} = \\left(\\frac{z_j - \\beta_j^{\\top} \\mathbf{z}_{PA(j)}}{\\sigma_{j\\cdot PA(j)}}\\right)^2$",
+     16, 0.20),
+    ("$PA(j)$ = parents of PC $j$ in the causal graph;  root PC: $T_j = z_j$", 10.5, 0.05)])
+FIG["eq_limit"] = fig_equation("eq_limit.png", "3. Control limit (report Eq. 13), × 2", [
+    ("$T^2_{lim} = 2 \\cdot \\frac{p\\,(m+1)(m-1)}{m\\,(m-k-p)}\\,F_{1-\\alpha;\\,p,\\,m-k-p}$", 15, 0.08),
+    (f"overall: $p$ = {N_PCS}, $k$ = 0;   per PC: $p$ = 1, $k$ = number of parents", 10.5, 0.05),
+    (f"$m$ = {int(lim.window_rows):,} baseline rows,  $\\alpha$ = 0.05", 10.5, 0.05)], width=6.2)
 
 # ---------------------------------------------------------------- pptx helpers
 prs = Presentation(REF)
 slides = list(prs.slides)
 TITLE_SP = copy.deepcopy([s for s in slides[7].shapes if s.name == "Title 1"][0]._element)  # TA title bar
-keep = {0: "cover", 1: "outline", 39: "future"}
 sldIdLst = prs.slides._sldIdLst
-kept = {}
-for i, sldId in enumerate(list(sldIdLst)):
-    if i in keep:
-        kept[keep[i]] = sldId
-    else:
-        prs.part.drop_rel(sldId.rId)
-        sldIdLst.remove(sldId)
-LAYOUT = prs.slide_layouts[1]  # Title and Content, as in the TA's deck
+COVER = list(sldIdLst)[0]
+for sldId in list(sldIdLst)[1:]:
+    prs.part.drop_rel(sldId.rId)
+    sldIdLst.remove(sldId)
+LAYOUT = prs.slide_layouts[1]
 TNR_BOLD = ImageFont.truetype("/System/Library/Fonts/Supplemental/Times New Roman Bold.ttf", TITLE_PT)
+SW = 13.333
 
 
-def new_slide(title):
-    # one line in the 13.33 in title bar (0.1 in insets): at most about 945 pt wide
-    assert TNR_BOLD.getlength(title) < 930, f"title too long: {title}"
+def new_slide(title_text):
+    assert TNR_BOLD.getlength(title_text) < 930, f"title too long: {title_text}"
     s = prs.slides.add_slide(LAYOUT)
     for ph in list(s.placeholders):
         ph._element.getparent().remove(ph._element)
     sp = copy.deepcopy(TITLE_SP)
     s.shapes._spTree.append(sp)
     ts = sp.findall(".//" + qn("a:t"))
-    ts[0].text = title
+    ts[0].text = title_text
     for t in ts[1:]:
         t.getparent().getparent().remove(t.getparent())
     for rpr in sp.findall(".//" + qn("a:rPr")) + sp.findall(".//" + qn("a:endParaRPr")):
@@ -240,48 +496,48 @@ def _bullet(p):
     pPr = p._p.get_or_add_pPr()
     pPr.set("marL", "285750")
     pPr.set("indent", "-285750")
-    bf = etree.SubElement(pPr, qn("a:buFont"))
-    bf.set("typeface", "Arial")
+    etree.SubElement(pPr, qn("a:buFont")).set("typeface", "Arial")
     etree.SubElement(pPr, qn("a:buChar")).set("char", "•")
 
 
-def text_box(s, x, y, w, h, items, size=None, space=0):
-    """items: str = bullet; ('H', str) = 36 pt bold sub-heading (TA slide 37)."""
+def text_box(s, x, y, w, h, items, size=16, space=4):
+    """items: str = bullet; ('H', str) = bold sub-heading (TA slide 37 style); ('P', str) = plain paragraph."""
     tb = s.shapes.add_textbox(Inches(x), Inches(y), Inches(w), Inches(h))
     tf = tb.text_frame
     tf.word_wrap = True
-    first = True
-    for it in items:
-        p = tf.paragraphs[0] if first else tf.add_paragraph()
-        first = False
-        if isinstance(it, tuple):
-            _runs(p, "**" + it[1] + "**", size=36)
-            p.space_after = Pt(6)
+    for k, it in enumerate(items):
+        p = tf.paragraphs[0] if k == 0 else tf.add_paragraph()
+        if isinstance(it, tuple) and it[0] == "H":
+            _runs(p, "**" + it[1] + "**", size=it[2] if len(it) > 2 else 22, color="1F3864")
+            p.space_after = Pt(4)
             continue
-        _bullet(p)
-        _runs(p, it, size=size)
-        if space:
-            p.space_after = Pt(space)
+        if isinstance(it, tuple) and it[0] == "P":
+            _runs(p, it[1], size=size)
+        else:
+            _bullet(p)
+            _runs(p, it, size=size)
+        p.space_after = Pt(space)
     return tb
 
 
-def caption(s, x, y, w, text, size=11):
-    """Data-source / reading note under a chart or table."""
+def caption(s, x, y, w, text, size=10):
     tb = s.shapes.add_textbox(Inches(x), Inches(y), Inches(w), Inches(0.3))
-    tf = tb.text_frame
-    tf.word_wrap = True
-    _runs(tf.paragraphs[0], text, size=size, color="404040")
+    tb.text_frame.word_wrap = True
+    _runs(tb.text_frame.paragraphs[0], text, size=size, color="404040")
     return tb
 
 
 def picture(s, path, x, y, w=None, h=None):
-    return s.shapes.add_picture(str(path), Inches(x), Inches(y),
-                                Inches(w) if w else None, Inches(h) if h else None)
+    return s.shapes.add_picture(str(path), Inches(x), Inches(y), Inches(w) if w else None, Inches(h) if h else None)
 
 
-def table(s, x, y, w, rows, col_w, size=12, row_h=0.34, bold_last=False):
-    shp = s.shapes.add_table(len(rows), len(rows[0]), Inches(x), Inches(y), Inches(w),
-                             Inches(row_h * len(rows)))
+def full_picture(s, path, y=1.0, w=12.9):
+    pic = picture(s, path, (SW - w) / 2, y, w=w)
+    return y + pic.height / 914400
+
+
+def table(s, x, y, w, rows, col_w, size=13, row_h=0.36, bold_first_col=False):
+    shp = s.shapes.add_table(len(rows), len(rows[0]), Inches(x), Inches(y), Inches(w), Inches(row_h * len(rows)))
     tb = shp.table
     for j, cw in enumerate(col_w):
         tb.columns[j].width = Inches(cw)
@@ -293,31 +549,33 @@ def table(s, x, y, w, rows, col_w, size=12, row_h=0.34, bold_last=False):
             c.vertical_anchor = MSO_ANCHOR.MIDDLE
             tf = c.text_frame
             tf.word_wrap = True
-            p = tf.paragraphs[0]
             txt = str(val)
-            if bold_last and i == len(rows) - 1:
+            if bold_first_col and j == 0 and i > 0:
                 txt = "**" + txt + "**"
-            _runs(p, txt, size=size)
-            if j > 0 and isinstance(val, (int, float)):
-                p.alignment = PP_ALIGN.CENTER
+            _runs(tf.paragraphs[0], txt, size=size)
+            if j > 0:
+                tf.paragraphs[0].alignment = PP_ALIGN.CENTER
     return tb
 
 
-def box(s, x, y, w, h, text, fill, size=10, bold=False, color="000000", line="7F7F7F", dash=False,
-        align=PP_ALIGN.CENTER):
-    shp = s.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(x), Inches(y), Inches(w), Inches(h))
+def box(s, x, y, w, h, text, fill, size=12, bold=False, color="000000", line="7F7F7F", dash=False,
+        align=PP_ALIGN.CENTER, shape=MSO_SHAPE.RECTANGLE, anchor=MSO_ANCHOR.MIDDLE):
+    shp = s.shapes.add_shape(shape, Inches(x), Inches(y), Inches(w), Inches(h))
     shp.fill.solid()
     shp.fill.fore_color.rgb = RGBColor.from_string(fill)
-    shp.line.color.rgb = RGBColor.from_string(line)
-    shp.line.width = Pt(0.75)
-    if dash:
-        shp.line.dash_style = 4  # dash
+    if line:
+        shp.line.color.rgb = RGBColor.from_string(line)
+        shp.line.width = Pt(0.75)
+        if dash:
+            shp.line.dash_style = 4
+    else:
+        shp.line.fill.background()
     shp.shadow.inherit = False
     tf = shp.text_frame
     tf.word_wrap = True
-    for m in ("margin_left", "margin_right"):
-        setattr(tf, m, Inches(0.05))
-    tf.margin_top = tf.margin_bottom = Inches(0.02)
+    tf.vertical_anchor = anchor
+    tf.margin_left = tf.margin_right = Inches(0.06)
+    tf.margin_top = tf.margin_bottom = Inches(0.03)
     for i, ln in enumerate(text.split("\n")):
         p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
         p.alignment = align
@@ -325,12 +583,26 @@ def box(s, x, y, w, h, text, fill, size=10, bold=False, color="000000", line="7F
     return shp
 
 
-def arrow(s, x1, y1, x2, y2):
+def arrow(s, x1, y1, x2, y2, color="404040", width=1.5, dash=False):
     c = s.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(x1), Inches(y1), Inches(x2), Inches(y2))
-    c.line.color.rgb = RGBColor.from_string("404040")
-    c.line.width = Pt(1.25)
+    c.line.color.rgb = RGBColor.from_string(color)
+    c.line.width = Pt(width)
+    if dash:
+        c.line.dash_style = 4
     etree.SubElement(c.line._get_or_add_ln(), qn("a:tailEnd")).set("type", "triangle")
     return c
+
+
+def node_arrow(s, p, q, r=0.7, **kw):
+    (x1, y1), (x2, y2) = p, q
+    d = np.hypot(x2 - x1, y2 - y1)
+    ux, uy = (x2 - x1) / d, (y2 - y1) / d
+    return arrow(s, x1 + ux * r, y1 + uy * r, x2 - ux * (r + 0.03), y2 - uy * (r + 0.03), **kw)
+
+
+def node(s, xy, label, fill="DEEBF7", r=0.68, size=13):
+    return box(s, xy[0] - r, xy[1] - r, 2 * r, 2 * r, label, fill, size=size, bold=True, shape=MSO_SHAPE.OVAL,
+               line="1F3864")
 
 
 def console(s, x, y, w, h, text, size=12):
@@ -342,10 +614,9 @@ def console(s, x, y, w, h, text, size=12):
     tf = shp.text_frame
     tf.word_wrap = False
     tf.vertical_anchor = MSO_ANCHOR.TOP
-    tf.margin_left = tf.margin_top = Inches(0.12)
+    tf.margin_left = tf.margin_top = Inches(0.15)
     for i, ln in enumerate(text.split("\n")):
         p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
-        p.alignment = PP_ALIGN.LEFT
         r = p.add_run()
         r.text = ln
         r.font.size = Pt(size)
@@ -353,33 +624,26 @@ def console(s, x, y, w, h, text, size=12):
         r.font.color.rgb = RGBColor.from_string("E6E6E6")
 
 
-def replace_list(shape, items, keep_first_empty=False, size=None):
-    """Refill a TA bullet box: paragraph 1 is the template (bullet format kept)."""
-    ps = shape.text_frame.paragraphs
-    tmpl = ps[1]._p
-    anchor = ps[0]._p
-    for para in ps[1:]:
-        para._p.getparent().remove(para._p)
-    prev = anchor
-    for _ in items:
-        np_ = copy.deepcopy(tmpl)
-        prev.addnext(np_)
-        prev = np_
-    if not keep_first_empty:
-        anchor.getparent().remove(anchor)
-    paras = shape.text_frame.paragraphs[1 if keep_first_empty else 0:]
-    for p, item in zip(paras, items):
-        for r in p._p.findall(qn("a:r")):
-            p._p.remove(r)
-        _runs(p, item, size=size)
+def takeaway(s, y, text, h=0.55):
+    """Blue-bordered conclusion line under a figure."""
+    return box(s, 0.4, y, SW - 0.8, h, text, "EAF1FB", size=15, line="5B9BD5", align=PP_ALIGN.LEFT)
 
 
 def fmt(n):
     return f"{int(n):,}"
 
 
-# ---------------------------------------------------------------- slide 1: cover (TA's slide 1)
-cover = prs.slides.get(int(kept["cover"].get("id")))
+def figure_slide(title_text, fig_path, source, bullets, size=15, w=12.9):
+    """Full-width figure, its source line, then the explanation bullets."""
+    s = new_slide(title_text)
+    y = full_picture(s, fig_path, 1.0, w)
+    caption(s, (SW - w) / 2, y + 0.02, w, source)
+    text_box(s, 0.5, y + 0.4, 12.3, 7.4 - y - 0.4, bullets, size=size, space=3)
+    return s
+
+
+# ---------------------------------------------------------------- 1 cover (TA's slide 1)
+cover = prs.slides.get(int(COVER.get("id")))
 for shp in cover.shapes:
     if shp.name == "TextBox 3":
         p0 = shp.text_frame.paragraphs[0]
@@ -391,369 +655,365 @@ for shp in cover.shapes:
         for r in p1.findall(".//" + qn("a:rPr")):
             r.set("sz", "1600")
 
-# ---------------------------------------------------------------- slide 2: outline (TA's slide 2)
-outline = prs.slides.get(int(kept["outline"].get("id")))
-OUTLINE = ["Data and preprocessing (July – October 2025)",
-           "Final pipeline: unit-wise PCA – PC algorithm – causation-based T²",
-           "Detection results over four months",
-           "Flare event case studies and recurring contributors",
-           "Limitations, conclusions and future work"]
-for shp in outline.shapes:
-    if shp.name == "Rectangle 2":
-        replace_list(shp, OUTLINE)
+# ---------------------------------------------------------------- 2 problem and data
+s = new_slide("Goal: name the unit behind each flare and warn before it starts")
+text_box(s, 0.5, 1.15, 6.4, 5.6, [
+    ("H", "Problem"),
+    "Flares are frequent: **620 events** of 30 min or more in four months, covering half of the time.",
+    "We want to see **which unit moves first**, and raise a warning **before** the flare starts.",
+    ("H", "What the method gives"),
+    "A **T² statistic** per minute: one number for the whole plant.",
+    "Its **causal split** per PC: which unit's PC is out of line once its graph parents are accounted for.",
+    "Each PC traces back to its heaviest **tags**."], size=17, space=6)
+rows = [["Data item", "Value"],
+        ["Period", "1 Jul – 31 Oct 2025"],
+        ["Sampling", "1 minute (177,120 rows)"],
+        ["Units", f"{N_UNITS} unit folders"],
+        ["Process tags used", f"{N_TAGS} (75 of 376 dropped)"],
+        ["Flare signal", "flare_net (t/h), from 4 flare tags"],
+        ["Flare event", "flare_net > 1.5 t/h for ≥ 30 min"],
+        ["Flare events", "620 (88,590 min, 50 % of time)"],
+        ["Normal rows (NOC)", f"{fmt(lim.n_noc_rows)} (first 60 %, no flares)"]]
+table(s, 7.3, 1.25, 5.6, rows, [2.4, 3.2], size=14, row_h=0.5, bold_first_col=True)
+caption(s, 7.3, 5.85, 5.6, "Source: outputs/SUMMARY.md and logs/run.log. Dropped tags: 49 with negative values, "
+        "19 with > 10 % missing, 7 constant or near-constant.")
 
-# ---------------------------------------------------------------- 3 objective and scope
-s = new_slide("We want to find which unit drives each flare, and warn early")
-text_box(s, 0.52, 1.05, 12.3, 2.5, [
-    ("H", "Objective"),
-    "Find which **unit and process variables** move before a flare starts.",
-    "Raise a **T² alarm** early enough for the operator to act, and name the unit behind it."], size=20, space=8)
-text_box(s, 0.52, 3.55, 12.3, 3.7, [
-    ("H", "Data and approach"),
-    "HPCL historian data, **1 July – 31 October 2025** (4 months, 1-minute samples, 177,120 rows).",
-    "**416 tags**: 412 process tags in 14 unit folders + 4 flare tags.",
-    "Approach: **unit-wise PCA → PC algorithm (causal graph) → causation-based T² → alarm and root-cause ranking.**",
-    "All numbers in this deck come from the lab-computer run of the final pipeline."], size=20, space=8)
-
-# ---------------------------------------------------------------- 4 raw dataset structure
-s = new_slide("Four months of 1-minute data from 14 units: 306 of 412 tags kept")
-rows = [["Unit", "Tags loaded", "Tags kept", "Tags dropped"]]
-for u, tags, _, _ in pca_units:
-    tot = int(by_unit.loc[u].sum())
-    rows.append([u, tot, tags, tot - tags])
-rows.append(["Total (process tags)", 412, 306, 106])
-table(s, 0.4, 1.05, 7.4, rows, [3.2, 1.4, 1.4, 1.4], size=12, row_h=0.36, bold_last=True)
-text_box(s, 8.1, 1.1, 5.0, 4.9, [
-    "One parquet file per tag, grouped in **14 unit folders** + flare_data.",
-    "**4 flare tags** are used only to build flare_net (next slide).",
-    "**376 duplicate copies** in All_unit_tags were skipped.",
-    "Window: 2025-07-01 00:00 to 2025-11-01 00:00 (end excluded).",
-    "Sampling: **1 minute** in the files and on the grid.",
-    "unit_wise_control_data keeps only 5 of 36 tags (21 have >10% missing)."], size=18, space=8)
-caption(s, 8.1, 6.2, 5.0, "Table source: outputs/tag_registry.csv (status of every tag in the lab run). "
-        "Loaded = tag files in the unit folder; kept = used in PCA.")
-
-# ---------------------------------------------------------------- 5 flare flowrate and events
-s = new_slide("A 1.5 t/h threshold gives 620 flare events in four months")
-text_box(s, 0.52, 0.98, 12.3, 2.2, [
-    "**flare_net** = (LRflare + LREflare + 99FI4601)/1000 + 509FI5201/1000 − (44FT2505 × 509MW5101 / 22.414)/1000, in t/h.",
-    "Flare flowrate threshold is set to **1.5 t/h** (TA's value).",
-    "A flare event is a run above the threshold lasting **at least 30 consecutive minutes**.",
-    f"**{len(flare_events)} flare events** found. 1,723 shorter runs are not events but are kept out of the baseline.",
-    "flare_net median is 1.64 t/h, so **56.8%** of all minutes are above the threshold."], size=16)
-picture(s, ASSETS / "flare_events.png", 0.17, 2.55, w=13.0)
-caption(s, 0.47, 2.55 + 13.0 * 588 / 1920 + 0.05, 12.4, "Source: outputs/tables/flare_net_raw.parquet (flare_net, 1-min) and "
-        "outputs/tables/flare_events.csv (620 events). " + SRC)
-
-# ---------------------------------------------------------------- 6 tags removed
-s = new_slide("106 tags were removed, mostly for negative values or missing data")
-rows = [["Rule", "Tags dropped", "Example from the log", "Why"],
-        ["Any negative value", 55, "98PIC1601.DACA.PV (min −877)", "TA notebook rule (reason pending, Q1)"],
-        ["More than 10% missing", 40, "508pc5101.pida.op (91.1% missing)", "Too many gaps to fill reliably"],
-        ["Constant", 7, "99PI1542.DACA.PV", "No variance: carries no information"],
-        ["Near-constant (>99% one value)", 4, "102PI5001.DACA.PV (100%)", "Almost no variance"],
-        ["Total dropped", 106, "306 process tags kept", ""]]
-table(s, 0.4, 1.1, 12.5, rows, [3.1, 1.5, 3.9, 4.0], size=16, row_h=0.72, bold_last=True)
-caption(s, 0.4, 5.47, 12.5, "Source: outputs/logs/run.log (one line per dropped tag) and outputs/tag_registry.csv. "
-        "Rules and thresholds from unit_pca_pc_t2/config.py.")
-text_box(s, 0.52, 5.85, 12.3, 1.6, [
-    "Most negative-value drops are in **LOUP (24 tags)**; most missing-value drops are in **unit_wise_control_data (21)** and **NSU_NHT_CCR (16)**.",
-    "flare_net is never dropped; its 4 source tags have 0% missing on the grid.",
-    "No unit lost all its tags; ISOM_4 keeps only 1 of its 3 tags."], size=16, space=3)
-
-# ---------------------------------------------------------------- 7 gap filling, baseline, scaling
-s = new_slide("Gaps were tiny (0.06%), and the baseline has 12,157 normal rows")
-text_box(s, 0.52, 1.0, 12.3, 3.0, [
-    ("H", "Time grid and missing data"),
-    "All tags joined on a complete **1-minute grid** (outer join, no resampling): **177,120 rows**.",
-    "Sentinel values (−999, −9999, −99999, 99999) set to missing: **none found**.",
-    "Gaps filled by **cubic spline**, then forward / back fill (TA's method): 31,680 values = **0.06%** of the matrix.",
-    "Rows with less than 90% of tags observed are dropped: **none**."], size=20, space=8)
-text_box(s, 0.52, 4.05, 12.3, 2.9, [
-    ("H", "Baseline (NOC) and scaling"),
-    "Baseline = first **60%** of the window (before 12 Sep 2025 19:11), minus flare events ±120 min, short flares and pre-flare windows: **12,157 rows**.",
-    "Every tag is standardised with the **NOC mean and standard deviation**.",
-    "Final model input: **177,120 rows × 306 process tags**; flare_net is kept aside as the target."], size=20, space=8)
-caption(s, 0.52, 7.05, 12.3, "Source: outputs/logs/run.log (lab run). Gap-fill and baseline rules from unit_pca_pc_t2/config.py.")
-
-# ---------------------------------------------------------------- 8 approaches tried before
-s = new_slide("Six earlier design choices were replaced before the final pipeline")
-rows = [["Approach", "What it did", "What we saw", "Decision"],
-        ["PC on raw tags (causal_t2)", "Causal graph directly on hundreds of tags",
-         "PC step failed (stack limit) on one month of data", "Dropped"],
-        ["Global PCA (pca_pc_t2)", "26 PCs over all tags + flare tags as graph nodes",
-         "A global PC mixes tags of all units, so it cannot point to one unit", "Replaced by unit-wise PCA"],
-        ["flare_net inside the PC graph", "flare_net as a node of the PC algorithm",
-         "—", "PC on the 26 PCs only; PC → flare_net edges added after"],
-        ["Fixed baseline T²", "One Jul–Sep baseline for the whole window",
-         "T² drifts above the limit from mid-September and stays there (next slide)", "Moving-window baseline"],
-        ["Median + 3×MAD threshold", "Data-driven flare threshold", "—", "Manual 1.5 t/h (TA's value)"],
-        ["10-minute flare events (TA)", "Shorter minimum event length", "—", "30-minute events"]]
-table(s, 0.4, 1.1, 12.5, rows, [2.9, 3.2, 3.8, 2.6], size=14, row_h=0.72)
-caption(s, 0.4, 6.25, 12.5, "Earlier pipelines are in causal_t2/ and pca_pc_t2/; the final one is unit_pca_pc_t2/. "
-        "“—” = changed by a team decision, no separate result was recorded.")
-
-# ---------------------------------------------------------------- 8b fixed vs moving baseline (full width)
-s = new_slide("A fixed baseline drifts above the limit, so we use a moving window")
-H8 = 5.55
-W8 = H8 * 1624 / 818
-picture(s, OUT / "figures" / "fig8_baseline_drift.png", (13.333 - W8) / 2, 1.05, w=W8)
-caption(s, (13.333 - W8) / 2, 1.05 + H8 + 0.1, W8,
-        "Top: daily median overall T² over flare-free minutes (log scale) with each limit. Bottom: share of flare-free "
-        "minutes above the limit (%). Grey = fixed Jul–Sep baseline, blue = moving-window baseline. "
-        "Source: outputs/figures/fig8_baseline_drift.png. " + SRC)
-
-# ---------------------------------------------------------------- 9 final flow diagram (TA divider style)
-s = prs.slides.add_slide(prs.slide_layouts[6])  # Blank, like the TA's flow-diagram slides
-box(s, 2.15, 0.12, 9.0, 0.5, "Final Flow Diagram – Unit-wise PCA – PC – Causation-based T² Flare Root Cause Identification",
-    "1F3864", size=13, bold=True, color="FFFFFF", line="1F3864")
-STAGES = [
-    ("1", "DATA\nPREPARATION", "DEEBF7", "Load 416 tags · 1-min grid · drop 106 tags\nspline gap fill · NOC baseline · standardise",
-     "306 tags × 177,120 rows\nNOC = 12,157 rows"),
-    ("2", "UNIT-WISE PCA", "E2F0D9", "For each of the 14 units: PCA on NOC rows\nkeep PC1 and PC2 of the unit",
-     "26 PCs\n51.6% of variance"),
-    ("3", "CAUSAL\nDISCOVERY", "EDE2F6", "PC algorithm on the 26 PCs\nFisher-Z, α = 0.01, every 10th row",
-     "87 edges\n78 between units"),
-    ("4", "DAG + FLARE\nNODE", "FBE5D6", "Orient to a DAG (2 edges reversed)\nadd PC → flare_net for every PC",
-     "acyclic graph\n26 PC → flare_net edges"),
-    ("5", "MONITORING\n(T²)", "FFF2CC", "Moving-window baseline (1,350 rows, step 10)\noverall T² and per-PC causal T²_j, limits × 2",
-     f"overall limit {limits.t2_limit:.2f}\nper PC 7.70 – 7.76"),
-    ("6", "ALARM & ROOT\nCAUSE", "FCE4EC", "Alarm on after 3 min, off after 10 min\nrank PCs by T²_j / own limit → unit → tags",
-     "top 3 PCs per alarm\nRCA_report.xlsx"),
+# ---------------------------------------------------------------- 3 approach in blocks
+s = new_slide("Our approach in six steps, from raw tags to a ranked list of units")
+STEPS = [
+    ("1  DATA", "DEEBF7", "Join tags on a 1-min grid, drop bad tags, fill small gaps, standardise with NOC",
+     f"{N_TAGS} tags\n177,120 rows"),
+    ("2  UNIT-WISE PCA", "E2F0D9", "One PCA per unit on NOC rows; keep PC1 and PC2 of each unit",
+     f"{N_PCS} PCs\n{VAR_ALL:.1f} % variance"),
+    ("3  PC ALGORITHM", "EDE2F6", "Learn causal links among the PCs only (flare_net is not an input)",
+     f"{N_EDGES} edges\n{N_CROSS} between units"),
+    ("4  DAG + FLARE", "FBE5D6", "Orient to a graph without loops; add PC → flare_net for every PC",
+     f"0 loops\n{N_PCS} edges to flare_net"),
+    ("5  CAUSAL T²", "FFF2CC", "Moving 1,250-min baseline; overall T² and one T² term per PC",
+     f"limit {lim.t2_limit:.1f}\nper PC ≈ 7.7"),
+    ("6  DETECT + RANK", "FCE4EC", "Flag a flare if T² is above the limit in the 60 min before it; rank PCs",
+     f"F1 = {F1:.3f}\ntop 3 PCs per event"),
 ]
-y0, step, h = 0.85, 1.1, 0.8
-for i, (n, label, fill, center, note) in enumerate(STAGES):
-    y = y0 + i * step
-    box(s, 0.9, y, 2.0, h, f"{n}  {label}", fill, size=10, bold=True)
-    box(s, 3.4, y, 5.6, h, center, fill, size=11, line="5B9BD5")
-    box(s, 9.5, y, 2.9, h, note, "FFFFFF", size=10, dash=True)
-    arrow(s, 2.9, y + h / 2, 3.4, y + h / 2)
-    arrow(s, 9.0, y + h / 2, 9.5, y + h / 2)
-    if i < len(STAGES) - 1:
-        arrow(s, 6.2, y + h, 6.2, y + step)
-caption(s, 9.5, 7.1, 3.6, "Right column: results of the lab run (run.log).", size=10)
+bw, gap, x0 = 1.92, 0.24, 0.32
+for i, (head, fill, what, out) in enumerate(STEPS):
+    x = x0 + i * (bw + gap)
+    box(s, x, 1.4, bw, 0.8, head, fill, size=13, bold=True, line="1F3864",
+        shape=MSO_SHAPE.PENTAGON if i < 5 else MSO_SHAPE.RECTANGLE)
+    box(s, x, 2.4, bw, 1.75, what, "FFFFFF", size=14, line="5B9BD5")
+    box(s, x, 4.35, bw, 1.0, out, fill, size=14, bold=True, dash=True)
+    if i < 5:
+        arrow(s, x + bw + 0.01, 3.27, x + bw + gap - 0.01, 3.27)
+caption(s, 0.32, 1.02, 12.7, "Top row: step; middle: what it does; bottom (dashed): result in this lab run.", size=11)
+CHG = [("Warning window", "60 min before onset (was 30)"), ("Scoring", "TP/FN per flare event, FP per gap, F1"),
+       ("T²", "inv(R), no pseudo-inverse"), ("Normal rows", "no 120-min buffer around flares"),
+       ("Units", "13: unit_wise_control_data not in this run")]
+box(s, 0.32, 5.65, 12.7, 0.38, "Changed since the last review", "1F3864", size=13, bold=True, color="FFFFFF",
+    line=None, align=PP_ALIGN.LEFT)
+cw = (12.7 - 4 * 0.12) / 5
+for i, (k, v) in enumerate(CHG):
+    box(s, 0.32 + i * (cw + 0.12), 6.1, cw, 0.95, f"**{k}**\n{v}", "F2F2F2", size=13, line="BFBFBF")
 
-# ---------------------------------------------------------------- 10 unit-wise PCA
-s = new_slide("Two PCs per unit give 26 PCs that keep 51.6% of the variance")
-rows = [["Unit", "Tags", "PCs kept", "Variance captured"]]
-rows += [[u, t, k, f"{v:.1f}%"] for u, t, k, v in pca_units]
-rows.append(["All units", 306, 26, "51.6%"])
-table(s, 0.4, 1.05, 7.4, rows, [3.2, 1.2, 1.4, 1.6], size=12, row_h=0.37, bold_last=True)
-text_box(s, 8.1, 1.1, 5.0, 4.9, [
-    "PCA is fitted **per unit** on the NOC rows only.",
-    "**2 PCs per unit**; DAK (rank 1) and ISOM_4 (1 tag) give 1 PC each.",
-    "**26 PCs** keep 51.6% of the process variance.",
-    "PCs of the same unit are uncorrelated over NOC (checked).",
-    "Each PC is labelled with its heaviest tags, so an alarm can be traced from PC to unit to tag."], size=18, space=10)
-caption(s, 8.1, 6.2, 5.0, "Table source: outputs/logs/run.log and SUMMARY.md. Variance captured = share of the "
-        "unit's NOC variance (12,157 rows) kept by its PCs.")
+# ---------------------------------------------------------------- 4 metric definition (timeline)
+s = new_slide("How we score: one count per flare event and one per gap between flares")
+AX = 2.95
+box(s, 0.5, AX - 0.02, 12.3, 0.04, "", "404040", line=None)
+segs = [(0.5, 3.0, "gap"), (3.0, 4.2, "pre"), (4.2, 5.3, "flare"), (5.3, 7.2, "gap"), (7.2, 8.4, "pre"),
+        (8.4, 9.4, "flare"), (9.4, 10.6, "gap"), (10.6, 11.8, "pre"), (11.8, 12.8, "flare")]
+col = {"gap": "F2F2F2", "pre": "F4CCCC", "flare": "F8CBAD"}
+for a, b, k in segs:
+    box(s, a, AX - 0.45, b - a, 0.45, {"gap": "", "pre": "60 min", "flare": "flare"}[k], col[k], size=11,
+        line="BFBFBF")
+for a, b in [(0.9, 1.15), (1.9, 2.3), (3.5, 3.9), (9.8, 11.2)]:
+    box(s, a, AX - 0.95, b - a, 0.28, "", "C0392B", line=None)
+box(s, 0.5, 1.2, 0.35, 0.22, "", "C0392B", line=None)
+box(s, 0.95, 1.12, 5.5, 0.38, "minutes with T² above its limit", "FFFFFF", size=13, line=None, align=PP_ALIGN.LEFT)
+LAB = [(0.5, 3.0, "Gap: T² rose twice\n→ **1 FP**"), (3.0, 5.3, "T² rose in the 60 min\n→ **TP**"),
+       (5.3, 7.2, "Gap: no rise\n→ not counted"), (7.2, 9.4, "No rise in the 60 min\n→ **FN**"),
+       (9.4, 12.8, "One long rise: in the gap → **1 FP**;\nin the 60 min → **TP**")]
+for a, b, t in LAB:
+    box(s, a, AX + 0.12, b - a, 0.75, t, "FFFFFF", size=12, line=None)
+text_box(s, 0.5, 4.2, 7.2, 3.0, [
+    "**Flare block** = [onset − 60 min, flare end]. **Gap** = time between two flare blocks.",
+    "**TP**: T² above its limit at least once in the 60 min before onset. **FN**: never above.",
+    "**FP**: a gap with T² above its limit at least once, however long or how often.",
+    "**TN is not counted.** No alarm delays: one minute above the limit is enough.",
+    "Minutes with no T² value are **not scored**."], size=16, space=6)
+box(s, 8.1, 4.35, 4.7, 1.25, "F1 = 2 TP / (2 TP + FP + FN)", "EAF1FB", size=22, bold=True, line="5B9BD5")
+caption(s, 8.1, 5.75, 4.7, "Rules: unit_pca_pc_t2/evaluation.py, evaluate(); window FLARE_PRE_WINDOW_MIN = 60 "
+        "(config.py). Only flare events ≥ 30 min count as flares.", size=11)
 
-# ---------------------------------------------------------------- 11 causal graph
-s = new_slide("The causal graph links the 26 PCs with 87 edges, 78 between units")
-picture(s, OUT / "figures" / "fig5_causal_graph.png", 0.2, 0.95, h=6.45)
-text_box(s, 6.6, 1.05, 6.5, 4.9, [
-    "Input: the 26 PC scores, **every 10th row** (17,712 rows). flare_net is not an input.",
-    "PC algorithm: **Fisher-Z test, α = 0.01**, stable version, conditioning sets up to 3.",
-    "Output: **87 edges** (85 directed, 2 undirected); **78** link different units.",
-    "2 edges were reversed to remove cycles; the final graph is **acyclic**.",
-    "Each PC has **3.35 parents** on average (max 10); 5 PCs have none.",
-    "Every PC is then linked to flare_net (**26 edges**)."], size=18, space=8)
-caption(s, 6.6, 6.0, 6.5, "Figure: outputs/figures/fig5_causal_graph.png; edges in outputs/graph/dag_edges.csv. "
-        "Node colour = unit; node size and (n) = number of detected events where the PC is the top-1 contributor; "
-        "red dashed = edge reversed to break a cycle; light grey = PC → flare_net.")
+# ---------------------------------------------------------------- 5 overall result
+s = new_slide(f"F1 = {F1:.2f}: T² rose before {TP} of {TP + FN} flares, but also in {FP} of {N_SC_BL} gaps")
+console(s, 0.3, 1.1, 5.7, 5.0, "\n".join([
+    "=====================================",
+    " FLARE DETECTION, JUL – OCT 2025",
+    "=====================================",
+    f" Flare events (>= 30 min)  : {len(fe)}",
+    f"   not scored (no T²)      : {N_NS}",
+    f"   scored                  : {TP + FN}",
+    f" TP  events caught         : {TP}",
+    f" FN  events missed         : {FN}",
+    "-------------------------------------",
+    f" Gaps between flare blocks : {N_BL}",
+    f"   not scored              : {N_BL_NS}",
+    f" FP  gaps with T² rise     : {FP}",
+    "-------------------------------------",
+    f" F1 = 2TP/(2TP+FP+FN)      : {F1:.3f}",
+    f" Median warning (TP)       : {LEAD_MED:.0f} min",
+    "====================================="]), size=13)
+picture(s, FIG["counts"], 6.3, 1.1, w=6.75)
+caption(s, 0.3, 6.15, 5.7, "Source: outputs/tables/metrics.csv, event_outcomes.csv, nonflare_blocks.csv. " + SRC)
+takeaway(s, 6.6, f"**Reading:** most flares had T² above its limit beforehand, but so did {FP} of the {N_SC_BL} "
+                  "scored gaps: T² rises before flares and between them alike.", h=0.7)
 
-# ---------------------------------------------------------------- 12 T² statistic
+# ---------------------------------------------------------------- 6 caveat: T² high too often
+figure_slide(f"T² is high so often that an always-on alarm would score F1 = {F1_ALWAYS:.2f}", FIG["daily"],
+             "Source: outputs/t2/t2_all_rows.parquet (overall T², above_limit, scored; flare-free = outside flare "
+             "events and short flares). " + SRC, [
+                 f"Overall T² is above its limit in **{PCT_NF_ABOVE:.0f} %** of flare-free minutes "
+                 f"({PCT_NOC_ABOVE:.0f} % of NOC minutes). By chance it should be **about 5 %** or less.",
+                 f"An alarm that is **always on** would catch every scored flare and flag every scored gap: "
+                 f"F1 = 2·{TP + FN} / (2·{TP + FN} + {N_SC_BL}) = **{F1_ALWAYS:.3f}**, higher than our **{F1:.3f}**.",
+                 "So the current F1 **does not yet show skill**: the T² limit is crossed too easily."], size=16)
+
+# ---------------------------------------------------------------- 7 warning time
+s = new_slide(f"In {N_ALREADY} of {TP} TP events T² was already high an hour before the flare")
+picture(s, FIG["lead"], 0.3, 1.05, w=7.6)
+text_box(s, 8.15, 1.15, 4.9, 4.9, [
+    f"**Green ({len(rose)} events):** T² was below the limit when the window opened and crossed inside it: "
+    f"a genuine rise before the flare. Median **{rose.lead_min.median():.0f} min** before onset.",
+    f"**Grey ({N_ALREADY} events):** T² was already above the limit when the window opened. These count as TP "
+    "under the rule, but the rise did not start in the hour before the flare.",
+    "Grey bars sit at 60 min, or less when the window starts right after an earlier flare."], size=16, space=8)
+caption(s, 0.3, 6.15, 7.6, "Source: outputs/tables/event_outcomes.csv (lead_min, above_at_window_start). " + SRC)
+takeaway(s, 6.6, f"**Reading:** only {len(rose)} of {TP} TP events show T² rising inside the 60-min window; "
+                 "this is the stronger evidence of an early warning.", h=0.7)
+
+# ---------------------------------------------------------------- 8 PCA
+s = new_slide("How PCs work: each unit's tags are compressed into two scores")
+picture(s, FIG["eq_pca"], 0.4, 1.1, w=6.2)
+ex = top_tags("SEU2_PC1")
+text_box(s, 0.4, 3.3, 6.3, 4.0, [
+    "Tags of one unit move together; PCA finds the **directions** in which they move most.",
+    "**PC1** is the strongest common movement of the unit, **PC2** the next, uncorrelated with PC1.",
+    "The **weights w** (loadings) tell which tags drive a PC, so a PC can be traced back to tags.",
+    f"Example: SEU2_PC1 is driven mostly by {ex[0][0]} ({ex[0][1]:.0f} %) and {ex[1][0]} ({ex[1][1]:.0f} %).",
+    "Fitted on **NOC rows only**, then applied to every minute.",
+    "Why per unit: a PC then belongs to **one unit**, so a high T² term points to that unit."], size=15, space=4)
+picture(s, FIG["pca"], 7.0, 1.05, w=6.0)
+caption(s, 7.0, 6.5, 6.0, "Source: outputs/tables/pcs_per_unit.csv and pca_loadings.csv. DAK has rank 1 and "
+        "ISOM_4 has one tag, so each gives 1 PC.")
+
+# ---------------------------------------------------------------- 9 causal graph
+s = new_slide(f"The PC algorithm links the {N_PCS} PCs with {N_EDGES} edges, {N_CROSS} between units")
+picture(s, OUT / "figures" / "fig5_causal_graph.png", 0.25, 0.95, h=6.4)
+text_box(s, 6.75, 1.1, 6.3, 4.8, [
+    f"Input: the {N_PCS} PC scores, **every 10th minute** (17,712 rows). **flare_net is not an input.**",
+    "Test: **Fisher-Z**, α = 0.01, stable PC, conditioning sets up to 3 PCs.",
+    f"Output: **{N_EDGES} edges** ({N_DIR} directed, {N_UND} undirected); **{N_CROSS}** link different units.",
+    f"Parents per PC: mean **{n_par.mean():.2f}**, max {n_par.max()} (DAK_PC1); {int((n_par == 0).sum())} PCs have none.",
+    f"Then every PC gets an edge to flare_net (**{N_PCS} edges**, added by us, not learned).",
+    "This run's PC output has **no loops** (next two slides)."], size=16, space=6)
+caption(s, 6.75, 5.95, 6.3, "Figure: outputs/figures/fig5_causal_graph.png; edges: outputs/graph/pc_edges.csv and "
+        "dag_edges.csv. Node colour = unit; (n) and node size = TP events where the PC is top-1.")
+
+# ---------------------------------------------------------------- 10-11 loops
+P_ = {"SEU1_PC1": (1.3, 2.0), "PDA_PC1": (5.2, 2.0), "LOUP_PC1": (5.2, 5.4), "CTRL_PC1": (1.3, 5.4)}
+NM = {"unit_wise_control_data_PC1": "CTRL_PC1"}
+loop_nodes = {"SEU1_PC1", "PDA_PC1", "LOUP_PC1", "unit_wise_control_data_PC1"}
+old_edges = [(NM.get(a, a), NM.get(b, b)) for a, b in sorted(old_dir) if a in loop_nodes and b in loop_nodes]
+assert len(old_edges) == 6
+
+
+def loop_diagram(s, reversed_=False):
+    for k, xy in P_.items():
+        node(s, xy, k.replace("_PC1", "\nPC1"), fill="FFF2CC" if k == "CTRL_PC1" else "DEEBF7")
+    for a, b in old_edges:
+        if (a, b) == ("PDA_PC1", "LOUP_PC1"):
+            if reversed_:
+                node_arrow(s, P_[b], P_[a], color="C0392B", width=2.25, dash=True)
+            else:
+                node_arrow(s, P_[a], P_[b], color="C0392B", width=2.25)
+        else:
+            node_arrow(s, P_[a], P_[b], width=2)
+
+
+s = new_slide("Loops: the previous run had three, all through PDA → LOUP")
+loop_diagram(s)
+caption(s, 0.4, 6.3, 6.2, "Directed edges among these four PCs in the previous run's PC output (commit eaebb1e). "
+        "Red = PDA_PC1 → LOUP_PC1, on all three loops. CTRL_PC1 = unit_wise_control_data_PC1.", size=11)
+rows = [["#", "Loop found by simple_cycles", "Length"]]
+for i, r in enumerate(OLD_CYC.itertuples(index=False), 1):
+    rows.append([i, r.cycle.replace("unit_wise_control_data_PC1", "CTRL_PC1"), r.length])
+table(s, 6.75, 1.15, 6.3, rows, [0.4, 5.1, 0.8], size=12, row_h=0.55)
+text_box(s, 6.75, 3.5, 6.3, 3.8, [
+    "**Why loops matter:** each PC's T² term removes what its parents explain. In a loop a PC is its own "
+    "ancestor, so no order puts every parent first and the T² split loses its meaning.",
+    "**How we find them:** list every directed cycle of the PC output with networkx.simple_cycles "
+    "(check_cycles.py, same check as the TA's Main.py).",
+    f"**Previous run:** 14 units, 26 PCs, {len(old_pce)} edges ({len(old_dir)} directed); 3 loops, two of them "
+    "through the control-data PC."], size=15, space=6)
+
+s = new_slide("Loop removal reversed PDA → LOUP; the current run has no loops")
+loop_diagram(s, reversed_=True)
+caption(s, 0.4, 6.3, 6.2, "Same four PCs in the previous run's final graph (dag_edges.csv at eaebb1e). Red dashed = "
+        "the reversed edge, now LOUP_PC1 → PDA_PC1. No loop is left.", size=11)
+text_box(s, 6.75, 1.1, 6.3, 3.3, [
+    "**Procedure (cpdag_to_dag):** repeatedly take a PC with no outgoing edge and point its edges into it. When none "
+    "is left, every remaining PC leads into a loop: remove the one with the fewest outgoing edges and **reverse** them.",
+    "Previous run: **PDA_PC1 → LOUP_PC1** reversed, breaking all three loops. **ISOM_3_PC2 → CTRL_PC1** was "
+    "reversed too although it was **not on a loop** (tie-break by name order): a weakness of the rule."],
+    size=14, space=6)
+rows = [["", "Previous run", "Current run"],
+        ["Unit folders", f"{len(old_pcu)}", f"{N_UNITS}"],
+        ["PCs / NOC rows", f"{int(old_pcu.n_pcs.sum())} / 12,157", f"{N_PCS} / {fmt(lim.n_noc_rows)}"],
+        ["Loops in PC output", len(OLD_CYC), 0],
+        ["Edges reversed", int(old_stats.n_reversed_edges), 0]]
+table(s, 6.75, 4.5, 6.3, rows, [2.5, 1.9, 1.9], size=13, row_h=0.4, bold_first_col=True)
+caption(s, 6.75, 6.55, 6.3, "Two inputs changed between the runs (control-data unit left out, NOC without the "
+        "buffer), so we cannot say which one removed the loops. Sources: graph/{pc_edges, dag_edges, dag_stats, "
+        "cycles}.csv in both commits.", size=11)
+
+# ---------------------------------------------------------------- 12 T² equations and baseline
 s = new_slide("Each PC's T² term is measured after removing what its parents explain")
-picture(s, ASSETS / "eq_overall.png", 0.11, 1.15, w=5.6)
-picture(s, ASSETS / "eq_term.png", 0.11, 3.25, w=5.6)
-picture(s, ASSETS / "eq_limit.png", 6.4, 1.15, w=6.3)
-picture(s, ASSETS / "eq_rule.png", 6.4, 3.25, w=6.3)
-text_box(s, 6.4, 5.05, 6.6, 1.8, [
-    "Baseline window: **1,350 rows** (50 × 27 variables), moved every **10 rows**.",
-    "Window with fewer than 100 flare-free rows: minute **not scored**.",
-    f"Limits after × 2: overall **{limits.t2_limit:.2f}**, per PC **7.70 – 7.76**."], size=16)
-caption(s, 0.11, 6.95, 12.8, "Equations: unit_pca_pc_t2/MATHS.md rows 14–21 (report Eqs. 9–13). "
-        "Limit values: outputs/t2/limits.csv (lab run).")
+picture(s, FIG["eq_overall"], 0.3, 1.1, w=6.0)
+picture(s, FIG["eq_term"], 0.3, 3.25, w=6.0)
+picture(s, FIG["eq_limit"], 6.75, 1.1, w=6.3)
+text_box(s, 6.75, 3.25, 6.3, 3.9, [
+    f"Limits: overall **{lim.t2_limit:.2f}**, per PC **{tl.t2_limit.min():.2f} – {tl.t2_limit.max():.2f}**, "
+    "both × 2 (TA's notebook scales by 1.2 – 1.5).",
+    f"**Moving baseline:** flare-free minutes in the last **{int(lim.window_rows):,} min**, re-estimated every 10 min.",
+    f"Fewer than 100 such minutes: no T². That is **{fmt(N_UNSCORED)} minutes**, "
+    f"{100 * (~t2.scored & t2.flare_event).sum() / N_UNSCORED:.0f} % inside flares, incl. 1 – 4 Jul (first T² "
+    f"{FIRST_SCORED:%d %b %H:%M}).",
+    "Root cause = PCs ranked by **T²_j / own limit** at the first minute above the overall limit."],
+    size=14, space=5)
+caption(s, 0.3, 5.75, 6.0, "Equations: unit_pca_pc_t2/MATHS.md (report Eqs. 7, 9–13); R⁻¹ is computed with "
+        "numpy.linalg.inv. Values: outputs/t2/limits.csv and term_limits.csv.")
 
-# ---------------------------------------------------------------- 13 detection strategy
-s = new_slide("An alarm counts as correct only if a flare starts within 30 minutes")
-text_box(s, 0.52, 1.05, 12.3, 2.7, [
-    "The **causation-based T²** on the 26 PCs is used for flare detection.",
-    "An alarm switches **on** after T² stays above its limit for **3 minutes**, and **off** after **10 minutes** below it.",
-    "An alarm is a **correct prediction** if a flare event starts within **30 minutes** after it switches on.",
-    "Root cause: at the alarm's first minute, PCs are ranked by **T²_j / own limit**; the top 3 and their heaviest tags are reported."],
-    size=18, space=6)
-text_box(s, 0.38, 3.85, 12.3, 3.4, [
-    ("H", "Performance Evaluation"),
-    "**True Positive (TP):** flare event with an alarm switching on in the 30 min before it.",
-    "**False Negative (FN):** flare event with no alarm before it, or one that starts while an alarm is already on.",
-    "**False Positive (FP):** alarm outside any flare with no flare in the next 30 min.",
-    "**True Negative (TN):** flare-free 30-minute block with no alarm."], size=18, space=6)
-caption(s, 0.52, 7.05, 12.3, "Rule settings from unit_pca_pc_t2/config.py "
-        "(ALARM_ON_DELAY_MIN = 3, ALARM_OFF_DELAY_MIN = 10, PRED_HORIZON_MIN = 30, TOP_N_ROOT = 3).")
+# ---------------------------------------------------------------- 13 overall T²
+figure_slide(f"Over four months T² is above its limit in {PCT_NF_ABOVE:.0f} % of flare-free minutes", FIG["t2"],
+             "Source: outputs/tables/flare_net_raw.parquet and t2/t2_all_rows.parquet. " + SRC, [
+                 f"flare_net is cut at {FN_CUT} t/h so the bulk (0 – 5 t/h) is visible; dark line = hourly median. T² is on a "
+                 "log scale.",
+                 f"T² stays near or above its limit **{lim.t2_limit:.1f}** for most of the period, with or "
+                 "without a flare. The top 1 % of minutes exceed "
+                 f"**{t2['T2'].quantile(0.99):,.0f}**; the maximum is about **{t2['T2'].max() / 1e6:.0f} million**.",
+                 "Grey bands: no T² value (too few flare-free minutes in the baseline window)."])
 
-# ---------------------------------------------------------------- 14 T² over four months
-s = new_slide("Over four months, T² crossed its limit often and raised 792 alarms")
-W14 = 12.9
-picture(s, ASSETS / "t2_overall.png", (13.333 - W14) / 2, 0.95, w=W14)
-caption(s, (13.333 - W14) / 2, 0.95 + W14 * 864 / 1920 + 0.05, W14,
-        "Top: flare_net (t/h) with the 1.5 t/h threshold. Middle: overall T² with the moving-window limit "
-        f"{limits.t2_limit:.2f}. Bottom: alarm state (1 = on); red dots = alarms followed by a flare within 30 min. "
-        "Source: outputs/t2/t2_all_rows.parquet, outputs/tables/alarms.csv, metrics.csv. " + SRC)
+# ---------------------------------------------------------------- 14 ranking TP vs FP
+u4 = list(unit_tp.index[:4])
+figure_slide(f"Which PCs rank first: DAK_PC1 leads {top1_tp.get('DAK_PC1', 0)} TP events and "
+             f"{top1_fp.get('DAK_PC1', 0)} FP gaps", FIG["rc"],
+             "Source: outputs/tables/event_outcomes.csv (pc1 of TP events) and nonflare_blocks.csv (pc1 of FP gaps). "
+             + SRC, [
+                 "By unit (top-1 counts, TP / FP): " + ", ".join(f"**{u}** {unit_tp[u]} / {unit_fp.get(u, 0)}"
+                                                                 for u in u4) + ".",
+                 "The PCs that lead the TP events also lead the FP gaps: ranking first is **not by itself** a cause.",
+                 f"A median of **{tp.n_pcs_above.median():.0f} PCs** are above their own limit at that minute, both "
+                 f"in TP events and in FP gaps; in {int((tp.ratio1 < 1).sum())} TP events even the top PC is below "
+                 "its limit."])
 
-# ---------------------------------------------------------------- 15 detection results (TA slide 35 pairing)
-s = new_slide("The model caught 74 of 591 flare events, with a median 13.5 min warning")
-console(s, 0.0, 0.9, 6.2, 6.6, "\n".join([
-    "==========================================",
-    "OVERALL FLARE DETECTION SUMMARY (JUL-OCT 2025)",
-    "==========================================",
-    f"Total samples (1-min)         : {fmt(len(t2))}",
-    "Flare threshold (t/h)         : 1.50",
-    f"T2 limit (overall, x2)        : {limits.t2_limit:.2f}",
-    "------------------------------------------",
-    f"Flare events (>= 30 min)      : {len(flare_events)}",
-    f"Events scored                 : {fmt(M['actual flare events (scored)'])}",
-    f"Alarms (activations)          : {fmt(M['alarms (activations)'])}",
-    f"  during a flare              : {fmt(M['alarms during a flare (not predictions)'])}",
-    f"  outside a flare             : {fmt(M['predicted flare events (alarms outside flares)'])}",
-    "------------------------------------------",
-    f"Detected events (TP)          : {fmt(M['TP (events detected)'])}",
-    f"Missed events (FN)            : {fmt(M['FN (events missed)'])}",
-    f"  no alarm                    : {fmt(M['FN: no alarm'])}",
-    f"  already in alarm            : {fmt(M['FN: already in alarm'])}",
-    f"False alarms (FP)             : {fmt(M['incorrect predictions (FP alarms)'])}",
-    f"Flare-free blocks (TN)        : {fmt(M['TN (30-min flare-free blocks, no alarm)'])}",
-    "------------------------------------------",
-    f"Recall                        : {100 * M['recall TP events/(TP+FN events)']:.1f} %",
-    f"Precision                     : {100 * M['precision TP alarms/(TP+FP alarms)']:.1f} %",
-    f"Accuracy                      : {100 * M['base accuracy (TP+TN)/(TP+FN+FP+TN)']:.1f} %",
-    f"Median lead time (TP)         : {M['median lead time TP (min)']:.1f} min",
-    "=========================================="]), size=11)
-picture(s, OUT / "figures" / "fig7_metrics.png", 6.4, 1.0, w=6.85)
-text_box(s, 6.4, 5.6, 6.85, 0.8, [
-    f"Correct alarms gave **{lead_min} – {lead_max} min** of warning.",
-    "Most missed events started while an alarm was **already on**."], size=14)
-caption(s, 6.4, 6.4, 6.85, "Left: outputs/tables/metrics.csv. TP and FN count flare events, FP counts alarms, "
-        "TN counts flare-free 30-min blocks, so the four cells use different units. Right: fig7_metrics.png "
-        "(confusion matrix, TP lead time, FP alarm duration, events by month).", size=10)
+# ---------------------------------------------------------------- 15 average over the whole window
+l3 = list(LIFT.index[:3])
+assert (PCAVG.pre > PCAVG.normal).all()
+figure_slide("Every PC is above its limit more often before flares than in normal time", FIG["avg"],
+             "Source: outputs/t2/terms_all_rows.parquet and t2_all_rows.parquet (scored minutes: "
+             f"{fmt(in_pre.sum())} before flares, {fmt(normal.sum())} normal, {fmt(in_flare.sum())} during flares). "
+             + SRC, [
+                 "Before flares, " + ", ".join(f"**{p}** ({LIFT.lift[p]:.1f}×)" for p in l3) + " are above their "
+                 "limit about twice as often as in normal time: the clearest pre-flare signal by PC.",
+                 f"**DAK_PC1** is above its limit {PCAVG.pre['DAK_PC1']:.0f} % of the time before flares and "
+                 f"{PCAVG.normal['DAK_PC1']:.0f} % in normal time: **no difference**, despite leading the ranking.",
+                 f"In normal time {int((PCAVG.normal > 5).sum())} of {N_PCS} PCs are still above their limit more "
+                 "than 5 % of the time; during flares almost all are far above."])
 
-# ---------------------------------------------------------------- 16-18 case studies
-CASE = {10: ("E10: SEU2 alarmed 8 minutes before a small flare on 6 July",
-             "A short, sharp SEU2 disturbance just before a small flare."),
-        144: ("E144: the same SEU2 signal came back 19 minutes before a flare on 1 August",
-              "Same PC and the same two tags as E10, 26 days later."),
-        449: ("E449: LOUP alarmed 15 minutes before a 5.6 t/h flare on 16 September",
-              "The largest and longest of the three; LOUP is first, APS_NVPS_LEU second.")}
+# ---------------------------------------------------------------- 16 raw scores of the top three
+t3 = list(top1_tp.index[:3])
+figure_slide("The three PCs ranked first most often, as raw scores over four months", FIG["raw"],
+             "Source: outputs/graph/pc_scores.parquet. " + SRC, [
+                 f"**{t3[0]}** is a straight line: it falls at a constant rate from 1 Jul to about 10 Oct, then stays "
+                 "flat.",
+                 f"**{t3[1]}** jumps between two levels every few weeks; **{t3[2]}** is mostly flat with sharp dips in "
+                 "August, September and October.",
+                 "A moving baseline treats each jump or dip as a large deviation, so these PCs get large T² terms."])
 
+# ---------------------------------------------------------------- 17-18 deep-dive into the main TP contributors
+dak_tags = ", ".join(t for t, _ in top_tags("DAK_PC1"))
+figure_slide("Deep-dive on top TP contributors (1/2): DAK_PC1 is a straight line", FIG["DAK_PC1"],
+             "Source: outputs/graph/pc_scores.parquet and t2/terms_all_rows.parquet (hourly max). Std-floor share "
+             "recomputed from the same outputs. " + SRC, [
+                 f"DAK's 3 tags ({dak_tags}) have **rank 1**: one signal, a straight line falling at a constant rate "
+                 "until about 10 Oct, then flat. It does not look like measured process data (UNVERIFIED with the "
+                 "plant).",
+                 "In a 1,250-min window the line is almost flat: its window std is below 1 % of its overall std in "
+                 "**99 % of window steps**, so the code floors it, and its 11 graph parents explain it almost fully.",
+                 "Small changes then give large T² terms: **its ranking says nothing about DAK driving flares.**"])
+aps = top_tags("APS_NVPS_LEU_PC1")
+figure_slide("Deep-dive on top TP contributors (2/2): APS_NVPS_LEU_PC1", FIG["APS_NVPS_LEU_PC1"],
+             "Source: outputs/graph/pc_scores.parquet and t2/terms_all_rows.parquet (hourly max). " + SRC, [
+                 "Main tags: " + ", ".join(f"**{t}** ({v:.0f} %)" for t, v in aps) + ". The score jumps between two "
+                 "levels every few weeks.",
+                 f"Ranked first in **{top1_tp.get('APS_NVPS_LEU_PC1', 0)} TP events** and "
+                 f"{top1_fp.get('APS_NVPS_LEU_PC1', 0)} FP gaps; **{n_par['APS_NVPS_LEU_PC1']} parents** in the graph.",
+                 f"Above its limit {PCAVG.pre['APS_NVPS_LEU_PC1']:.0f} % of the time before flares vs "
+                 f"{PCAVG.normal['APS_NVPS_LEU_PC1']:.0f} % in normal time: a real but weak pre-flare signal."])
 
-def rx(v):
-    return f"{v:.2f}" if 0.95 <= v < 1.05 else f"{v:.1f}"
+# ---------------------------------------------------------------- 19-22 flare event examples
+EV_TEXT = {  # (title overview, note overview, title zoom, note zoom); notes read from the event figures
+    144: ("E144: SEU2 spiked 21 minutes before a flare on 1 August",
+          "The warning is a short spike at 09:08; most of the 18 minutes above the limit come after it.",
+          "E144 zoom: SEU1_PC2 ranks first because its parent SEU2_PC1 spiked",
+          "SEU1_PC2 itself changes smoothly. Its T² term jumps at 09:08 because its parent SEU2_PC1 spikes and the "
+          "regression expects SEU1_PC2 to follow. The real move is in SEU2_PC1."),
+    449: ("E449: T² was already high an hour before a 5.6 t/h flare on 16 Sep",
+          "T² was above the limit when the window opened and again from about 13:30: counted as TP, but the change "
+          "began before the window (next slide).",
+          "E449 zoom: NSU_NHT_CCR and SEU3 shifted 100 minutes before onset",
+          "NSU_NHT_CCR_PC2 steps up and SEU3_PC2 steps down around 12:05 – 12:10, about 100 min before onset and "
+          "outside the 60-min window. Both stay at the new level through the flare."),
+}
+for e, r in CASES.items():
+    tA, nA, tB, nB = EV_TEXT[e]
+    pa = sorted(dag[dag.target == r.pc1].source)
+    figure_slide(tA, FIG[f"E{e}_a"],
+                 f"flare_net, overall T² and the T² terms of the top 3 PCs, 3 h before to 2.5 h after onset. Source: "
+                 f"outputs/tables/flare_net_raw.parquet, t2/t2_all_rows.parquet, terms_all_rows.parquet, "
+                 f"event_outcomes.csv (E{e}). " + SRC, [
+                     f"Onset **{r.onset:%d %b %Y %H:%M}**, {int(r.duration_min)} min, peak **{r.peak_flare_net:.2f} "
+                     f"t/h**. T² above its limit for **{int(r.window_minutes_above)} of {int(r.window_rows_scored)} "
+                     f"min** of the window, first at **{r.first_above:%H:%M}** ({int(r.lead_min)} min before onset).",
+                     f"Top 3 at {r.first_above:%H:%M}: **{r.pc1} {r.ratio1:.1f}×**, {r.pc2} {r.ratio2:.1f}×, "
+                     f"{r.pc3} {r.ratio3:.1f}× their own limits. " + nA], size=14)
+    t1 = top_tags(r.pc1, 2)
+    figure_slide(tB, FIG[f"E{e}_b"],
+                 "Zoom: 110 min before to 20 min after onset; each row = one of the top 3 PCs, its T² term (left) and "
+                 "raw score (right). Source: outputs/t2/terms_all_rows.parquet, graph/pc_scores.parquet. " + SRC, [
+                     f"**{r.pc1}**: tags {', '.join(f'{t} ({v:.0f} %)' for t, v in t1)}; {len(pa)} graph parent"
+                     f"{'s' if len(pa) != 1 else ''}{' incl. ' + r.pc2 if r.pc2 in pa else ''}.",
+                     nB], size=14)
 
+# ---------------------------------------------------------------- 23 done and next
+s = new_slide("What we have done, and what we will investigate next")
+DONE = [f"Pipeline on 4 months of 1-min data: {N_TAGS} tags → {N_PCS} PCs → {N_EDGES}-edge graph → causal T².",
+        f"New scoring: 60-min window, one count per flare event or gap; **F1 = {F1:.3f}**.",
+        "Loops found (3 in the previous run) and removed; the current graph has none.",
+        "Per-event Excel: outputs/RCA_report.xlsx, sheet events (620 rows, 32 columns), and a figure per event.",
+        f"Found: T² above its limit in {PCT_NF_ABOVE:.0f} % of flare-free minutes, so an always-on alarm scores "
+        f"higher ({F1_ALWAYS:.3f}); DAK_PC1 is a straight-line signal."]
+NEXT = [("Moving window", "explore applying a moving-window approach beyond the T² baseline."),
+        ("Direct PC / PCMCI+", "test how much data PC or PCMCI+ can take directly, without transformations."),
+        ("Tag-level PC", "run the PC algorithm on tags instead of PCs."),
+        ("Edge reduction", "heuristics or observations to drop PC → flare_net edges that are not needed."),
+        ("Nominal-only graph", "learn the PC graph from normal operation only; flares are outliers.")]
+box(s, 0.35, 1.1, 6.15, 0.45, "Done", "2E75B6", size=16, bold=True, color="FFFFFF", line=None)
+box(s, 6.85, 1.1, 6.15, 0.45, "Next: proposed investigations", "C55A11", size=16, bold=True, color="FFFFFF",
+    line=None)
+for i, t in enumerate(DONE):
+    box(s, 0.35, 1.7 + i * 1.1, 6.15, 0.98, t, "DEEBF7", size=14, line="9DC3E6", align=PP_ALIGN.LEFT)
+for i, (k, t) in enumerate(NEXT):
+    box(s, 6.85, 1.7 + i * 1.1, 1.85, 0.98, f"{i + 1}. {k}", "FBE5D6", size=14, bold=True, line="F4B183")
+    box(s, 8.75, 1.7 + i * 1.1, 4.25, 0.98, t, "FFFFFF", size=14, line="F4B183", align=PP_ALIGN.LEFT)
 
-def tags(s_):
-    return s_.split(";")[0].split(" ")[0] + ", " + s_.split(";")[1].strip().split(" ")[0]
-
-
-for eid in CASE_EVENTS:
-    r = ev[ev.event_id == eid].iloc[0]
-    on = pd.Timestamp(r.onset)
-    act = pd.Timestamp(r.activation)
-    s = new_slide(CASE[eid][0])
-    picture(s, OUT / "figures" / "events" / f"E{eid:03d}_TP.png", 0.1, 0.95, h=6.45)
-    pa = parents(r.pc1)
-    text_box(s, 7.6, 1.0, 5.6, 4.9, [
-        f"Onset **{on:%d %b %Y %H:%M}**, lasted {int(r.duration_min)} min, peak flare_net **{r.peak_flare_net:.2f} t/h**.",
-        f"Alarm on at **{act:%H:%M}**: **{int(r.lead_min)} min before** the flare.",
-        f"Top contributor: **{r.pc1}** at **{r.ratio1:.1f}×** its own limit ({tags(r.tags1)}).",
-        f"Next: {r.pc2} at {rx(r.ratio2)}× ({tags(r.tags2)}); {r.pc3} at {rx(r.ratio3)}×.",
-        f"Graph parents of {r.pc1}: {', '.join(pa) if pa else 'none (root PC)'}.",
-        f"{r.pc1} is top-1 in {int(top1_tp.get(r.pc1, 0))} detected events and {int(top1_fp.get(r.pc1, 0))} false alarms.",
-        CASE[eid][1] + " A contributor, not a confirmed cause."], size=15, space=3)
-    caption(s, 7.6, 5.95, 5.6, f"Figure: outputs/figures/events/E{eid:03d}_TP.png; values from "
-            "outputs/tables/event_outcomes.csv. Panels: flare_net (t/h) with the 1.5 t/h threshold; overall T² with "
-            "limit 79.7; T²_j of the top 3 PCs with their own limits (about 7.7). Pink = 30 min before onset, "
-            "orange = flare, yellow = alarm on. × = T²_j / own limit at the alarm's first minute.", size=10)
-
-# ---------------------------------------------------------------- 19 recurring contributors
-s = new_slide("DAK, SEU3 and DIU lead the detected events, and the false alarms too")
-t3 = ", ".join(f"{k} ({v})" for k, v in top1_tp.head(3).items())
-f3 = ", ".join(f"{k} ({v})" for k, v in top1_fp.head(2).items())
-text_box(s, 0.52, 0.95, 12.3, 1.3, [
-    f"Most frequent top-1 PC in the 74 detected events: **{t3}**.",
-    f"The same units lead the false alarms: **{f3}**. A PC that alarms often is not by itself a cause."], size=16)
-picture(s, OUT / "figures" / "fig6_root_cause_frequency.png", 0.2, 2.2, w=6.4)
-picture(s, OUT / "figures" / "fig9_root_cause_by_week.png", 6.75, 2.2, w=6.4)
-caption(s, 0.2, 2.2 + 6.4 * 1252 / 1756 + 0.05, 12.95,
-        "Left: fig6_root_cause_frequency.png (top-1 and top-3 PC counts over the 74 detected events, top-1 PC of the "
-        "339 false alarms, by unit). Right: fig9_root_cause_by_week.png (top-1 PC of detected events per week; colour = "
-        "number of events). Source: outputs/tables/event_outcomes.csv and alarms.csv. " + SRC, size=10)
-
-# ---------------------------------------------------------------- 20 what the model shows
-s = new_slide("The model points to contributing units, not confirmed root causes")
-rows = [["Level", "Meaning", "What we have"],
-        ["Association", "T² is above its limit before a flare",
-         f"{int(M['TP (events detected)'])} of {int(M['actual flare events (scored)'])} events; "
-         f"{int(M['correct predictions (TP alarms)'])} of {int(M['predicted flare events (alarms outside flares)'])} alarms outside flares"],
-        ["Contributing PC / tag", "PC with the largest T²_j / limit, after removing what its graph parents explain",
-         "Top 3 PCs and their tags for every alarm and event (RCA_report.xlsx)"],
-        ["Confirmed root cause", "Physical cause checked against plant operations",
-         "Not established yet; needs review by the plant team"]]
-table(s, 0.5, 1.2, 12.3, rows, [2.6, 4.9, 4.8], size=16, row_h=0.95)
-caption(s, 0.5, 5.05, 12.3, "Counts from outputs/tables/metrics.csv; contributor lists in outputs/RCA_report.xlsx (lab run).")
-text_box(s, 0.52, 5.5, 12.3, 1.8, [
-    "The causal graph is learned from data on PC scores; its edges are statistical, not process-flow links.",
-    f"In {n_tp_below} of the 74 detected events the top PC is still **below** its own limit (ratio < 1), so the ranking there is weak."],
-    size=20, space=8)
-
-# ---------------------------------------------------------------- 21 limitations
-s = new_slide("Detection is held back by the flare definition and standing alarms")
-text_box(s, 0.52, 1.05, 12.3, 5.8, [
-    "The 1.5 t/h threshold is **below the flare_net median (1.64 t/h)**: 56.8% of minutes are above it and events cover half the window.",
-    f"**{int(M['FN: already in alarm'])} of {int(M['FN (events missed)'])}** missed events started while an alarm was already on (standing alarms).",
-    f"**{pct_noc_above:.1f}%** of baseline minutes are above the overall limit, which drives {int(M['incorrect predictions (FP alarms)'])} false alarms ({fmt(M['FP alarm minutes'])} alarm minutes).",
-    "ISOM_4 is a single tag and DAK has rank 1; their PC standard deviation had to be floored in 15,237 window steps.",
-    f"{int(M['flare events not scored'])} events were not scored (too few flare-free rows in the window).",
-    "26 PCs keep only 51.6% of the variance; 2 graph edges were reversed to break cycles.",
-    "Open questions to the TA: reason for the negative-value rule (Q1) and the form of Eq. 13 (Q2)."], size=22, space=12)
-caption(s, 0.52, 7.05, 12.3, "Sources: outputs/logs/run.log, tables/metrics.csv, t2/limits.csv (lab run).")
-
-# ---------------------------------------------------------------- 22 conclusions
-s = new_slide("The pipeline runs end to end, but detection is not yet reliable")
-text_box(s, 0.52, 1.0, 12.3, 3.1, [
-    ("H", "What we achieved"),
-    "The full pipeline ran on **4 months of 1-minute plant data** (177,120 rows, 306 tags, 14 units).",
-    "Every alarm is traced from **T² → PC → unit → tag**, through a 26-node causal graph.",
-    f"**74 flare events** were flagged **{lead_min} – {lead_max} min** before onset (median 13.5 min)."], size=20, space=8)
-text_box(s, 0.52, 4.15, 12.3, 3.1, [
-    ("H", "What the results tell us"),
-    "Detection is **not yet reliable**: recall 12.5%, precision 18.3%.",
-    "The main issues found so far are the **flare event definition** and **standing alarms**.",
-    "The contributor lists are **leads for the plant team**, not confirmed causes."], size=20, space=8)
-
-# ---------------------------------------------------------------- 23 future work (TA's slide 40)
-future = prs.slides.get(int(kept["future"].get("id")))
-FUTURE = ["**Principal component selection:** study the trade-off between model complexity and explained variance, "
-          "and pick the number of PCs per unit. One PC may be enough for some units, others may need three or more.",
-          "**PC interpretability:** map each principal component back to its raw input tags.",
-          "**Alternative causal discovery:** implement PCMCI+ and VARLiNGAM, which may suit our time-series data better.",
-          "**Flare definition and standing alarms:** re-check the 1.5 t/h threshold with the plant team, and reset long "
-          "alarms so a new flare inside them can be scored.",
-          "**Plant confirmation:** plant team to confirm the contributors found for E10, E144 and E449."]
-for shp in future.shapes:
-    if shp.name == "TextBox 2":
-        replace_list(shp, FUTURE, keep_first_empty=True, size=16)
-        shp.top = Inches(2.2)
-        shp.height = Inches(5.0)
-    if shp.name == "Title 1":
-        shp.text_frame.paragraphs[0].runs[0].text = "Future work: unit-specific PCs, PC-to-tag mapping, new causal methods"
-        for r in shp.text_frame.paragraphs[0].runs:
-            r.font.size = Pt(28)
-
-# ---------------------------------------------------------------- order and save
-new_ids = [sid for sid in sldIdLst if sid not in kept.values()]
-for sid in list(sldIdLst):
-    sldIdLst.remove(sid)
-for sid in [kept["cover"], kept["outline"]] + new_ids + [kept["future"]]:
-    sldIdLst.append(sid)
 prs.save(DECK)
 print("saved", DECK, "slides:", len(prs.slides))
