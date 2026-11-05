@@ -1,6 +1,4 @@
 graph,length,cycle
-PC output (directed edges),7,PDA_PC1 -> LOUP_PC1 -> ISOM_3_PC1 -> ISOM_PC1 -> SEU3_PC1 -> SEU1_PC2 -> SEU1_PC1 -> PDA_PC1
-PC output (directed edges),3,PDA_PC1 -> LOUP_PC1 -> SEU1_PC1 -> PDA_PC1
-PC output (directed edges),4,ISOM_3_PC1 -> ISOM_PC1 -> SEU3_PC1 -> SEU1_PC2 -> ISOM_3_PC1
-PC output (directed edges),4,ISOM_PC1 -> SEU3_PC1 -> SEU1_PC2 -> ISOM_4_PC1 -> ISOM_PC1
-PC output (directed edges),3,SEU1_PC2 -> ISOM_4_PC1 -> SEU3_PC1 -> SEU1_PC2
+PC output (directed edges),3,SEU1_PC1 -> PDA_PC1 -> LOUP_PC1 -> SEU1_PC1
+PC output (directed edges),4,SEU1_PC1 -> PDA_PC1 -> LOUP_PC1 -> unit_wise_control_data_PC1 -> SEU1_PC1
+PC output (directed edges),3,LOUP_PC1 -> unit_wise_control_data_PC1 -> PDA_PC1 -> LOUP_PC1

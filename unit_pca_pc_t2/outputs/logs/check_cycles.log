@@ -1,7 +1,5 @@
-[     0.0s] PC output (directed edges): 74 edges, 5 cycles
-[     0.0s]   PDA_PC1 -> LOUP_PC1 -> ISOM_3_PC1 -> ISOM_PC1 -> SEU3_PC1 -> SEU1_PC2 -> SEU1_PC1 -> PDA_PC1
-[     0.0s]   PDA_PC1 -> LOUP_PC1 -> SEU1_PC1 -> PDA_PC1
-[     0.0s]   ISOM_3_PC1 -> ISOM_PC1 -> SEU3_PC1 -> SEU1_PC2 -> ISOM_3_PC1
-[     0.0s]   ISOM_PC1 -> SEU3_PC1 -> SEU1_PC2 -> ISOM_4_PC1 -> ISOM_PC1
-[     0.0s]   SEU1_PC2 -> ISOM_4_PC1 -> SEU3_PC1 -> SEU1_PC2
-[     0.0s] final graph: 100 edges, 0 cycles (acyclic)
+[     0.0s] PC output (directed edges): 85 edges, 3 cycles
+[     0.0s]   SEU1_PC1 -> PDA_PC1 -> LOUP_PC1 -> SEU1_PC1
+[     0.0s]   SEU1_PC1 -> PDA_PC1 -> LOUP_PC1 -> unit_wise_control_data_PC1 -> SEU1_PC1
+[     0.0s]   LOUP_PC1 -> unit_wise_control_data_PC1 -> PDA_PC1 -> LOUP_PC1
+[     0.0s] final graph: 113 edges, 0 cycles (acyclic)

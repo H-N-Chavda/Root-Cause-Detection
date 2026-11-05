@@ -1,5 +1,39 @@
 [     0.0s] CHECK PASS: pipeline outputs exist (run main.py first); missing: none
-[     1.1s] labelled T² peaks: 464; top PC above its own limit at 464; distinct PCs: 24
-[    13.2s] saved fig1_flare.png
-[    33.8s] saved fig2_t2_overall.png
-[    52.2s] saved fig4_pc_terms.png
+[     1.3s] labelled T² peaks: 465; top PC above its own limit at 465; distinct PCs: 26
+[    12.8s] saved fig1_flare.png
+[    29.5s] saved fig2_t2_overall.png
+[    47.0s] saved fig4_pc_terms.png
+[    47.7s] saved fig5_causal_graph.png
+[    48.3s] saved fig6_root_cause_frequency.png
+[    48.6s] saved fig7_metrics.png
+[    48.9s] saved fig8_baseline_drift.png
+[    49.3s] saved fig9_root_cause_by_week.png
+[   424.9s] saved 620 event figures in figures/events/
+[   431.8s] saved 001_APS_NVPS_LEU_PC1.png
+[   439.8s] saved 002_APS_NVPS_LEU_PC2.png
+[   447.9s] saved 003_DAK_PC1.png
+[   455.6s] saved 004_DIU_PC1.png
+[   463.3s] saved 005_DIU_PC2.png
+[   472.5s] saved 006_ISOM_PC1.png
+[   480.9s] saved 007_ISOM_PC2.png
+[   489.2s] saved 008_ISOM_3_PC1.png
+[   497.1s] saved 009_ISOM_3_PC2.png
+[   505.6s] saved 010_ISOM_4_PC1.png
+[   513.9s] saved 011_LOUP_PC1.png
+[   521.0s] saved 012_LOUP_PC2.png
+[   528.2s] saved 013_NSU_NHT_CCR_PC1.png
+[   535.8s] saved 014_NSU_NHT_CCR_PC2.png
+[   543.4s] saved 015_PDA_PC1.png
+[   550.8s] saved 016_PDA_PC2.png
+[   557.9s] saved 017_PG_PC1.png
+[   565.3s] saved 018_PG_PC2.png
+[   572.5s] saved 019_SEU1_PC1.png
+[   579.7s] saved 020_SEU1_PC2.png
+[   586.8s] saved 021_SEU2_PC1.png
+[   594.4s] saved 022_SEU2_PC2.png
+[   601.7s] saved 023_SEU3_PC1.png
+[   609.0s] saved 024_SEU3_PC2.png
+[   616.1s] saved 025_unit_wise_control_data_PC1.png
+[   623.3s] saved 026_unit_wise_control_data_PC2.png
+[   623.3s] individual PC figures: 26 PNGs in 'individual PCs'
+[   623.3s] figures finished

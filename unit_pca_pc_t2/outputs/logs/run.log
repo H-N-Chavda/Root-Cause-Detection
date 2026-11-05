@@ -4,440 +4,528 @@
 [     0.0s] CHECK PASS: at least one unit folder exists
 [     0.0s] CHECK PASS: flare folder 'flare_data' exists
 [     0.2s]   flare_data: 4 files, 4 new tags
-[     0.8s]   APS_NVPS_LEU: 14 files, 14 new tags
-[     1.0s]   DAK: 5 files, 5 new tags
-[     1.8s]   DIU: 18 files, 18 new tags
-[     3.6s]   ISOM: 45 files, 45 new tags
-[     4.1s]   ISOM_3: 14 files, 14 new tags
-[     4.3s]   ISOM_4: 3 files, 3 new tags
-[     7.1s]   LOUP: 79 files, 79 new tags
-[     9.9s]   NSU_NHT_CCR: 78 files, 78 new tags
-[    10.9s]   PDA: 28 files, 28 new tags
-[    12.3s]   PG: 38 files, 38 new tags
-[    13.2s]   SEU1: 23 files, 23 new tags
-[    13.8s]   SEU2: 17 files, 17 new tags
-[    14.3s]   SEU3: 14 files, 14 new tags
-[    14.3s] tags loaded: 380 unique, 0 duplicate copies skipped; timestamp time zones in the files: ['naive'] (tz-aware stamps are converted to UTC)
-[    14.3s] CHECK PASS: at least one timestamped tag was loaded
-[    14.3s] CHECK PASS: the time window (2025-07-01 00:00:00 to 2025-11-01 00:00:00 (end excluded)) contains data rows
-[    14.3s] CHECK PASS: at least one flare tag was loaded
-[    14.3s] most common file sampling interval: 0 days 00:01:00 (grid: 0 days 00:01:00)
-[    17.9s] joined matrix (177120, 380) on a complete 0 days 00:01:00 grid (outer join + reindex, no resampling); sentinel values set to NaN: 0; values off the grid and lost: 0
-[    17.9s] CHECK PASS: flare formula tags are flare tags: ['(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000', '509fi5201.daca.pv/1000', '(44ft2505.pv*509mw5101.daca.pv/22.414)/1000'] (loaded: ['(44ft2505.pv*509mw5101.daca.pv/22.414)/1000', '(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000', '509fi5201.daca.pv/1000', '509mw5101.daca.pv'])
-[    17.9s] CHECK PASS: no loaded tag is already named 'flare_net'
-[    17.9s]   (LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000: 0.0% missing on the grid, median 0.810
-[    17.9s]   509fi5201.daca.pv/1000: 0.0% missing on the grid, median 2.030
-[    17.9s]   (44ft2505.pv*509mw5101.daca.pv/22.414)/1000: 0.0% missing on the grid, median 1.370
-[    18.0s] flare_net = (LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000 + 509fi5201.daca.pv/1000 - (44ft2505.pv*509mw5101.daca.pv/22.414)/1000; formula tags gap-filled by cubic spline + ffill/bfill (TA's method); 0.0% missing, median 1.640; flare tags removed from the matrix: ['(44ft2505.pv*509mw5101.daca.pv/22.414)/1000', '(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000', '509fi5201.daca.pv/1000', '509mw5101.daca.pv']
-[    18.0s] flare threshold 1.500 (FLARE_THRESHOLD, manual; median 1.640, MAD 0.845); flagged rows 56.79%; runs above it: 2343, of which 620 last >= 30 min (flare events) and 1723 are shorter
-[    18.0s] CHECK PASS: at least one flare event of >= 30 min in the window
-[    18.0s] TA cross-check skipped: the TA's period [2025-05-01, 2025-06-01) is outside the time window (2025-07-01 00:00:00 to 2025-11-01 00:00:00 (end excluded))
-[    18.1s]   drop 700TI3219N: 24.4% missing (> 10%)
-[    18.1s]   drop 700TI3936N: 25.2% missing (> 10%)
-[    18.1s]   drop 99PI3413.DACA.PV: 25.2% missing (> 10%)
-[    18.1s]   drop 101PC1603B.DACA.PV: 25.2% missing (> 10%)
-[    18.1s]   drop 102PC4101.DACA.PV: 16.3% missing (> 10%)
-[    18.1s]   drop 102PC4302R.DACA.PV: 25.2% missing (> 10%)
-[    18.1s]   drop 102PI1502.DACA.PV: 25.2% missing (> 10%)
-[    18.1s]   drop 102PI1507.DACA.PV: 16.3% missing (> 10%)
-[    18.1s]   drop 102PI4459.DACA.PV: 40.6% missing (> 10%)
-[    18.1s]   drop 102PI4557.DACA.PV: 65.9% missing (> 10%)
-[    18.1s]   drop 102PI4559.DACA.PV: 34.1% missing (> 10%)
-[    18.1s]   drop 102TI1408A.DACA.PV: 16.3% missing (> 10%)
-[    18.1s]   drop 102TI1504.DACA.PV: 40.6% missing (> 10%)
-[    18.1s]   drop 102TI1515.DACA.PV: 25.2% missing (> 10%)
-[    18.1s]   drop 102TI3903.DACA.PV: 25.2% missing (> 10%)
-[    18.1s]   drop 102TI4250.DACA.PV: 16.3% missing (> 10%)
-[    18.1s]   drop 102TI4351N.DACA.PV: 40.6% missing (> 10%)
-[    18.1s]   drop 102TI4405.DACA.PV: 40.6% missing (> 10%)
-[    18.1s]   drop 102TI4406.DACA.PV: 65.9% missing (> 10%)
-[    18.1s] rows without a flare_net value dropped: 0 of 177120
-[    18.5s]   drop 99PI1542.DACA.PV: constant
-[    18.5s]   drop 102PY6708.PV: constant
-[    18.5s]   drop 105PI2803.DACA.PV: constant
-[    18.5s]   drop 105TI2401.DACA.PV: constant
-[    18.5s]   drop PPI3239.PV: constant
-[    19.1s]   drop 99PI2251.DACA.PV: near-constant (99.88% one value > 99%)
-[    19.1s]   drop 102PI5001.DACA.PV: near-constant (100.00% one value > 99%)
-[    19.2s]   drop 17PT112.PV: has negative values (min -0.01)
-[    19.2s]   drop THPC401.PV: has negative values (min -0.1)
-[    19.2s]   drop 98PIC1601.DACA.PV: has negative values (min -877)
-[    19.2s]   drop 98PIC2601.DACA.PV: has negative values (min -731)
-[    19.2s]   drop 71PC1701.PV: has negative values (min -0.06)
-[    19.2s]   drop 103PI5421CN.pv: has negative values (min -0.29)
-[    19.2s]   drop 103PI5423CN.pv: has negative values (min -0.18)
-[    19.2s]   drop 103PI7009N.pv: has negative values (min -0.27)
-[    19.2s]   drop 103PIC6311N.pida.pv: has negative values (min -0.06)
-[    19.2s]   drop 99PI1206.DACA.PV: has negative values (min -0.26)
-[    19.2s]   drop 99PI1405.DACA.PV: has negative values (min -0.06)
-[    19.2s]   drop 99PI1410.DACA.PV: has negative values (min -0.1)
-[    19.2s]   drop 99PI1610.DACA.PV: has negative values (min -0.18)
-[    19.2s]   drop 99PI1909.DACA.PV: has negative values (min -0.15)
-[    19.2s]   drop 99PI2252.DACA.PV: has negative values (min -0.11)
-[    19.2s]   drop 99PI2310.DACA.PV: has negative values (min -0.06)
-[    19.2s]   drop 99PI2360A.PV: has negative values (min -0.04)
-[    19.2s]   drop 99PI2360B.PV: has negative values (min -0.06)
-[    19.2s]   drop 99PI2402.daca.pv: has negative values (min -0.01)
-[    19.2s]   drop 99PI3233.DACA.PV: has negative values (min -0.17)
-[    19.2s]   drop 99PI3262.PV: has negative values (min -0.01)
-[    19.2s]   drop 99PI3281A.DACA.PV: has negative values (min -0.11)
-[    19.2s]   drop 99PI3281B.DACA.PV: has negative values (min -0.04)
-[    19.2s]   drop 99PI4103.DACA.PV: has negative values (min -0.48)
-[    19.2s]   drop 99PI4104.DACA.PV: has negative values (min -1.04)
-[    19.2s]   drop 99PI4120.DACA.PV: has negative values (min -0.4)
-[    19.2s]   drop 99PI4151.DACA.PV: has negative values (min -0.08)
-[    19.2s]   drop 99PI4152.DACA.PV: has negative values (min -0.04)
-[    19.2s]   drop 99PI4153.DACA.PV: has negative values (min -0.06)
-[    19.2s]   drop 99PI5406.DACA.PV: has negative values (min -0.01)
-[    19.2s]   drop 99TI2366B.DACA.PV: has negative values (min -2.89)
-[    19.2s]   drop 99TI4106.DACA.PV: has negative values (min -2.9)
-[    19.2s]   drop 99TI5905.DACA.PV: has negative values (min -2.62)
-[    19.2s]   drop 102PI4770N.DACA.PV: has negative values (min -0.02)
-[    19.2s]   drop 102PI4772N.DACA.PV: has negative values (min -0.05)
-[    19.2s]   drop 102PI8507N.DACA.PV: has negative values (min -0.02)
-[    19.2s]   drop 102TI4742N.DACA.PV: has negative values (min -1.88)
-[    19.2s]   drop 102TI4752R.DACA.PV: has negative values (min -0.96)
-[    19.2s]   drop 102TI4789N.DACA.PV: has negative values (min -32.9)
-[    19.2s]   drop 102TI4790N.DACA.PV: has negative values (min -35)
-[    19.2s]   drop 105PI2804N.PV: has negative values (min -0.01)
-[    19.2s]   drop 105PI2838AN.PV: has negative values (min -0.24)
-[    19.2s]   drop 02PI206.PV: has negative values (min -0.03)
-[    19.2s]   drop 02PI213.PV: has negative values (min -2.53)
-[    19.2s]   drop 02PI221B.PV: has negative values (min -0.08)
-[    19.2s]   drop 04PI421C.PV: has negative values (min -0.01)
-[    19.2s]   drop PDI3215A.PV: has negative values (min -0.02)
-[    19.2s]   drop PPI3241.PV: has negative values (min -0.01)
-[    19.2s]   drop 42PI4213.PV: has negative values (min -760)
-[    19.2s] tags dropped for negative values (TA rule): 49
-[    20.7s] filled 31680 missing values (0.06% of the matrix) by cubic spline + ffill/bfill (TA's method)
-[    21.2s] rows with < 90% of tags observed dropped: 0 of 177120
-[    21.2s] CHECK PASS: 177120 rows remain after the row filter
-[    21.9s] CHECK PASS: flare_net is still in the matrix
-[    22.9s] CHECK PASS: pre-flare window 30 min = 30 samples of 0 days 00:01:00
-[    22.9s]   pre-flare window of event 1: 0 of 30 rows (0 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    22.9s]   pre-flare window of event 3: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    22.9s]   pre-flare window of event 4: 24 of 30 rows (6 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    22.9s]   pre-flare window of event 9: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    22.9s]   pre-flare window of event 17: 23 of 30 rows (7 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    22.9s]   pre-flare window of event 21: 19 of 30 rows (11 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 23: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 27: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 29: 28 of 30 rows (2 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 34: 24 of 30 rows (6 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 35: 20 of 30 rows (10 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 37: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 41: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 42: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 47: 28 of 30 rows (2 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 48: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 50: 16 of 30 rows (14 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 51: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 54: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 55: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 56: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 57: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 58: 23 of 30 rows (7 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 59: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 60: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 61: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 62: 18 of 30 rows (12 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 63: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 64: 11 of 30 rows (19 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 65: 19 of 30 rows (11 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 66: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 67: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.0s]   pre-flare window of event 68: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 69: 26 of 30 rows (4 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 70: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 72: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 74: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 75: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 76: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 77: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 80: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 82: 19 of 30 rows (11 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 83: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 84: 23 of 30 rows (7 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 85: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 96: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 97: 25 of 30 rows (5 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 98: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 105: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 106: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 107: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 108: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 111: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 113: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 114: 29 of 30 rows (1 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 117: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 118: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 119: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 121: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 125: 19 of 30 rows (11 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 128: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 130: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 131: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 133: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 134: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 135: 22 of 30 rows (8 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 139: 22 of 30 rows (8 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 141: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 143: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 146: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 147: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 148: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 152: 11 of 30 rows (19 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 153: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 159: 24 of 30 rows (6 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 160: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 164: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 166: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 167: 26 of 30 rows (4 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 168: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 169: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 170: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 171: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 173: 11 of 30 rows (19 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 174: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 175: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 176: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.1s]   pre-flare window of event 177: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 179: 26 of 30 rows (4 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 180: 25 of 30 rows (5 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 181: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 183: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 187: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 189: 16 of 30 rows (14 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 194: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 196: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 198: 17 of 30 rows (13 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 201: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 202: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 210: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 211: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 216: 12 of 30 rows (18 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 219: 28 of 30 rows (2 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 221: 29 of 30 rows (1 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 223: 17 of 30 rows (13 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 224: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 225: 11 of 30 rows (19 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 227: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 228: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 230: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 231: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 233: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 234: 21 of 30 rows (9 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 238: 24 of 30 rows (6 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 240: 12 of 30 rows (18 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 241: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 242: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 246: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 250: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 255: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 256: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 258: 22 of 30 rows (8 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 259: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 262: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 268: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 269: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 274: 24 of 30 rows (6 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 275: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 278: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 284: 17 of 30 rows (13 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 285: 12 of 30 rows (18 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 286: 12 of 30 rows (18 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 287: 17 of 30 rows (13 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 288: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 289: 11 of 30 rows (19 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.2s]   pre-flare window of event 292: 19 of 30 rows (11 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 293: 15 of 30 rows (15 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 298: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 300: 21 of 30 rows (9 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 301: 17 of 30 rows (13 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 302: 27 of 30 rows (3 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 303: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 304: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 306: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 308: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 313: 25 of 30 rows (5 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 319: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 323: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 326: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 330: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 331: 24 of 30 rows (6 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 332: 29 of 30 rows (1 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 338: 20 of 30 rows (10 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 339: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 342: 12 of 30 rows (18 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 345: 24 of 30 rows (6 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 350: 28 of 30 rows (2 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 351: 29 of 30 rows (1 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 359: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 362: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 363: 21 of 30 rows (9 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 366: 25 of 30 rows (5 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 367: 22 of 30 rows (8 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 374: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 375: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 385: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 387: 20 of 30 rows (10 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 388: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 390: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 391: 21 of 30 rows (9 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 396: 15 of 30 rows (15 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 405: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 407: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.3s]   pre-flare window of event 408: 12 of 30 rows (18 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 412: 21 of 30 rows (9 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 427: 18 of 30 rows (12 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 429: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 433: 25 of 30 rows (5 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 436: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 441: 11 of 30 rows (19 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 443: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 450: 23 of 30 rows (7 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 454: 16 of 30 rows (14 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 456: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 457: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 458: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 462: 29 of 30 rows (1 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 463: 18 of 30 rows (12 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 464: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 465: 22 of 30 rows (8 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 483: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 485: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 489: 11 of 30 rows (19 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 490: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 495: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 496: 12 of 30 rows (18 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 497: 15 of 30 rows (15 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 498: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 500: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 501: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 502: 25 of 30 rows (5 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 503: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 504: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 505: 18 of 30 rows (12 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 507: 27 of 30 rows (3 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.4s]   pre-flare window of event 511: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 512: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 513: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 517: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 527: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 529: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 530: 17 of 30 rows (13 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 532: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 533: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 541: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 542: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 547: 26 of 30 rows (4 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 554: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 555: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 556: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 557: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 559: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 561: 25 of 30 rows (5 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 562: 28 of 30 rows (2 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 564: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 569: 15 of 30 rows (15 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 572: 19 of 30 rows (11 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 573: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 574: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 576: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 579: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 580: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 581: 19 of 30 rows (11 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 582: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 583: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 585: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 587: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 588: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.5s]   pre-flare window of event 592: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.6s]   pre-flare window of event 606: 11 of 30 rows (19 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.6s]   pre-flare window of event 607: 19 of 30 rows (11 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.6s]   pre-flare window of event 608: 25 of 30 rows (5 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.6s]   pre-flare window of event 616: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.6s]   pre-flare window of event 618: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.6s]   pre-flare window of event 620: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
-[    23.6s] NOC = rows before 2025-09-12 19:11:24 (first 60% of time) minus flare events ± 0 days 02:00:00 and short flares; flare-event rows 50.02%, short-flare rows 8.93%, pre-flare rows 14281, NOC rows 12157
-[    23.6s] CHECK PASS: NOC rows 12157 >= 1510 (5 x tags)
-[    23.6s] CHECK PASS: no NOC row lies inside a flare event, a short flare or a pre-flare window
-[    24.0s] NOC-mean imputed 0 values = 0.00% of the matrix; matrix (177120, 302)
-[    24.0s] CHECK PASS: standardized matrix has no NaN / inf
-[    24.1s] CHECK PASS: standardized matrix has no constant column
-[    24.2s] CHECK PASS: every matrix timestamp exists on the flare_net grid used for the events
-[    24.2s] flare_net agreement: 0 matrix rows filled by the short-gap forward fill (no raw value)
-[    24.2s] CHECK PASS: flare_net in the matrix equals the flare_net used for the events (0 mismatches)
-[    24.5s] CHECK PASS: 13 units with process tags (a cross-unit graph needs at least 2)
-[    24.6s] CHECK PASS: APS_NVPS_LEU: 2 PC scores finite and not constant
-[    24.6s]   APS_NVPS_LEU: 12 tags, numerical rank 12, 2 PCs kept, 61.4% of the unit's NOC variance
-[    24.6s] CHECK PASS: DAK: 1 PC scores finite and not constant
-[    24.6s]   DAK: 3 tags, numerical rank 1, 1 PCs kept, 100.0% of the unit's NOC variance
-[    24.7s] CHECK PASS: DIU: 2 PC scores finite and not constant
-[    24.7s]   DIU: 17 tags, numerical rank 17, 2 PCs kept, 38.6% of the unit's NOC variance
-[    24.8s] CHECK PASS: ISOM: 2 PC scores finite and not constant
-[    24.8s]   ISOM: 41 tags, numerical rank 41, 2 PCs kept, 38.1% of the unit's NOC variance
-[    24.8s] CHECK PASS: ISOM_3: 2 PC scores finite and not constant
-[    24.8s]   ISOM_3: 14 tags, numerical rank 14, 2 PCs kept, 54.7% of the unit's NOC variance
-[    24.8s] CHECK PASS: ISOM_4: 1 PC scores finite and not constant
-[    24.8s]   ISOM_4: 1 tags, numerical rank 1, 1 PCs kept, 100.0% of the unit's NOC variance
-[    25.0s] CHECK PASS: LOUP: 2 PC scores finite and not constant
-[    25.0s]   LOUP: 52 tags, numerical rank 52, 2 PCs kept, 69.3% of the unit's NOC variance
-[    25.1s] CHECK PASS: NSU_NHT_CCR: 2 PC scores finite and not constant
-[    25.1s]   NSU_NHT_CCR: 53 tags, numerical rank 53, 2 PCs kept, 42.4% of the unit's NOC variance
-[    25.2s] CHECK PASS: PDA: 2 PC scores finite and not constant
-[    25.2s]   PDA: 28 tags, numerical rank 28, 2 PCs kept, 45.7% of the unit's NOC variance
-[    25.3s] CHECK PASS: PG: 2 PC scores finite and not constant
-[    25.3s]   PG: 34 tags, numerical rank 34, 2 PCs kept, 51.6% of the unit's NOC variance
-[    25.3s] CHECK PASS: SEU1: 2 PC scores finite and not constant
-[    25.3s]   SEU1: 19 tags, numerical rank 19, 2 PCs kept, 60.3% of the unit's NOC variance
-[    25.4s] CHECK PASS: SEU2: 2 PC scores finite and not constant
-[    25.4s]   SEU2: 14 tags, numerical rank 14, 2 PCs kept, 52.8% of the unit's NOC variance
-[    25.4s] CHECK PASS: SEU3: 2 PC scores finite and not constant
-[    25.4s]   SEU3: 13 tags, numerical rank 13, 2 PCs kept, 43.8% of the unit's NOC variance
-[    25.5s] CHECK PASS: PCs of the same unit are uncorrelated over NOC
-[    25.5s] unit-wise PCA (N_PCS_PER_UNIT = 2): 24 PCs from 13 units
-[    26.0s] CHECK PASS: installed causal-learn supports the depth cap max_k
-[    26.0s] PC uses every 10th row: 17712 rows x 24 PCs (flare_net not included)
-[    26.0s] correlation matrix of the 24 PC nodes: smallest eigenvalue 4.181e-02
-[    26.0s] marginal skeleton: 241 edges, max degree 23; CI-test bound by depth {0: 482, 1: 9286, 2: 85599, 3: 502056}; depth cap max_k = 3
-[    27.6s] PC (alpha 0.01, Fisher-Z, stable): 76 edges among 24 PCs in 2 s
-[    27.6s] CHECK PASS: DAG is acyclic
-[    27.6s] CHECK PASS: DAG keeps exactly the CPDAG skeleton (76 edges)
-[    27.6s] DEVIATION: CPDAG has no consistent extension: 0 forced Dor-Tarsi steps, 3 directed edges reversed to break cycles
-[    27.6s] DAG among PCs: 76 edges, mean parents 3.17
-[    27.6s] final graph: 76 PC -> PC edges + 24 PC -> flare_net edges
-[    27.7s] CHECK PASS: every T² node varies over NOC
-[    27.8s] CHECK PASS: sum identity Σ_j T²_j·PA(j) = Zᵀ (I-B) D⁻¹ (I-Bᵀ) Z = Zᵀ Σ_G⁻¹ Z: max relative error 3.19e-15 < 1e-06
-[    27.8s] CHECK PASS: same identity with Σ_G = (I-Bᵀ)⁻¹ D (I-Bᵀ)⁻ᵀ inverted numerically (condition number 3.4e+02): max relative error 7.90e-15 < 1.0e-06
-[    27.8s] CHECK PASS: NOC T_j·PA(j): max |mean| 2.3e-14, max |std - 1| 1.2e-13
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 0, p = 24)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 6, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 8, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 9, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 8, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 4, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 5, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 5, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 5, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 0, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 4, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 3, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 1, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 5, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 0, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 2, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 0, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 1, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 0, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 1, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 4, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 2, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 0, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 3, p = 1)
-[    27.9s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 0, p = 1)
-[    27.9s] p = 24 PCs, m = 12157 NOC rows; T² limit (report Eq. 13, corrected) = 36.51 at alpha 0.05; NOC rows above it: 11.70% (expected about 5%)
-[    27.9s] per-PC limits on T²_j (Eq. 13 with p = 1, k = number of parents, alpha 0.05): 3.843 to 3.845; NOC rows above them: mean 4.97% per PC (expected about 5%)
-[    27.9s] overall T² = Zᵀ pinv(R) Z (TA's Main.py; rank of R 24 of 24); relative gap to the sum of the causal terms: median 0.149 on NOC, 0.311 in pre-flare windows
-[    28.8s] flare events found (T² > 36.51 at least once in the 30 min before onset): 532 of 620 (86%)
-[    28.8s] pipeline finished
+[     0.7s]   APS_NVPS_LEU: 14 files, 14 new tags
+[     0.9s]   DAK: 5 files, 5 new tags
+[     1.5s]   DIU: 18 files, 18 new tags
+[     3.0s]   ISOM: 45 files, 45 new tags
+[     3.5s]   ISOM_3: 14 files, 14 new tags
+[     3.6s]   ISOM_4: 3 files, 3 new tags
+[     6.4s]   LOUP: 79 files, 79 new tags
+[     9.1s]   NSU_NHT_CCR: 78 files, 78 new tags
+[    10.2s]   PDA: 28 files, 28 new tags
+[    11.6s]   PG: 38 files, 38 new tags
+[    12.3s]   SEU1: 23 files, 23 new tags
+[    12.9s]   SEU2: 17 files, 17 new tags
+[    13.4s]   SEU3: 14 files, 14 new tags
+[    14.6s]   unit_wise_control_data: 36 files, 36 new tags
+[    26.5s]   All_unit_tags: 376 files, 0 new tags
+[    26.5s] tags loaded: 416 unique, 376 duplicate copies skipped; timestamp time zones in the files: ['naive'] (tz-aware stamps are converted to UTC)
+[    26.5s] CHECK PASS: at least one timestamped tag was loaded
+[    26.5s] CHECK PASS: the time window (2025-07-01 00:00:00 to 2025-11-01 00:00:00 (end excluded)) contains data rows
+[    26.5s] CHECK PASS: at least one flare tag was loaded
+[    26.5s] most common file sampling interval: 0 days 00:01:00 (grid: 0 days 00:01:00)
+[    32.1s] joined matrix (177120, 416) on a complete 0 days 00:01:00 grid (outer join + reindex, no resampling); sentinel values set to NaN: 0; values off the grid and lost: 0
+[    32.1s] CHECK PASS: flare formula tags are flare tags: ['(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000', '509fi5201.daca.pv/1000', '(44ft2505.pv*509mw5101.daca.pv/22.414)/1000'] (loaded: ['(44ft2505.pv*509mw5101.daca.pv/22.414)/1000', '(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000', '509fi5201.daca.pv/1000', '509mw5101.daca.pv'])
+[    32.1s] CHECK PASS: no loaded tag is already named 'flare_net'
+[    32.1s]   (LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000: 0.0% missing on the grid, median 0.810
+[    32.1s]   509fi5201.daca.pv/1000: 0.0% missing on the grid, median 2.030
+[    32.1s]   (44ft2505.pv*509mw5101.daca.pv/22.414)/1000: 0.0% missing on the grid, median 1.370
+[    32.1s] flare_net = (LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000 + 509fi5201.daca.pv/1000 - (44ft2505.pv*509mw5101.daca.pv/22.414)/1000; formula tags gap-filled by cubic spline + ffill/bfill (TA's method); 0.0% missing, median 1.640; flare tags removed from the matrix: ['(44ft2505.pv*509mw5101.daca.pv/22.414)/1000', '(LRflare.pv+LREflare.pv+99fi4601.daca.pv)/1000', '509fi5201.daca.pv/1000', '509mw5101.daca.pv']
+[    32.1s] flare threshold 1.500 (FLARE_THRESHOLD, manual; median 1.640, MAD 0.845); flagged rows 56.79%; runs above it: 2343, of which 620 last >= 30 min (flare events) and 1723 are shorter
+[    32.1s] CHECK PASS: at least one flare event of >= 30 min in the window
+[    32.1s] TA cross-check skipped: the TA's period [2025-05-01, 2025-06-01) is outside the time window (2025-07-01 00:00:00 to 2025-11-01 00:00:00 (end excluded))
+[    32.2s]   drop 700TI3219N: 24.4% missing (> 10%)
+[    32.2s]   drop 700TI3936N: 25.2% missing (> 10%)
+[    32.2s]   drop 99PI3413.DACA.PV: 25.2% missing (> 10%)
+[    32.2s]   drop 101PC1603B.DACA.PV: 25.2% missing (> 10%)
+[    32.2s]   drop 102PC4101.DACA.PV: 16.3% missing (> 10%)
+[    32.2s]   drop 102PC4302R.DACA.PV: 25.2% missing (> 10%)
+[    32.2s]   drop 102PI1502.DACA.PV: 25.2% missing (> 10%)
+[    32.2s]   drop 102PI1507.DACA.PV: 16.3% missing (> 10%)
+[    32.2s]   drop 102PI4459.DACA.PV: 40.6% missing (> 10%)
+[    32.2s]   drop 102PI4557.DACA.PV: 65.9% missing (> 10%)
+[    32.2s]   drop 102PI4559.DACA.PV: 34.1% missing (> 10%)
+[    32.2s]   drop 102TI1408A.DACA.PV: 16.3% missing (> 10%)
+[    32.2s]   drop 102TI1504.DACA.PV: 40.6% missing (> 10%)
+[    32.2s]   drop 102TI1515.DACA.PV: 25.2% missing (> 10%)
+[    32.2s]   drop 102TI3903.DACA.PV: 25.2% missing (> 10%)
+[    32.2s]   drop 102TI4250.DACA.PV: 16.3% missing (> 10%)
+[    32.2s]   drop 102TI4351N.DACA.PV: 40.6% missing (> 10%)
+[    32.2s]   drop 102TI4405.DACA.PV: 40.6% missing (> 10%)
+[    32.2s]   drop 102TI4406.DACA.PV: 65.9% missing (> 10%)
+[    32.2s]   drop 101pc1302.pida.op: 24.4% missing (> 10%)
+[    32.2s]   drop 101pc1603b.pida.op: 16.3% missing (> 10%)
+[    32.2s]   drop 102hc1201.pida.op: 16.3% missing (> 10%)
+[    32.2s]   drop 102pc0501.pida.op: 40.6% missing (> 10%)
+[    32.2s]   drop 102pc6701.pida.op: 41.5% missing (> 10%)
+[    32.2s]   drop 102pc6708.pida.op: 50.4% missing (> 10%)
+[    32.2s]   drop 103pc1805.pida.op: 40.6% missing (> 10%)
+[    32.2s]   drop 103pic5120n.pida.op: 25.2% missing (> 10%)
+[    32.2s]   drop 109pc1101b.pida.op: 49.6% missing (> 10%)
+[    32.2s]   drop 114PC6301.pida.op: 24.4% missing (> 10%)
+[    32.2s]   drop 14pc417x.op: 16.3% missing (> 10%)
+[    32.2s]   drop 173py5501p.op: 41.5% missing (> 10%)
+[    32.2s]   drop 173py5604ap.op: 25.2% missing (> 10%)
+[    32.2s]   drop 24pc3301.pid.out.value: 25.2% missing (> 10%)
+[    32.2s]   drop 41pic4114.op: 16.3% missing (> 10%)
+[    32.2s]   drop 508pc5101.pida.op: 91.1% missing (> 10%)
+[    32.2s]   drop 700py0701b.op: 25.2% missing (> 10%)
+[    32.2s]   drop 700py6701b.op: 16.3% missing (> 10%)
+[    32.2s]   drop 704pc3416.op: 65.9% missing (> 10%)
+[    32.2s]   drop 71pv8401b.op: 24.4% missing (> 10%)
+[    32.2s]   drop 71py9101b.op: 25.2% missing (> 10%)
+[    32.2s] rows without a flare_net value dropped: 0 of 177120
+[    32.7s]   drop 99PI1542.DACA.PV: constant
+[    32.7s]   drop 102PY6708.PV: constant
+[    32.7s]   drop 105PI2803.DACA.PV: constant
+[    32.7s]   drop 105TI2401.DACA.PV: constant
+[    32.7s]   drop PPI3239.PV: constant
+[    32.7s]   drop 31pc402b.op: constant
+[    32.7s]   drop 58pc105.op: constant
+[    33.6s]   drop 99PI2251.DACA.PV: near-constant (99.88% one value > 99%)
+[    33.6s]   drop 102PI5001.DACA.PV: near-constant (100.00% one value > 99%)
+[    33.6s]   drop 114pc417.pida.op: near-constant (99.92% one value > 99%)
+[    33.6s]   drop 11pc402.pida.op: near-constant (99.93% one value > 99%)
+[    34.2s]   drop 17PT112.PV: has negative values (min -0.01)
+[    34.2s]   drop THPC401.PV: has negative values (min -0.1)
+[    34.2s]   drop 98PIC1601.DACA.PV: has negative values (min -877)
+[    34.2s]   drop 98PIC2601.DACA.PV: has negative values (min -731)
+[    34.2s]   drop 71PC1701.PV: has negative values (min -0.06)
+[    34.2s]   drop 103PI5421CN.pv: has negative values (min -0.29)
+[    34.2s]   drop 103PI5423CN.pv: has negative values (min -0.18)
+[    34.2s]   drop 103PI7009N.pv: has negative values (min -0.27)
+[    34.2s]   drop 103PIC6311N.pida.pv: has negative values (min -0.06)
+[    34.2s]   drop 99PI1206.DACA.PV: has negative values (min -0.26)
+[    34.2s]   drop 99PI1405.DACA.PV: has negative values (min -0.06)
+[    34.2s]   drop 99PI1410.DACA.PV: has negative values (min -0.1)
+[    34.2s]   drop 99PI1610.DACA.PV: has negative values (min -0.18)
+[    34.2s]   drop 99PI1909.DACA.PV: has negative values (min -0.15)
+[    34.2s]   drop 99PI2252.DACA.PV: has negative values (min -0.11)
+[    34.2s]   drop 99PI2310.DACA.PV: has negative values (min -0.06)
+[    34.2s]   drop 99PI2360A.PV: has negative values (min -0.04)
+[    34.2s]   drop 99PI2360B.PV: has negative values (min -0.06)
+[    34.2s]   drop 99PI2402.daca.pv: has negative values (min -0.01)
+[    34.2s]   drop 99PI3233.DACA.PV: has negative values (min -0.17)
+[    34.2s]   drop 99PI3262.PV: has negative values (min -0.01)
+[    34.2s]   drop 99PI3281A.DACA.PV: has negative values (min -0.11)
+[    34.2s]   drop 99PI3281B.DACA.PV: has negative values (min -0.04)
+[    34.2s]   drop 99PI4103.DACA.PV: has negative values (min -0.48)
+[    34.2s]   drop 99PI4104.DACA.PV: has negative values (min -1.04)
+[    34.2s]   drop 99PI4120.DACA.PV: has negative values (min -0.4)
+[    34.2s]   drop 99PI4151.DACA.PV: has negative values (min -0.08)
+[    34.2s]   drop 99PI4152.DACA.PV: has negative values (min -0.04)
+[    34.2s]   drop 99PI4153.DACA.PV: has negative values (min -0.06)
+[    34.2s]   drop 99PI5406.DACA.PV: has negative values (min -0.01)
+[    34.2s]   drop 99TI2366B.DACA.PV: has negative values (min -2.89)
+[    34.2s]   drop 99TI4106.DACA.PV: has negative values (min -2.9)
+[    34.2s]   drop 99TI5905.DACA.PV: has negative values (min -2.62)
+[    34.2s]   drop 102PI4770N.DACA.PV: has negative values (min -0.02)
+[    34.2s]   drop 102PI4772N.DACA.PV: has negative values (min -0.05)
+[    34.2s]   drop 102PI8507N.DACA.PV: has negative values (min -0.02)
+[    34.2s]   drop 102TI4742N.DACA.PV: has negative values (min -1.88)
+[    34.2s]   drop 102TI4752R.DACA.PV: has negative values (min -0.96)
+[    34.2s]   drop 102TI4789N.DACA.PV: has negative values (min -32.9)
+[    34.2s]   drop 102TI4790N.DACA.PV: has negative values (min -35)
+[    34.2s]   drop 105PI2804N.PV: has negative values (min -0.01)
+[    34.2s]   drop 105PI2838AN.PV: has negative values (min -0.24)
+[    34.2s]   drop 02PI206.PV: has negative values (min -0.03)
+[    34.2s]   drop 02PI213.PV: has negative values (min -2.53)
+[    34.2s]   drop 02PI221B.PV: has negative values (min -0.08)
+[    34.2s]   drop 04PI421C.PV: has negative values (min -0.01)
+[    34.2s]   drop PDI3215A.PV: has negative values (min -0.02)
+[    34.2s]   drop PPI3241.PV: has negative values (min -0.01)
+[    34.2s]   drop 42PI4213.PV: has negative values (min -760)
+[    34.2s]   drop 103pc5101.pida.op: has negative values (min -2.59)
+[    34.2s]   drop 14pc418x.op: has negative values (min -6.9)
+[    34.2s]   drop 173py5703bp.op: has negative values (min -5)
+[    34.2s]   drop 17pc101b.op: has negative values (min -6.9)
+[    34.2s]   drop 17pc112b.op: has negative values (min -6.9)
+[    34.2s]   drop 71pc0001.op: has negative values (min -6.9)
+[    34.2s] tags dropped for negative values (TA rule): 55
+[    35.6s] filled 31680 missing values (0.06% of the matrix) by cubic spline + ffill/bfill (TA's method)
+[    36.1s] rows with < 90% of tags observed dropped: 0 of 177120
+[    36.1s] CHECK PASS: 177120 rows remain after the row filter
+[    36.9s] CHECK PASS: flare_net is still in the matrix
+[    38.3s] CHECK PASS: pre-flare window 30 min = 30 samples of 0 days 00:01:00
+[    38.3s]   pre-flare window of event 1: 0 of 30 rows (0 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.3s]   pre-flare window of event 3: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.3s]   pre-flare window of event 4: 24 of 30 rows (6 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.3s]   pre-flare window of event 9: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.3s]   pre-flare window of event 17: 23 of 30 rows (7 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.3s]   pre-flare window of event 21: 19 of 30 rows (11 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.3s]   pre-flare window of event 23: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.3s]   pre-flare window of event 27: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.3s]   pre-flare window of event 29: 28 of 30 rows (2 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 34: 24 of 30 rows (6 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 35: 20 of 30 rows (10 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 37: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 41: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 42: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 47: 28 of 30 rows (2 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 48: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 50: 16 of 30 rows (14 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 51: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 54: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 55: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 56: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 57: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 58: 23 of 30 rows (7 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 59: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 60: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 61: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 62: 18 of 30 rows (12 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 63: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 64: 11 of 30 rows (19 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 65: 19 of 30 rows (11 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 66: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 67: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 68: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 69: 26 of 30 rows (4 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 70: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 72: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 74: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 75: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 76: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 77: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.4s]   pre-flare window of event 80: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 82: 19 of 30 rows (11 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 83: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 84: 23 of 30 rows (7 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 85: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 96: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 97: 25 of 30 rows (5 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 98: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 105: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 106: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 107: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 108: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 111: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 113: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 114: 29 of 30 rows (1 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 117: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 118: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 119: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 121: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 125: 19 of 30 rows (11 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 128: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 130: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 131: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 133: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 134: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 135: 22 of 30 rows (8 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 139: 22 of 30 rows (8 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.5s]   pre-flare window of event 141: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 143: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 146: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 147: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 148: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 152: 11 of 30 rows (19 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 153: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 159: 24 of 30 rows (6 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 160: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 164: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 166: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 167: 26 of 30 rows (4 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 168: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 169: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 170: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 171: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 173: 11 of 30 rows (19 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 174: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 175: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 176: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 177: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 179: 26 of 30 rows (4 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 180: 25 of 30 rows (5 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 181: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 183: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 187: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 189: 16 of 30 rows (14 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 194: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 196: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 198: 17 of 30 rows (13 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 201: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 202: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 210: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 211: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.6s]   pre-flare window of event 216: 12 of 30 rows (18 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 219: 28 of 30 rows (2 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 221: 29 of 30 rows (1 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 223: 17 of 30 rows (13 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 224: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 225: 11 of 30 rows (19 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 227: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 228: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 230: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 231: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 233: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 234: 21 of 30 rows (9 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 238: 24 of 30 rows (6 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 240: 12 of 30 rows (18 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 241: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 242: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 246: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 250: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 255: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 256: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 258: 22 of 30 rows (8 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 259: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 262: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 268: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 269: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 274: 24 of 30 rows (6 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 275: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 278: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 284: 17 of 30 rows (13 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 285: 12 of 30 rows (18 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 286: 12 of 30 rows (18 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 287: 17 of 30 rows (13 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 288: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 289: 11 of 30 rows (19 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 292: 19 of 30 rows (11 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.7s]   pre-flare window of event 293: 15 of 30 rows (15 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 298: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 300: 21 of 30 rows (9 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 301: 17 of 30 rows (13 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 302: 27 of 30 rows (3 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 303: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 304: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 306: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 308: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 313: 25 of 30 rows (5 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 319: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 323: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 326: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 330: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 331: 24 of 30 rows (6 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 332: 29 of 30 rows (1 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 338: 20 of 30 rows (10 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 339: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 342: 12 of 30 rows (18 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 345: 24 of 30 rows (6 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 350: 28 of 30 rows (2 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 351: 29 of 30 rows (1 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 359: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 362: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 363: 21 of 30 rows (9 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 366: 25 of 30 rows (5 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 367: 22 of 30 rows (8 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 374: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.8s]   pre-flare window of event 375: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 385: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 387: 20 of 30 rows (10 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 388: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 390: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 391: 21 of 30 rows (9 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 396: 15 of 30 rows (15 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 405: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 407: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 408: 12 of 30 rows (18 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 412: 21 of 30 rows (9 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 427: 18 of 30 rows (12 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 429: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 433: 25 of 30 rows (5 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 436: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 441: 11 of 30 rows (19 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 443: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 450: 23 of 30 rows (7 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 454: 16 of 30 rows (14 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 456: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 457: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    38.9s]   pre-flare window of event 458: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 462: 29 of 30 rows (1 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 463: 18 of 30 rows (12 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 464: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 465: 22 of 30 rows (8 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 483: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 485: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 489: 11 of 30 rows (19 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 490: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 495: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 496: 12 of 30 rows (18 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 497: 15 of 30 rows (15 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 498: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 500: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 501: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 502: 25 of 30 rows (5 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 503: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 504: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 505: 18 of 30 rows (12 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 507: 27 of 30 rows (3 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 511: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 512: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 513: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 517: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 527: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 529: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 530: 17 of 30 rows (13 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 532: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.0s]   pre-flare window of event 533: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.1s]   pre-flare window of event 541: 14 of 30 rows (16 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.1s]   pre-flare window of event 542: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.1s]   pre-flare window of event 547: 26 of 30 rows (4 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.1s]   pre-flare window of event 554: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.1s]   pre-flare window of event 555: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.1s]   pre-flare window of event 556: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.1s]   pre-flare window of event 557: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.1s]   pre-flare window of event 559: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.1s]   pre-flare window of event 561: 25 of 30 rows (5 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.1s]   pre-flare window of event 562: 28 of 30 rows (2 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.1s]   pre-flare window of event 564: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.1s]   pre-flare window of event 569: 15 of 30 rows (15 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.1s]   pre-flare window of event 572: 19 of 30 rows (11 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.1s]   pre-flare window of event 573: 7 of 30 rows (23 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.1s]   pre-flare window of event 574: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.1s]   pre-flare window of event 576: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.1s]   pre-flare window of event 579: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.2s]   pre-flare window of event 580: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.2s]   pre-flare window of event 581: 19 of 30 rows (11 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.2s]   pre-flare window of event 582: 13 of 30 rows (17 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.2s]   pre-flare window of event 583: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.2s]   pre-flare window of event 585: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.2s]   pre-flare window of event 587: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.2s]   pre-flare window of event 588: 9 of 30 rows (21 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.2s]   pre-flare window of event 592: 5 of 30 rows (25 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.2s]   pre-flare window of event 606: 11 of 30 rows (19 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.2s]   pre-flare window of event 607: 19 of 30 rows (11 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.2s]   pre-flare window of event 608: 25 of 30 rows (5 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.2s]   pre-flare window of event 616: 10 of 30 rows (20 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.2s]   pre-flare window of event 618: 6 of 30 rows (24 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.2s]   pre-flare window of event 620: 8 of 30 rows (22 inside a flare event, 0 already in an earlier event's window, rest not on the grid)
+[    39.2s] NOC = rows before 2025-09-12 19:11:24 (first 60% of time) minus flare events ± 0 days 02:00:00 and short flares; flare-event rows 50.02%, short-flare rows 8.93%, pre-flare rows 14281, NOC rows 12157
+[    39.2s] CHECK PASS: NOC rows 12157 >= 1535 (5 x tags)
+[    39.2s] CHECK PASS: no NOC row lies inside a flare event, a short flare or a pre-flare window
+[    39.6s] NOC-mean imputed 0 values = 0.00% of the matrix; matrix (177120, 307)
+[    39.7s] CHECK PASS: standardized matrix has no NaN / inf
+[    39.8s] CHECK PASS: standardized matrix has no constant column
+[    39.8s] CHECK PASS: every matrix timestamp exists on the flare_net grid used for the events
+[    39.8s] flare_net agreement: 0 matrix rows filled by the short-gap forward fill (no raw value)
+[    39.8s] CHECK PASS: flare_net in the matrix equals the flare_net used for the events (0 mismatches)
+[    40.2s] CHECK PASS: 14 units with process tags (a cross-unit graph needs at least 2)
+[    40.3s] CHECK PASS: APS_NVPS_LEU: 2 PC scores finite and not constant
+[    40.3s]   APS_NVPS_LEU: 12 tags, numerical rank 12, 2 PCs kept, 61.4% of the unit's NOC variance
+[    40.4s] CHECK PASS: DAK: 1 PC scores finite and not constant
+[    40.4s]   DAK: 3 tags, numerical rank 1, 1 PCs kept, 100.0% of the unit's NOC variance
+[    40.4s] CHECK PASS: DIU: 2 PC scores finite and not constant
+[    40.4s]   DIU: 17 tags, numerical rank 17, 2 PCs kept, 38.6% of the unit's NOC variance
+[    40.5s] CHECK PASS: ISOM: 2 PC scores finite and not constant
+[    40.5s]   ISOM: 41 tags, numerical rank 41, 2 PCs kept, 38.1% of the unit's NOC variance
+[    40.5s] CHECK PASS: ISOM_3: 2 PC scores finite and not constant
+[    40.5s]   ISOM_3: 14 tags, numerical rank 14, 2 PCs kept, 54.7% of the unit's NOC variance
+[    40.5s] CHECK PASS: ISOM_4: 1 PC scores finite and not constant
+[    40.5s]   ISOM_4: 1 tags, numerical rank 1, 1 PCs kept, 100.0% of the unit's NOC variance
+[    40.6s] CHECK PASS: LOUP: 2 PC scores finite and not constant
+[    40.6s]   LOUP: 52 tags, numerical rank 52, 2 PCs kept, 69.3% of the unit's NOC variance
+[    40.7s] CHECK PASS: NSU_NHT_CCR: 2 PC scores finite and not constant
+[    40.7s]   NSU_NHT_CCR: 53 tags, numerical rank 53, 2 PCs kept, 42.4% of the unit's NOC variance
+[    40.8s] CHECK PASS: PDA: 2 PC scores finite and not constant
+[    40.8s]   PDA: 28 tags, numerical rank 28, 2 PCs kept, 45.7% of the unit's NOC variance
+[    40.9s] CHECK PASS: PG: 2 PC scores finite and not constant
+[    40.9s]   PG: 34 tags, numerical rank 34, 2 PCs kept, 51.6% of the unit's NOC variance
+[    40.9s] CHECK PASS: SEU1: 2 PC scores finite and not constant
+[    40.9s]   SEU1: 19 tags, numerical rank 19, 2 PCs kept, 60.3% of the unit's NOC variance
+[    40.9s] CHECK PASS: SEU2: 2 PC scores finite and not constant
+[    40.9s]   SEU2: 14 tags, numerical rank 14, 2 PCs kept, 52.8% of the unit's NOC variance
+[    41.0s] CHECK PASS: SEU3: 2 PC scores finite and not constant
+[    41.0s]   SEU3: 13 tags, numerical rank 13, 2 PCs kept, 43.8% of the unit's NOC variance
+[    41.0s] CHECK PASS: unit_wise_control_data: 2 PC scores finite and not constant
+[    41.0s]   unit_wise_control_data: 5 tags, numerical rank 5, 2 PCs kept, 65.2% of the unit's NOC variance
+[    41.1s] CHECK PASS: PCs of the same unit are uncorrelated over NOC
+[    41.1s] unit-wise PCA (N_PCS_PER_UNIT = 2): 26 PCs from 14 units
+[    41.9s] CHECK PASS: installed causal-learn supports the depth cap max_k
+[    41.9s] PC uses every 10th row: 17712 rows x 26 PCs (flare_net not included)
+[    41.9s] correlation matrix of the 26 PC nodes: smallest eigenvalue 4.173e-02
+[    42.0s] marginal skeleton: 285 edges, max degree 25; CI-test bound by depth {0: 570, 1: 12036, 2: 122145, 3: 792552}; depth cap max_k = 3
+[    44.5s] PC (alpha 0.01, Fisher-Z, stable): 87 edges among 26 PCs in 3 s
+[    44.5s] CHECK PASS: DAG is acyclic
+[    44.5s] CHECK PASS: DAG keeps exactly the CPDAG skeleton (87 edges)
+[    44.5s] DEVIATION: CPDAG has no consistent extension: 0 forced Dor-Tarsi steps, 2 directed edges reversed to break cycles
+[    44.5s] DAG among PCs: 87 edges, mean parents 3.35
+[    44.5s] final graph: 87 PC -> PC edges + 26 PC -> flare_net edges
+[    44.5s] CHECK PASS: every T² node varies over NOC
+[    44.6s] CHECK PASS: sum identity Σ_j T²_j·PA(j) = Zᵀ (I-B) D⁻¹ (I-Bᵀ) Z = Zᵀ Σ_G⁻¹ Z: max relative error 3.43e-15 < 1e-06
+[    44.6s] CHECK PASS: same identity with Σ_G = (I-Bᵀ)⁻¹ D (I-Bᵀ)⁻ᵀ inverted numerically (condition number 5.9e+02): max relative error 5.06e-15 < 1.0e-06
+[    44.6s] CHECK PASS: NOC T_j·PA(j): max |mean| 2.3e-14, max |std - 1| 1.6e-13
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 0, p = 26)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 6, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 9, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 10, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 9, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 4, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 4, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 5, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 5, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 1, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 4, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 1, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 1, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 5, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 2, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 4, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 0, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 1, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 0, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 3, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 2, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 2, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 0, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 7, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 0, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 2, p = 1)
+[    44.7s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 0, p = 1)
+[    44.7s] p = 26 PCs, m = 12157 NOC rows; T² limit (report Eq. 13, corrected) = 77.98 at alpha 0.05; NOC rows above it: 0.74% (expected about 5%)
+[    44.7s] per-PC limits on T²_j (Eq. 13 with p = 1, k = number of parents, alpha 0.05): 7.685 to 7.691; NOC rows above them: mean 1.14% per PC (expected about 5%)
+[    44.7s] overall T² = Zᵀ pinv(R) Z (TA's Main.py; rank of R 26 of 26); relative gap to the sum of the causal terms: median 0.164 on NOC, 0.285 in pre-flare windows
+[    45.8s] flare events found (T² > 77.98 at least once in the 30 min before onset): 380 of 620 (61%)
+[    45.9s] CHECK PASS: PC scores and T² rows share one time index
+[    59.2s] moving-window T²: WL = 1350 rows, step 10; 2155 steps not scored (< 100 flare-free rows); 15237 steps with a PC std floored; scored rows 154220 of 177120
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 0, p = 26)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 12157, k = 0, p = 26)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 6, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 9, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 10, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 9, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 4, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 4, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 5, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 5, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 1, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 4, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 1, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 1, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 5, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 2, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 4, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 0, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 1, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 0, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 3, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 2, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 2, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 0, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 7, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 0, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 2, p = 1)
+[    59.2s] CHECK PASS: T² limit needs m - k - p > 0 (m = 1350, k = 0, p = 1)
+[    59.8s] limits x2: overall 79.74 (m = WL = 1350, p = 26); per-PC 7.702 to 7.760; fixed-baseline overall limit x2 = 77.98
+[    62.9s]   actual flare events (scored): 591
+[    62.9s]   flare events not scored: 29
+[    62.9s]   alarms (activations): 792
+[    62.9s]   alarms during a flare (not predictions): 377
+[    62.9s]   predicted flare events (alarms outside flares): 415
+[    62.9s]   correct predictions (TP alarms): 76
+[    62.9s]   incorrect predictions (FP alarms): 339
+[    62.9s]   TP (events detected): 74
+[    62.9s]   FN (events missed): 517
+[    62.9s]   FN: no alarm: 157
+[    62.9s]   FN: already in alarm: 360
+[    62.9s]   TN (30-min flare-free blocks, no alarm): 728
+[    62.9s]   30-min blocks with an FP activation: 209
+[    62.9s]   30-min blocks inside a standing alarm (not counted): 431
+[    62.9s]   FP alarm minutes: 21740
+[    62.9s]   base accuracy (TP+TN)/(TP+FN+FP+TN): 0.484
+[    62.9s]   precision TP alarms/(TP+FP alarms): 0.183
+[    62.9s]   recall TP events/(TP+FN events): 0.125
+[    62.9s]   median lead time TP (min): 13.500
+[    63.3s] saved RCA_report.xlsx
+[    63.3s] pipeline finished

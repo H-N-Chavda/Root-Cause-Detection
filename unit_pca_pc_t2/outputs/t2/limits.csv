@@ -1,2 +1,2 @@
 p,n_noc_rows,t2_limit,alpha0,alpha_term,flare_threshold,flare_threshold_rule,interval,n_events,n_events_found,pct_noc_above_t2_limit,pct_noc_above_term_limit_mean,pct_preflare_above_t2_limit,sum_identity_max_rel_error,gap_t2_vs_sum_terms_median_noc,t2_limit_fixed_baseline,limit_scale,baseline,window_rows,step_rows
-24,12157,74.69220248773885,0.05,0.05,1.5,manual FLARE_THRESHOLD,0 days 00:01:00,620,65,21.66652957144032,3.6758657563543635,52.956950282649665,3.1913159419941002e-15,0.1490900681548771,73.01746897159052,2.0,moving window,1250,10
+26,12157,79.74303706248102,0.05,0.05,1.5,manual FLARE_THRESHOLD,0 days 00:01:00,620,74,20.046063996051657,3.539271454875634,50.65057105681654,3.4341405188881437e-15,0.16353241347900033,77.98477309223536,2.0,moving window,1350,10
