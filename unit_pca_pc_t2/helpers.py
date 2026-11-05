@@ -553,8 +553,8 @@ def label_flare_rows(idx: pd.DatetimeIndex, events: pd.DataFrame, short: pd.Data
                      n_tags: int) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """Label each row of the cleaned matrix: flare event, short flare, pre-flare window, or NOC (normal operation).
 
-    NOC = rows in the first TRAIN_FRAC of the time span, outside every flare event ± FLARE_BUFFER_MIN and outside
-    every short flare. If that leaves fewer than 5 x n_tags rows, the buffer is dropped (logged as a deviation).
+    NOC = rows in the first TRAIN_FRAC of the time span, outside every flare event and every short flare (no buffer
+    around flares; pre-flare windows are only used for the metrics).
 
     Args:
         idx: Timestamps of the cleaned matrix, from clean_matrix().
@@ -565,40 +565,32 @@ def label_flare_rows(idx: pd.DatetimeIndex, events: pd.DataFrame, short: pd.Data
 
     Returns:
         A tuple (flare, short_flare, pre_eid, noc) of arrays aligned with idx: flare and short_flare are booleans for
-        rows inside a flare event / short flare; pre_eid is the event id of the 30-min pre-flare window a row belongs
+        rows inside a flare event / short flare; pre_eid is the event id of the FLARE_PRE_WINDOW_MIN pre-flare window a row belongs
         to (0 = none); noc is True for baseline rows.
 
     Raises:
-        SystemExit: If NOC is still too small, or a NOC row lies inside a flare, short flare or pre-flare window.
+        SystemExit: If NOC has fewer than 5 x n_tags rows, or a NOC row lies inside a flare event or short flare.
     """
     flare = np.zeros(len(idx), dtype=bool)
     short_flare = np.zeros(len(idx), dtype=bool)
-    near_flare = np.zeros(len(idx), dtype=bool)
-    buffer = pd.Timedelta(minutes=C.FLARE_BUFFER_MIN)
     for s, e in zip(events["start"], events["end"]):
         flare |= (idx > s - interval) & (idx <= e)
-        near_flare |= (idx > s - interval - buffer) & (idx <= e + buffer)
     for s, e in zip(short["start"], short["end"]):
         short_flare |= (idx > s - interval) & (idx <= e)
     pre_eid = extract_preflare_window(idx, events, interval, flare)
     cut = idx.min() + C.TRAIN_FRAC * (idx.max() - idx.min())
-    noc = (idx < cut) & ~near_flare & ~short_flare
-    rule = f"NOC = rows before {cut} (first {C.TRAIN_FRAC:.0%} of time) minus flare events ± {buffer} and short flares"
+    noc = (idx < cut) & ~flare & ~short_flare
+    rule = f"NOC = rows before {cut} (first {C.TRAIN_FRAC:.0%} of time) minus flare events and short flares (no buffer)"
     min_noc = 5 * n_tags
-    if noc.sum() < min_noc:
-        noc = (idx < cut) & ~flare & ~short_flare & (pre_eid == 0)
-        rule = f"NOC = rows before {cut} minus flare-event rows, short flares and pre-flare windows (no buffer)"
-        log(f"DEVIATION: NOC with the ± {buffer} buffer had < {min_noc} rows (5 x tags); fell back to: {rule}")
     log(f"{rule}; flare-event rows {100 * flare.mean():.2f}%, short-flare rows {100 * short_flare.mean():.2f}%, "
         f"pre-flare rows {int((pre_eid > 0).sum())}, NOC rows {int(noc.sum())}")
     gate(noc.sum() >= min_noc, f"NOC rows {int(noc.sum())} >= {min_noc} (5 x tags)")
-    gate(not (noc & (flare | short_flare | (pre_eid > 0))).any(),
-         "no NOC row lies inside a flare event, a short flare or a pre-flare window")
+    gate(not (noc & (flare | short_flare)).any(), "no NOC row lies inside a flare event or a short flare")
     return flare, short_flare, pre_eid, noc
 
 
 def preflare_window_length(interval: pd.Timedelta) -> int:
-    """Number of grid samples in FLARE_PRE_WINDOW_MIN minutes (30 min -> 30 samples on a 1-min grid).
+    """Number of grid samples in FLARE_PRE_WINDOW_MIN minutes (60 min -> 60 samples on a 1-min grid).
 
     Args:
         interval: Grid step from join_on_time_grid().
@@ -616,7 +608,7 @@ def preflare_window_length(interval: pd.Timedelta) -> int:
 
 def extract_preflare_window(idx: pd.DatetimeIndex, events: pd.DataFrame, interval: pd.Timedelta,
                             flare: np.ndarray) -> np.ndarray:
-    """Label the rows in [onset - 30 min, onset) of each flare event with that event's id.
+    """Label the rows in [onset - FLARE_PRE_WINDOW_MIN, onset) of each flare event with that event's id.
 
     Rows inside any flare event are left out; a row in two windows keeps the earlier event's id.
 
@@ -1165,9 +1157,9 @@ def t2_threshold(m: int, p: int, k: int, alpha: float) -> float:
 
 
 def compute_t2(X: np.ndarray, Sigma: np.ndarray) -> tuple[np.ndarray, int]:
-    """Overall T² = Zᵀ pinv(R) Z for every row (paper Eq. 7), computed as in the TA's Main.py (lines 243 and 315).
+    """Overall T² = Zᵀ inv(R) Z for every row (paper Eq. 7).
 
-    R is the sample NOC correlation matrix of the standardized PCs; the TA uses np.linalg.pinv(np.corrcoef(...)).
+    R is the sample NOC correlation matrix of the standardized PCs.
 
     Args:
         X: Standardized PCs from noc_correlation() (rows = timestamps).
@@ -1176,7 +1168,7 @@ def compute_t2(X: np.ndarray, Sigma: np.ndarray) -> tuple[np.ndarray, int]:
     Returns:
         A tuple (T² per row, rank of R).
     """
-    return ((X @ np.linalg.pinv(Sigma)) * X).sum(axis=1), int(np.linalg.matrix_rank(Sigma))
+    return ((X @ np.linalg.inv(Sigma)) * X).sum(axis=1), int(np.linalg.matrix_rank(Sigma))
 
 
 # ---- T2 DECOMPOSITION ----
@@ -1308,7 +1300,7 @@ def check_noc_terms(T: np.ndarray, noc: np.ndarray, nodes: list[str], floored: l
 # ---- PRE-FLARE EVALUATION ----
 def evaluate_preflare_windows(idx: pd.DatetimeIndex, pre_eid: np.ndarray, events: pd.DataFrame, T: np.ndarray,
                               t2: np.ndarray, t2_lim: float, term_lim: np.ndarray, nodes: list[str]) -> pd.DataFrame:
-    """Decide for each flare event whether it was found: T² above its limit at least once in the 30 min before onset.
+    """Decide for each flare event whether it was found: T² above its limit at least once in the FLARE_PRE_WINDOW_MIN before onset.
 
     For found events, the first such minute is decomposed (paper Fig. 5): every PC whose T²_j·PA(j) is above its own
     Eq. 13 limit is listed.
@@ -1668,7 +1660,7 @@ def plot_flare_overview(D: dict[str, Any], spans: dict[str, list[tuple]], sectio
     for k, (s, e) in enumerate(sections):
         ax = axes[k + 2]
         sel = net[(net.index >= s) & (net.index < e)]
-        shade(ax, clip_spans(spans["preflare"], s, e), col["preflare"], 0.15, "30-min pre-flare window")
+        shade(ax, clip_spans(spans["preflare"], s, e), col["preflare"], 0.15, f"{C.FLARE_PRE_WINDOW_MIN}-min pre-flare window")
         shade(ax, clip_spans(spans["event"], s, e), col["event"], 0.3, "flare event")
         ax.plot(sel.index, sel.to_numpy(), color=col["flare"], lw=0.7)
         ax.axhline(thr, color=col["limit"], ls="--", lw=1)
@@ -1716,7 +1708,7 @@ def plot_t2_overview(D: dict[str, Any], spans: dict[str, list[tuple]], sections:
         ax = axes[k + 1]
         sel = t2[(t2.index >= s) & (t2.index < e)]
         shade(ax, clip_spans(spans["noc"], s, e), col["noc"], 0.08, "NOC (baseline)")
-        shade(ax, clip_spans(spans["preflare"], s, e), col["preflare"], 0.2, "30-min pre-flare window")
+        shade(ax, clip_spans(spans["preflare"], s, e), col["preflare"], 0.2, f"{C.FLARE_PRE_WINDOW_MIN}-min pre-flare window")
         shade(ax, clip_spans(spans["event"], s, e), col["event"], 0.3, "flare event")
         ax.plot(sel.index, sel.to_numpy(), color=col["t2"], lw=0.6)
         ax.axhline(lim, color=col["limit"], ls="--", lw=1)
@@ -1803,7 +1795,7 @@ def plot_individual_pcs(D: dict[str, Any], peaks: pd.DataFrame, spans: dict[str,
         for k, (ax, (a, b)) in enumerate(zip(axes[:, 0], windows)):
             sel = s[(s.index >= a) & (s.index < b)]
             o = own[(own["timestamp"] >= a) & (own["timestamp"] < b)]
-            shade(ax, clip_spans(spans["preflare"], a, b), col["preflare"], 0.2, "30-min pre-flare window")
+            shade(ax, clip_spans(spans["preflare"], a, b), col["preflare"], 0.2, f"{C.FLARE_PRE_WINDOW_MIN}-min pre-flare window")
             shade(ax, clip_spans(spans["event"], a, b), col["event"], 0.3, "flare event")
             ax.plot(sel.index, sel.to_numpy(), color=col["t2"], lw=0.4 if k == 0 else 0.7)
             ax.axhline(z, color=col["limit"], ls="--", lw=1, label=f"T²_j limit (Eq. 13) = {z:.2f}")
@@ -1987,10 +1979,11 @@ def build_summary(out: Path) -> None:
           f"- Baseline: {lim.get('baseline', 'fixed NOC')} ({lim.get('window_rows', '-')} rows, step "
           f"{lim.get('step_rows', '-')}). Limits x{lim.get('limit_scale', 1):g}: overall {D['t2_lim']:.2f}, per-PC "
           f"{terml['t2_limit'].min():.3f} to {terml['t2_limit'].max():.3f}.",
-          f"- Alarm: on after {C.ALARM_ON_DELAY_MIN} min above the limit, off after {C.ALARM_OFF_DELAY_MIN} min below; "
-          f"TP = flare event within {C.PRED_HORIZON_MIN} min of the alarm switching on.", "",
+          f"- TP = flare event with T² above the limit at least once in the {C.FLARE_PRE_WINDOW_MIN} min before onset; "
+          "FN = without; FP = non-flare block (time between [onset - window, end] blocks) with T² above the limit at "
+          "least once. TN not counted. F1 = 2TP / (2TP + FP + FN).", "",
           "| metric | value |", "|---|---|"]
-    L += [f"| {k} | {float(v):.3f} |" if "accuracy" in k or "precision" in k or "recall" in k else f"| {k} | {v} |"
+    L += [f"| {k} | {float(v):.3f} |" if k.startswith("F1") else f"| {k} | {v} |"
           for k, v in m.items()]
     L += ["", "| event | onset | min | peak t/h | outcome | lead (min) | top root-cause PCs (T²_j / limit) |",
           "|---|---|---|---|---|---|---|"]
@@ -2272,7 +2265,7 @@ def build_contributor_deck(D: dict[str, Any], path: Path) -> None:
     add_text(menu, M, "Click a button (in slideshow mode). Every slide has buttons back to this menu.\n"
              "Weekly slides: the top N PCs of that week by minutes above their own limit; line = the highest "
              f"T²_j / own limit in each {C.DECK_BIN} bin; dashed line = own limit (1).\n"
-             "Event slides: overall T² around the flare onset (red = 30-min pre-flare window) and the top PCs over the "
+             f"Event slides: overall T² around the flare onset (red = {C.FLARE_PRE_WINDOW_MIN}-min pre-flare window) and the top PCs over the "
              "minutes where T² crossed its limit.\nHover over a line or bar in PowerPoint to read its value.",
              0.6, 1.3, 12, 3.0, 16)
 
@@ -2283,7 +2276,7 @@ def build_contributor_deck(D: dict[str, Any], path: Path) -> None:
     top = list(frac_all.sort_values(ascending=False).index[:C.DECK_OVERALL_TOP])
     series = {"all rows": frac_all[top].tolist(), "NOC rows": (100 * (R[noc][top] > 1).mean()).tolist()}
     if pre.any():
-        series["30-min pre-flare windows"] = (100 * (R[pre][top] > 1).mean()).tolist()
+        series[f"{C.FLARE_PRE_WINDOW_MIN}-min pre-flare windows"] = (100 * (R[pre][top] > 1).mean()).tolist()
     add_text(overall, M, f"Main PCs over the whole period: % of minutes above their own limit (top {len(top)})",
              0.4, 0.2, 12.5, 0.6, 22, True)
     add_text(overall, M, f"By chance a PC is above its limit in about {100 * C.ALPHA_TERM:g}% of NOC minutes.",
@@ -2331,7 +2324,7 @@ def build_contributor_deck(D: dict[str, Any], path: Path) -> None:
                  f"({len(cross)} of {len(rows_pre)} pre-flare minutes above the T² limit)", 0.4, 0.15, 12.5, 0.6, 20, True)
         add_line_chart(sl, M, (0.3, 0.9, 8.4, 5.9), [f"{t:%H:%M}" for t in w.index],
                        {"T² outside the window": np.where(in_pre, np.nan, vals),
-                        "T² in the 30-min pre-flare window": np.where(in_pre, vals, np.nan)},
+                        f"T² in the {C.FLARE_PRE_WINDOW_MIN}-min pre-flare window": np.where(in_pre, vals, np.nan)},
                        (f"T² limit {lim:.1f}", lim), "overall T² (log)", C.DECK_RATIO_MIN, 15)
         if len(basis):
             mean_r = R.loc[basis].mean().nlargest(C.DECK_EVENT_TOP)

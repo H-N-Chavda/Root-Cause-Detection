@@ -1,15 +1,15 @@
-"""Moving-window T² (TA's Main.py), ISA-18.2 style alarms, TP/FP/TN/FN metrics, root cause per alarm and event.
+"""Moving-window T² (TA's Main.py), block metrics (TP / FN per flare event, FP per non-flare block, F1), root causes.
 
 Reads only saved outputs (PC scores, final DAG, row labels), so it never re-runs the PC algorithm.
 
-Definitions (agreed with the user, 2026-11-05):
-- Alarm: switches on when overall T² stays above its limit ALARM_ON_DELAY_MIN minutes; switches off when T² stays
-  below it ALARM_OFF_DELAY_MIN minutes. One activation = one alarm, however long it stays on.
-- TP: an alarm switches on outside a flare and a flare event starts within PRED_HORIZON_MIN minutes.
-- FP: an alarm switches on outside a flare and no flare event starts within PRED_HORIZON_MIN minutes.
-- FN: a flare event with no alarm switching on in its PRED_HORIZON_MIN-minute window ("already in alarm" listed apart).
-- TN: a 30-minute flare-free block outside every pre-flare window with no alarm on at any time.
-- Alarms that switch on during a flare (event or short) are not predictions.
+Definitions (agreed with the user, 2026-11-05; no alarm on/off delays, time is not counted):
+- A minute is "above" when overall T² > its limit.
+- Flare block = [onset - FLARE_PRE_WINDOW_MIN, end] of one flare event (>= FLARE_MIN_DURATION_MIN); non-flare block =
+  the time between flare blocks.
+- TP: a flare event with T² above at least once in [onset - FLARE_PRE_WINDOW_MIN, onset). One TP per event.
+- FN: a flare event with T² never above in that window.
+- FP: a non-flare block with T² above at least once, however long or often. One FP per block.
+- TN: not counted. F1 = 2TP / (2TP + FP + FN).
 """
 from __future__ import annotations
 
@@ -48,7 +48,7 @@ def moving_window_t2(X: np.ndarray, normal: np.ndarray, par_idx: list[list[int]]
     """Overall T² and causal terms with a baseline re-estimated from the trailing window (TA's Main.py, l. 280-340).
 
     For each block of MW_STEP_MIN rows starting at s: the baseline is the flare-free rows among [s - WL, s),
-    WL = MW_ROWS_PER_VAR x (PCs + 1). Their mean, std and correlation R standardize the block; T² = zᵀ pinv(R) z and
+    WL = MW_ROWS_PER_VAR x (PCs + 1). Their mean, std and correlation R standardize the block; T² = zᵀ inv(R) z and
     T_j = (z_j - β_jᵀ z_PA(j)) / σ_j. Differences from the TA: the TA moves one row at a time and his window includes
     the current row; here the step is MW_STEP_MIN and the window ends just before the block (no self-inclusion).
 
@@ -82,46 +82,13 @@ def moving_window_t2(X: np.ndarray, normal: np.ndarray, par_idx: list[list[int]]
         np.fill_diagonal(S, 1.0)
         B, sigma2 = causal_regressions(S, par_idx)
         Zb = (X[s:s + C.MW_STEP_MIN] - m) / sd
-        t2[s:s + C.MW_STEP_MIN] = ((Zb @ np.linalg.pinv(S)) * Zb).sum(axis=1)
+        t2[s:s + C.MW_STEP_MIN] = ((Zb @ np.linalg.inv(S)) * Zb).sum(axis=1)
         T[s:s + C.MW_STEP_MIN] = (Zb - Zb @ B) / np.sqrt(sigma2)
     H.log(f"moving-window T²: WL = {WL} rows, step {C.MW_STEP_MIN}; {skipped} steps not scored (< {C.MW_MIN_NORMAL} "
           f"flare-free rows); {floored} steps with a PC std floored; scored rows {int(np.isfinite(t2).sum())} of {n}")
     return t2, T
 
-
-# ---- ALARMS ----
-def alarm_states(above: np.ndarray) -> tuple[np.ndarray, list[tuple[int, int, int]]]:
-    """Alarm on/off with on-delay and off-delay (ISA-18.2 style).
-
-    Args:
-        above: T² above its limit per row (False where not scored).
-
-    Returns:
-        A tuple (on, episodes): on = alarm state per row; episodes = (crossing row, activation row, last row on).
-    """
-    on = np.zeros(len(above), dtype=bool)
-    eps, state, run_up, run_dn, cross = [], False, 0, 0, -1
-    for i, a in enumerate(above):
-        if not state:
-            run_up = run_up + 1 if a else 0
-            if run_up == 1:
-                cross = i
-            if run_up >= C.ALARM_ON_DELAY_MIN:
-                state, run_dn = True, 0
-                eps.append([cross, i, -1])
-                on[cross:i + 1] = True
-        else:
-            on[i] = True
-            run_dn = 0 if a else run_dn + 1
-            if run_dn >= C.ALARM_OFF_DELAY_MIN:
-                state, run_up = False, 0
-                eps[-1][2] = i - C.ALARM_OFF_DELAY_MIN
-                on[i - C.ALARM_OFF_DELAY_MIN + 1:i + 1] = False
-    if eps and eps[-1][2] < 0:
-        eps[-1][2] = len(above) - 1
-    return on, [tuple(e) for e in eps]
-
-
+# ---- BLOCK METRICS ----
 def top_pcs(ratio_row: np.ndarray, nodes: list[str], loadings: pd.DataFrame) -> dict[str, Any]:
     """Top TOP_N_ROOT PCs of one row by T²_j / own limit.
 
@@ -141,109 +108,116 @@ def top_pcs(ratio_row: np.ndarray, nodes: list[str], loadings: pd.DataFrame) -> 
     return out
 
 
-def evaluate(t2: pd.DataFrame, ratio: np.ndarray, nodes: list[str], events: pd.DataFrame,
-             loadings: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
-    """Alarm table, per-event outcome table and the TP / FP / TN / FN counts.
+def runs_of(mask: np.ndarray) -> list[tuple[int, int]]:
+    """Contiguous runs of True in a boolean array.
 
     Args:
-        t2: All-row table with T2, above_limit, scored, flare_event, short_flare (index = minutes).
+        mask: Boolean array.
+
+    Returns:
+        (first row, last row) of each run, in time order.
+    """
+    e = np.flatnonzero(np.diff(np.r_[0, mask.astype(int), 0]))
+    return [(int(a), int(b) - 1) for a, b in zip(e[::2], e[1::2])]
+
+
+def evaluate(t2: pd.DataFrame, t2_lim: float, ratio: np.ndarray, nodes: list[str], events: pd.DataFrame,
+             loadings: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
+    """Per-event outcomes (TP / FN), non-flare blocks (FP) and F1. No alarm delays: a minute counts if T² > limit.
+
+    The time line is split into flare blocks [onset - FLARE_PRE_WINDOW_MIN, end] (one per flare event) and non-flare
+    blocks (the gaps between them). Each flare event is one TP if overall T² is above its limit at least once in
+    [onset - FLARE_PRE_WINDOW_MIN, onset) (rows inside another flare event left out), else one FN. Each non-flare
+    block is one FP if T² is above its limit at least once in it, however long or often. TN is not counted.
+
+    Args:
+        t2: All-row table with T2, above_limit, scored, flare_event (index = minutes).
+        t2_lim: Overall T² limit.
         ratio: T²_j / own limit per row and PC.
         nodes: PC names in ratio's column order.
-        events: Flare events (event_id, start, end, duration_min, peak_flare_net).
+        events: Flare events (event_id, start, end, n_flagged, peak_flare_net, duration_min).
         loadings: PCA loadings.
 
     Returns:
-        A tuple (alarms, outcomes, metrics).
+        A tuple (outcomes, blocks, metrics): outcomes = one row per flare event; blocks = one row per non-flare block.
     """
     idx = t2.index
-    n, H_ = len(idx), C.PRED_HORIZON_MIN
-    flare = (t2["flare_event"] | t2["short_flare"]).to_numpy()
-    scored = t2["scored"].to_numpy()
-    on, eps = alarm_states(t2["above_limit"].to_numpy())
-    onset = idx.get_indexer(events["start"])
-    eid = events["event_id"].to_numpy()
+    n = len(idx)
+    step = idx[1] - idx[0]
+    w = int(round(pd.Timedelta(minutes=C.FLARE_PRE_WINDOW_MIN) / step))
+    above, scored = t2["above_limit"].to_numpy(), t2["scored"].to_numpy()
+    T2v, flare = t2["T2"].to_numpy(), t2["flare_event"].to_numpy()
+    onset, end = idx.get_indexer(events["start"]), idx.get_indexer(events["end"])
+    H.gate(bool((onset >= 0).all() and (end >= 0).all()), "every flare event's start and end are on the T² grid")
 
-    rows = []
-    for c, a, e in eps:
-        r = {"crossing": idx[c], "activation": idx[a], "end": idx[e], "duration_min": e - c + 1,
-             "T2_at_crossing": float(t2["T2"].iat[c]), "class": "FP", "event_id": np.nan, "lead_min": np.nan}
-        if flare[a]:
-            r["class"] = "during flare"
-        else:
-            k = np.searchsorted(onset, a, side="right")
-            if k < len(onset) and onset[k] >= 0 and onset[k] - a <= H_:
-                r.update({"class": "TP", "event_id": int(eid[k]), "lead_min": int(onset[k] - a)})
-        r.update(top_pcs(ratio[c], nodes, loadings))
-        rows.append(r)
-    alarms = pd.DataFrame(rows)
-
-    out = []
-    in_window = np.zeros(n, dtype=bool)
-    for ev, o in zip(events.itertuples(index=False), onset):
-        w0 = max(o - H_, 0)
-        in_window[w0:o] = True
-        r = {"event_id": ev.event_id, "onset": ev.start, "duration_min": ev.duration_min,
-             "peak_flare_net": ev.peak_flare_net, "window_rows": o - w0}
-        tp = alarms[(alarms["class"] == "TP") & (alarms["event_id"] == ev.event_id)] if len(alarms) else alarms
-        if o - w0 == 0 or not scored[w0:o].any():
+    out, in_flare_block = [], np.zeros(n, dtype=bool)
+    for ev, o, e in zip(events.itertuples(index=False), onset, end):
+        w0 = max(o - w, 0)
+        in_flare_block[w0:e + 1] = True
+        win = np.arange(w0, o)
+        win = win[~flare[win]]
+        sc = win[scored[win]]
+        hit = sc[above[sc]]
+        r = {"event_id": ev.event_id, "onset": ev.start, "end": ev.end, "duration_min": ev.duration_min,
+             "n_flagged": ev.n_flagged, "peak_flare_net": ev.peak_flare_net, "window_start": idx[w0],
+             "window_rows": len(win), "window_rows_scored": len(sc), "window_minutes_above": len(hit),
+             "max_T2_window": float(np.max(T2v[sc])) if len(sc) else np.nan, "T2_limit": t2_lim,
+             "above_at_window_start": bool(above[sc[0]]) if len(sc) else np.nan, "first_above": pd.NaT,
+             "lead_min": np.nan, "analysed_minute": pd.NaT}
+        if not len(sc):
             r["outcome"] = "not scored"
-        elif len(tp):
-            f = tp.iloc[0]
-            r.update({"outcome": "TP", "crossing": f["crossing"], "activation": f["activation"],
-                      "lead_min": f["lead_min"]})
-            r.update({k: f[k] for k in f.index if k[:-1] in ("pc", "unit", "ratio", "tags") or k == "n_pcs_above"})
+        elif len(hit):
+            r.update({"outcome": "TP", "first_above": idx[hit[0]], "lead_min": (o - hit[0]) * step / pd.Timedelta("1min")})
+            r.update(top_pcs(ratio[hit[0]], nodes, loadings))
         else:
-            r["outcome"] = "FN (already in alarm)" if on[w0] else "FN (no alarm)"
-            seg = t2["T2"].to_numpy()[w0:o]
-            if np.isfinite(seg).any():
-                j = w0 + int(np.nanargmax(seg))
-                r.update({"crossing": idx[j]})
-                r.update(top_pcs(ratio[j], nodes, loadings))
+            j = sc[int(np.argmax(T2v[sc]))]
+            r.update({"outcome": "FN", "analysed_minute": idx[j]})
+            r.update(top_pcs(ratio[j], nodes, loadings))
+        r["figure"] = f"figures/events/E{ev.event_id:03d}_{r['outcome'].split()[0]}.png"
         out.append(r)
     outcomes = pd.DataFrame(out)
+    outcomes["max_T2_window_over_limit"] = outcomes["max_T2_window"] / t2_lim
 
-    elig = ~flare & ~in_window & scored
-    act = np.zeros(n, dtype=bool)
-    for _, a, _ in eps:
-        act[a] = True
-    blocks = {"TN": 0, "FP block": 0, "standing alarm": 0}
-    edges = np.flatnonzero(np.diff(np.r_[0, elig.astype(int), 0]))
-    for b, e in zip(edges[::2], edges[1::2]):
-        for s in range(b, e - H_ + 1, H_):
-            sl = slice(s, s + H_)
-            blocks["TN" if not on[sl].any() else ("FP block" if act[sl].any() else "standing alarm")] += 1
+    rows = []
+    for k, (a, b) in enumerate(runs_of(~in_flare_block), start=1):
+        seg = np.arange(a, b + 1)
+        sc = seg[scored[seg]]
+        hit = sc[above[sc]]
+        r = {"block_id": k, "start": idx[a], "end": idx[b], "rows": len(seg), "rows_scored": len(sc),
+             "minutes_above": len(hit), "max_T2": float(np.max(T2v[sc])) if len(sc) else np.nan,
+             "outcome": "not scored" if not len(sc) else ("FP" if len(hit) else "no detection"), "first_above": pd.NaT}
+        if len(hit):
+            r["first_above"] = idx[hit[0]]
+            r.update(top_pcs(ratio[hit[0]], nodes, loadings))
+        rows.append(r)
+    blocks = pd.DataFrame(rows)
 
-    cls = alarms["class"].value_counts() if len(alarms) else pd.Series(dtype=int)
     oc = outcomes["outcome"].value_counts()
-    tp_ev, tp_al, fp = int(oc.get("TP", 0)), int(cls.get("TP", 0)), int(cls.get("FP", 0))
-    fn = int(oc.get("FN (no alarm)", 0) + oc.get("FN (already in alarm)", 0))
-    tn = blocks["TN"]
-    tot = tp_ev + fn + fp + tn
+    tp, fn = int(oc.get("TP", 0)), int(oc.get("FN", 0))
+    fp = int((blocks["outcome"] == "FP").sum()) if len(blocks) else 0
     metrics = {
-        "actual flare events (scored)": tp_ev + fn, "flare events not scored": int(oc.get("not scored", 0)),
-        "alarms (activations)": len(alarms), "alarms during a flare (not predictions)": int(cls.get("during flare", 0)),
-        "predicted flare events (alarms outside flares)": tp_al + fp, "correct predictions (TP alarms)": tp_al,
-        "incorrect predictions (FP alarms)": fp, "TP (events detected)": tp_ev, "FN (events missed)": fn,
-        "FN: no alarm": int(oc.get("FN (no alarm)", 0)), "FN: already in alarm": int(oc.get("FN (already in alarm)", 0)),
-        "TN (30-min flare-free blocks, no alarm)": tn, "30-min blocks with an FP activation": blocks["FP block"],
-        "30-min blocks inside a standing alarm (not counted)": blocks["standing alarm"],
-        "FP alarm minutes": int(alarms.loc[alarms["class"] == "FP", "duration_min"].sum()) if len(alarms) else 0,
-        "base accuracy (TP+TN)/(TP+FN+FP+TN)": (tp_ev + tn) / tot if tot else np.nan,
-        "precision TP alarms/(TP+FP alarms)": tp_al / (tp_al + fp) if tp_al + fp else np.nan,
-        "recall TP events/(TP+FN events)": tp_ev / (tp_ev + fn) if tp_ev + fn else np.nan,
-        "median lead time TP (min)": float(alarms.loc[alarms["class"] == "TP", "lead_min"].median()) if tp_al else np.nan,
+        "flare events (>= 30 min)": len(events), "flare events not scored (no T² in the window)": int(oc.get("not scored", 0)),
+        "flare events scored": tp + fn, "TP (flare events with T² above the limit in the window)": tp,
+        "FN (flare events without)": fn, "non-flare blocks": len(blocks),
+        "non-flare blocks not scored": int((blocks["outcome"] == "not scored").sum()) if len(blocks) else 0,
+        "FP (non-flare blocks with T² above the limit)": fp,
+        "F1 = 2TP / (2TP + FP + FN)": 2 * tp / (2 * tp + fp + fn) if tp + fp + fn else np.nan,
+        "TP: T² already above the limit when the window opened": int(outcomes.loc[outcomes["outcome"] == "TP",
+                                                                                    "above_at_window_start"].sum()),
+        "median minutes from first T² above the limit to onset (TP)":
+            float(outcomes.loc[outcomes["outcome"] == "TP", "lead_min"].median()) if tp else np.nan,
     }
     for k, v in metrics.items():
         H.log(f"  {k}: {v:.3f}" if isinstance(v, float) else f"  {k}: {v}")
-    return alarms, outcomes, metrics
+    return outcomes, blocks, metrics
 
 
 def rescore(out: Path) -> None:
     """Re-score the saved outputs with the moving-window baseline and the scaled limits; write all t2/ and table files.
 
-    Keeps the fixed-baseline T² as column T2_fixed in t2/t2_all_rows.parquet. Overwrites t2_all_rows.parquet,
-    terms_all_rows.parquet, term_limits.csv, limits.csv, preflare_first_ooc.csv; writes tables/alarms.csv,
-    tables/event_outcomes.csv, tables/metrics.csv.
+    Keeps the fixed-baseline T² as column T2_fixed in t2/t2_all_rows.parquet and relabels preflare_event_id with
+    FLARE_PRE_WINDOW_MIN. Overwrites t2_all_rows.parquet, terms_all_rows.parquet, term_limits.csv, limits.csv,
+    preflare_first_ooc.csv; writes tables/event_outcomes.csv, tables/nonflare_blocks.csv, tables/metrics.csv.
 
     Args:
         out: Output folder holding a finished main.py run.
@@ -262,6 +236,8 @@ def rescore(out: Path) -> None:
     normal = ~(t2["flare_event"] | t2["short_flare"]).to_numpy()
     if "T2_fixed" not in t2.columns:
         t2["T2_fixed"] = t2["T2"]
+    t2["preflare_event_id"] = H.extract_preflare_window(t2.index, events, t2.index[1] - t2.index[0],
+                                                        t2["flare_event"].to_numpy())
     t2v, T = moving_window_t2(scores.to_numpy(dtype=np.float64), normal, par_idx)
     p, WL = len(nodes), C.MW_ROWS_PER_VAR * (len(nodes) + 1)
     lim = C.T2_LIMIT_SCALE * H.t2_threshold(WL, p, 0, C.ALPHA0)
@@ -279,48 +255,49 @@ def rescore(out: Path) -> None:
           f"{term_lim.min():.3f} to {term_lim.max():.3f}; fixed-baseline overall limit x{C.T2_LIMIT_SCALE:g} = "
           f"{lim_fixed:.2f}")
     ratio = T ** 2 / term_lim
-    alarms, outcomes, metrics = evaluate(t2, ratio, nodes, events, loadings)
-    alarms.to_csv(out / "tables" / "alarms.csv", index=False)
+    outcomes, blocks, metrics = evaluate(t2, lim, ratio, nodes, events, loadings)
     outcomes.to_csv(out / "tables" / "event_outcomes.csv", index=False)
+    blocks.to_csv(out / "tables" / "nonflare_blocks.csv", index=False)
     pd.Series(metrics, name="value").rename_axis("metric").to_csv(out / "tables" / "metrics.csv")
     noc, sc = t2["noc"].to_numpy(), t2["scored"].to_numpy()
     new_lim = dict(old_lim, t2_limit=lim, t2_limit_fixed_baseline=lim_fixed, limit_scale=C.T2_LIMIT_SCALE,
                    baseline="moving window", window_rows=WL, step_rows=C.MW_STEP_MIN,
-                   n_events_found=metrics["TP (events detected)"],
+                   pre_window_min=C.FLARE_PRE_WINDOW_MIN, n_events_found=metrics[
+                       "TP (flare events with T² above the limit in the window)"],
                    pct_noc_above_t2_limit=100 * float(t2["above_limit"][noc & sc].mean()),
                    pct_noc_above_term_limit_mean=100 * float(np.nanmean(ratio[noc & sc] > 1)),
                    pct_preflare_above_t2_limit=100 * float(t2["above_limit"][(t2["preflare_event_id"] > 0) & sc].mean()))
     pd.DataFrame([new_lim]).to_csv(out / "t2" / "limits.csv", index=False)
-    first = outcomes.rename(columns={"crossing": "first_ooc"}).assign(
-        detected=outcomes["outcome"].eq("TP"),
-        minutes_before_onset=lambda d: (d["onset"] - pd.to_datetime(d["first_ooc"])) / pd.Timedelta(minutes=1))
+    first = outcomes.rename(columns={"first_above": "first_ooc"}).assign(
+        detected=outcomes["outcome"].eq("TP"), minutes_before_onset=outcomes["lead_min"])
     first.to_csv(out / "t2" / "preflare_first_ooc.csv", index=False)
 
 
 # ---- EXCEL REPORT ----
-def pc_frequency(alarms: pd.DataFrame, outcomes: pd.DataFrame, nodes: list[str]) -> pd.DataFrame:
-    """How often each PC is a root cause: top-1 and top-3 for detected events, top-1 for FP alarms.
+def pc_frequency(outcomes: pd.DataFrame, blocks: pd.DataFrame, nodes: list[str]) -> pd.DataFrame:
+    """How often each PC is a root cause: top-1 and top-3 for TP events, top-1 for FP blocks.
 
     Args:
-        alarms: Alarm table from evaluate().
         outcomes: Event outcome table from evaluate().
+        blocks: Non-flare block table from evaluate().
         nodes: All PC names.
 
     Returns:
-        Table indexed by PC with unit and the counts, sorted by top-1 count for detected events.
+        Table indexed by PC with unit and the counts, sorted by top-1 count for TP events.
     """
     tp = outcomes[outcomes["outcome"] == "TP"]
-    fp = alarms[alarms["class"] == "FP"]
-    top3 = pd.concat([tp[f"pc{k}"] for k in range(1, C.TOP_N_ROOT + 1)])
+    fp = blocks[blocks["outcome"] == "FP"] if "pc1" in blocks.columns else blocks.iloc[:0].assign(pc1=[])
+    top3 = pd.concat([tp[f"pc{k}"] for k in range(1, C.TOP_N_ROOT + 1)]) if len(tp) else pd.Series(dtype=str)
     f = pd.DataFrame({"unit": [H.node_unit(v) for v in nodes]}, index=pd.Index(nodes, name="pc"))
-    f["top1_detected_events"] = tp["pc1"].value_counts().reindex(nodes, fill_value=0)
-    f[f"top{C.TOP_N_ROOT}_detected_events"] = top3.value_counts().reindex(nodes, fill_value=0)
-    f["top1_FP_alarms"] = fp["pc1"].value_counts().reindex(nodes, fill_value=0)
-    return f.sort_values(["top1_detected_events", f"top{C.TOP_N_ROOT}_detected_events"], ascending=False)
+    f["top1_TP_events"] = tp["pc1"].value_counts().reindex(nodes, fill_value=0) if len(tp) else 0
+    f[f"top{C.TOP_N_ROOT}_TP_events"] = top3.value_counts().reindex(nodes, fill_value=0)
+    f["top1_FP_blocks"] = fp["pc1"].value_counts().reindex(nodes, fill_value=0)
+    return f.sort_values(["top1_TP_events", f"top{C.TOP_N_ROOT}_TP_events"], ascending=False)
 
 
 def write_excel(out: Path) -> Path:
-    """Write outputs/RCA_report.xlsx: metrics, events, alarms, pc_frequency, unit_frequency, definitions.
+    """Write outputs/RCA_report.xlsx: metrics, events (one row per flare event), nonflare_blocks, pc_frequency,
+    unit_frequency, definitions.
 
     Args:
         out: Output folder after rescore().
@@ -328,21 +305,27 @@ def write_excel(out: Path) -> Path:
     Returns:
         Path of the workbook.
     """
-    alarms = pd.read_csv(out / "tables" / "alarms.csv")
     outcomes = pd.read_csv(out / "tables" / "event_outcomes.csv")
+    blocks = pd.read_csv(out / "tables" / "nonflare_blocks.csv")
     metrics = pd.read_csv(out / "tables" / "metrics.csv")
     nodes = list(pd.read_csv(out / "t2" / "term_limits.csv")["node"])
-    freq = pc_frequency(alarms, outcomes, nodes)
-    unit = freq.groupby("unit").sum(numeric_only=True).sort_values("top1_detected_events", ascending=False)
-    defs = pd.DataFrame({"term": ["alarm", "TP", "FP", "FN", "TN", "root cause", "ratio", "baseline", "limits"],
+    freq = pc_frequency(outcomes, blocks, nodes)
+    unit = freq.groupby("unit").sum(numeric_only=True).sort_values("top1_TP_events", ascending=False)
+    W = C.FLARE_PRE_WINDOW_MIN
+    defs = pd.DataFrame({"term": ["above limit", "flare block", "non-flare block", "TP", "FN", "FP", "TN", "F1",
+                                  "lead_min", "root cause", "ratio", "baseline", "limits"],
                          "definition": [
-                             f"overall T² above its limit {C.ALARM_ON_DELAY_MIN} min in a row switches the alarm on; "
-                             f"{C.ALARM_OFF_DELAY_MIN} min below switches it off; one activation = one alarm",
-                             f"alarm switches on outside a flare and a flare event starts within {C.PRED_HORIZON_MIN} min",
-                             f"alarm switches on outside a flare and no flare event starts within {C.PRED_HORIZON_MIN} min",
-                             f"flare event with no alarm switching on in its {C.PRED_HORIZON_MIN} min window",
-                             "30-min flare-free block outside all pre-flare windows with no alarm on",
-                             f"top {C.TOP_N_ROOT} PCs by T²_j / own limit at the alarm's first minute above the limit "
+                             "overall T² > its limit at that minute (no on/off delay)",
+                             f"[onset - {W} min, flare end] of one flare event (>= {C.FLARE_MIN_DURATION_MIN} min)",
+                             "time between flare blocks",
+                             f"flare event with T² above the limit at least once in [onset - {W} min, onset) "
+                             "(minutes inside another flare event left out)",
+                             f"flare event with T² never above the limit in [onset - {W} min, onset)",
+                             "non-flare block with T² above the limit at least once (one FP per block)",
+                             "not counted",
+                             "2 TP / (2 TP + FP + FN)",
+                             "minutes from the first minute above the limit in the window to flare onset",
+                             f"top {C.TOP_N_ROOT} PCs by T²_j / own limit at the first minute above the limit "
                              "(FN events: at the window's highest T²)",
                              "T²_j / own limit; above 1 = PC out of control",
                              f"moving window: {C.MW_ROWS_PER_VAR} x (PCs + 1) flare-free trailing rows, "
@@ -350,13 +333,13 @@ def write_excel(out: Path) -> Path:
                              f"Eq. 13 with m = window length, x{C.T2_LIMIT_SCALE:g} (overall and per-PC)"]})
     path = out / "RCA_report.xlsx"
     with pd.ExcelWriter(path, engine="xlsxwriter") as xw:
-        metrics.to_excel(xw, sheet_name="metrics", index=False)
-        outcomes.to_excel(xw, sheet_name="events", index=False)
-        alarms.to_excel(xw, sheet_name="alarms", index=False)
+        sheets = (("metrics", metrics), ("events", outcomes), ("nonflare_blocks", blocks), ("definitions", defs))
+        for name, df in sheets[:3]:
+            df.to_excel(xw, sheet_name=name, index=False)
         freq.to_excel(xw, sheet_name="pc_frequency")
         unit.to_excel(xw, sheet_name="unit_frequency")
         defs.to_excel(xw, sheet_name="definitions", index=False)
-        for name, df in (("metrics", metrics), ("events", outcomes), ("alarms", alarms), ("definitions", defs)):
+        for name, df in sheets:
             for j, c in enumerate(df.columns):
                 xw.sheets[name].set_column(j, j, min(60, max(10, len(str(c)) + 2)))
     H.log(f"saved {path.name}")
@@ -364,20 +347,19 @@ def write_excel(out: Path) -> Path:
 
 
 # ---- FIGURES ----
-def plot_event(D: dict[str, Any], e: Any, r: pd.Series, alarm_spans: list[tuple], path: Path, plt: Any,
-               mdates: Any) -> None:
-    """One flare event: flare_net, overall T² with its limit and alarm, and the top-3 PCs as lines with own limits.
+def plot_event(D: dict[str, Any], e: Any, r: pd.Series, path: Path, plt: Any, mdates: Any) -> None:
+    """One flare event: flare_net, overall T² with its limit, and the top-3 PCs' T²_j with their own limits.
 
     Args:
         D: Plot inputs (flare, t2, terms, term_lim, t2_lim, thr, interval).
         e: Event row (event_id, start, end, duration_min, peak_flare_net).
         r: The event's row in event_outcomes.csv.
-        alarm_spans: (start, end) of every alarm.
         path: PNG to write.
         plt: matplotlib.pyplot.
         mdates: matplotlib.dates.
     """
     col = C.PLOT_COLORS
+    W = C.FLARE_PRE_WINDOW_MIN
     a = e.start - pd.Timedelta(minutes=C.PLOT_ZOOM_BEFORE_MIN)
     b = min(e.end, e.start + pd.Timedelta(minutes=C.PLOT_ZOOM_AFTER_MIN * 4)) + D["interval"]
     pcs = [r.get(f"pc{k}") for k in range(1, C.TOP_N_ROOT + 1) if isinstance(r.get(f"pc{k}"), str)]
@@ -389,11 +371,9 @@ def plot_event(D: dict[str, Any], e: Any, r: pd.Series, alarm_spans: list[tuple]
     t = D["t2"]["T2"].loc[a:b]
     axs[1].plot(t.index, t.clip(lower=1e-2).to_numpy(), color=col["t2"], lw=1)
     axs[1].axhline(D["t2_lim"], color=col["limit"], ls="--", lw=0.8, label=f"limit {D['t2_lim']:.1f}")
-    for k, (s, en) in enumerate(alarm_spans):
-        if en >= a and s <= b:
-            axs[1].axvspan(max(s, a), min(en, b), color="#f1c40f", alpha=0.25, lw=0, label="alarm on" if k >= 0 else None)
-    if isinstance(r.get("crossing"), str) or isinstance(r.get("crossing"), pd.Timestamp):
-        cx = pd.Timestamp(r["crossing"])
+    mark = r.get("first_above") if r.get("outcome") == "TP" else r.get("analysed_minute")
+    if isinstance(mark, (str, pd.Timestamp)) and str(mark) != "nan":
+        cx = pd.Timestamp(mark)
         for ax in axs:
             ax.axvline(cx, color="#8e44ad", lw=1.2, ls=":")
         axs[1].plot([cx], [max(D["t2"]["T2"].get(cx, np.nan), 1e-2)], "o", color="#8e44ad", label="analysed minute")
@@ -409,7 +389,7 @@ def plot_event(D: dict[str, Any], e: Any, r: pd.Series, alarm_spans: list[tuple]
         ax.text(0.01, 0.92, f"{H.node_unit(pc)} | {r.get(f'tags{k + 1}', '')} | ratio at analysed minute "
                 f"{r.get(f'ratio{k + 1}', np.nan):.1f}", transform=ax.transAxes, fontsize=8, va="top")
     for ax in axs:
-        ax.axvspan(e.start - pd.Timedelta(minutes=C.PRED_HORIZON_MIN), e.start, color=col["preflare"], alpha=0.08, lw=0)
+        ax.axvspan(e.start - pd.Timedelta(minutes=W), e.start, color=col["preflare"], alpha=0.08, lw=0)
         ax.axvspan(e.start, e.end + D["interval"], color=col["event"], alpha=0.18, lw=0)
         ax.grid(alpha=0.3)
         h, l = ax.get_legend_handles_labels()
@@ -417,9 +397,9 @@ def plot_event(D: dict[str, Any], e: Any, r: pd.Series, alarm_spans: list[tuple]
             u = dict(zip(l, h))
             ax.legend(u.values(), u.keys(), loc="upper right", fontsize=7)
     H.format_time_axis(axs[-1], mdates, a, b)
-    lead = f", alarm {r['lead_min']:.0f} min before onset" if r.get("outcome") == "TP" else ""
+    lead = f", T² first above the limit {r['lead_min']:.0f} min before onset" if r.get("outcome") == "TP" else ""
     fig.suptitle(f"E{e.event_id}: onset {e.start:%d %b %Y %H:%M}, {e.duration_min:.0f} min, peak {e.peak_flare_net:.2f} "
-                 f"t/h. Outcome: {r.get('outcome')}{lead}. Orange = flare, pink = 30-min window, yellow = alarm on",
+                 f"t/h. Outcome: {r.get('outcome')}{lead}. Orange = flare, pink = {W}-min window",
                  x=0.01, ha="left", fontsize=10)
     fig.tight_layout()
     fig.savefig(path, dpi=90)
@@ -427,64 +407,63 @@ def plot_event(D: dict[str, Any], e: Any, r: pd.Series, alarm_spans: list[tuple]
 
 
 def plot_all_events(D: dict[str, Any], out: Path) -> None:
-    """One PNG per flare event in figures/events/ (replaces the stacked-share Figure 3).
+    """One PNG per flare event in figures/events/ (file name = the 'figure' column of event_outcomes.csv).
 
     Args:
         D: Plot inputs from helpers.load_plot_inputs() after rescore().
         out: Output folder.
     """
     plt, mdates = H.plot_modules()
-    oc = pd.read_csv(out / "tables" / "event_outcomes.csv", parse_dates=["onset"]).set_index("event_id")
-    al = pd.read_csv(out / "tables" / "alarms.csv", parse_dates=["crossing", "end"])
-    spans = list(zip(al["crossing"], al["end"] + D["interval"]))
+    oc = pd.read_csv(out / "tables" / "event_outcomes.csv",
+                     parse_dates=["onset", "first_above", "analysed_minute"]).set_index("event_id")
     folder = out / "figures" / "events"
     folder.mkdir(parents=True, exist_ok=True)
+    for old in folder.glob("E*.png"):
+        old.unlink()
     for e in D["events"].itertuples(index=False):
         r = oc.loc[e.event_id]
-        plot_event(D, e, r, spans, folder / f"E{e.event_id:03d}_{str(r['outcome']).split()[0]}.png", plt, mdates)
+        plot_event(D, e, r, out / r["figure"], plt, mdates)
     H.log(f"saved {len(D['events'])} event figures in figures/events/")
 
 
 def plot_root_cause_frequency(out: Path, path: Path) -> None:
-    """Figure 6: root-cause frequency per PC (top-1 and top-3, detected events), per PC for FP alarms, and per unit.
+    """Figure 6: root-cause frequency per PC (top-1 and top-3, TP events), per PC for FP blocks, and per unit.
 
     Args:
         out: Output folder.
         path: PNG to write.
     """
     plt, _ = H.plot_modules()
-    alarms = pd.read_csv(out / "tables" / "alarms.csv")
+    blocks = pd.read_csv(out / "tables" / "nonflare_blocks.csv")
     oc = pd.read_csv(out / "tables" / "event_outcomes.csv")
     nodes = list(pd.read_csv(out / "t2" / "term_limits.csv")["node"])
-    f = pc_frequency(alarms, oc, nodes)
+    f = pc_frequency(oc, blocks, nodes)
     units = sorted(f["unit"].unique())
     ucol = {u: plt.cm.tab20(i % 20) for i, u in enumerate(units)}
     fig, axs = plt.subplots(2, 2, figsize=(18, 11))
-    n_tp = int((oc["outcome"] == "TP").sum())
-    for ax, c, title in ((axs[0, 0], "top1_detected_events", f"Top-1 root cause, {n_tp} detected events"),
-                         (axs[0, 1], f"top{C.TOP_N_ROOT}_detected_events",
-                          f"In the top {C.TOP_N_ROOT}, {n_tp} detected events"),
-                         (axs[1, 0], "top1_FP_alarms",
-                          f"Top-1 PC of false alarms ({int((alarms['class'] == 'FP').sum())} FP)")):
+    n_tp, n_fp = int((oc["outcome"] == "TP").sum()), int((blocks["outcome"] == "FP").sum())
+    for ax, c, title in ((axs[0, 0], "top1_TP_events", f"Top-1 root cause, {n_tp} TP events"),
+                         (axs[0, 1], f"top{C.TOP_N_ROOT}_TP_events", f"In the top {C.TOP_N_ROOT}, {n_tp} TP events"),
+                         (axs[1, 0], "top1_FP_blocks", f"Top-1 PC of FP blocks ({n_fp} FP)")):
         s = f[c].sort_values(ascending=False)
         ax.bar(range(len(s)), s.to_numpy(), color=[ucol[f.at[v, 'unit']] for v in s.index])
         ax.set_xticks(range(len(s)), s.index, rotation=70, ha="right", fontsize=8)
         ax.set_title(title, loc="left")
         ax.set_ylabel("count")
         ax.grid(axis="y", alpha=0.3)
-    u = f.groupby("unit")[["top1_detected_events", "top1_FP_alarms"]].sum().sort_values("top1_detected_events")
+    u = f.groupby("unit")[["top1_TP_events", "top1_FP_blocks"]].sum().sort_values("top1_TP_events")
     y = np.arange(len(u))
-    axs[1, 1].barh(y - 0.2, u["top1_detected_events"], 0.4, label="detected events (top-1)", color="#1f5fa8")
-    axs[1, 1].barh(y + 0.2, u["top1_FP_alarms"], 0.4, label="false alarms (top-1)", color="#c0392b")
+    axs[1, 1].barh(y - 0.2, u["top1_TP_events"], 0.4, label="TP events (top-1)", color="#1f5fa8")
+    axs[1, 1].barh(y + 0.2, u["top1_FP_blocks"], 0.4, label="FP blocks (top-1)", color="#c0392b")
     axs[1, 1].set_yticks(y, u.index)
     axs[1, 1].legend()
-    axs[1, 1].set_title("By unit: true vs false alarms", loc="left")
+    axs[1, 1].set_title("By unit: TP events vs FP blocks", loc="left")
     axs[1, 1].grid(axis="x", alpha=0.3)
     H.save_figure(fig, path, plt)
 
 
 def plot_metrics(out: Path, path: Path) -> None:
-    """Figure 7: confusion counts, lead time of TP alarms, duration of FP alarms, outcome by month.
+    """Figure 7: TP / FN / FP counts with F1, lead time of TP events, events by month, FP blocks by month.
 
     Args:
         out: Output folder.
@@ -492,35 +471,32 @@ def plot_metrics(out: Path, path: Path) -> None:
     """
     plt, _ = H.plot_modules()
     m = pd.read_csv(out / "tables" / "metrics.csv").set_index("metric")["value"].astype(float)
-    al = pd.read_csv(out / "tables" / "alarms.csv")
+    bl = pd.read_csv(out / "tables" / "nonflare_blocks.csv", parse_dates=["start"])
     oc = pd.read_csv(out / "tables" / "event_outcomes.csv", parse_dates=["onset"])
     fig, axs = plt.subplots(2, 2, figsize=(16, 10))
-    ax = axs[0, 0]
-    cm = np.array([[m["TP (events detected)"], m["FN (events missed)"]],
-                   [m["incorrect predictions (FP alarms)"], m["TN (30-min flare-free blocks, no alarm)"]]])
-    ax.imshow(cm, cmap="Blues")
-    for (i, j), v in np.ndenumerate(cm):
-        ax.text(j, i, f"{['TP', 'FN', 'FP', 'TN'][2 * i + j]}\n{int(v)}", ha="center", va="center", fontsize=14)
-    ax.set_xticks([0, 1], ["alarm", "no alarm"])
-    ax.set_yticks([0, 1], ["flare followed", "no flare"])
-    ax.set_title(f"Accuracy {m['base accuracy (TP+TN)/(TP+FN+FP+TN)']:.2f}, precision "
-                 f"{m['precision TP alarms/(TP+FP alarms)']:.2f}, recall {m['recall TP events/(TP+FN events)']:.2f}",
-                 loc="left")
-    tp, fp = al[al["class"] == "TP"], al[al["class"] == "FP"]
-    axs[0, 1].hist(tp["lead_min"], bins=range(0, C.PRED_HORIZON_MIN + 2), color="#2ca02c")
-    axs[0, 1].set_title(f"Lead time of TP alarms (alarm on -> flare onset), n = {len(tp)}", loc="left")
-    axs[0, 1].set_xlabel("minutes")
-    axs[1, 0].hist(fp["duration_min"].clip(upper=600), bins=40, color="#c0392b")
-    axs[1, 0].set_title(f"Duration of FP alarms (capped at 600 min), n = {len(fp)}, total "
-                        f"{int(fp['duration_min'].sum())} min", loc="left")
-    axs[1, 0].set_xlabel("minutes")
+    tp, fn = int((oc["outcome"] == "TP").sum()), int((oc["outcome"] == "FN").sum())
+    fp = int((bl["outcome"] == "FP").sum())
+    axs[0, 0].bar(["TP", "FN", "FP"], [tp, fn, fp], color=["#2ca02c", "#c0392b", "#e67e22"])
+    for x, v in enumerate([tp, fn, fp]):
+        axs[0, 0].text(x, v, str(v), ha="center", va="bottom", fontsize=13)
+    axs[0, 0].set_title(f"F1 = 2TP / (2TP + FP + FN) = {m['F1 = 2TP / (2TP + FP + FN)']:.3f}", loc="left")
+    axs[0, 0].set_ylabel("count (events / blocks)")
+    lead = oc.loc[oc["outcome"] == "TP", "lead_min"]
+    axs[0, 1].hist(lead, bins=range(0, C.FLARE_PRE_WINDOW_MIN + 2), color="#2ca02c")
+    axs[0, 1].set_title(f"First minute above the limit -> onset, TP events (n = {len(lead)})", loc="left")
+    axs[0, 1].set_xlabel("minutes before onset")
     tab = oc.groupby([oc["onset"].dt.strftime("%Y-%m"), "outcome"]).size().unstack(fill_value=0)
-    tab.plot(kind="bar", stacked=True, ax=axs[1, 1], color=[{"TP": "#2ca02c", "FN (no alarm)": "#c0392b",
-             "FN (already in alarm)": "#e67e22", "not scored": "#9e9e9e"}.get(c, "#555") for c in tab.columns])
-    axs[1, 1].set_title("Flare events by month and outcome", loc="left")
-    axs[1, 1].tick_params(axis="x", rotation=0)
-    for ax in axs.ravel()[1:]:
+    tab.plot(kind="bar", stacked=True, ax=axs[1, 0], color=[{"TP": "#2ca02c", "FN": "#c0392b",
+             "not scored": "#9e9e9e"}.get(c, "#555") for c in tab.columns])
+    axs[1, 0].set_title("Flare events by month and outcome", loc="left")
+    tabb = bl.groupby([bl["start"].dt.strftime("%Y-%m"), "outcome"]).size().unstack(fill_value=0)
+    tabb.plot(kind="bar", stacked=True, ax=axs[1, 1], color=[{"FP": "#e67e22", "no detection": "#1f5fa8",
+              "not scored": "#9e9e9e"}.get(c, "#555") for c in tabb.columns])
+    axs[1, 1].set_title("Non-flare blocks by month (start) and outcome", loc="left")
+    for ax in axs.ravel():
         ax.grid(alpha=0.3)
+    for ax in axs[1]:
+        ax.tick_params(axis="x", rotation=0)
     H.save_figure(fig, path, plt)
 
 

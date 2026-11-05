@@ -15,7 +15,8 @@ def main() -> None:
 
     Steps: load the 13 units and the flare tags -> flare_net and flare events (>= 30 min) -> clean -> label flare,
     pre-flare and NOC rows -> standardize with NOC -> unit-wise PCA -> PC algorithm on the PCs only -> DAG among PCs
-    + every PC -> flare_net -> causal T² decomposition on the PCs (no flare data) -> detection in the pre-flare windows.
+    + every PC -> flare_net -> causal T² decomposition on the PCs (no flare data) -> detection in the pre-flare windows
+    -> rescore (moving-window T², TP / FN / FP blocks, F1) and RCA_report.xlsx.
 
     Raises:
         SystemExit: If any check (gate) fails; the log says which one.
@@ -80,7 +81,7 @@ def main() -> None:
     H.log(f"per-PC limits on T²_j (Eq. 13 with p = 1, k = number of parents, alpha {C.ALPHA_TERM}): "
           f"{term_lim.min():.3f} to {term_lim.max():.3f}; NOC rows above them: mean {noc_term_rate.mean():.2f}% per PC "
           f"(expected about {100 * C.ALPHA_TERM:g}%)")
-    H.log(f"overall T² = Zᵀ pinv(R) Z (TA's Main.py; rank of R {rank_s} of {p}); relative gap to the sum of the causal "
+    H.log(f"overall T² = Zᵀ inv(R) Z (rank of R {rank_s} of {p}); relative gap to the sum of the causal "
           f"terms: median {np.median(gap[noc]):.3f} on NOC, "
           f"{np.median(gap[pre_eid > 0]) if (pre_eid > 0).any() else float('nan'):.3f} in pre-flare windows")
     pd.DataFrame({"T2": t2, "T2_sum_terms": t2_terms, "above_limit": t2 > t2_lim, "noc": noc, "flare_event": flare,

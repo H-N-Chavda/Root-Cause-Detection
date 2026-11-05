@@ -58,9 +58,8 @@ FLARE_MIN_DURATION_MIN = (
 )
 # not events but are kept out of NOC
 FLARE_PRE_WINDOW_MIN = (
-    30  # flare region = [onset - 30 min, onset); an event is "found" if T² > limit there
+    60  # flare region = [onset - 60 min, onset); an event is "found" if T² > limit there
 )
-FLARE_BUFFER_MIN = 120  # NOC excludes [onset - 120 min, end + 120 min] of every event
 TRAIN_FRAC = 0.60  # NOC is drawn from the first 60 % of the window
 TA_CHECK_START = "2025-05-01"  # TA's account (2 flares of about 5 min in May 2025); skipped when outside the window
 TA_CHECK_END = "2025-06-01"
@@ -108,11 +107,8 @@ MW_MIN_NORMAL = 100  # fewer flare-free rows (about 4 x PCs) in the window: rows
 MW_SD_FLOOR_FRAC = 0.01  # a PC flat inside a window (ISOM_4_PC1: 1 step-like tag) gets std = this x its whole-period
 # flare-free std, so its z stays finite and its correlations are 0 (the TA marks such windows "faulty" and skips them)
 
-# ---- ALARMS AND METRICS (ISA-18.2 style: one alarm per activation) ----
-ALARM_ON_DELAY_MIN = 3  # alarm switches on after T² stays above its limit this long
-ALARM_OFF_DELAY_MIN = 10  # alarm switches off after T² stays below its limit this long
-PRED_HORIZON_MIN = 30  # TP: a flare starts within this long after the alarm switches on
-TOP_N_ROOT = 3  # PCs reported per alarm / event (largest T²_j / own limit at the alarm's first minute)
+# ---- METRICS (evaluation.py: TP / FN per flare event, FP per non-flare block, F1; window = FLARE_PRE_WINDOW_MIN) ----
+TOP_N_ROOT = 3  # PCs reported per event / FP block (largest T²_j / own limit at the first minute above the limit)
 SLOPE_STD_MIN = 1e-10  # TA: drop a tag when std(diff) <= this (constant slope = provider-interpolated line)
 SIGMA2_MIN = 1e-6  # floor for sigma²_j·PA(j) (numerical guard)
 IDENTITY_TOL = 1e-6  # max relative error allowed in the sum identity check
