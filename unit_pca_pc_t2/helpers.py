@@ -739,6 +739,9 @@ def clean_matrix(X: pd.DataFrame, reg: pd.DataFrame, status: dict[str, str]) -> 
     near = [c for c in X.columns if top_share[c] > C.NEAR_CONSTANT_SHARE]
     X = drop(X, [c for c in near if not is_flare[c]],
              lambda c: f"near-constant ({100 * top_share[c]:.2f}% one value > {C.NEAR_CONSTANT_SHARE:.0%})")
+    slope_sd = X.diff().std(skipna=True)
+    X = drop(X, [c for c in slope_sd[slope_sd <= C.SLOPE_STD_MIN].index if c != C.FLARE_NET],
+             lambda c: f"constant slope (std of diff {slope_sd[c]:.2g} <= {C.SLOPE_STD_MIN:g})")
     if C.DROP_NEGATIVE_TAGS:
         neg = [c for c in X.columns if c != C.FLARE_NET and bool((X[c] < 0).any())]
         X = drop(X, neg, lambda c: f"has negative values (min {float(X[c].min()):.3g})")
@@ -1377,7 +1380,7 @@ def load_plot_inputs(out: Path) -> dict[str, Any]:
             "dag": pd.read_csv(files["dag"], dtype=str), "cpdag": pd.read_csv(files["cpdag"], dtype=str),
             "thr": float(limits["flare_threshold"]), "t2_lim": float(limits["t2_limit"]),
             "term_lim": pd.read_csv(files["term_limits"]).set_index("node")["t2_limit"], "limits": limits,
-            "interval": pd.Timedelta(limits["interval"])}
+            "interval": pd.Timedelta(limits["interval"]), "out": out}
 
 
 def time_sections(start: pd.Timestamp, end: pd.Timestamp, hours: float | None = None) -> list[tuple]:
@@ -1700,12 +1703,12 @@ def plot_t2_overview(D: dict[str, Any], spans: dict[str, list[tuple]], sections:
     axes = axes[:, 0]
     ax = axes[0]
     ax.plot(t2.index, t2.to_numpy(), color=col["t2"], lw=0.4)
-    ax.axhline(lim, color=col["limit"], ls="--", lw=1, label=f"T² limit (Eq. 13) {lim:.1f}")
+    ax.axhline(lim, color=col["limit"], ls="--", lw=1, label=f"T² limit (Eq. 13 x {C.T2_LIMIT_SCALE:g}) {lim:.1f}")
     for t in D["events"]["start"]:
         ax.axvline(t, color=col["event"], lw=0.8, alpha=0.7)
     ax.set_yscale("log")
-    ax.set_title(f"Overall T² = Zᵀ R⁻¹ Z (PCs only), whole window: {100 * (t2 > lim).mean():.1f}% of rows above "
-                 "the limit (orange lines = flare onsets)", loc="left")
+    ax.set_title(f"Overall T² = Zᵀ R⁻¹ Z (PCs only, moving-window baseline): {100 * (t2 > lim).mean():.1f}% of rows "
+                 "above the limit; gaps = not scored (orange lines = flare onsets)", loc="left")
     ax.set_ylabel("T²")
     add_legend(ax)
     format_time_axis(ax, mdates, sections[0][0], sections[-1][1])
@@ -1724,7 +1727,7 @@ def plot_t2_overview(D: dict[str, Any], spans: dict[str, list[tuple]], sections:
             ax.annotate(peak_label(r), xy=(r.timestamp, r.T2), xytext=(0, 8 + 16 * (i % 3)), textcoords="offset points",
                         ha="center", va="bottom", fontsize=7.5,
                         bbox={"boxstyle": "round,pad=0.2", "fc": "white", "ec": "none", "alpha": 0.8})
-        if len(sel):
+        if sel.notna().any():
             ax.set_ylim(top=float(sel.max()) * 30)
         ax.set_title(f"{s:%d %b %H:%M} to {e:%d %b %H:%M}: {len(pk)} labelled peaks "
                      "(black ▼ = that PC is above its own limit, grey ▼ = not)", loc="left")
@@ -1732,63 +1735,6 @@ def plot_t2_overview(D: dict[str, Any], spans: dict[str, list[tuple]], sections:
         add_legend(ax)
         format_time_axis(ax, mdates, s, e)
     save_figure(fig, path, plt)
-
-
-def plot_event_zooms(D: dict[str, Any], path: Path) -> None:
-    """Figure 3: per event, flare_net, T² and each PC's share of T² from 2 h before onset to 30 min after (one PNG).
-
-    Args:
-        D: Plot inputs from load_plot_inputs().
-        path: PNG file to write.
-    """
-    plt, mdates = plot_modules()
-    col, iv, ev = C.PLOT_COLORS, D["interval"], D["events"]
-    if ev.empty:
-        log("no flare events: Figure 3 skipped")
-        return
-    if len(ev) > C.PLOT_MAX_EVENTS:
-        log(f"{len(ev)} events: Figure 3 shows the {C.PLOT_MAX_EVENTS} with the largest flare_net peak")
-        ev = ev.nlargest(C.PLOT_MAX_EVENTS, "peak_flare_net").sort_values("start")
-    ncol = 2 if len(ev) > 1 else 1
-    nrow = int(np.ceil(len(ev) / ncol))
-    fig = plt.figure(figsize=(C.PLOT_WIDTH_IN, C.PLOT_EVENT_HEIGHT_IN * nrow), constrained_layout=True)
-    subs = np.atleast_1d(fig.subfigures(nrow, ncol, hspace=0.04, wspace=0.03)).ravel()
-    before, after = pd.Timedelta(minutes=C.PLOT_ZOOM_BEFORE_MIN), pd.Timedelta(minutes=C.PLOT_ZOOM_AFTER_MIN)
-    pre = pd.Timedelta(minutes=C.FLARE_PRE_WINDOW_MIN)
-    net, t2, terms = D["flare"][C.FLARE_NET], D["t2"]["T2"], D["terms"]
-    for sf, e in zip(subs, ev.itertuples(index=False)):
-        a, b = e.start - before, e.start + after
-        axs = sf.subplots(3, 1, sharex=True, gridspec_kw={"height_ratios": [1, 1, 1.3]})
-        f = net.loc[a:b]
-        axs[0].plot(f.index, f.to_numpy(), color=col["flare"], lw=1)
-        axs[0].axhline(D["thr"], color=col["limit"], ls="--", lw=1)
-        axs[0].set_ylabel("flare_net (t/h)")
-        t = t2.loc[a:b].clip(lower=1e-3)
-        axs[1].plot(t.index, t.to_numpy(), color=col["t2"], lw=1)
-        axs[1].axhline(D["t2_lim"], color=col["limit"], ls="--", lw=1)
-        axs[1].set_yscale("log")
-        axs[1].set_ylabel("T²")
-        sq = terms.loc[a:b].astype(np.float64) ** 2
-        if len(sq):
-            share = sq.div(sq.sum(axis=1), axis=0)
-            win = share.loc[e.start - pre:e.start - iv]
-            top = list((win if len(win) else share).mean().nlargest(C.PLOT_TOP_PCS_ZOOM).index)
-            other = (1 - share[top].sum(axis=1)).clip(lower=0)
-            axs[2].stackplot(share.index, *[share[c].to_numpy() for c in top], other.to_numpy(),
-                             labels=top + ["other PCs"], colors=list(plt.cm.tab10.colors[:len(top)]) + ["#d9d9d9"])
-            axs[2].legend(loc="upper left", ncol=3, fontsize=8)
-        axs[2].set_ylim(0, 1)
-        axs[2].set_ylabel("share of Σ_j T²_j·PA(j)")
-        for ax in axs:
-            ax.axvspan(e.start - pre, e.start, color=col["preflare"], alpha=0.12, lw=0)
-            ax.axvspan(e.start, e.end + iv, color=col["event"], alpha=0.25, lw=0)
-            ax.axvline(e.start, color=col["event"], lw=1.2)
-        format_time_axis(axs[2], mdates, a, b)
-        sf.suptitle(f"E{e.event_id}: onset {e.start:%d %b %H:%M}, {e.duration_min:.0f} min, peak flare_net "
-                    f"{e.peak_flare_net:.2f} t/h (red band = 30-min pre-flare window)", x=0.01, ha="left", fontsize=12)
-    fig.savefig(path, dpi=C.PLOT_DPI)
-    plt.close(fig)
-    log(f"saved {path.name}")
 
 
 def plot_pc_terms(D: dict[str, Any], peaks: pd.DataFrame, spans: dict[str, list[tuple]], path: Path) -> None:
@@ -1878,127 +1824,89 @@ def plot_individual_pcs(D: dict[str, Any], peaks: pd.DataFrame, spans: dict[str,
 
 
 def plot_causal_graph(D: dict[str, Any], path: Path) -> None:
-    """Figure 5: the final graph (PC algorithm edges among PCs + every PC -> flare_net) and a unit-level summary.
+    """Figure 5: one graph with flare_net in the centre, PCs on a ring grouped by unit, every PC -> flare_net.
+
+    PC -> PC edges are coloured by the source PC's unit; edges reversed to break a PC-output cycle are red dashed;
+    edges the PC algorithm left undirected are dotted. Node size = number of detected events where the PC is the
+    top-1 root cause (tables/event_outcomes.csv, when present).
 
     Args:
         D: Plot inputs from load_plot_inputs().
         path: PNG file to write.
     """
     import networkx as nx
-    from matplotlib.patches import Patch
+    from matplotlib.lines import Line2D
     plt, _ = plot_modules()
-    dag, cp, col = D["dag"], D["cpdag"], C.PLOT_COLORS
+    dag, cp = D["dag"], D["cpdag"]
     pcs = list(D["terms"].columns)
     units = list(dict.fromkeys(node_unit(v) for v in pcs))
     ucol = {u: plt.cm.tab20(i % 20) for i, u in enumerate(units)}
-    ucol["flare"] = col["flare"]
+    pc_edges = [(s, t) for s, t in zip(dag["source"], dag["target"]) if t != C.FLARE_NET]
+    directed = {(s, t) for s, t, ty in cp[["source", "target", "type"]].itertuples(index=False) if ty == EDGE_DIRECTED}
+    undirected = {frozenset((s, t)) for s, t, ty in cp[["source", "target", "type"]].itertuples(index=False)
+                  if ty != EDGE_DIRECTED}
+    reversed_ = [e for e in pc_edges if (e[1], e[0]) in directed]
+    undir = [e for e in pc_edges if frozenset(e) in undirected]
+    normal = [e for e in pc_edges if e not in reversed_ and e not in undir]
+    oc_path = Path(D.get("out", "")) / "tables" / "event_outcomes.csv"
+    cnt = pd.Series(0, index=pcs)
+    if oc_path.is_file():
+        oc = pd.read_csv(oc_path)
+        cnt = oc.loc[oc["outcome"] == "TP", "pc1"].value_counts().reindex(pcs, fill_value=0)
+    gap = 0.35
+    step = (2 * np.pi - gap * len(units)) / len(pcs)
+    ang, a = {}, 0.0
+    for u in units:
+        for v in [v for v in pcs if node_unit(v) == u]:
+            ang[v] = a
+            a += step
+        a += gap
+    pos = {v: (np.cos(x), np.sin(x)) for v, x in ang.items()}
+    pos[C.FLARE_NET] = (0.0, 0.0)
     G = nx.DiGraph()
     G.add_nodes_from(pcs + [C.FLARE_NET])
-    G.add_edges_from(zip(dag["source"], dag["target"]))
-    to_flare = [(s, t) for s, t in G.edges if t == C.FLARE_NET]
-    same = [(s, t) for s, t in G.edges if t != C.FLARE_NET and node_unit(s) == node_unit(t)]
-    cross = [(s, t) for s, t in G.edges if t != C.FLARE_NET and node_unit(s) != node_unit(t)]
-    n_dir = int((cp["type"] == EDGE_DIRECTED).sum())
-    fig, axes = plt.subplots(2, 1, figsize=(C.PLOT_WIDTH_IN, 40), gridspec_kw={"height_ratios": [24, 15]})
-
-    ax = axes[0]
-    ang = {v: 2 * np.pi * i / len(pcs) for i, v in enumerate(pcs)}
-    pos = {v: (np.cos(a), np.sin(a)) for v, a in ang.items()}
-    pos[C.FLARE_NET] = (0.0, 0.0)
-    nx.draw_networkx_edges(G, pos, edgelist=to_flare, ax=ax, edge_color=col["flare"], width=0.5, alpha=0.25,
-                           arrowsize=6, node_size=600)
-    nx.draw_networkx_edges(G, pos, edgelist=cross, ax=ax, edge_color="#7f7f7f", width=0.4, alpha=0.3, arrowsize=6,
-                           node_size=40)
-    nx.draw_networkx_edges(G, pos, edgelist=same, ax=ax, edge_color="#1f5fa8", width=0.6, alpha=0.5, arrowsize=6,
-                           node_size=40, connectionstyle="arc3,rad=0.3")
-    nx.draw_networkx_nodes(G, pos, nodelist=pcs, ax=ax, node_size=40, node_color=[ucol[node_unit(v)] for v in pcs])
-    nx.draw_networkx_nodes(G, pos, nodelist=[C.FLARE_NET], ax=ax, node_size=600, node_shape="s", node_color=col["flare"])
-    ax.text(0, -0.07, C.FLARE_NET, ha="center", va="top", fontsize=12, fontweight="bold")
+    G.add_edges_from(pc_edges + [(v, C.FLARE_NET) for v in pcs])
+    size = {v: 250 + 1800 * cnt[v] / max(int(cnt.max()), 1) for v in pcs}
+    size[C.FLARE_NET] = 3500
+    fig, ax = plt.subplots(figsize=(18, 18))
+    nx.draw_networkx_edges(G, pos, edgelist=[(v, C.FLARE_NET) for v in pcs], ax=ax, edge_color="#bbbbbb", width=0.8,
+                           arrowsize=8, node_size=3500, alpha=0.6)
+    for v in pcs:
+        nx.draw_networkx_edges(G, pos, edgelist=[e for e in normal if e[0] == v], ax=ax, edge_color=[ucol[node_unit(v)]],
+                               width=1.6, alpha=0.75, arrowsize=14, node_size=[size[x] for x in G.nodes],
+                               nodelist=list(G.nodes), connectionstyle="arc3,rad=0.25")
+    nx.draw_networkx_edges(G, pos, edgelist=undir, ax=ax, edge_color="#555555", width=1.6, style="dotted",
+                           arrowsize=14, node_size=[size.get(x, 3500) for x in G.nodes], nodelist=list(G.nodes),
+                           connectionstyle="arc3,rad=0.25")
+    nx.draw_networkx_edges(G, pos, edgelist=reversed_, ax=ax, edge_color="#d62728", width=2.6, style="dashed",
+                           arrowsize=18, node_size=[size.get(x, 3500) for x in G.nodes], nodelist=list(G.nodes),
+                           connectionstyle="arc3,rad=0.25")
+    nx.draw_networkx_nodes(G, pos, nodelist=pcs, ax=ax, node_size=[size[v] for v in pcs],
+                           node_color=[ucol[node_unit(v)] for v in pcs], edgecolors="black", linewidths=0.6)
+    nx.draw_networkx_nodes(G, pos, nodelist=[C.FLARE_NET], ax=ax, node_size=3500, node_shape="s",
+                           node_color=C.PLOT_COLORS["flare"])
+    ax.text(0, 0, C.FLARE_NET, ha="center", va="center", fontsize=13, fontweight="bold", color="white")
+    for v in pcs:
+        x = ang[v]
+        ax.text(1.12 * np.cos(x), 1.12 * np.sin(x), f"{v.split('_')[-1]}\n({int(cnt[v])})", ha="center", va="center",
+                fontsize=9)
     for u in units:
-        a = np.mean([ang[v] for v in pcs if node_unit(v) == u])
-        ax.text(1.13 * np.cos(a), 1.13 * np.sin(a), u, ha="center", va="center", fontsize=12, color=ucol[u],
-                fontweight="bold")
-    ax.set_title(f"Final graph: {len(pcs)} PCs + flare_net. PC algorithm on PCs only: {len(same) + len(cross)} edges "
-                 f"(cross-unit {len(cross)} grey, same-unit {len(same)} blue; PC output had {n_dir} directed and "
-                 f"{len(cp) - n_dir} undirected). Every PC -> flare_net added afterwards ({len(to_flare)} red).",
-                 loc="left")
-    ax.legend(handles=[Patch(color=ucol[u], label=u) for u in units], loc="upper left", bbox_to_anchor=(1.0, 1.0))
-    ax.set_xlim(-1.3, 1.3)
-    ax.set_ylim(-1.3, 1.3)
-    ax.set_aspect("equal")
-    ax.axis("off")
-
-    ax = axes[1]
-    U = nx.DiGraph()
-    U.add_nodes_from(units)
-    counts = pd.Series([(node_unit(s), node_unit(t)) for s, t in G.edges if t != C.FLARE_NET]).value_counts()
-    within = {u: int(counts.get((u, u), 0)) for u in units}
-    for (a, b), c in counts.items():
-        if a != b:
-            U.add_edge(a, b, n=int(c))
-    upos = {u: (np.cos(2 * np.pi * i / len(units)), np.sin(2 * np.pi * i / len(units))) for i, u in enumerate(units)}
-    cmax = max([d["n"] for _, _, d in U.edges(data=True)] + [1])
-    for a, b, d in U.edges(data=True):
-        nx.draw_networkx_edges(U, upos, edgelist=[(a, b)], ax=ax, width=0.5 + 6 * d["n"] / cmax, alpha=0.6,
-                               edge_color="#555555", arrowsize=14, node_size=2600, connectionstyle="arc3,rad=0.12")
-    nx.draw_networkx_nodes(U, upos, ax=ax, node_size=2600, node_color=[ucol[u] for u in U.nodes])
-    n_pc = pd.Series([node_unit(v) for v in pcs]).value_counts()
-    nx.draw_networkx_labels(U, upos, ax=ax, font_size=9,
-                            labels={u: f"{u}\n{n_pc[u]} PCs\n{within[u]} within" for u in U.nodes})
-    top = [(a, b, d["n"]) for a, b, d in sorted(U.edges(data=True), key=lambda e: -e[2]["n"])][:12]
-    ax.text(1.02, 0.98, "Most edges between units:\n" + "\n".join(f"{a} → {b}: {n}" for a, b, n in top),
-            transform=ax.transAxes, va="top", fontsize=10, family="monospace")
-    ax.set_title("Unit-level summary of the PC edges: arrow width = number of PC edges from unit to unit", loc="left")
+        x = np.mean([ang[v] for v in pcs if node_unit(v) == u])
+        ax.text(1.32 * np.cos(x), 1.32 * np.sin(x), u, ha="center", va="center", fontsize=13, fontweight="bold",
+                color=ucol[u])
+    ax.legend(handles=[Line2D([], [], color="#777777", lw=1.6, label="PC -> PC edge (colour = source unit)"),
+                       Line2D([], [], color="#555555", lw=1.6, ls=":", label="left undirected by PC, oriented later"),
+                       Line2D([], [], color="#d62728", lw=2.6, ls="--", label="reversed to break a cycle"),
+                       Line2D([], [], color="#bbbbbb", lw=0.8, label="every PC -> flare_net (added)")],
+              loc="upper left", fontsize=11)
+    ax.set_title(f"Final causal graph: {len(pcs)} PCs, {len(pc_edges)} PC -> PC edges ({len(reversed_)} reversed, "
+                 f"{len(undir)} undirected in PC output), every PC -> flare_net.\nNode size and (n) = detected flare "
+                 "events where the PC is the top-1 root cause.", loc="left", fontsize=13)
+    ax.set_xlim(-1.5, 1.5)
+    ax.set_ylim(-1.5, 1.5)
     ax.set_aspect("equal")
     ax.axis("off")
     save_figure(fig, path, plt)
-
-
-# ---- ROOT-CAUSE TABLE ----
-def root_cause_table(D: dict[str, Any]) -> pd.DataFrame:
-    """Per flare event: PCs above their own limit in the 30-min pre-flare window, ranked by minutes above, then earliest.
-
-    Args:
-        D: Plot inputs from load_plot_inputs().
-
-    Returns:
-        One row per (event, PC): rank, pc, unit, minutes_significant (minutes with T²_j above its Eq. 13 limit),
-        window_rows, first_significant, minutes_before_onset, T2_j_at_first_significant, max_T2_j, T2_j_limit,
-        significant_at_first_ooc (above its limit at the first T² alarm), top_tags.
-    """
-    t2, terms, lim = D["t2"], D["terms"], D["t2_lim"]
-    rows = []
-    for ev in D["events"].itertuples(index=False):
-        w = t2.index[t2["preflare_event_id"].to_numpy() == ev.event_id]
-        if not len(w):
-            continue
-        T = terms.loc[w].astype(np.float64) ** 2
-        sig = T > D["term_lim"].reindex(T.columns).to_numpy()
-        above = t2.loc[w, "T2"].to_numpy() > lim
-        first_ooc = w[int(np.argmax(above))] if above.any() else None
-        for pc in sig.columns[sig.any().to_numpy()]:
-            s = sig[pc].to_numpy()
-            i0 = int(np.argmax(s))
-            rows.append({"event_id": ev.event_id, "onset": ev.start, "pc": pc, "unit": node_unit(pc),
-                         "minutes_significant": int(s.sum()), "window_rows": len(w), "first_significant": w[i0],
-                         "minutes_before_onset": (ev.start - w[i0]) / pd.Timedelta(minutes=1),
-                         "T2_j_at_first_significant": float(T[pc].iloc[i0]), "max_T2_j": float(T[pc].max()),
-                         "T2_j_limit": float(D["term_lim"][pc]),
-                         "significant_at_first_ooc": bool(first_ooc is not None and sig.at[first_ooc, pc]),
-                         "top_tags": top_tags_text(D["loadings"], pc)})
-    cols = ["event_id", "onset", "pc", "unit", "minutes_significant", "window_rows", "first_significant",
-            "minutes_before_onset", "T2_j_at_first_significant", "max_T2_j", "T2_j_limit", "significant_at_first_ooc",
-            "top_tags"]
-    out = pd.DataFrame(rows, columns=cols)
-    if len(out):
-        out = out.sort_values(["event_id", "minutes_significant", "minutes_before_onset"],
-                              ascending=[True, False, False])
-        out.insert(2, "rank", out.groupby("event_id").cumcount() + 1)
-        for r in out[out["rank"] == 1].itertuples(index=False):
-            log(f"  E{r.event_id}: top candidate {r.pc}, above its limit {r.minutes_significant} of {r.window_rows} min, "
-                f"first {r.minutes_before_onset:.0f} min before onset")
-    log(f"root-cause table: {len(out)} rows for {out['event_id'].nunique()} events")
-    return out
 
 
 # ---- SUMMARY ----
@@ -2011,7 +1919,7 @@ def drop_reason(status: str) -> str:
     Returns:
         One of 'constant in NOC', 'too much missing', 'near-constant', 'duplicate column', 'constant', or the status.
     """
-    for key, name in (("negative", "negative values"), ("within NOC", "constant in NOC"), ("missing", "too much missing"),
+    for key, name in (("negative", "negative values"), ("slope", "constant slope"), ("within NOC", "constant in NOC"), ("missing", "too much missing"),
                       ("near-constant", "near-constant"), ("duplicate", "duplicate column"), ("constant", "constant")):
         if key in str(status):
             return name
@@ -2031,9 +1939,7 @@ def build_summary(out: Path) -> None:
     dropped_pc = pd.read_csv(out / "graph" / "pc_dropped_nodes.csv", dtype=str)
     stats = pd.read_csv(out / "graph" / "dag_stats.csv").iloc[0]
     terml = pd.read_csv(out / "t2" / "term_limits.csv")
-    first = pd.read_csv(out / "t2" / "preflare_first_ooc.csv").set_index("event_id")
     short = pd.read_csv(out / "tables" / "short_flares.csv")
-    rc = root_cause_table(D)
     pre = t2["preflare_event_id"] > 0
 
     drops = reg.loc[reg["status"].str.startswith("dropped"), "status"].map(drop_reason).value_counts()
@@ -2075,35 +1981,27 @@ def build_summary(out: Path) -> None:
           f"- Parents per PC (among PCs): mean {terml['n_parents'].mean():.2f}, max {int(terml['n_parents'].max())}; "
           f"root PCs (no parents): {int((terml['n_parents'] == 0).sum())}.", ""]
 
-    n_found = int(first["detected"].astype(str).eq("True").sum()) if "detected" in first else 0
+    m = pd.read_csv(out / "tables" / "metrics.csv").set_index("metric")["value"]
+    oc = pd.read_csv(out / "tables" / "event_outcomes.csv")
     L += ["## T² detection and root causes",
-          f"- Overall T² (PCs only, no flare data) limit {D['t2_lim']:.2f}: report Eq. 13 (corrected), m = "
-          f"{int(lim['n_noc_rows'])} NOC rows, p = {int(lim['p'])} PCs, k = 0, α = {lim['alpha0']:g}. Above it: "
-          f"{lim['pct_noc_above_t2_limit']:.2f}% of NOC rows (expected about {100 * lim['alpha0']:g}%), "
-          f"{lim['pct_preflare_above_t2_limit']:.2f}% of pre-flare rows.",
-          f"- Flare events found (T² above its limit at least once in the {C.FLARE_PRE_WINDOW_MIN} min before onset): "
-          f"{n_found} of {len(ev)}.",
-          f"- Per-PC limits on T²_j: Eq. 13 with p = 1, k = number of parents, α = {lim['alpha_term']:g}: "
-          f"{terml['t2_limit'].min():.3f} to {terml['t2_limit'].max():.3f}. NOC rows above: mean "
-          f"{lim['pct_noc_above_term_limit_mean']:.2f}% per PC (expected about {100 * lim['alpha_term']:g}%).",
-          f"- Overall T² = Zᵀ R⁻¹ Z with the sample NOC correlation R (as the TA). The causal terms sum to Zᵀ Σ_G⁻¹ Z "
-          f"(max relative error {lim['sum_identity_max_rel_error']:.1e}); median gap between that sum and T² on NOC: "
-          f"{lim['gap_t2_vs_sum_terms_median_noc']:.3f}.", "",
-          "| event | onset | min | peak t/h | found | first T² alarm (min before onset) | top root-cause PC | "
-          "minutes above its limit |", "|---|---|---|---|---|---|---|---|"]
-    top = rc[rc["rank"] == 1].set_index("event_id") if len(rc) else pd.DataFrame()
-    for e in ev.head(40).itertuples(index=False):
-        alarm = first["minutes_before_onset"].get(e.event_id, np.nan)
-        found = "yes" if str(first["detected"].get(e.event_id, False)) == "True" else "no"
-        if e.event_id in top.index:
-            r = top.loc[e.event_id]
-            cause = f"{r['pc']} | {int(r['minutes_significant'])} of {int(r['window_rows'])}"
-        else:
-            cause = "none | -"
-        L.append(f"| E{e.event_id} | {e.start:%d %b %H:%M} | {e.duration_min:.0f} | {e.peak_flare_net:.2f} | {found} | "
-                 f"{'-' if pd.isna(alarm) else f'{alarm:.0f}'} | {cause} |")
-    if len(ev) > 40:
-        L.append(f"\n{len(ev) - 40} more events in `tables/flare_events.csv` and `tables/root_cause_by_event.csv`.")
+          f"- Baseline: {lim.get('baseline', 'fixed NOC')} ({lim.get('window_rows', '-')} rows, step "
+          f"{lim.get('step_rows', '-')}). Limits x{lim.get('limit_scale', 1):g}: overall {D['t2_lim']:.2f}, per-PC "
+          f"{terml['t2_limit'].min():.3f} to {terml['t2_limit'].max():.3f}.",
+          f"- Alarm: on after {C.ALARM_ON_DELAY_MIN} min above the limit, off after {C.ALARM_OFF_DELAY_MIN} min below; "
+          f"TP = flare event within {C.PRED_HORIZON_MIN} min of the alarm switching on.", "",
+          "| metric | value |", "|---|---|"]
+    L += [f"| {k} | {float(v):.3f} |" if "accuracy" in k or "precision" in k or "recall" in k else f"| {k} | {v} |"
+          for k, v in m.items()]
+    L += ["", "| event | onset | min | peak t/h | outcome | lead (min) | top root-cause PCs (T²_j / limit) |",
+          "|---|---|---|---|---|---|---|"]
+    for r in oc.head(40).itertuples(index=False):
+        pcs = "; ".join(f"{getattr(r, f'pc{k}')} {getattr(r, f'ratio{k}'):.1f}" for k in range(1, C.TOP_N_ROOT + 1)
+                        if isinstance(getattr(r, f"pc{k}", None), str))
+        lead = "-" if pd.isna(getattr(r, "lead_min", np.nan)) else f"{r.lead_min:.0f}"
+        L.append(f"| E{r.event_id} | {str(r.onset)[5:16]} | {r.duration_min:.0f} | {r.peak_flare_net:.2f} | "
+                 f"{r.outcome} | {lead} | {pcs or '-'} |")
+    if len(oc) > 40:
+        L.append(f"\n{len(oc) - 40} more events in `tables/event_outcomes.csv` and `RCA_report.xlsx`.")
     start, end = pd.Timestamp(C.TA_CHECK_START), pd.Timestamp(C.TA_CHECK_END)
     ws, we = C.window_bounds()
     if (ws is not None and end <= ws) or (we is not None and start >= we):

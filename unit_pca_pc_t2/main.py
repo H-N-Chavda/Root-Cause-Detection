@@ -1,11 +1,12 @@
 """Run the pipeline: python unit_pca_pc_t2/main.py (paths in unit_pca_pc_t2/.env, parameters in config.py).
 
-Then draw the figures with plots.py and write SUMMARY.md with summary.py; both only read the outputs saved here.
+Then draw the figures with plots.py (rescore.py re-scores saved outputs without re-running PC) and write SUMMARY.md with summary.py; both only read the outputs saved here.
 """
 import numpy as np
 import pandas as pd
 
 import config as C
+import evaluation as E
 import helpers as H
 
 
@@ -68,8 +69,8 @@ def main() -> None:
     H.check_noc_terms(T, noc, nodes, floored)
     t2, rank_s = H.compute_t2(Xs, S)
     p, m = len(nodes), int(noc.sum())
-    t2_lim = H.t2_threshold(m, p, 0, C.ALPHA0)
-    term_lim = np.array([H.t2_threshold(m, 1, len(pa[t]), C.ALPHA_TERM) for t in nodes])
+    t2_lim = C.T2_LIMIT_SCALE * H.t2_threshold(m, p, 0, C.ALPHA0)
+    term_lim = np.array([C.T2_LIMIT_SCALE * H.t2_threshold(m, 1, len(pa[t]), C.ALPHA_TERM) for t in nodes])
     pd.DataFrame({"node": nodes, "n_parents": [len(pa[t]) for t in nodes], "sigma2": sigma2,
                   "t2_limit": term_lim}).to_csv(d["t2"] / "term_limits.csv", index=False)
     noc_above, noc_term_rate = 100 * (t2[noc] > t2_lim).mean(), 100 * (T[noc] ** 2 > term_lim).mean(axis=0)
@@ -106,6 +107,8 @@ def main() -> None:
                    "sum_identity_max_rel_error": identity_err,
                    "gap_t2_vs_sum_terms_median_noc": float(np.median(gap[noc]))}]).to_csv(d["t2"] / "limits.csv",
                                                                                            index=False)
+    E.rescore(P.out)  # moving-window baseline, alarms and metrics (also runnable alone: rescore.py)
+    E.write_excel(P.out)
     H.log("pipeline finished")
 
 

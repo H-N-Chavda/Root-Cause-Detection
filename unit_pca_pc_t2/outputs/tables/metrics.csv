@@ -1,0 +1,20 @@
+metric,value
+actual flare events (scored),587.0
+flare events not scored,33.0
+alarms (activations),762.0
+alarms during a flare (not predictions),357.0
+predicted flare events (alarms outside flares),405.0
+correct predictions (TP alarms),65.0
+incorrect predictions (FP alarms),340.0
+TP (events detected),65.0
+FN (events missed),522.0
+FN: no alarm,150.0
+FN: already in alarm,372.0
+"TN (30-min flare-free blocks, no alarm)",659.0
+30-min blocks with an FP activation,226.0
+30-min blocks inside a standing alarm (not counted),481.0
+FP alarm minutes,27292.0
+base accuracy (TP+TN)/(TP+FN+FP+TN),0.45649432534678436
+precision TP alarms/(TP+FP alarms),0.16049382716049382
+recall TP events/(TP+FN events),0.11073253833049404
+median lead time TP (min),11.0

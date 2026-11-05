@@ -1,2 +1,2 @@
-p,n_noc_rows,t2_limit,alpha0,alpha_term,flare_threshold,flare_threshold_rule,interval,n_events,n_events_found,pct_noc_above_t2_limit,pct_noc_above_term_limit_mean,pct_preflare_above_t2_limit,sum_identity_max_rel_error,gap_t2_vs_sum_terms_median_noc
-24,12157,36.50873448579526,0.05,0.05,1.5,manual FLARE_THRESHOLD,0 days 00:01:00,620,532,11.696964711688738,4.972786597570672,78.0617603809257,3.1913159419941002e-15,0.14909006815487713
+p,n_noc_rows,t2_limit,alpha0,alpha_term,flare_threshold,flare_threshold_rule,interval,n_events,n_events_found,pct_noc_above_t2_limit,pct_noc_above_term_limit_mean,pct_preflare_above_t2_limit,sum_identity_max_rel_error,gap_t2_vs_sum_terms_median_noc,t2_limit_fixed_baseline,limit_scale,baseline,window_rows,step_rows
+24,12157,74.69220248773885,0.05,0.05,1.5,manual FLARE_THRESHOLD,0 days 00:01:00,620,65,21.66652957144032,3.6758657563543635,52.956950282649665,3.1913159419941002e-15,0.1490900681548771,73.01746897159052,2.0,moving window,1250,10

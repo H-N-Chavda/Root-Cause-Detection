@@ -99,6 +99,21 @@ ALPHA0 = 0.05  # significance level of the overall T² limit (report Eq. 13, p =
 ALPHA_TERM = (
     0.05  # significance level of each per-PC limit (report Eq. 13, p = 1, k = parents)
 )
+T2_LIMIT_SCALE = 2.0  # every T² limit (overall and per-PC) is multiplied by this (TA notebook uses 1.2 / 1.5 x)
+
+# ---- MOVING-WINDOW BASELINE (TA's Main.py lines 280-340) ----
+MW_ROWS_PER_VAR = 50  # window length WL = 50 x P rows, P = PCs + flare_net (TA: WL = 50 * P)
+MW_STEP_MIN = 10  # baseline re-estimated every 10 rows (TA: every row); rows in a step share one baseline
+MW_MIN_NORMAL = 100  # fewer flare-free rows (about 4 x PCs) in the window: rows not scored (TA: "faulty")
+MW_SD_FLOOR_FRAC = 0.01  # a PC flat inside a window (ISOM_4_PC1: 1 step-like tag) gets std = this x its whole-period
+# flare-free std, so its z stays finite and its correlations are 0 (the TA marks such windows "faulty" and skips them)
+
+# ---- ALARMS AND METRICS (ISA-18.2 style: one alarm per activation) ----
+ALARM_ON_DELAY_MIN = 3  # alarm switches on after T² stays above its limit this long
+ALARM_OFF_DELAY_MIN = 10  # alarm switches off after T² stays below its limit this long
+PRED_HORIZON_MIN = 30  # TP: a flare starts within this long after the alarm switches on
+TOP_N_ROOT = 3  # PCs reported per alarm / event (largest T²_j / own limit at the alarm's first minute)
+SLOPE_STD_MIN = 1e-10  # TA: drop a tag when std(diff) <= this (constant slope = provider-interpolated line)
 SIGMA2_MIN = 1e-6  # floor for sigma²_j·PA(j) (numerical guard)
 IDENTITY_TOL = 1e-6  # max relative error allowed in the sum identity check
 
