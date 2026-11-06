@@ -71,6 +71,8 @@ N_SC_BL = N_BL - N_BL_NS
 N_ALREADY = int(M["TP: T² already above the limit when the window opened"])
 LEAD_MED = float(M["median minutes from first T² above the limit to onset (TP)"])
 assert (TP, FN, FP, len(fe)) == (519, 68, 250, 620), "outputs changed: re-check every number in this script"
+PREC, REC = TP / (TP + FP), TP / (TP + FN)
+assert abs(2 * PREC * REC / (PREC + REC) - F1) < 1e-9
 F1_ALWAYS = 2 * (TP + FN) / (2 * (TP + FN) + N_SC_BL)  # T² above the limit at every scored minute
 tp = ev[ev.outcome == "TP"]
 fpb = bl[bl.outcome == "FP"]
@@ -200,7 +202,7 @@ def fig_counts():
     ax.set_ylim(0, max(vals) * 1.18)
     ax.set_ylabel("count")
     ax.grid(axis="y", alpha=0.3)
-    ax.set_title(f"F1 = 2TP / (2TP + FP + FN) = {F1:.3f}", fontweight="bold")
+    ax.set_title(f"Precision {PREC:.3f}   ·   Recall {REC:.3f}   ·   F1 {F1:.3f}", fontweight="bold")
     return save(fig, "counts.png")
 
 
@@ -758,13 +760,16 @@ console(s, 0.3, 1.1, 5.7, 5.0, "\n".join([
     f"   not scored              : {N_BL_NS}",
     f" FP  gaps with T² rise     : {FP}",
     "-------------------------------------",
+    f" Precision = TP/(TP+FP)    : {PREC:.3f}",
+    f" Recall    = TP/(TP+FN)    : {REC:.3f}",
     f" F1 = 2TP/(2TP+FP+FN)      : {F1:.3f}",
     f" Median warning (TP)       : {LEAD_MED:.0f} min",
     "====================================="]), size=13)
 picture(s, FIG["counts"], 6.3, 1.1, w=6.75)
 caption(s, 0.3, 6.15, 5.7, "Source: outputs/tables/metrics.csv, event_outcomes.csv, nonflare_blocks.csv. " + SRC)
-takeaway(s, 6.6, f"**Reading:** most flares had T² above its limit beforehand, but so did {FP} of the {N_SC_BL} "
-                  "scored gaps: T² rises before flares and between them alike.", h=0.7)
+takeaway(s, 6.6, f"**Reading:** recall is high ({REC:.3f}): only {FN} of {TP + FN} flares were missed. Precision is "
+                  f"lower ({PREC:.3f}): {FP} of the {N_SC_BL} scored gaps also had a T² rise, and these FPs pull F1 "
+                  f"down to {F1:.3f}.", h=0.7)
 
 # ---------------------------------------------------------------- 6 caveat: T² high too often
 figure_slide(f"T² is high so often that an always-on alarm would score F1 = {F1_ALWAYS:.2f}", FIG["daily"],
