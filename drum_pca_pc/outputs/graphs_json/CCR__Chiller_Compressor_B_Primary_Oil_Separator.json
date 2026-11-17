@@ -1,0 +1,24 @@
+{
+ "unit": "CCR",
+ "drum": "Chiller Compressor B Primary Oil Separator",
+ "nodes": [
+  "Chiller Compressor B Primary Oil Separator_PC1",
+  "Chiller Compressor B Primary Oil Separator_PC2"
+ ],
+ "adjacency": [
+  [
+   0,
+   0
+  ],
+  [
+   0,
+   0
+  ]
+ ],
+ "edges": [],
+ "n_rows": 31044,
+ "alpha": 0.05,
+ "test": "fisherz",
+ "max_k": 3,
+ "max_abs_corr_between_PCs": 6.87450071859408e-05
+}

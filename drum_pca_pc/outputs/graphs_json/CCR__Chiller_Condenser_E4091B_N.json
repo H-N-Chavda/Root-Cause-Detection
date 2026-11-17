@@ -1,0 +1,24 @@
+{
+ "unit": "CCR",
+ "drum": "Chiller Condenser E4091B(N)",
+ "nodes": [
+  "Chiller Condenser E4091B(N)_PC1",
+  "Chiller Condenser E4091B(N)_PC2"
+ ],
+ "adjacency": [
+  [
+   0,
+   0
+  ],
+  [
+   0,
+   0
+  ]
+ ],
+ "edges": [],
+ "n_rows": 31044,
+ "alpha": 0.05,
+ "test": "fisherz",
+ "max_k": 3,
+ "max_abs_corr_between_PCs": 0.0005245309433906924
+}

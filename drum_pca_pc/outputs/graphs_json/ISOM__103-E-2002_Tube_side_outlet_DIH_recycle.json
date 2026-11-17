@@ -1,0 +1,18 @@
+{
+ "unit": "ISOM",
+ "drum": "103-E-2002 Tube side outlet (DIH recycle)",
+ "nodes": [
+  "103-E-2002 Tube side outlet (DIH recycle)_PC1"
+ ],
+ "adjacency": [
+  [
+   0
+  ]
+ ],
+ "edges": [],
+ "n_rows": 31044,
+ "alpha": 0.05,
+ "test": "fisherz",
+ "max_k": 3,
+ "max_abs_corr_between_PCs": NaN
+}

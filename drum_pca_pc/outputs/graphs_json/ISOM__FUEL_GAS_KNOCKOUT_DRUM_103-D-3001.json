@@ -1,0 +1,24 @@
+{
+ "unit": "ISOM",
+ "drum": "FUEL GAS KNOCKOUT DRUM ( 103-D-3001 )",
+ "nodes": [
+  "FUEL GAS KNOCKOUT DRUM ( 103-D-3001 )_PC1",
+  "FUEL GAS KNOCKOUT DRUM ( 103-D-3001 )_PC2"
+ ],
+ "adjacency": [
+  [
+   0,
+   0
+  ],
+  [
+   0,
+   0
+  ]
+ ],
+ "edges": [],
+ "n_rows": 31044,
+ "alpha": 0.05,
+ "test": "fisherz",
+ "max_k": 3,
+ "max_abs_corr_between_PCs": 0.00011771383423386287
+}

@@ -1,0 +1,32 @@
+{
+ "unit": "PG",
+ "drum": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG.",
+ "nodes": [
+  "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC1",
+  "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC2",
+  "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC3"
+ ],
+ "adjacency": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "edges": [],
+ "n_rows": 31044,
+ "alpha": 0.05,
+ "test": "fisherz",
+ "max_k": 3,
+ "max_abs_corr_between_PCs": 0.0007109896539411194
+}

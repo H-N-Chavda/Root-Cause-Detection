@@ -1,0 +1,32 @@
+{
+ "unit": "PG",
+ "drum": "SECOND STAGE HDS COLD SEPARATOR DRUM",
+ "nodes": [
+  "SECOND STAGE HDS COLD SEPARATOR DRUM_PC1",
+  "SECOND STAGE HDS COLD SEPARATOR DRUM_PC2",
+  "SECOND STAGE HDS COLD SEPARATOR DRUM_PC3"
+ ],
+ "adjacency": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "edges": [],
+ "n_rows": 31044,
+ "alpha": 0.05,
+ "test": "fisherz",
+ "max_k": 3,
+ "max_abs_corr_between_PCs": 0.002775754186654153
+}

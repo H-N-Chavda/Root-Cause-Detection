@@ -1,0 +1,24 @@
+{
+ "unit": "CCR",
+ "drum": "LPG Vaporizer Overhead",
+ "nodes": [
+  "LPG Vaporizer Overhead_PC1",
+  "LPG Vaporizer Overhead_PC2"
+ ],
+ "adjacency": [
+  [
+   0,
+   0
+  ],
+  [
+   0,
+   0
+  ]
+ ],
+ "edges": [],
+ "n_rows": 31044,
+ "alpha": 0.05,
+ "test": "fisherz",
+ "max_k": 3,
+ "max_abs_corr_between_PCs": 0.0005836330805399669
+}

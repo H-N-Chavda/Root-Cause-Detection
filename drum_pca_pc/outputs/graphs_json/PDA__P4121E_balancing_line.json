@@ -1,0 +1,24 @@
+{
+ "unit": "PDA",
+ "drum": "P4121E balancing line",
+ "nodes": [
+  "P4121E balancing line_PC1",
+  "P4121E balancing line_PC2"
+ ],
+ "adjacency": [
+  [
+   0,
+   0
+  ],
+  [
+   0,
+   0
+  ]
+ ],
+ "edges": [],
+ "n_rows": 31044,
+ "alpha": 0.05,
+ "test": "fisherz",
+ "max_k": 3,
+ "max_abs_corr_between_PCs": 0.0007974503327800842
+}

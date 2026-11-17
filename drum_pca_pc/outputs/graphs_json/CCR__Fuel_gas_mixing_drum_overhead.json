@@ -1,0 +1,24 @@
+{
+ "unit": "CCR",
+ "drum": "Fuel gas mixing drum overhead",
+ "nodes": [
+  "Fuel gas mixing drum overhead_PC1",
+  "Fuel gas mixing drum overhead_PC2"
+ ],
+ "adjacency": [
+  [
+   0,
+   0
+  ],
+  [
+   0,
+   0
+  ]
+ ],
+ "edges": [],
+ "n_rows": 31044,
+ "alpha": 0.05,
+ "test": "fisherz",
+ "max_k": 3,
+ "max_abs_corr_between_PCs": 0.0001943344010331593
+}

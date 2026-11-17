@@ -1,0 +1,24 @@
+{
+ "unit": "LOUP",
+ "drum": "99C02B Suction",
+ "nodes": [
+  "99C02B Suction_PC1",
+  "99C02B Suction_PC2"
+ ],
+ "adjacency": [
+  [
+   0,
+   0
+  ],
+  [
+   0,
+   0
+  ]
+ ],
+ "edges": [],
+ "n_rows": 31044,
+ "alpha": 0.05,
+ "test": "fisherz",
+ "max_k": 3,
+ "max_abs_corr_between_PCs": 2.0600786535899073e-05
+}

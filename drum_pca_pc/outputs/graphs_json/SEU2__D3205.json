@@ -1,0 +1,24 @@
+{
+ "unit": "SEU2",
+ "drum": "D3205",
+ "nodes": [
+  "D3205_PC1",
+  "D3205_PC2"
+ ],
+ "adjacency": [
+  [
+   0,
+   0
+  ],
+  [
+   0,
+   0
+  ]
+ ],
+ "edges": [],
+ "n_rows": 31044,
+ "alpha": 0.05,
+ "test": "fisherz",
+ "max_k": 3,
+ "max_abs_corr_between_PCs": 0.003304471860345757
+}

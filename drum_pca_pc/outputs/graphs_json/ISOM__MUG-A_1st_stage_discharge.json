@@ -1,0 +1,18 @@
+{
+ "unit": "ISOM",
+ "drum": "MUG-A 1st stage discharge",
+ "nodes": [
+  "MUG-A 1st stage discharge_PC1"
+ ],
+ "adjacency": [
+  [
+   0
+  ]
+ ],
+ "edges": [],
+ "n_rows": 31044,
+ "alpha": 0.05,
+ "test": "fisherz",
+ "max_k": 3,
+ "max_abs_corr_between_PCs": NaN
+}

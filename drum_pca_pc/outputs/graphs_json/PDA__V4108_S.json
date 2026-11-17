@@ -1,0 +1,24 @@
+{
+ "unit": "PDA",
+ "drum": "V4108 (S)",
+ "nodes": [
+  "V4108 (S)_PC1",
+  "V4108 (S)_PC2"
+ ],
+ "adjacency": [
+  [
+   0,
+   0
+  ],
+  [
+   0,
+   0
+  ]
+ ],
+ "edges": [],
+ "n_rows": 31044,
+ "alpha": 0.05,
+ "test": "fisherz",
+ "max_k": 3,
+ "max_abs_corr_between_PCs": 0.0006192769022922747
+}

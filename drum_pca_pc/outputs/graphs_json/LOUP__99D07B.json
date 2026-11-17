@@ -1,0 +1,24 @@
+{
+ "unit": "LOUP",
+ "drum": "99D07B",
+ "nodes": [
+  "99D07B_PC1",
+  "99D07B_PC2"
+ ],
+ "adjacency": [
+  [
+   0,
+   0
+  ],
+  [
+   0,
+   0
+  ]
+ ],
+ "edges": [],
+ "n_rows": 31044,
+ "alpha": 0.05,
+ "test": "fisherz",
+ "max_k": 3,
+ "max_abs_corr_between_PCs": 3.552921367294395e-05
+}
