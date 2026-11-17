@@ -1,0 +1,1680 @@
+{
+  "D4201": {
+    "process_tags": [
+      "42PC4215.PV"
+    ]
+  },
+  "T4201": {
+    "process_tags": [
+      "42PC4204.PV"
+    ]
+  },
+  "D4205": {
+    "process_tags": [
+      "42PI4213.PV"
+    ]
+  },
+  "D4207": {
+    "process_tags": [
+      "42PC4220.PV"
+    ]
+  },
+  "D4204": {
+    "process_tags": [
+      "42PC4208.PV"
+    ]
+  },
+  "D4208": {
+    "process_tags": [
+      "42PC4220.PV"
+    ]
+  },
+  "T4207": {
+    "process_tags": [
+      "42PC4275.PV",
+      "42TI4277.PV"
+    ]
+  },
+  "K4201 D/C": {
+    "process_tags": [
+      "44PI4410.PV"
+    ]
+  },
+  "K5201 D/C": {
+    "process_tags": [
+      "44PI4411.PV"
+    ]
+  },
+  "C4502 discharge": {
+    "process_tags": [
+      "42PC4502.PV"
+    ]
+  },
+  "D4502": {
+    "process_tags": [
+      "42PC4501.PV"
+    ]
+  },
+  "D4503": {
+    "process_tags": [
+      "42PC4502.PV"
+    ]
+  },
+  "D5204": {
+    "process_tags": [
+      "42PC4501.PV"
+    ]
+  },
+  "T4202": {
+    "process_tags": [
+      "42PI4205.PV"
+    ]
+  },
+  "V4301": {
+    "process_tags": [
+      "42PI4304.PV"
+    ]
+  },
+  "D/S of PIC4501": {
+    "process_tags": [
+      "42PC4501.PV",
+      "42TI4507.PV"
+    ]
+  },
+  "T4207 North or South": {
+    "process_tags": [
+      "42PC4275.PV",
+      "42TI4277.PV"
+    ]
+  },
+  "D403": {
+    "process_tags": [
+      "02PI237.PV"
+    ]
+  },
+  "K604 I stage": {
+    "process_tags": [
+      "K604BTI1.PV"
+    ]
+  },
+  "K604 II stage": {
+    "process_tags": [
+      "K604BTI2.PV"
+    ]
+  },
+  "C401C D/C": {
+    "process_tags": [
+      "04PI421C.PV"
+    ]
+  },
+  "D209": {
+    "process_tags": [
+      "02PI206.PV"
+    ]
+  },
+  "D201": {
+    "process_tags": [
+      "02PC215.PV"
+    ]
+  },
+  "T201": {
+    "process_tags": [
+      "02PC201A.PV"
+    ]
+  },
+  "D205": {
+    "process_tags": [
+      "02PI213.PV"
+    ]
+  },
+  "D207": {
+    "process_tags": [
+      "LHC215.PV"
+    ]
+  },
+  "D204": {
+    "process_tags": [
+      "02PC208.PV"
+    ]
+  },
+  "D208": {
+    "process_tags": [
+      "LHC222.PV"
+    ]
+  },
+  "R201": {
+    "process_tags": [
+      "02PDI215.PV"
+    ]
+  },
+  "E207 O/L": {
+    "process_tags": [
+      "02PI221B.PV"
+    ]
+  },
+  "E207 to P205": {
+    "process_tags": [
+      "02TI227.PV"
+    ]
+  },
+  "LPG Make up to C502": {
+    "process_tags": [
+      "05PC501.PV",
+      "05TI509.PV"
+    ]
+  },
+  "D/S of C502 Recycle": {
+    "process_tags": [
+      "05PC502.PV",
+      "05TI508.PV"
+    ]
+  },
+  "D502": {
+    "process_tags": [
+      "05PC501.PV"
+    ]
+  },
+  "D503": {
+    "process_tags": [
+      "05PC502.PV",
+      "05TI509.PV"
+    ]
+  },
+  "T203": {
+    "process_tags": [
+      "02PI207.PV"
+    ]
+  },
+  "T202": {
+    "process_tags": [
+      "02PI205.PV"
+    ]
+  },
+  "P201A": {
+    "process_tags": [
+      "02PC201B.PV",
+      "02TC205W.PV"
+    ]
+  },
+  "P201": {
+    "process_tags": [
+      "02PC201B.PV",
+      "02TC205W.PV"
+    ]
+  },
+  "Tk201 N2 Line": {
+    "process_tags": [
+      "02TI219.PV"
+    ]
+  },
+  "GR201": {
+    "process_tags": [
+      "02PDI215.PV"
+    ]
+  },
+  "D3209": {
+    "process_tags": [
+      "PPI3206.PV"
+    ]
+  },
+  "D3201": {
+    "process_tags": [
+      "PPC3215.PV"
+    ]
+  },
+  "T3201 Top": {
+    "process_tags": [
+      "PTI3201A.PV"
+    ]
+  },
+  "D3205": {
+    "process_tags": [
+      "PPI3213.PV",
+      "PTI3231.PV"
+    ]
+  },
+  "D3207": {
+    "process_tags": [
+      "PPI3241.PV"
+    ]
+  },
+  "D3208": {
+    "process_tags": [
+      "PPI3239.PV"
+    ]
+  },
+  "R3201 Top": {
+    "process_tags": [
+      "PTI3280.PV"
+    ]
+  },
+  "E3207 O/L": {
+    "process_tags": [
+      "PTI3201H.PV"
+    ]
+  },
+  "D3213": {
+    "process_tags": [
+      "PPC3401.PV"
+    ]
+  },
+  "PIC3501 discharge": {
+    "process_tags": [
+      "PPC3501.pv"
+    ]
+  },
+  "C3502 D/C": {
+    "process_tags": [
+      "PPC3502.pv"
+    ]
+  },
+  "D3502": {
+    "process_tags": [
+      "PPC3501.pv"
+    ]
+  },
+  "D3503": {
+    "process_tags": [
+      "PPC3502.pv"
+    ]
+  },
+  "T3203 Vapour Line": {
+    "process_tags": [
+      "PPI3207.PV",
+      "PTC3208.PV"
+    ]
+  },
+  "T3202 Vapour Line": {
+    "process_tags": [
+      "PPI3205.PV",
+      "PTC3209.PV"
+    ]
+  },
+  "GR3201": {
+    "process_tags": [
+      "PDI3215A.PV"
+    ]
+  },
+  "FIL-01A/B Feed Filter": {
+    "process_tags": [
+      "71TI8403.PV"
+    ]
+  },
+  "D01 - Feed surge drum": {
+    "process_tags": [
+      "71PC8401.PV"
+    ]
+  },
+  "R01 - Isotherming Reactor": {
+    "process_tags": [
+      "71PI8703.PV",
+      "71TC8702.PV"
+    ]
+  },
+  "D02 - Cold Separator": {
+    "process_tags": [
+      "71PC9101.PV",
+      "71TI9102.PV"
+    ]
+  },
+  "T02 - Stripper overhead": {
+    "process_tags": [
+      "71PI9902.PV",
+      "71TI9904.PV"
+    ]
+  },
+  "T03 - Stripped gas amine absorber": {
+    "process_tags": [
+      "71PC0001.PV",
+      "71TI0405.PV"
+    ]
+  },
+  "Product diesel coalescer": {
+    "process_tags": [
+      "71TI0506.PV"
+    ]
+  },
+  "D05 - Hydrogen KOD": {
+    "process_tags": [
+      "71PC9801.PV"
+    ]
+  },
+  "C02A - MUG Discharge": {
+    "process_tags": [
+      "71TI9701A.PV"
+    ]
+  },
+  "C02B - MUG Discharge": {
+    "process_tags": [
+      "71TI9702B.PV"
+    ]
+  },
+  "E23 - LP steam generator": {
+    "process_tags": [
+      "71PC1701.PV",
+      "71TI1703.PV"
+    ]
+  },
+  "D19 - Flush oil drum": {
+    "process_tags": [
+      "71PC1601.PV",
+      "71TI1603.PV"
+    ]
+  },
+  "NHT FSD": {
+    "process_tags": [
+      "103PC1101.daca.pv"
+    ]
+  },
+  "Separator": {
+    "process_tags": [
+      "103TI1503.daca.pv"
+    ]
+  },
+  "RGC-A Discharge": {
+    "process_tags": [
+      "103PI1657A.daca.pv",
+      "103TI1667A.daca.pv"
+    ]
+  },
+  "RGC-B Discharge": {
+    "process_tags": [
+      "103PI1657B.daca.pv",
+      "103TI1667B.daca.pv"
+    ]
+  },
+  "Stripper": {
+    "process_tags": [
+      "103PC1707.daca.pv",
+      "103TI1709.daca.pv"
+    ]
+  },
+  "ISOM FSD": {
+    "process_tags": [
+      "103PC5101.daca.pv",
+      "103TI5101.daca.pv"
+    ]
+  },
+  "Dip reflux drum": {
+    "process_tags": [
+      "103PIC5120N.pida.pv",
+      "103TIC5122N.pida.pv"
+    ]
+  },
+  "Feed Dryer-A": {
+    "process_tags": [
+      "103PI5301A.pv",
+      "103TI5303A.daca.pv"
+    ]
+  },
+  "Feed Dryer-B": {
+    "process_tags": [
+      "103PI5301B.pv",
+      "103TI5303B.daca.pv"
+    ]
+  },
+  "MUG-A 2nd stage discharge": {
+    "process_tags": [
+      "103PI5421CN.pv",
+      "103TI5470A.pv"
+    ]
+  },
+  "MUG-B 2nd stage discharge": {
+    "process_tags": [
+      "103PI5423CN.pv",
+      "103TI5470B.pv"
+    ]
+  },
+  "MUG-A 1st stage discharge": {
+    "process_tags": [
+      "103TI5466A.pv"
+    ]
+  },
+  "MUG-B 1st stage discharge": {
+    "process_tags": [
+      "103TI5466B.pv"
+    ]
+  },
+  "103-E-2002 Tube side outlet (DIH recycle)": {
+    "process_tags": [
+      "103TI5608.daca.pv"
+    ]
+  },
+  "103-E-2004 tube side inlet (MP Steam)": {
+    "process_tags": [
+      "103PI8208N.pv",
+      "103TI8208N.pv"
+    ]
+  },
+  "HYDROGENATION REACTOR ( 103-R-2001 (M) Inlet": {
+    "process_tags": [
+      "103PI5601.daca.pv",
+      "103TC5604.daca.pv"
+    ]
+  },
+  "HYDROGENATION REACTOR FLASH DRUM ( 103-D-2004 )": {
+    "process_tags": [
+      "103PIC5711BN.pida.pv",
+      "103TI5605.daca.pv"
+    ]
+  },
+  "ISOM Reactors Feed Line (D/s of UV-5703)": {
+    "process_tags": [
+      "103PI5802.daca.pv"
+    ]
+  },
+  "ISOMERISATION REACTOR ( 103-R-2002 ) outlet": {
+    "process_tags": [
+      "103PI5803.daca.pv"
+    ]
+  },
+  "ISOMERISATION REACTOR ( 103-R-2003 ) Outlet": {
+    "process_tags": [
+      "103PI5805.daca.pv"
+    ]
+  },
+  "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)": {
+    "process_tags": [
+      "103PI5915.daca.pv",
+      "103TI5909.daca.pv"
+    ]
+  },
+  "STABILIZER REFLUX DRUM ( 103-D-2005 )": {
+    "process_tags": [
+      "103TC6001.daca.pv"
+    ]
+  },
+  "DEISOHEXANIZER ( 103-T-2002 )": {
+    "process_tags": [
+      "103PC6201.daca.pv"
+    ]
+  },
+  "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )": {
+    "process_tags": [
+      "103PIC6311N.pida.pv",
+      "103TI6302.daca.pv"
+    ]
+  },
+  "CAUSTIC SCRUBBER ( 103-T-2004 )": {
+    "process_tags": [
+      "103PC6901.daca.pv"
+    ]
+  },
+  "DRYERS REGENERATION SUPERHEATER ( 103-F-2001 ) outlet": {
+    "process_tags": [
+      "103PI7009N.pv",
+      "103TI7015N.pv"
+    ]
+  },
+  "DRYERS REGENERANT VAPORIZER ( 103-E-2020 )": {
+    "process_tags": [
+      "103TI7003.daca.pv"
+    ]
+  },
+  "DRYERS REGENERANT DEGASSER ( 103-D-2015 )": {
+    "process_tags": [
+      "103TI7102.daca.pv"
+    ]
+  },
+  "FUEL GAS KNOCKOUT DRUM ( 103-D-3001 )": {
+    "process_tags": [
+      "103PI8501.daca.pv",
+      "103TI8502.daca.pv"
+    ]
+  },
+  "P4121E balancing line": {
+    "process_tags": [
+      "41PI4114.pv",
+      "41TI4142.pv"
+    ]
+  },
+  "P4121W balancing line": {
+    "process_tags": [
+      "41PI4114.pv",
+      "41TI4142.pv"
+    ]
+  },
+  "K4101 (E) 1st Stage": {
+    "process_tags": [
+      "41PI4110.pv",
+      "41TI4136.pv"
+    ]
+  },
+  "K4101 (W) 1st Stage": {
+    "process_tags": [
+      "41PI4110.pv",
+      "41TI4136.pv"
+    ]
+  },
+  "P4106 Dosing pump": {
+    "process_tags": [
+      "41PI41136.pv",
+      "41TI4133.pv"
+    ]
+  },
+  "V4121 overhead to atm": {
+    "process_tags": [
+      "41PI41121.pv",
+      "41TI41136.pv"
+    ]
+  },
+  "C4103 overhead": {
+    "process_tags": [
+      "41PT4104.pv",
+      "41TI4125.pv"
+    ]
+  },
+  "C4104 overhead": {
+    "process_tags": [
+      "41TI41122.pv"
+    ]
+  },
+  "V4102 overhead": {
+    "process_tags": [
+      "41PI4110.pv",
+      "41TI4123.pv"
+    ]
+  },
+  "C4120 overhead": {
+    "process_tags": [
+      "41PI41102.pv",
+      "41TI41116B.pv"
+    ]
+  },
+  "P4121 D/C": {
+    "process_tags": [
+      "41TI4141.pv"
+    ]
+  },
+  "C4102 overhead": {
+    "process_tags": [
+      "41PI41136.pv",
+      "41TI4133.pv"
+    ]
+  },
+  "C4105 overhead": {
+    "process_tags": [
+      "41PI4110.pv",
+      "41TI4132.pv"
+    ]
+  },
+  "P4103B D/C": {
+    "process_tags": [
+      "41PI41136.pv",
+      "41TI4133.pv"
+    ]
+  },
+  "P4103A D/C": {
+    "process_tags": [
+      "41PI41136.pv",
+      "41TI4133.pv"
+    ]
+  },
+  "V4101 overhead": {
+    "process_tags": [
+      "41PI4114.pv",
+      "41TI4142.pv"
+    ]
+  },
+  "V4108 (N)": {
+    "process_tags": [
+      "41PI4111.pv",
+      "41TI4140.pv"
+    ]
+  },
+  "V4108 (S)": {
+    "process_tags": [
+      "41PI4111.pv",
+      "41TI4140.pv"
+    ]
+  },
+  "P4110A/B D/C": {
+    "process_tags": [
+      "41TI4134.pv"
+    ]
+  },
+  "E4111A inlet line": {
+    "process_tags": [
+      "41PI4110.pv",
+      "41TI41130.pv"
+    ]
+  },
+  "K4101 (E) 2nd Stage": {
+    "process_tags": [
+      "41PI4110.pv",
+      "41TI4136.pv"
+    ]
+  },
+  "K4101 (W) 2nd Stage": {
+    "process_tags": [
+      "41PI4110.pv",
+      "41TI4136.pv"
+    ]
+  },
+  "E4111A SCW return header": {
+    "process_tags": [
+      "41PI4110.pv",
+      "41TI41130.pv"
+    ]
+  },
+  "E4111B SCW return header": {
+    "process_tags": [
+      "41PI4110.pv",
+      "41TI41130.pv"
+    ]
+  },
+  "E4111C (E)": {
+    "process_tags": [
+      "41TI41130.pv"
+    ]
+  },
+  "E4106": {
+    "process_tags": [
+      "41PI4111.pv",
+      "41TI4137.pv"
+    ]
+  },
+  "E4108 SCW Return header": {
+    "process_tags": [
+      "41PI41102.pv",
+      "41TI41111B.pv"
+    ]
+  },
+  "E4114 SCW Return header": {
+    "process_tags": [
+      "41TI4124.pv"
+    ]
+  },
+  "E4117A SCW return header": {
+    "process_tags": [
+      "41PI4114.pv",
+      "41TI4144.pv"
+    ]
+  },
+  "E4117B SCW return header": {
+    "process_tags": [
+      "41PI4114.pv",
+      "41TI4144.pv"
+    ]
+  },
+  "P-4121A (W)": {
+    "process_tags": [
+      "41PI41129.pv",
+      "41TI41124.pv"
+    ]
+  },
+  "P-4121B (E)": {
+    "process_tags": [
+      "41PI41129.pv",
+      "41TI41124.pv"
+    ]
+  },
+  "P-4120A (W)": {
+    "process_tags": [
+      "41PI41101A.pv",
+      "41TI41109.pv"
+    ]
+  },
+  "P-4120B (E)": {
+    "process_tags": [
+      "41PI41101A.pv",
+      "41TI41109.pv"
+    ]
+  },
+  "P-4122A (N)": {
+    "process_tags": [
+      "41PI4110.pv",
+      "41TI4123.pv"
+    ]
+  },
+  "P-4122B (S)": {
+    "process_tags": [
+      "41PI4110.pv",
+      "41TI4123.pv"
+    ]
+  },
+  "99FIL01A/B": {
+    "process_tags": [
+      "99PI1206.DACA.PV"
+    ]
+  },
+  "99D20": {
+    "process_tags": [
+      "99PI1206.DACA.PV"
+    ]
+  },
+  "99P02A LO header": {
+    "process_tags": [
+      "99PI1260A.PV"
+    ]
+  },
+  "99P02B LO header": {
+    "process_tags": [
+      "99PI1260B.PV"
+    ]
+  },
+  "99C01A": {
+    "process_tags": [
+      "99TI1320.DACA.PV",
+      "99PI1320.DACA.PV",
+      "99PI1410.DACA.PV",
+      "99TI1407.DACA.PV"
+    ]
+  },
+  "99D07A": {
+    "process_tags": [
+      "99PI1327.DACA.PV",
+      "99TI1321.DACA.PV"
+    ]
+  },
+  "99C01A N2 to distance piece": {
+    "process_tags": [
+      "99PI1342.DACA.PV"
+    ]
+  },
+  "99C01A AOP LUBE OIL SYSTEM": {
+    "process_tags": [
+      "99TI1362.DACA.PV"
+    ]
+  },
+  "99D09A": {
+    "process_tags": [
+      "99PI1405.DACA.PV"
+    ]
+  },
+  "99C01B": {
+    "process_tags": [
+      "99PC1527.DACA.PV",
+      "99TI1515.DACA.PV",
+      "99PI1610.DACA.PV",
+      "99TI1607.DACA.PV"
+    ]
+  },
+  "99D08B": {
+    "process_tags": [
+      "99PI1520.DACA.PV",
+      "99TI1505A.DACA.PV"
+    ]
+  },
+  "99D07B": {
+    "process_tags": [
+      "99PI1506.DACA.PV",
+      "99TI1502A.DACA.PV"
+    ]
+  },
+  "99C01B N2 to distance piece": {
+    "process_tags": [
+      "99PI1542.DACA.PV"
+    ]
+  },
+  "99 C01B AOP LUBE OIL SYSTEM": {
+    "process_tags": [
+      "99PI1566.PV",
+      "99TI1562.DACA.PV"
+    ]
+  },
+  "99D09B": {
+    "process_tags": [
+      "99PI1605.DACA.PV",
+      "99TI1602E.DACA.PV"
+    ]
+  },
+  "99D12": {
+    "process_tags": [
+      "99PI1909.DACA.PV",
+      "99TI5801.DACA.PV"
+    ]
+  },
+  "99P13A": {
+    "process_tags": [
+      "99PI2251.DACA.PV"
+    ]
+  },
+  "99P13B": {
+    "process_tags": [
+      "99PI2252.DACA.PV"
+    ]
+  },
+  "99D02": {
+    "process_tags": [
+      "99PI2310.DACA.PV",
+      "99TI2106.DACA.PV"
+    ]
+  },
+  "99T02": {
+    "process_tags": [
+      "99PI2304.DACA.PV",
+      "99TI2301.DACA.PV"
+    ]
+  },
+  "99E16": {
+    "process_tags": [
+      "99PI2314.PV",
+      "99TI2321.DACA.PV"
+    ]
+  },
+  "99P11A LO header": {
+    "process_tags": [
+      "99PI2360A.PV",
+      "99TI2366A.DACA.PV"
+    ]
+  },
+  "99P11B LO header": {
+    "process_tags": [
+      "99PI2360B.PV",
+      "99TI2366B.DACA.PV"
+    ]
+  },
+  "99T03": {
+    "process_tags": [
+      "99PI2402.daca.pv",
+      "99TI2401.DACA.PV"
+    ]
+  },
+  "99D05": {
+    "process_tags": [
+      "99PI3102.DACA.PV",
+      "99TI3018.DACA.PV"
+    ]
+  },
+  "99C02A Discharge": {
+    "process_tags": [
+      "99PI3219.DACA.PV",
+      "99TI3205.DACA.PV"
+    ]
+  },
+  "99C02B Discharge": {
+    "process_tags": [
+      "99PI3233.DACA.PV",
+      "99TI3208.DACA.PV"
+    ]
+  },
+  "99C02A Suction": {
+    "process_tags": [
+      "99PI3213.PV",
+      "99TI3202A.DACA.PV"
+    ]
+  },
+  "99C02B Suction": {
+    "process_tags": [
+      "99PI3227.PV",
+      "99TI3202C.DACA.PV"
+    ]
+  },
+  "99C02A AOP discharge header": {
+    "process_tags": [
+      "99PI3262.PV",
+      "99TI3258.DACA.PV"
+    ]
+  },
+  "99C02B AOP discharge header": {
+    "process_tags": [
+      "99PI3265.PV",
+      "99TI3269.DACA.PV"
+    ]
+  },
+  "99C02A N2 to distance piece": {
+    "process_tags": [
+      "99PI3281A.DACA.PV"
+    ]
+  },
+  "99C02B N2 to distance piece": {
+    "process_tags": [
+      "99PI3281B.DACA.PV"
+    ]
+  },
+  "99T04": {
+    "process_tags": [
+      "99PI3303.DACA.PV"
+    ]
+  },
+  "Unstalibized Naphtha to OSBL": {
+    "process_tags": [
+      "99PI3413.DACA.PV",
+      "99TI3410.DACA.PV"
+    ]
+  },
+  "99T06": {
+    "process_tags": [
+      "99PI3705.DACA.PV"
+    ]
+  },
+  "99T08": {
+    "process_tags": [
+      "99PI3805.DACA.PV"
+    ]
+  },
+  "99AFC03A/B/C/D": {
+    "process_tags": [
+      "99PC3704.DACA.PV"
+    ]
+  },
+  "99D42": {
+    "process_tags": [
+      "99PI4013.PV"
+    ]
+  },
+  "99E01A/B": {
+    "process_tags": [
+      "99PI1206.DACA.PV"
+    ]
+  },
+  "99E17": {
+    "process_tags": [
+      "99TI4140.DACA.PV"
+    ]
+  },
+  "99P14A": {
+    "process_tags": [
+      "99PI4151.DACA.PV"
+    ]
+  },
+  "99P14B": {
+    "process_tags": [
+      "99PI4152.DACA.PV"
+    ]
+  },
+  "99P14C": {
+    "process_tags": [
+      "99PI4153.DACA.PV"
+    ]
+  },
+  "AFC05": {
+    "process_tags": [
+      "99PI4104.DACA.PV",
+      "99TI4106.DACA.PV"
+    ]
+  },
+  "99E13": {
+    "process_tags": [
+      "99PI4103.DACA.PV",
+      "99TI4107.DACA.PV"
+    ]
+  },
+  "99AFC06A/B": {
+    "process_tags": [
+      "99PI4120.DACA.PV",
+      "99TI4105.DACA.PV"
+    ]
+  },
+  "Rich amine to ARU": {
+    "process_tags": [
+      "99PI4405.DACA.PV",
+      "99TI4404.DACA.PV"
+    ]
+  },
+  "Nitrogen tanker header": {
+    "process_tags": [
+      "99PI5406.DACA.PV",
+      "99TI5406.DACA.PV"
+    ]
+  },
+  "99D27": {
+    "process_tags": [
+      "99TI5905.DACA.PV"
+    ]
+  },
+  "99D26": {
+    "process_tags": [
+      "99TI5905.DACA.PV"
+    ]
+  },
+  "SHU FEED SURGE DRUM": {
+    "process_tags": [
+      "105PC1113.DACA.PV",
+      "105TI1105.DACA.PV"
+    ]
+  },
+  "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG.": {
+    "process_tags": [
+      "105PI1204.DACA.PV",
+      "105TI1203.DACA.PV",
+      "105PI1303.DACA.PV",
+      "105TI1313N.PV"
+    ]
+  },
+  "SHU REACTOR": {
+    "process_tags": [
+      "105PI1403.DACA.PV",
+      "105TIC1421N.PV"
+    ]
+  },
+  "GASOLINE SPLITTER": {
+    "process_tags": [
+      "105PI1518AN.PV",
+      "105TI1602.DACA.PV"
+    ]
+  },
+  "SPLITTER POST CONDENSER": {
+    "process_tags": [
+      "105TI1606.DACA.PV",
+      "105PI1607.DACA.PV"
+    ]
+  },
+  "SPLITTER REFLUX DRUM": {
+    "process_tags": [
+      "105PC1601.DACA.PV",
+      "105TI1604.DACA.PV"
+    ]
+  },
+  "FIRST STAGE HDS REACTOR": {
+    "process_tags": [
+      "105PI2001.DACA.PV",
+      "105TIC2015N.PV"
+    ]
+  },
+  "SECOND STAGE HDS REACTOR": {
+    "process_tags": [
+      "105TIC2215N.PV",
+      "105PI2201.DACA.PV"
+    ]
+  },
+  "FIRST STAGE COLD SEPARATOR DRUM": {
+    "process_tags": [
+      "105PC2403.DACA.PV",
+      "105TI2401.DACA.PV"
+    ]
+  },
+  "AMINE ABSORBER": {
+    "process_tags": [
+      "105PI2608.DACA.PV",
+      "105TI2602.DACA.PV"
+    ]
+  },
+  "RECYCLE COMPRESSOR DRUM": {
+    "process_tags": [
+      "105PI2703.DACA.PV",
+      "105TI2810N.PV"
+    ]
+  },
+  "RECYCLE COMPRESSORS": {
+    "process_tags": [
+      "105PI2803.DACA.PV",
+      "105TI2809N.PV",
+      "105PI2804N.PV",
+      "105TI2806N.PV",
+      "105PI2838AN.PV"
+    ]
+  },
+  "H2S STRIPPER": {
+    "process_tags": [
+      "105PI2811N.PV",
+      "105TI2813N.PV"
+    ]
+  },
+  "SECOND STAGE HDS COLD SEPARATOR DRUM": {
+    "process_tags": [
+      "105PI2827N.PV",
+      "105TIC2828N.PV",
+      "105PI2901.daca.pv",
+      "105TI2901.DACA.PV"
+    ]
+  },
+  "STABILIZER COLUMN": {
+    "process_tags": [
+      "105PIC3010N.PV"
+    ]
+  },
+  "FUEL GAS KNOCKOUT DRUM": {
+    "process_tags": [
+      "105PI5804N.PV",
+      "105TI5803N.PV"
+    ]
+  },
+  "14D1X overhead drum": {
+    "process_tags": [
+      "14TI422.pv"
+    ]
+  },
+  "Wet Gas compressor (14-C-2)": {
+    "process_tags": [
+      "14PT304.PV",
+      "14TI303.PV"
+    ]
+  },
+  "Dethaniser absorber (14T4)": {
+    "process_tags": [
+      "14TI501.PV"
+    ]
+  },
+  "Dethaniser stripper (14T5)": {
+    "process_tags": [
+      "14TI511.PV"
+    ]
+  },
+  "Debutaniser (14T6)": {
+    "process_tags": [
+      "14TI614.PV"
+    ]
+  },
+  "14D5X overhead drum": {
+    "process_tags": [
+      "14TI606.PV"
+    ]
+  },
+  "14D4X Overhead drum": {
+    "process_tags": [
+      "14PT601X.PV",
+      "14TI808.PV"
+    ]
+  },
+  "FGDS (20T1)": {
+    "process_tags": [
+      "20PT103.PV",
+      "20TI102.PV"
+    ]
+  },
+  "Debutaniser": {
+    "process_tags": [
+      "16TT110.pv"
+    ]
+  },
+  "Dethaniser": {
+    "process_tags": [
+      "16TT201.pv"
+    ]
+  },
+  "19T4 O/H Line (caustic Tower) LPG Trtg": {
+    "process_tags": [
+      "19pt102.pv"
+    ]
+  },
+  "19D3 O/H Line (amine settler) LPG Trtg": {
+    "process_tags": [
+      "19pt102.pv"
+    ]
+  },
+  "19T3 O/H Line (H2S Extractor) LPG Trtg": {
+    "process_tags": [
+      "19pt102.pv"
+    ]
+  },
+  "19D4 O/H Line (caustic setller) LPG Trtg": {
+    "process_tags": [
+      "19pt102.pv"
+    ]
+  },
+  "T-2000 VGO STRIPPER": {
+    "process_tags": [
+      "700TI3219N"
+    ]
+  },
+  "T-2001 NAPHTHA STABILIZER": {
+    "process_tags": [
+      "700TI3932N"
+    ]
+  },
+  "E-1020 S/S": {
+    "process_tags": [
+      "700TI3936N"
+    ]
+  },
+  "NSU Feed Surge Drum": {
+    "process_tags": [
+      "101PC1603B.DACA.PV",
+      "101TI1602.PV"
+    ]
+  },
+  "NSU Tower Overhead": {
+    "process_tags": [
+      "101PC1105.DACA.PV",
+      "101TC1103.DACA.PV"
+    ]
+  },
+  "NSU Reflux Drum": {
+    "process_tags": [
+      "101PC1302.DACA.PV"
+    ]
+  },
+  "NHT Feed Surge Drum": {
+    "process_tags": [
+      "102TI0503.DACA.PV"
+    ]
+  },
+  "NHT Feed Filter": {
+    "process_tags": [
+      "102TI0701.DACA.PV"
+    ]
+  },
+  "NHT Separator 102D1003": {
+    "process_tags": [
+      "102PC1201R.DACA.PV"
+    ]
+  },
+  "NHT RGC A Discharge": {
+    "process_tags": [
+      "102PI1457A.DACA.PV",
+      "102TI1402A.DACA.PV"
+    ]
+  },
+  "NHT RGC B Discharge": {
+    "process_tags": [
+      "102PI1457B.DACA.PV",
+      "102TI1408A.DACA.PV"
+    ]
+  },
+  "Stripper Overhead line": {
+    "process_tags": [
+      "102PI1502.DACA.PV",
+      "102TI1504.DACA.PV"
+    ]
+  },
+  "Stripper Bottom line": {
+    "process_tags": [
+      "102PI1507.DACA.PV",
+      "102TI1515.DACA.PV"
+    ]
+  },
+  "CCR Feed Filter": {
+    "process_tags": [
+      "102PI3906N.DACA.PV",
+      "102TI3903.DACA.PV"
+    ]
+  },
+  "CCR Separator 102D2001": {
+    "process_tags": [
+      "102PC4101.DACA.PV",
+      "102TI4250.DACA.PV"
+    ]
+  },
+  "NGC 1st stage suction drum 102D2002": {
+    "process_tags": [
+      "102PC4302R.DACA.PV",
+      "102TI4301.DACA.PV"
+    ]
+  },
+  "1st Stage Suction cooler 102E2003A inlet": {
+    "process_tags": [
+      "102PI4244AN.PV",
+      "102TI4351N.DACA.PV"
+    ]
+  },
+  "1st Stage Suction cooler 102E2003B inlet": {
+    "process_tags": [
+      "102PI4244AN.PV",
+      "102TI4351N.DACA.PV"
+    ]
+  },
+  "NGC A 1st Stage Discharge": {
+    "process_tags": [
+      "102PI4457.DACA.PV",
+      "102TI4405.DACA.PV"
+    ]
+  },
+  "NGC A 2nd Stage Discharge": {
+    "process_tags": [
+      "102PI4459.DACA.PV",
+      "102TI4406.DACA.PV"
+    ]
+  },
+  "NGC B 1st Stage Discharge": {
+    "process_tags": [
+      "102PI4557.DACA.PV",
+      "102TI4405.DACA.PV"
+    ]
+  },
+  "NGC B 2nd Stage Discharge": {
+    "process_tags": [
+      "102PI4559.DACA.PV",
+      "102TI4406.DACA.PV"
+    ]
+  },
+  "NGC 2nd Stage Suction Drum 102D2003": {
+    "process_tags": [
+      "102TI4602.DACA.PV",
+      "102PC4602R.DACA.PV"
+    ]
+  },
+  "NGC 1st Stage Discharge cooler A inlet line": {
+    "process_tags": [
+      "102PI4457.DACA.PV",
+      "102TI4651N.DACA.PV"
+    ]
+  },
+  "NGC 1st Stage Discharge cooler B inlet line": {
+    "process_tags": [
+      "102PI4457.DACA.PV",
+      "102TI4652N.DACA.PV"
+    ]
+  },
+  "Recontact Drum 102D2004 Net Gas": {
+    "process_tags": [
+      "102PC4702.DACA.PV"
+    ]
+  },
+  "Propane Make up": {
+    "process_tags": [
+      "102PIC4771N.DACA.PV",
+      "102TI4789N.DACA.PV"
+    ]
+  },
+  "Chiller 102E2007": {
+    "process_tags": [
+      "102PIC4771N.DACA.PV",
+      "102TI4789N.DACA.PV"
+    ]
+  },
+  "Recontact Drum LFLF": {
+    "process_tags": [
+      "102PC4702.DACA.PV",
+      "102TI4742N.DACA.PV"
+    ]
+  },
+  "NGC 2nd Stage Discharge cooler A inlet line": {
+    "process_tags": [
+      "102PI4457.DACA.PV",
+      "102PI4557.DACA.PV",
+      "102TI4745N.DACA.PV"
+    ]
+  },
+  "NGC 2nd Stage Discharge cooler B inlet line": {
+    "process_tags": [
+      "102PI4457.DACA.PV",
+      "102PI4557.DACA.PV",
+      "102TI4746N.DACA.PV"
+    ]
+  },
+  "Net Gas Chloride Treater D-2005A": {
+    "process_tags": [
+      "102PC4702.DACA.PV",
+      "102TI4742N.DACA.PV"
+    ]
+  },
+  "Net Gas Chloride Treater D-2005B": {
+    "process_tags": [
+      "102PC4702.DACA.PV",
+      "102TI4742N.DACA.PV"
+    ]
+  },
+  "Reformate Rundown cooler A inlet": {
+    "process_tags": [
+      "102PI5006.DACA.PV",
+      "102TI4951N.DACA.PV"
+    ]
+  },
+  "Reformate Rundown cooler B inlet": {
+    "process_tags": [
+      "102PI5006.DACA.PV",
+      "102TI4952N.DACA.PV"
+    ]
+  },
+  "Stabilizer 102T2001(M) Overhead line": {
+    "process_tags": [
+      "102PI5001.DACA.PV",
+      "102TI5002.DACA.PV"
+    ]
+  },
+  "Stabilizer Reciever Drum": {
+    "process_tags": [
+      "102PC5101R.DACA.PV",
+      "102TI5104.DACA.PV"
+    ]
+  },
+  "Stabilizer Condenser 102E2009 A/B inlet": {
+    "process_tags": [
+      "102PC5101R.DACA.PV",
+      "102TI5151N.DACA.PV"
+    ]
+  },
+  "Stabilizer Condenser 102E2009 C/D inlet": {
+    "process_tags": [
+      "102PC5101R.DACA.PV",
+      "102TI5151N.DACA.PV"
+    ]
+  },
+  "LPG Chloride Treater 102D2006A": {
+    "process_tags": [
+      "102TI5102.DACA.PV"
+    ]
+  },
+  "LPG Chloride Treater 102D2006B": {
+    "process_tags": [
+      "102TI5102.DACA.PV"
+    ]
+  },
+  "Fuel Gas Coalescer": {
+    "process_tags": [
+      "102PI9607.DACA.PV",
+      "102TI9607.DACA.PV"
+    ]
+  },
+  "Chiller Compressor A Primary Oil Separator": {
+    "process_tags": [
+      "102PI4754R.DACA.PV",
+      "102TI4752R.DACA.PV"
+    ]
+  },
+  "Chiller Compressor B Primary Oil Separator": {
+    "process_tags": [
+      "102PI4758R.DACA.PV",
+      "102TI4764R.DACA.PV"
+    ]
+  },
+  "Chiller Condenser E4091B(N)": {
+    "process_tags": [
+      "102PI4767N.DACA.PV",
+      "102TI4787N.DACA.PV"
+    ]
+  },
+  "Chiller Condenser E4091A(N)": {
+    "process_tags": [
+      "102PI4766N.DACA.PV",
+      "102TI4786N.DACA.PV"
+    ]
+  },
+  "Chiller Reciever D4092(R)": {
+    "process_tags": [
+      "102PI4766N.DACA.PV",
+      "102TI4788N.DACA.PV"
+    ]
+  },
+  "Chiller Surge Drum D4093(R)": {
+    "process_tags": [
+      "102PI4769N.DACA.PV",
+      "102TI4788N.DACA.PV"
+    ]
+  },
+  "Chiller": {
+    "process_tags": [
+      "102PI4770N.DACA.PV",
+      "102TI4790N.DACA.PV"
+    ]
+  },
+  "Chiller KOD": {
+    "process_tags": [
+      "102PI4772N.DACA.PV",
+      "102TI4789N.DACA.PV"
+    ]
+  },
+  "Adsorbent Chamber 102T4051R": {
+    "process_tags": [
+      "102TI6701.DACA.PV"
+    ]
+  },
+  "Adsorbent Chamber 102T4052R": {
+    "process_tags": [
+      "102TI6701.DACA.PV"
+    ]
+  },
+  "Adsorbent Chamber 102T4053R": {
+    "process_tags": [
+      "102TI6701.DACA.PV"
+    ]
+  },
+  "Adsorbent Chamber 102T4054R": {
+    "process_tags": [
+      "102TI6701.DACA.PV"
+    ]
+  },
+  "Adsorbent Chamber 102T4055R": {
+    "process_tags": [
+      "102TI6701.DACA.PV"
+    ]
+  },
+  "Adsorbent Chamber 102T4056R": {
+    "process_tags": [
+      "102TI6701.DACA.PV"
+    ]
+  },
+  "Tail Gas Drum 102D4051 inlet": {
+    "process_tags": [
+      "102PY6708.PV",
+      "102TI6701.DACA.PV"
+    ]
+  },
+  "102FIL4053N Hydrogen Filter": {
+    "process_tags": [
+      "102PC6702.DACA.PV",
+      "102TI6701.DACA.PV"
+    ]
+  },
+  "102FIL4054N Hydrogen Filter": {
+    "process_tags": [
+      "102PC6702.DACA.PV",
+      "102TI6701.DACA.PV"
+    ]
+  },
+  "Dust collector Outlet Line": {
+    "process_tags": [
+      "102PI7903.DACA.PV"
+    ]
+  },
+  "Booster Gas Coialescer Outlet": {
+    "process_tags": [
+      "102PC4702.DACA.PV",
+      "102TI8602.DACA.PV"
+    ]
+  },
+  "Cyclemax Air Dryer Left Chamber": {
+    "process_tags": [
+      "102PI9003.DACA.PV"
+    ]
+  },
+  "Cyclemax Air Dryer Right Chamber": {
+    "process_tags": [
+      "102PI9004.DACA.PV"
+    ]
+  },
+  "Lock Hopper D7002": {
+    "process_tags": [
+      "102PI8507N.DACA.PV",
+      "102TI8601.DACA.PV"
+    ]
+  },
+  "Lock Hopper D7003": {
+    "process_tags": [
+      "102TI8601.DACA.PV"
+    ]
+  },
+  "LPG Vaporizer Overhead": {
+    "process_tags": [
+      "508PC5103.DACA.PV",
+      "508TI5101.DACA.PV"
+    ]
+  },
+  "Fuel gas mixing drum overhead": {
+    "process_tags": [
+      "508PC5102.DACA.PV",
+      "508TI5102.DACA.PV"
+    ]
+  },
+  "Fuel gas mixing drum to Header": {
+    "process_tags": [
+      "508PC5104.DACA.PV",
+      "508TI5102.DACA.PV"
+    ]
+  },
+  "98-D-0001 (FEED SURGE DRUM)": {
+    "process_tags": [
+      "98PIC1102.DACA.PV"
+    ]
+  },
+  "HYDROGEN LINE": {
+    "process_tags": [
+      "98PIC3307.DACA.PV"
+    ]
+  },
+  "D-0002 (LIQUID GAS SEPERATOR)": {
+    "process_tags": [
+      "98PIC1601.DACA.PV"
+    ]
+  },
+  "98-T-0002 (FRACTIONATOR COLUMN)": {
+    "process_tags": [
+      "98PI2002.DACA.PV"
+    ]
+  },
+  "98-T-0002 (FRACTIONATOR COLUMN": {
+    "process_tags": [
+      "98PI2002.DACA.PV"
+    ]
+  },
+  "98-D-0004(FRACTIONATOR OVERHEAD REFLUX DRUM)": {
+    "process_tags": [
+      "98PIC2601.DACA.PV"
+    ]
+  },
+  "Main tower 11-T-1(N) Ovhd": {
+    "process_tags": [
+      "11PI3010.DACA.PV"
+    ]
+  },
+  "Reflux Drum 11-D-1": {
+    "process_tags": [
+      "11TI3102.DACA.PV"
+    ]
+  },
+  "11D2002 APS Fuel gas KOD": {
+    "process_tags": [
+      "11PI7802N.DACA.PV"
+    ]
+  },
+  "Nap Stabilizer Ovhd": {
+    "process_tags": [
+      "11TI701.DACA.PV"
+    ]
+  },
+  "11D6 LPG Reflux DRUM": {
+    "process_tags": [
+      "11TI4710.DACA.PV"
+    ]
+  },
+  "On 24-STR-1008A/B Fuel gas strainer": {
+    "process_tags": [
+      "24TI1602.PV"
+    ]
+  },
+  "On 24-D-1001 FG KOD": {
+    "process_tags": [
+      "24TI1602.PV"
+    ]
+  },
+  "Amine tower 24-T-1005 O/H (East)": {
+    "process_tags": [
+      "24TI3501.PV"
+    ]
+  },
+  "Ejector condensate drum 24-D-1004": {
+    "process_tags": [
+      "24TI3301.PV"
+    ]
+  },
+  "17T1 O/H Line": {
+    "process_tags": [
+      "17PT101.PV",
+      "17TI105.PV"
+    ]
+  },
+  "17T2 O/H Line": {
+    "process_tags": [
+      "17PT112.PV",
+      "17TI115.PV"
+    ]
+  },
+  "THT3 O/H Line": {
+    "process_tags": [
+      "THPC401.PV",
+      "THTI402.PV"
+    ]
+  }
+}
