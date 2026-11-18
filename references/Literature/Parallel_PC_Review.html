@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parallel-PC Technical Review</title>
+<meta name="description" content="Technical review of Parallel-PC (Le et al., 2015/2016): mathematics, equivalence with PC and PC-stable, computational behaviour, limitations, adoption and implementations.">
+<script>
+window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };
+</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script>
+<style>
+:root{
+  --bg:#fbfaf7; --surface:#ffffff; --surface-2:#f3f1ec; --text:#1d1d1f; --muted:#5d5d63; --border:#dedbd3;
+  --accent:#2f5d8a; --accent-soft:#e3ecf5; --good:#2e7d4f; --good-soft:#e2f2e8; --warn:#9a6a00; --warn-soft:#fbf1d9;
+  --bad:#a23b3b; --bad-soft:#f7e3e3; --c1:#2f5d8a; --c2:#c06a2b; --c3:#3f8f6b; --c4:#8a4f9e; --c5:#b0475a; --c6:#6b7d2a;
+  --code:#f1efe9;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16171a; --surface:#1e2024; --surface-2:#25282d; --text:#e8e8ea; --muted:#a3a5ab; --border:#363a41;
+    --accent:#86b3e0; --accent-soft:#1f3042; --good:#7cc79c; --good-soft:#1b3326; --warn:#e2b552; --warn-soft:#3a2f14;
+    --bad:#e58b8b; --bad-soft:#3d1f1f; --c1:#86b3e0; --c2:#e7a06b; --c3:#7cc79c; --c4:#c39ad6; --c5:#e48a9b; --c6:#b8c96b;
+    --code:#25282d;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16171a; --surface:#1e2024; --surface-2:#25282d; --text:#e8e8ea; --muted:#a3a5ab; --border:#363a41;
+  --accent:#86b3e0; --accent-soft:#1f3042; --good:#7cc79c; --good-soft:#1b3326; --warn:#e2b552; --warn-soft:#3a2f14;
+  --bad:#e58b8b; --bad-soft:#3d1f1f; --c1:#86b3e0; --c2:#e7a06b; --c3:#7cc79c; --c4:#c39ad6; --c5:#e48a9b; --c6:#b8c96b;
+  --code:#25282d;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.62 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:920px;margin:0 auto;padding:32px 16px 80px}
+h1{font-size:2rem;line-height:1.2;margin:0 0 8px;letter-spacing:-.01em}
+h2{font-size:1.45rem;margin:56px 0 12px;padding-top:12px;border-top:1px solid var(--border)}
+h3{font-size:1.12rem;margin:28px 0 8px}
+p,li{max-width:76ch}
+a{color:var(--accent)}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--code);border-radius:4px}
+code{padding:1px 5px}
+pre{padding:12px 14px;overflow-x:auto;line-height:1.45}
+.sub{color:var(--muted);margin:0 0 20px}
+.verdict{background:var(--surface);border:1px solid var(--border);border-left:5px solid var(--accent);border-radius:8px;padding:18px 20px;margin:24px 0}
+.verdict h2{border:0;margin:0 0 8px;padding:0;font-size:1.2rem}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
+.tag{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.03em;text-transform:uppercase;padding:2px 7px;border-radius:999px;vertical-align:1px;white-space:nowrap}
+.t-paper{background:var(--accent-soft);color:var(--accent)}
+.t-follow{background:var(--good-soft);color:var(--good)}
+.t-infer{background:var(--warn-soft);color:var(--warn)}
+.t-test{background:var(--surface-2);color:var(--text);border:1px solid var(--border)}
+.box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:16px 0}
+.box.warn{border-left:4px solid var(--warn)}
+.box.bad{border-left:4px solid var(--bad)}
+.box.good{border-left:4px solid var(--good)}
+.tbl{overflow-x:auto;margin:14px 0;border:1px solid var(--border);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+th{background:var(--surface-2);font-weight:600}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+figure{margin:20px 0;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+figcaption{color:var(--muted);font-size:.88rem;margin-top:8px}
+svg{max-width:100%;height:auto;display:block}
+svg text{fill:var(--text);font-family:inherit}
+.toc{columns:2;column-gap:28px;padding-left:18px}
+@media (max-width:640px){.toc{columns:1} h1{font-size:1.6rem}}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:700px){.grid2{grid-template-columns:1fr}}
+.mjx{overflow-x:auto;overflow-y:hidden}
+ol.algo{font-family:ui-monospace,Menlo,monospace;font-size:.86rem;background:var(--code);padding:12px 12px 12px 40px;border-radius:6px}
+ol.algo li{max-width:none}
+.small{font-size:.88rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+
+<h1>Parallel-PC: a technical review</h1>
+<p class="sub">Le, Hoang, Li, Liu, Liu &amp; Hu, “A fast PC algorithm for high dimensional causal discovery with multi-core PCs”. arXiv:1502.02454 (v1 Feb 2015, v3 Nov 2016); <i>IEEE/ACM Trans. Comput. Biol. Bioinform.</i> 16(5), 2019, doi:10.1109/TCBB.2016.2591526. Review prepared 18 Nov 2026.</p>
+
+<div class="verdict">
+<h2>Verdict</h2>
+<p><b>The method is theoretically sound, but it does not offer a different estimator.</b> Parallel-PC is PC-stable (Colombo &amp; Maathuis, 2014) with the conditional-independence (CI) tests of each level spread across CPU cores. Given the same data, CI test, α and variable order, it returns the <i>same skeleton and the same separating sets</i> as PC-stable, so it gives the same CPDAG. The only gain is speed: the paper reports 3–6× on 8 cores and at most about 12.7× on 14 cores. There is no change in accuracy relative to PC-stable. The accuracy gain the paper reports over the original PC comes from PC-stable's order-independence, not from parallelism.</p>
+<p><b>It is not worth adopting as a separate tool.</b> The reference R package was last released in 2015 and was archived from CRAN in December 2025. A single-threaded C++ PC-stable (<code>pcalg</code>'s <code>stable.fast</code>) roughly matches the 8-core R Parallel-PC. GPU implementations (cuPC) are faster by two to three orders of magnitude. The level-synchronous parallelisation scheme itself is the lasting contribution, and modern tools already use it. If PC-stable is too slow for you, use a compiled PC-stable (multi-threaded where available) or cuPC for Gaussian data. Do not install ParallelPC.</p>
+<div class="legend"><span class="tag t-paper">Paper</span> claimed or shown in Le et al. <span class="tag t-follow">Follow-up</span> established by other published work <span class="tag t-infer">Inference</span> my own analysis or reading of source code <span class="tag t-test">Tested</span> reproduced in a small experiment for this review (§8)</div>
+</div>
+
+<h3>Contents</h3>
+<ol class="toc">
+<li><a href="#s1">Background: PC and PC-stable</a></li>
+<li><a href="#s2">What Parallel-PC changes</a></li>
+<li><a href="#s3">Worked example</a></li>
+<li><a href="#s4">Graph equivalence</a></li>
+<li><a href="#s5">Computational analysis</a></li>
+<li><a href="#s6">Limitations and trade-offs</a></li>
+<li><a href="#s7">Why it is under-used</a></li>
+<li><a href="#s8">Implementations and our checks</a></li>
+<li><a href="#s9">Recommendations</a></li>
+<li><a href="#refs">References</a></li>
+</ol>
+
+<!-- ============================================================ -->
+<h2 id="s1">1. Mathematical foundations: PC and PC-stable</h2>
+
+<h3>1.1 Assumptions</h3>
+<p>Parallel-PC uses the standard PC assumptions <span class="tag t-paper">Paper §3.1</span> and adds none of its own. Let \(G=(V,E)\) be a DAG over \(p=|V|\) variables with joint distribution \(P\).</p>
+<ul>
+<li><b>Causal Markov condition:</b> every \(X\) is independent of its non-descendants given its parents, \(X \perp\!\!\!\perp \mathrm{ND}(X)\mid \mathrm{Pa}(X)\).</li>
+<li><b>Faithfulness:</b> \(X \perp\!\!\!\perp Y \mid S\) in \(P\) only if \(X\) and \(Y\) are d-separated by \(S\) in \(G\).</li>
+<li><b>Causal sufficiency:</b> there are no unobserved common causes.</li>
+<li>The CI test is chosen to suit the data: Fisher-z partial correlation for Gaussian data, G² or χ² for discrete data, or kernel tests.</li>
+</ul>
+
+<h3>1.2 Adjacency criterion</h3>
+<p>The skeleton phase rests on one lemma (Spirtes et al., 2000; Theorem 1 in the paper):</p>
+<div class="mjx">\[
+X,Y \text{ non-adjacent in } G \;\Longrightarrow\; \exists\, S \subseteq \mathrm{adj}(X,G)\setminus\{Y\} \ \text{ or } \ S \subseteq \mathrm{adj}(Y,G)\setminus\{X\} \ \text{ such that } X \perp\!\!\!\perp_G Y \mid S .
+\]</div>
+<p>PC searches for such an \(S\) in order of increasing size \(\ell = |S| = 0,1,2,\dots\) (the “level” or “depth”). It looks only inside the <i>current estimated</i> adjacency sets, which shrink as edges are removed. That pruning is why PC is fast on sparse graphs.</p>
+
+<h3>1.3 The CI test (Gaussian case)</h3>
+<p>Every implementation discussed here, including the paper's experiments, cuPC and our test harness, uses the Fisher-z test on the sample partial correlation:</p>
+<div class="mjx">\[
+\hat\rho_{XY\cdot S} = -\frac{\Omega_{12}}{\sqrt{\Omega_{11}\Omega_{22}}},\quad \Omega = \big(\hat\Sigma_{\{X,Y\}\cup S}\big)^{-1},\qquad
+Z = \tfrac12\log\frac{1+\hat\rho}{1-\hat\rho},
+\]</div>
+<div class="mjx">\[
+\text{declare } X \perp\!\!\!\perp Y\mid S \iff \sqrt{n-|S|-3}\;|Z| \le \Phi^{-1}(1-\alpha/2)\quad(\text{equivalently } p\text{-value}\ge\alpha).
+\]</div>
+<p>One test costs \(O(|S|^3)\) once the \(p\times p\) correlation matrix has been computed, which takes \(O(np^2)\). A Fisher-z test therefore takes microseconds, while a kernel test (KCI) costs \(O(n^3)\). This difference in <b>test granularity</b> largely decides whether parallelising pays off (§5).</p>
+
+<h3>1.4 Original PC versus PC-stable</h3>
+<div class="grid2">
+<div class="box">
+<b>Original PC</b> (Spirtes et al., 2000)
+<ol class="algo">
+<li>G ← complete graph; ℓ ← 0</li>
+<li>repeat</li>
+<li>&nbsp;for each ordered pair (X,Y) adjacent in G:</li>
+<li>&nbsp;&nbsp;for S ⊆ adj(X,<b>G</b>)\{Y}, |S|=ℓ:</li>
+<li>&nbsp;&nbsp;&nbsp;if X ⊥ Y | S: delete X–Y <b>now</b>;</li>
+<li>&nbsp;&nbsp;&nbsp;&nbsp;sepset(X,Y) ← S; break</li>
+<li>&nbsp;ℓ ← ℓ+1</li>
+<li>until every |adj(X,G)\{Y}| &lt; ℓ</li>
+</ol>
+<p class="small">Adjacency sets are <i>live</i>, so a deletion immediately shrinks the conditioning candidates of later pairs. The result depends on the order of the variables.</p>
+</div>
+<div class="box">
+<b>PC-stable</b> (Colombo &amp; Maathuis, 2014)
+<ol class="algo">
+<li>G ← complete graph; ℓ ← 0</li>
+<li>repeat</li>
+<li>&nbsp;<b>a(X) ← adj(X,G) for all X</b> &nbsp;(frozen)</li>
+<li>&nbsp;for each ordered pair (X,Y) adjacent in G:</li>
+<li>&nbsp;&nbsp;for S ⊆ <b>a(X)</b>\{Y}, |S|=ℓ:</li>
+<li>&nbsp;&nbsp;&nbsp;if X ⊥ Y | S: delete X–Y;</li>
+<li>&nbsp;&nbsp;&nbsp;&nbsp;sepset(X,Y) ← S; break</li>
+<li>&nbsp;ℓ ← ℓ+1</li>
+<li>until every |a(X)\{Y}| &lt; ℓ</li>
+</ol>
+<p class="small">Within a level, deletions do not change anyone's conditioning candidates. The skeleton is order-independent, at the cost of more CI tests.</p>
+</div>
+</div>
+<p>Formally, PC-stable at level \(\ell\) computes</p>
+<div class="mjx">\[
+E_{\ell+1} = \Big\{\{X,Y\}\in E_\ell \;:\; \nexists\, S \in \tbinom{a_\ell(X)\setminus\{Y\}}{\ell} \cup \tbinom{a_\ell(Y)\setminus\{X\}}{\ell} \text{ with } \hat I(X,Y\mid S)=1\Big\},\qquad a_\ell(\cdot)=\mathrm{adj}(\cdot,\,(V,E_\ell)).
+\]</div>
+<p>Here \(\binom{A}{\ell}\) is the set of all size-\(\ell\) subsets of \(A\) and \(\hat I\) is the test decision. <b>For each edge, whether it survives depends only on \(E_\ell\) and the data, not on the outcome of any other edge's tests at the same level.</b> Order-independence comes from this, and so does the ability to run the tests in parallel <span class="tag t-infer">Inference</span>. Parallel-PC is built on exactly this property.</p>
+
+<!-- ============================================================ -->
+<h2 id="s2">2. What Parallel-PC changes</h2>
+<p><span class="tag t-paper">Paper §4.2, Alg. 2</span> Parallel-PC keeps PC-stable's mathematics unchanged and only changes how one level is executed. Each level is split into three stages:</p>
+<ol>
+<li><b>Distribute:</b> after the adjacency sets \(a_\ell(\cdot)\) are frozen, the set \(J\) of unordered adjacent pairs is split evenly (by count) into \(P\) groups \(J_1,\dots,J_P\), one per core.</li>
+<li><b>Test in parallel:</b> each core processes its edges independently. For edge \(\{X,Y\}\) it searches \(S\subseteq a(X)\setminus\{Y\}\) and then, only if no separating set was found, \(S\subseteq a(Y)\setminus\{X\}\). It records a keep/delete flag \(k_{XY}\) and the first separating set found.</li>
+<li><b>Synchronise:</b> a barrier waits for all cores, then every edge with \(k_{XY}=\text{FALSE}\) is deleted from \(G\) and its sepset is stored. Then \(\ell\leftarrow \ell+1\).</li>
+</ol>
+<p>Two engineering details:</p>
+<ul>
+<li><b>Edge grouping.</b> Both directions of an edge, \((X,Y)\) and \((Y,X)\), stay on the same core. If the \(X\)-side search succeeds, the \(Y\)-side tests are skipped. Sending the two sides to different cores would waste those tests. <code>pcalg</code>'s sequential PC-stable already behaves this way, because it skips \((Y,X)\) once the edge is gone, so grouping preserves its test count. <span class="tag t-infer">Inference from source</span></li>
+<li><b>Memory-efficient mode</b> (<code>mem.efficient=TRUE</code>). The edge list of a level is processed in batches of \(t_b\) edges, where \(t_b\) is estimated from free RAM as about 2 MB per edge task in the R code. Each batch has its own barrier. The paper reports that peak memory roughly halves at a small time cost (Table 2). In the R implementation the adjacency snapshot is taken once per level, before batching, so batching does not affect the output <span class="tag t-infer">Inference from source</span>.</li>
+</ul>
+
+<figure>
+<svg viewBox="0 0 860 330" role="img" aria-label="Level-synchronous execution of Parallel-PC">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker>
+  </defs>
+  <!-- level box -->
+  <rect x="8" y="10" width="844" height="250" rx="10" fill="none" stroke="var(--border)" stroke-dasharray="5 4"/>
+  <text x="22" y="32" font-size="13" fill="var(--muted)">Level ℓ  (conditioning-set size ℓ)</text>
+  <!-- snapshot -->
+  <rect x="24" y="96" width="150" height="74" rx="8" fill="var(--accent-soft)" stroke="var(--accent)"/>
+  <text x="99" y="124" font-size="13" text-anchor="middle" font-weight="600">Freeze a_ℓ(X)</text>
+  <text x="99" y="143" font-size="12" text-anchor="middle">for every X;</text>
+  <text x="99" y="160" font-size="12" text-anchor="middle">build edge list J</text>
+  <!-- distribute -->
+  <line x1="174" y1="133" x2="222" y2="133" stroke="var(--muted)" marker-end="url(#ar)"/>
+  <rect x="226" y="96" width="120" height="74" rx="8" fill="var(--surface-2)" stroke="var(--border)"/>
+  <text x="286" y="128" font-size="13" text-anchor="middle" font-weight="600">Split J</text>
+  <text x="286" y="147" font-size="12" text-anchor="middle">into P groups</text>
+  <!-- cores -->
+  <g font-size="12">
+    <line x1="346" y1="133" x2="396" y2="58" stroke="var(--muted)" marker-end="url(#ar)"/>
+    <line x1="346" y1="133" x2="396" y2="108" stroke="var(--muted)" marker-end="url(#ar)"/>
+    <line x1="346" y1="133" x2="396" y2="158" stroke="var(--muted)" marker-end="url(#ar)"/>
+    <line x1="346" y1="133" x2="396" y2="208" stroke="var(--muted)" marker-end="url(#ar)"/>
+    <rect x="400" y="42" width="250" height="32" rx="6" fill="var(--good-soft)" stroke="var(--good)"/>
+    <rect x="400" y="42" width="160" height="32" rx="6" fill="var(--good)" opacity=".35"/>
+    <text x="410" y="63">core 1: J₁ edges, CI tests</text>
+    <rect x="400" y="92" width="250" height="32" rx="6" fill="var(--good-soft)" stroke="var(--good)"/>
+    <rect x="400" y="92" width="235" height="32" rx="6" fill="var(--good)" opacity=".35"/>
+    <text x="410" y="113">core 2: J₂</text>
+    <rect x="400" y="142" width="250" height="32" rx="6" fill="var(--good-soft)" stroke="var(--good)"/>
+    <rect x="400" y="142" width="110" height="32" rx="6" fill="var(--good)" opacity=".35"/>
+    <text x="410" y="163">core 3: J₃   (idle →)</text>
+    <rect x="400" y="192" width="250" height="32" rx="6" fill="var(--good-soft)" stroke="var(--good)"/>
+    <rect x="400" y="192" width="250" height="32" rx="6" fill="var(--warn)" opacity=".35"/>
+    <text x="410" y="213">core P: J_P  (straggler)</text>
+  </g>
+  <!-- barrier -->
+  <line x1="664" y1="36" x2="664" y2="236" stroke="var(--bad)" stroke-width="3"/>
+  <text x="664" y="250" font-size="12" text-anchor="middle" fill="var(--bad)">barrier</text>
+  <line x1="668" y1="133" x2="704" y2="133" stroke="var(--muted)" marker-end="url(#ar)"/>
+  <rect x="708" y="92" width="134" height="82" rx="8" fill="var(--accent-soft)" stroke="var(--accent)"/>
+  <text x="775" y="118" font-size="13" text-anchor="middle" font-weight="600">Synchronise</text>
+  <text x="775" y="137" font-size="12" text-anchor="middle">delete edges with</text>
+  <text x="775" y="154" font-size="12" text-anchor="middle">k=FALSE, store</text>
+  <text x="775" y="169" font-size="12" text-anchor="middle">sepsets</text>
+  <!-- loop -->
+  <path d="M775,174 C775,300 99,300 99,172" fill="none" stroke="var(--muted)" stroke-dasharray="4 3" marker-end="url(#ar)"/>
+  <text x="437" y="294" font-size="12" text-anchor="middle" fill="var(--muted)">ℓ ← ℓ+1 until no edge has |a(X)\{Y}| ≥ ℓ ; then orientation (sequential)</text>
+</svg>
+<figcaption>Figure 1. A Parallel-PC level. Bar fill shows each core's busy time. Edges are split by count, not by cost, so the core with the most expensive edges (straggler) sets the level's wall time and the others sit idle until the barrier. The orientation phase is not parallelised.</figcaption>
+</figure>
+
+<h3>2.1 What is <em>not</em> parallelised</h3>
+<ul>
+<li><b>Levels run strictly one after another.</b> Level \(\ell+1\) needs \(E_{\ell+1}\) before it can start, so there is one barrier per level and \(q+1\) barriers in total, where \(q\) is the largest adjacency size reached.</li>
+<li><b>Tests within one edge run one after another.</b> They have to, so that the early stop and the “first separating set found” rule behave as in PC-stable. cuPC later relaxed this (§5.4).</li>
+<li><b>Orientation</b> (v-structures, then Meek's rules R1–R3) and the extra CI tests needed for the conservative and majority-rule variants run sequentially. <span class="tag t-paper">Paper §3.2</span> says the skeleton phase dominates the cost, and that is usually true.</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="s3">3. Worked example: why the three variants agree or disagree</h2>
+<p>The setting follows the paper's Figure 1. There are four variables \(A,B,C,D\). After level 0 the graph has edges \(A\!-\!B,\ A\!-\!C,\ A\!-\!D\) and \(B\!-\!C\). At level 1, suppose the finite-sample tests return:</p>
+<div class="mjx">\[\hat I(A,B\mid C)=1,\qquad \hat I(A,C\mid B)=1,\qquad \text{every other level-1 test } =0 .\]</div>
+<p>Both results cannot be right together. Each one alone justifies removing an edge, but at least one of them is a test error. This is the usual situation when \(n\) is small.</p>
+
+<figure>
+<svg viewBox="0 0 860 300" role="img" aria-label="Order dependence example">
+  <g font-size="13">
+  <!-- panel 1 -->
+  <text x="140" y="22" text-anchor="middle" font-weight="600">Original PC, order A,B,C,D</text>
+  <g transform="translate(40,40)">
+    <line x1="40" y1="40" x2="160" y2="40" stroke="var(--bad)" stroke-dasharray="5 4" stroke-width="2"/>
+    <line x1="40" y1="40" x2="40" y2="160" stroke="var(--text)" stroke-width="2"/>
+    <line x1="40" y1="40" x2="160" y2="160" stroke="var(--text)" stroke-width="2"/>
+    <line x1="160" y1="40" x2="40" y2="160" stroke="var(--text)" stroke-width="2"/>
+    <circle cx="40" cy="40" r="17" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><text x="40" y="45" text-anchor="middle">A</text>
+    <circle cx="160" cy="40" r="17" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><text x="160" y="45" text-anchor="middle">B</text>
+    <circle cx="40" cy="160" r="17" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><text x="40" y="165" text-anchor="middle">C</text>
+    <circle cx="160" cy="160" r="17" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><text x="160" y="165" text-anchor="middle">D</text>
+  </g>
+  <text x="140" y="232" text-anchor="middle" font-size="12">① A⊥B|C → delete A–B at once</text>
+  <text x="140" y="250" text-anchor="middle" font-size="12">② adj(A) is now {C,D}: A⊥C|B is never tested</text>
+  <text x="140" y="268" text-anchor="middle" font-size="12" fill="var(--bad)">A–C survives</text>
+  <!-- panel 2 -->
+  <text x="430" y="22" text-anchor="middle" font-weight="600">PC-stable (any order)</text>
+  <g transform="translate(330,40)">
+    <line x1="40" y1="40" x2="160" y2="40" stroke="var(--bad)" stroke-dasharray="5 4" stroke-width="2"/>
+    <line x1="40" y1="40" x2="40" y2="160" stroke="var(--bad)" stroke-dasharray="5 4" stroke-width="2"/>
+    <line x1="40" y1="40" x2="160" y2="160" stroke="var(--text)" stroke-width="2"/>
+    <line x1="160" y1="40" x2="40" y2="160" stroke="var(--text)" stroke-width="2"/>
+    <circle cx="40" cy="40" r="17" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><text x="40" y="45" text-anchor="middle">A</text>
+    <circle cx="160" cy="40" r="17" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><text x="160" y="45" text-anchor="middle">B</text>
+    <circle cx="40" cy="160" r="17" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><text x="40" y="165" text-anchor="middle">C</text>
+    <circle cx="160" cy="160" r="17" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><text x="160" y="165" text-anchor="middle">D</text>
+  </g>
+  <text x="430" y="232" text-anchor="middle" font-size="12">a(A)={B,C,D} frozen for the whole level</text>
+  <text x="430" y="250" text-anchor="middle" font-size="12">both A⊥B|C and A⊥C|B are tested</text>
+  <text x="430" y="268" text-anchor="middle" font-size="12" fill="var(--good)">both edges removed, for every order</text>
+  <!-- panel 3 -->
+  <text x="720" y="22" text-anchor="middle" font-weight="600">Parallel-PC (any core split)</text>
+  <g transform="translate(620,40)">
+    <line x1="40" y1="40" x2="160" y2="40" stroke="var(--bad)" stroke-dasharray="5 4" stroke-width="2"/>
+    <line x1="40" y1="40" x2="40" y2="160" stroke="var(--bad)" stroke-dasharray="5 4" stroke-width="2"/>
+    <line x1="40" y1="40" x2="160" y2="160" stroke="var(--text)" stroke-width="2"/>
+    <line x1="160" y1="40" x2="40" y2="160" stroke="var(--text)" stroke-width="2"/>
+    <circle cx="40" cy="40" r="17" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><text x="40" y="45" text-anchor="middle">A</text>
+    <circle cx="160" cy="40" r="17" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><text x="160" y="45" text-anchor="middle">B</text>
+    <circle cx="40" cy="160" r="17" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><text x="40" y="165" text-anchor="middle">C</text>
+    <circle cx="160" cy="160" r="17" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><text x="160" y="165" text-anchor="middle">D</text>
+  </g>
+  <text x="720" y="232" text-anchor="middle" font-size="12">core 1: {A–B, B–C} · core 2: {A–C, A–D}</text>
+  <text x="720" y="250" text-anchor="middle" font-size="12">each core reads the same frozen a(·)</text>
+  <text x="720" y="268" text-anchor="middle" font-size="12" fill="var(--good)">same result as PC-stable</text>
+  </g>
+</svg>
+<figcaption>Figure 2. Dashed red lines are edges deleted at level 1. Original PC's answer depends on which test runs first. In PC-stable and Parallel-PC every edge is judged against the same frozen neighbourhoods, so neither the processing order nor the assignment of edges to cores can change the skeleton.</figcaption>
+</figure>
+
+<h3>3.1 Where order dependence remains: separating sets and v-structures</h3>
+<p>Suppose \(X - Z - Y\) is an unshielded triple, and at level 1 both \(\hat I(X,Y\mid Z)=1\) and \(\hat I(X,Y\mid W)=1\) hold for some other neighbour \(W\). PC-stable, and therefore Parallel-PC, stores the <i>first</i> separating set it finds. Subsets are enumerated in the order of the variable indices.</p>
+<div class="mjx">\[
+\text{sepset}=\{W\} \Rightarrow Z\notin\text{sepset} \Rightarrow X\to Z\leftarrow Y \qquad\text{vs.}\qquad \text{sepset}=\{Z\} \Rightarrow \text{no v-structure.}
+\]</div>
+<p>Renaming the variables can swap which set comes first. That can change the CPDAG even though the skeleton stays the same. Colombo &amp; Maathuis (2014) prove that PC-stable makes only the <i>skeleton</i> order-independent. To make v-structures order-independent they propose <b>CPC</b> (conservative: check every separating set) and <b>MPC</b> (majority rule). <code>solve.confl</code> handles conflicting orientations. <span class="tag t-follow">Follow-up</span> The paper's statement that Parallel-PC's “results … [are] independent of the variable ordering” is therefore true of the skeleton only, unless the conservative or majority-rule option is used. <span class="tag t-follow">Colombo &amp; Maathuis</span> In our run (§8), the PC-stable sepsets differed across all 10 orderings, but in that instance the v-structures did not. The risk is real, but it is not triggered on every dataset.</p>
+
+<!-- ============================================================ -->
+<h2 id="s4">4. Graph equivalence</h2>
+
+<h3>4.1 What can be proved</h3>
+<div class="box good">
+<p><b>Proposition (exact equivalence with PC-stable).</b> Fix the data, a deterministic CI test, α, <code>m.max</code> and the variable labelling. Within each edge, search \(a(X)\) first and then \(a(Y)\), both in lexicographic subset order. Then for any number of cores \(P\) and any assignment of edges to cores, Parallel-PC returns the same \(E_\ell\) at every level, the same sepsets, and therefore the same CPDAG as sequential PC-stable.</p>
+<p><i>Proof sketch.</i> Use induction on \(\ell\). Assume \(E_\ell\) is equal in both. Then the frozen \(a_\ell(\cdot)\) are equal. Edge \(e\)'s test sequence is a function of \((e, a_\ell, \text{data})\) only, so its keep/delete decision and its first separating set are equal. The synchronisation step applies the union of the deletions, which is the same set in both. So \(E_{\ell+1}\) is equal. The orientation phase is a deterministic function of (skeleton, sepsets), so its output is equal too. ∎ <span class="tag t-infer">Inference</span></p>
+</div>
+<p>The paper states equivalence (“generates the same output … compared to that of the stable-PC algorithm”, §5.2 and §7) and argues for it informally (§4.2: tests at a level “are independent of each other”). It does not give a formal proof. <span class="tag t-paper">Paper</span> I checked the archived R source (<code>ParallelPC_1.2</code>, <code>skeleton_parallel</code>). Its per-edge function follows <code>pcalg</code>'s R-level <code>skeleton(method="stable")</code> exactly: it enumerates pairs \(x&lt;y\), searches the \(x\)-side then the \(y\)-side with <code>getNextSet</code> order, and stores <code>sepset[[x]][[y]]</code> or <code>sepset[[y]][[x]]</code>. So the proposition applies to the actual software. <span class="tag t-infer">Inference from source</span> <span class="tag t-test">Tested</span></p>
+
+<h3>4.2 Equivalence with the <em>original</em> PC</h3>
+<div class="tbl"><table>
+<thead><tr><th>Setting</th><th>Original PC vs Parallel-PC</th><th>Basis</th></tr></thead>
+<tbody>
+<tr><td><b>Oracle CI tests</b> (perfect independence information, faithfulness holds)</td><td><b>Identical.</b> Both output the true CPDAG.</td><td>Spirtes et al. (2000), Theorem 2 in the paper; Colombo &amp; Maathuis (2014) for PC-stable <span class="tag t-follow">Follow-up</span></td></tr>
+<tr><td><b>Finite samples</b>, high-dimensional sparse regime (\(p\gg n\))</td><td><b>Both consistent</b> under the Kalisch–Bühlmann conditions (sparsity, partial correlations bounded away from 0 and 1, \(\alpha_n\to 0\) at a suitable rate)</td><td>Kalisch &amp; Bühlmann (2007); extended to PC-stable by Colombo &amp; Maathuis (2014) <span class="tag t-follow">Follow-up</span></td></tr>
+<tr><td><b>Any given finite dataset</b></td><td><b>May differ.</b> Original PC depends on the order. Parallel-PC returns the PC-stable skeleton, which typically has <i>fewer</i> edges because it runs more tests.</td><td>Colombo &amp; Maathuis (2014): about 40% of edges unstable across orderings on a yeast dataset; paper §1 <span class="tag t-paper">Paper</span> <span class="tag t-test">Tested: 6 distinct original-PC skeletons from 10 orderings</span></td></tr>
+</tbody></table></div>
+
+<h3>4.3 When “Parallel-PC” output can differ from PC-stable in practice</h3>
+<p>The proposition holds only if the implementation meets its conditions. These are the known ways it can fail:</p>
+<div class="tbl"><table>
+<thead><tr><th>Source of divergence</th><th>Affects</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td><b>Variable relabelling</b> changes which separating set is found first</td><td>sepsets → v-structures → CPDAG (the skeleton is unaffected)</td><td>Shared with PC-stable. Use <code>conservative=TRUE</code> or <code>maj.rule=TRUE</code>. <span class="tag t-follow">Follow-up</span></td></tr>
+<tr><td><b>Different subset enumeration order</b>. For example, <code>pcalg</code>'s C++ <code>stable.fast</code> reorders \(Y\)'s neighbours as non-common first, common last, and skips sets already tested from \(X\)'s side.</td><td>Same skeleton; possibly a different first sepset</td><td><span class="tag t-infer">Inference from source</span> (pcalg 2.7-12, <code>constraint.cpp</code>)</td></tr>
+<tr><td><b>Randomised CI tests</b> (permutation or kernel tests with RNG). ParallelPC calls <code>mclapply(..., mc.set.seed=FALSE)</code>, so the worker RNG streams differ from a serial run.</td><td>Edge decisions near α</td><td><span class="tag t-infer">Inference from source</span>. This does not apply to Fisher-z or G².</td></tr>
+<tr><td><b>Floating-point differences</b> (e.g. pseudo-inverse versus solve, BLAS threading) for p-values that lie very close to α</td><td>Individual edges</td><td><span class="tag t-infer">Inference</span>. This is rare, but it does happen in GPU ports.</td></tr>
+<tr><td><b>Faulty ports.</b> In gcastle 1.0.4, <code>variant='stable'</code> tests only \(a(X)\setminus\{Y\}\) for \(X&lt;Y\), while <code>variant='parallel'</code> tests both sides.</td><td>gcastle's “stable” and “parallel” disagree. The <i>parallel</i> variant is the one that matches PC-stable.</td><td><span class="tag t-test">Tested: §8</span></td></tr>
+<tr><td><b>Mid-level graph updates.</b> If a batched implementation refreshes adjacency between batches, it becomes a hybrid of PC and PC-stable and depends on the order. gcastle's <code>s=True</code> mode reads the live <code>skeleton</code> after each batch.</td><td>Skeleton</td><td><span class="tag t-infer">Inference from source</span>. ParallelPC's R code is not affected, because it freezes <code>G.l</code> once per level.</td></tr>
+</tbody></table></div>
+
+<!-- ============================================================ -->
+<h2 id="s5">5. Computational analysis</h2>
+
+<h3>5.1 Where the time goes</h3>
+<p>Kalisch &amp; Bühlmann (2007) bound the number of CI tests PC performs when the true graph has maximum degree \(q\):</p>
+<div class="mjx">\[
+\#\text{tests} \;\le\; 2\binom{p}{2}\sum_{i=0}^{q}\binom{p-1}{i} \;\le\; \frac{p^{2}(p-1)^{q}}{(q-1)!}.
+\]</div>
+<p>This is polynomial in \(p\) for fixed \(q\) and exponential in \(q\). PC-stable has the same worst case but runs more tests in practice, because adjacency sets shrink only between levels. <span class="tag t-paper">Paper §3.3</span> Write \(w_e^{(\ell)}\) for the cost of all tests on edge \(e\) at level \(\ell\). Then</p>
+<div class="mjx">\[
+T_{\text{seq}} = \sum_{\ell=0}^{q}\sum_{e\in E_\ell} w_e^{(\ell)},\qquad
+w_e^{(\ell)} \le \Big[\tbinom{|a(X)|-1}{\ell}+\tbinom{|a(Y)|-1}{\ell}\Big]\,\tau(\ell,n),
+\]</div>
+<p>where \(\tau\) is the cost of one test. Parallel-PC changes the constant and leaves the growth rate alone:</p>
+<div class="mjx">\[
+T_{\text{par}}(P) = \sum_{\ell=0}^{q}\Big[\max_{1\le k\le P}\ \sum_{e\in J_{\ell,k}} w_e^{(\ell)} \;+\; O_\ell(P)\Big],
+\qquad
+S(P)=\frac{T_{\text{seq}}}{T_{\text{par}}(P)} \;\le\; \min\!\Big(P,\ \frac{\sum_\ell W_\ell}{\sum_\ell \max\big(W_\ell/P,\ \max_e w_e^{(\ell)}\big)}\Big),
+\]</div>
+<p>with \(W_\ell=\sum_e w_e^{(\ell)}\) and \(O_\ell(P)\) the cost of forking, serialising and synchronising. <span class="tag t-infer">Inference</span> This model leads to three conclusions:</p>
+<ul>
+<li><b>Exponential worst case unchanged.</b> At best the time is divided by \(P\). A problem that is infeasible because \(q\) is large stays infeasible.</li>
+<li><b>Straggler bound.</b> Work per edge is very skewed, since \(\binom{|a(X)|-1}{\ell}\) grows quickly for hub nodes. A single hub edge at a high level can take longer than all the other work combined, which caps the speedup whatever \(P\) is. Splitting edges evenly by count (static scheduling) makes this worse. The authors acknowledge this and list cost-aware scheduling as future work. <span class="tag t-paper">Paper §7</span></li>
+<li><b>Granularity.</b> Parallelism pays off only if \(W_\ell/P \gg O_\ell(P)\). A Fisher-z test takes a few microseconds, so small problems run <i>slower</i> in parallel (see §8). Expensive tests such as KCI, or G² on large \(n\), benefit the most.</li>
+</ul>
+
+<h3>5.2 Reported speedups</h3>
+<p><span class="tag t-paper">Paper Figs. 2–3</span> All timings are R against R: Parallel-PC against <code>pcalg</code>'s R-level PC-stable, Gaussian CI test. Fig. 2 was run on a Linux server with 4–8 cores. Fig. 3 was run on a 48-core machine using up to 16 cores. Speedup and efficiency (speedup ÷ cores) are computed from the reported runtimes.</p>
+<div class="tbl"><table>
+<thead><tr><th>Dataset</th><th class="num">n</th><th class="num">p</th><th class="num">PC-stable (min)</th><th class="num">4 cores</th><th class="num">8 cores</th><th class="num">Speedup @4 / eff.</th><th class="num">Speedup @8 / eff.</th></tr></thead>
+<tbody>
+<tr><td>NCI-60</td><td class="num">47</td><td class="num">1190</td><td class="num">13.56</td><td class="num">5.38</td><td class="num">4.48</td><td class="num">2.5× / 63%</td><td class="num">3.0× / 38%</td></tr>
+<tr><td>MCC</td><td class="num">88</td><td class="num">1380</td><td class="num">59.87</td><td class="num">19.07</td><td class="num">12.53</td><td class="num">3.1× / 78%</td><td class="num">4.8× / 60%</td></tr>
+<tr><td>BR51</td><td class="num">50</td><td class="num">1592</td><td class="num">68.37</td><td class="num">45.33</td><td class="num">17.54</td><td class="num">1.5× / 38%</td><td class="num">3.9× / 49%</td></tr>
+<tr><td>S. cerevisiae</td><td class="num">63</td><td class="num">5361</td><td class="num">207.41</td><td class="num">157.31</td><td class="num">85.79</td><td class="num">1.3× / 33%</td><td class="num">2.4× / 30%</td></tr>
+<tr><td>S. aureus</td><td class="num">160</td><td class="num">2810</td><td class="num">477.20</td><td class="num">123.59</td><td class="num">76.19</td><td class="num">3.9× / 97%</td><td class="num">6.3× / 78%</td></tr>
+<tr><td>DREAM5-Insilico</td><td class="num">805</td><td class="num">1643</td><td class="num">&gt;1440</td><td class="num">682.08</td><td class="num">341.73</td><td class="num">&gt;2.1×</td><td class="num">&gt;4.2×</td></tr>
+</tbody></table></div>
+
+<figure>
+<svg viewBox="0 0 860 360" role="img" aria-label="Speedup versus cores, paper Figure 3">
+  <g font-size="12">
+  <!-- axes: x 4..16 -> 70..560 ; y 0..14 -> 320..30 -->
+  <line x1="70" y1="320" x2="560" y2="320" stroke="var(--border)"/>
+  <line x1="70" y1="30" x2="70" y2="320" stroke="var(--border)"/>
+  <g fill="var(--muted)">
+    <text x="70" y="338" text-anchor="middle">4</text><text x="151.7" y="338" text-anchor="middle">6</text><text x="233.3" y="338" text-anchor="middle">8</text><text x="315" y="338" text-anchor="middle">10</text><text x="396.7" y="338" text-anchor="middle">12</text><text x="478.3" y="338" text-anchor="middle">14</text><text x="560" y="338" text-anchor="middle">16</text>
+    <text x="315" y="356" text-anchor="middle">cores</text>
+    <text x="60" y="324" text-anchor="end">0</text><text x="60" y="241" text-anchor="end">4</text><text x="60" y="158" text-anchor="end">8</text><text x="60" y="75" text-anchor="end">12</text>
+    <text x="22" y="175" transform="rotate(-90 22 175)" text-anchor="middle">speedup vs PC-stable</text>
+  </g>
+  <g stroke="var(--border)" stroke-dasharray="2 4"><line x1="70" y1="237.1" x2="560" y2="237.1"/><line x1="70" y1="154.3" x2="560" y2="154.3"/><line x1="70" y1="71.4" x2="560" y2="71.4"/></g>
+  <!-- ideal y=x : (4,4)->(70,237.1) (14,14)->(478.3,30) -->
+  <line x1="70" y1="237.1" x2="478.3" y2="30" stroke="var(--muted)" stroke-dasharray="6 4"/>
+  <text x="430" y="40" fill="var(--muted)">linear (ideal)</text>
+  <!-- data: speedups computed from Fig.3 -->
+  <!-- NCI: 9.82/[3.53,3.12,2.38,2.30,2.05,1.87,1.85] = 2.78,3.15,4.13,4.27,4.79,5.25,5.31 -->
+  <polyline fill="none" stroke="var(--c1)" stroke-width="2.2" points="70,262.5 151.7,254.8 233.3,234.5 315,231.6 396.7,220.9 478.3,211.3 560,210.1"/>
+  <!-- MCC: 55.03/[14.43,10.02,9.03,7.72,7.02,5.72,5.88] = 3.81,5.49,6.09,7.13,7.84,9.62,9.36 -->
+  <polyline fill="none" stroke="var(--c2)" stroke-width="2.2" points="70,241.1 151.7,206.4 233.3,193.9 315,172.4 396.7,157.7 478.3,120.8 560,126.3"/>
+  <!-- BR51: 65.05/[18.43,14.15,12.18,9.55,8.77,7.13,7.23] = 3.53,4.60,5.34,6.81,7.42,9.12,9.00 -->
+  <polyline fill="none" stroke="var(--c3)" stroke-width="2.2" points="70,246.9 151.7,224.8 233.3,209.4 315,179.0 396.7,166.4 478.3,131.2 560,133.7"/>
+  <!-- S.cer: 162.27/[65.1,53.85,45.48,43.02,20.53,20.45,20.23] = 2.49,3.01,3.57,3.77,7.90,7.93,8.02 -->
+  <polyline fill="none" stroke="var(--c4)" stroke-width="2.2" points="70,268.5 151.7,257.7 233.3,246.1 315,242.0 396.7,156.4 478.3,155.8 560,154.0"/>
+  <!-- S.aureus: 484.32/[107.05,78.43,66.92,55.23,43.6,38.2,52.35] = 4.52,6.18,7.24,8.77,11.11,12.68,9.25 -->
+  <polyline fill="none" stroke="var(--c5)" stroke-width="2.2" points="70,226.4 151.7,192.0 233.3,170.1 315,138.5 396.7,90.0 478.3,57.5 560,128.6"/>
+  <!-- legend -->
+  <g transform="translate(590,60)">
+    <rect x="0" y="0" width="14" height="4" fill="var(--c5)"/><text x="22" y="6">S. aureus (p=2810)</text>
+    <rect x="0" y="22" width="14" height="4" fill="var(--c2)"/><text x="22" y="28">MCC (p=1380)</text>
+    <rect x="0" y="44" width="14" height="4" fill="var(--c3)"/><text x="22" y="50">BR51 (p=1592)</text>
+    <rect x="0" y="66" width="14" height="4" fill="var(--c4)"/><text x="22" y="72">S. cerevisiae (p=5361)</text>
+    <rect x="0" y="88" width="14" height="4" fill="var(--c1)"/><text x="22" y="94">NCI-60 (p=1190)</text>
+    <text x="0" y="128" fill="var(--muted)">DREAM5 omitted: no</text>
+    <text x="0" y="144" fill="var(--muted)">finished baseline (&gt;24 h).</text>
+    <text x="0" y="174" fill="var(--muted)">Peak: 12.7× at 14 cores;</text>
+    <text x="0" y="190" fill="var(--muted)">16 cores is slower than 14</text>
+    <text x="0" y="206" fill="var(--muted)">for S. aureus (52 vs 38 min).</text>
+  </g>
+  </g>
+</svg>
+<figcaption>Figure 3. Speedup computed from the runtimes in the paper's Fig. 3 (16-core runs). Speedup is clearly sublinear and levels off above about 12–14 cores. S. cerevisiae shows a step at 12 cores, consistent with a straggler that only splits off once enough cores are available.</figcaption>
+</figure>
+
+<h3>5.3 Memory</h3>
+<ul>
+<li><b>Sequential PC-stable:</b> \(O(p^2)\) for the correlation matrix and adjacency matrix, plus \(O(p^2)\) sepset slots.</li>
+<li><b>Parallel-PC on Linux/macOS</b> uses <code>mclapply</code> (fork, copy-on-write). Shared data is not copied up front, but every worker builds result lists, and R's garbage collector touching pages forces copies. The paper's Table 2 measures peak memory of 0.9–4 GB without the memory-efficient option and about half that with it. S. cerevisiae (p = 5361) ran out of memory (more than 8 GB) without it. <span class="tag t-paper">Paper Table 2</span></li>
+<li><b>Windows</b> uses a PSOCK cluster, which sends a full copy of the data to each worker: \(O(P\cdot p^2)\). <span class="tag t-infer">Inference from source</span></li>
+<li>The memory-efficient mode cuts peak memory by adding more barriers (one per batch). Its batch size comes from a hard-coded estimate of 2 MB per edge task.</li>
+</ul>
+
+<h3>5.4 How later work parallelises the same structure</h3>
+<div class="tbl"><table>
+<thead><tr><th>Approach</th><th>Granularity</th><th>Hardware</th><th>Reported gain</th><th>Same output as PC-stable?</th></tr></thead>
+<tbody>
+<tr><td><b>Parallel-PC</b> (Le et al. 2015/16)</td><td>edge (both sides on the same core)</td><td>multi-core CPU, R</td><td>3–6× @8 cores; 12.7× @14 cores</td><td>Yes (skeleton and sepsets)</td></tr>
+<tr><td><code>pcalg</code> <code>stable.fast</code></td><td>edge, OpenMP <code>parallel for</code> in C++</td><td>CPU</td><td>Single-threaded already about 5–10× faster than R PC-stable [cuPC paper]</td><td>Same skeleton; sepset order may differ <span class="tag t-infer">Inference</span></td></tr>
+<tr><td><b>bnlearn</b> (Scutari 2017)</td><td>per-node neighbourhood, <code>parallel</code> cluster</td><td>CPU, cluster</td><td>Parallel preferred over backtracking on multi-core hardware</td><td>Yes for <code>pc.stable</code></td></tr>
+<tr><td><b>Madsen et al.</b> (2015/2017)</td><td>CI tests, plus data partitioning</td><td>multi-core CPU (HUGIN)</td><td>Large datasets, discrete data</td><td>Their own PC variant</td></tr>
+<tr><td><b>cuPC-E / cuPC-S</b> (Zarebavani et al. 2020)</td><td>edge × CI test (E); conditioning set shared across a row (S)</td><td>GPU, CUDA</td><td>about 525× / 1296× vs serial <code>stable.fast</code>; DREAM5: &gt;11 h → about 4.8 s</td><td>Claims the same accuracy (SHD/TDR) as PC-stable</td></tr>
+<tr><td><b>Srivastava, Chockalingam &amp; Aluru</b> (SC20, TPDS 2023)</td><td>Markov-blanket-based local-to-global</td><td>distributed memory, MPI</td><td>18k variables in under a minute on 2048 cores (SC21 poster)</td><td>Different algorithm family</td></tr>
+</tbody></table></div>
+<p><span class="tag t-follow">Follow-up</span> In the cuPC paper's same-machine comparison, 8-core Parallel-PC averages about 5.6× over R PC-stable. On DREAM5 it needs about 11 hours, roughly what single-threaded C++ <code>stable.fast</code> needs. When cuPC ported Parallel-PC's edge-level scheme to the GPU (“baseline 1”), cuPC-S was 45.8× faster than it on DREAM5. Parallelising at the edge level is therefore the coarsest, and weakest, of the available options.</p>
+
+<!-- ============================================================ -->
+<h2 id="s6">6. Limitations and trade-offs</h2>
+<div class="tbl"><table>
+<thead><tr><th>Limitation</th><th>Type</th><th>Consequence</th></tr></thead>
+<tbody>
+<tr><td>No change to the estimator or the number of tests: it is PC-stable, which runs <i>more</i> tests than original PC</td><td>Theoretical</td><td>Against an original-PC baseline the speedup is smaller than the paper's PC-stable-relative figures. Same statistical accuracy as PC-stable. <span class="tag t-infer">Inference</span></td></tr>
+<tr><td>Barrier at every level; static split by edge count</td><td>Algorithmic</td><td>Stragglers and idle cores; sublinear scaling, levelling off at about 12–14 cores <span class="tag t-paper">Paper Fig. 3, §7</span></td></tr>
+<tr><td>Coarse granularity: tests within one edge stay sequential</td><td>Algorithmic</td><td>A single hub edge bounds the speedup, which GPU designs avoid <span class="tag t-follow">cuPC</span></td></tr>
+<tr><td>Orientation phase and the extra CPC/MPC tests are sequential</td><td>Algorithmic</td><td>Minor for Fisher-z on sparse graphs. Grows with conservative or majority rule on dense graphs. <span class="tag t-infer">Inference</span></td></tr>
+<tr><td>v-structures still depend on order</td><td>Theoretical</td><td>The claim that “results are order-independent” covers only the skeleton <span class="tag t-follow">Colombo &amp; Maathuis</span> (sepset variation <span class="tag t-test">Tested</span>)</td></tr>
+<tr><td>Overhead per task and per level (fork, serialisation)</td><td>Practical</td><td>Slower than sequential for small or cheap problems <span class="tag t-test">Tested</span></td></tr>
+<tr><td>Memory grows with the number of workers; memory-efficient mode trades time for space</td><td>Practical</td><td>About 2× memory without batching; out of memory at p = 5361 on 8 GB <span class="tag t-paper">Paper Table 2</span></td></tr>
+<tr><td>Accuracy claim (efficient-IDA beats IDA) is confounded</td><td>Evidential</td><td>The baseline IDA used original PC. The gain comes from order-independence (PC-stable), not from parallelism, as the paper itself attributes it. <span class="tag t-paper">Paper §6.3</span></td></tr>
+<tr><td>Benchmarks only against R PC-stable; no comparison with compiled code; validated only on gene expression data</td><td>Evidential</td><td>The headline speedups overstate the benefit compared with a good serial implementation <span class="tag t-follow">cuPC paper</span></td></tr>
+<tr><td>Pure R that calls internal, unexported <code>pcalg</code> functions (<code>pc.cons.intern</code>, <code>udag2pdag</code>, …)</td><td>Engineering</td><td>Fragile against <code>pcalg</code> updates; no compiled code <span class="tag t-infer">Inference from source</span></td></tr>
+</tbody></table></div>
+<p>Parallel-PC introduces <b>no approximation</b>. Unlike heuristic speed-ups such as order-limited tests, Markov-blanket shortcuts or sampling, it gives up no accuracy relative to PC-stable. Its price is engineering complexity and limited scaling. <span class="tag t-infer">Inference</span></p>
+
+<!-- ============================================================ -->
+<h2 id="s7">7. Why Parallel-PC is under-used</h2>
+<h3>7.1 Evidence-backed explanations</h3>
+<ol>
+<li><b>The reference software is no longer maintained.</b> CRAN <code>ParallelPC</code> had releases 1.0 (Oct 2015), 1.1 (Oct 2015) and 1.2 (31 Dec 2015) and none since. CRAN archived it on <b>17 Dec 2025</b> because “issues were not corrected in time”. It cannot be installed with <code>install.packages()</code>. <span class="tag t-follow">CRAN archive</span></li>
+<li><b>Mainstream libraries absorbed the idea.</b> <code>pcalg</code> has a compiled order-independent skeleton (<code>method="stable.fast"</code>) with a <code>numCores</code> argument that uses OpenMP at the edge level, which is the same parallelisation scheme. Tetrad parallelises PC's adjacency search, “especially if the ‘stable’ option is selected” (Tetrad FAQ). bnlearn's <code>pc.stable</code> takes a <code>cluster</code> (Scutari 2017). Once PC-stable is available in these tools, a separate package adds nothing.</li>
+<li><b>Compiled serial code matches it, and GPUs make it look obsolete.</b> The cuPC paper reports serial C++ <code>stable.fast</code> taking about the same time on DREAM5 as 8-core Parallel-PC, and cuPC being hundreds to thousands of times faster than serial C++. <span class="tag t-follow">Zarebavani et al. 2020</span></li>
+<li><b>The speedup is modest and limited.</b> 3–6× on 8 cores, at most 12.7×, and with sublinear efficiency (§5.2). The underlying exponential dependence on \(q\) does not change.</li>
+<li><b>The contribution is incremental.</b> Once PC-stable freezes adjacency sets per level (Colombo &amp; Maathuis, arXiv 2012), parallelising within a level is the obvious next step. Madsen et al. (2015; KBS 2017) independently parallelised PC's CI tests in the same period. That makes the paper's claim to be “the first work of utilising parallel computing for the PC algorithm” hard to rely on.</li>
+</ol>
+<h3>7.2 Plausible but unverified explanations <span class="tag t-infer">Inference</span></h3>
+<ul>
+<li><b>Competition from other algorithm families.</b> At scale, practitioners often choose FGES (Ramsey et al. 2017; about 10⁶ variables), continuous optimisation (NOTEARS and its successors), or local Markov-blanket methods instead of faster PC.</li>
+<li><b>Visibility.</b> The paper appeared in a bioinformatics venue, and the journal version was published in 2019, more than three years after the arXiv preprint. It reached the causal-discovery methods community less directly.</li>
+<li><b>“Parallel-PC” is an implementation strategy, not an estimator.</b> Methods papers cite and compare estimators (PC, PC-stable, CPC). An implementation that produces the same graph has no statistical result of its own to cite.</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="s8">8. Implementation availability and our checks</h2>
+<h3>8.1 Availability (verified November 2026)</h3>
+<div class="tbl"><table>
+<thead><tr><th>Package</th><th>Parallel PC-stable?</th><th>Status / notes</th></tr></thead>
+<tbody>
+<tr><td><b>ParallelPC</b> (R)</td><td>Yes: <code>pc_parallel</code>, <code>skeleton_parallel</code>, <code>fci_parallel</code>, <code>rfci_parallel</code>, <code>IDA_parallel</code>; <code>num.cores</code>, <code>mem.efficient</code></td><td>Archived on CRAN 2025-12-17; last version 1.2 (2015). Pure R (<code>NeedsCompilation: no</code>). Installing from the archive tarball still works in principle, but it calls unexported <code>pcalg</code> internals. The original URL (<code>nugget.unisa.edu.au/ParallelPC</code>) is legacy. <b>Not recommended.</b></td></tr>
+<tr><td><b>pcalg</b> 2.7-12 (R, Sep 2024)</td><td><code>skeleton/pc/fci(..., skel.method="stable.fast", numCores=k)</code>. With other methods <code>numCores</code> is ignored with a warning.</td><td>Documented as “experimental”. <b>Source inspection:</b> the OpenMP flags (<code>$(SHLIB_OPENMP_CXXFLAGS)</code>) are set only in <code>src/Makevars.win</code>, not in <code>src/Makevars</code>. On standard Linux/macOS builds <code>_OPENMP</code> is therefore undefined, the <code>#pragma omp parallel for</code> does nothing and <code>numCores</code> has no effect. The single-threaded C++ is still fast. <span class="tag t-infer">Inference from source, not benchmarked</span></td></tr>
+<tr><td><b>bnlearn</b> (R)</td><td><code>pc.stable(x, cluster = cl)</code> with a <code>parallel</code> cluster</td><td>Maintained. Scutari (2017, JSS 77(2)) describes the parallel framework.</td></tr>
+<tr><td><b>gCastle</b> 1.0.4 (Python, Huawei)</td><td><code>PC(variant='parallel', p_cores=k, s=..., batch=...)</code>, a direct port of Alg. 2 using <code>joblib</code></td><td><b>Correct</b> against our reference PC-stable, but much slower than its own serial variant on small problems. Its <code>variant='stable'</code> tests one side only, so “stable” and “parallel” can disagree. <span class="tag t-test">Tested</span> Requires PyTorch to import.</td></tr>
+<tr><td><b>causal-learn</b> 0.1.4.8 (Python)</td><td>No. <code>pc(..., stable=True)</code> is serial</td><td>Searched the package source; no multiprocessing or joblib in the constraint-based search.</td></tr>
+<tr><td><b>Tetrad / py-tetrad / causal-cmd</b> (Java)</td><td>PC adjacency search is parallelised internally; <code>stableFas</code> parameter</td><td>Maintained. No separate “Parallel-PC” entry point.</td></tr>
+<tr><td><b>cuPC</b> (CUDA + R wrapper)</td><td>GPU PC-stable (cuPC-E/S)</td><td><code>github.com/LIS-Laboratory/cupc</code>. Gaussian (Fisher-z) data only, NVIDIA GPU required, interface compatible with <code>pcalg</code>.</td></tr>
+</tbody></table></div>
+
+<h3>8.2 Reproduction experiments for this review <span class="tag t-test">Tested</span></h3>
+<p>Setup: a Python reference implementation of sequential PC-stable, original PC and Alg. 2 (edge-grouped, level-synchronous, <code>multiprocessing</code>), with a Fisher-z test on the correlation matrix. Data come from random linear-Gaussian DAGs. Machine: 8-core Apple-silicon laptop. Scripts are listed in §8.3.</p>
+<div class="tbl"><table>
+<thead><tr><th>Check</th><th>Setup</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td>Parallel ≡ PC-stable</td><td>p = 120, n = 300, 20,249 tests; 1/2/4/8 workers</td><td><b>Identical skeleton and identical sepsets</b> for every worker count</td></tr>
+<tr><td>Small problem: overhead dominates</td><td>same</td><td>Sequential 0.69 s; parallel 1.23 / 0.96 / 0.96 / 1.31 s (1/2/4/8 workers). <b>Parallel is slower.</b></td></tr>
+<tr><td>Larger problem</td><td id="bench-scale-setup">p = 300, n = 1000, mean degree 8, α = 0.01: 1,807,048 CI tests</td><td id="bench-scale">Sequential 73.5 s; parallel 74.0 / 42.7 / 28.8 / 26.3 s (1/2/4/8 workers), i.e. <b>1.0× / 1.7× / 2.6× / 2.8×</b>. Output identical every time. The scaling is sublinear: only 4 of the laptop's 8 cores are performance cores, and the work per edge is skewed.</td></tr>
+<tr><td>Order dependence, skeleton</td><td>p = 40, n = 60, α = 0.05, 10 random column orderings</td><td>Original PC: <b>6 distinct skeletons</b>. PC-stable: 1. Parallel: 1, identical to PC-stable.</td></tr>
+<tr><td>Order dependence, sepsets and v-structures</td><td>same</td><td>PC-stable sepset maps: <b>10 distinct out of 10</b>. In this instance the resulting v-structure sets were identical (1 distinct), against 7 distinct v-structure sets for original PC. The sepsets differ, but none of the differences decided whether a collider was in the sepset.</td></tr>
+<tr><td>gCastle 1.0.4 (code loaded verbatim)</td><td>p = 30 and p = 60, n = 500, α = 0.01, 4 cores</td><td><code>parallel</code> equals the reference PC-stable in both cases. <code>stable</code> keeps <b>2 extra edges</b> at p = 30 (38 vs 36). <code>parallel</code> took 2.3 s against 0.09–0.21 s for <code>stable</code>, about 11–25× slower because of joblib overhead.</td></tr>
+</tbody></table></div>
+
+<h3>8.3 Practical usage</h3>
+<pre>
+# R — order-independent and fast (recommended)
+library(pcalg)
+suff &lt;- list(C = cor(X), n = nrow(X))
+fit  &lt;- pc(suff, indepTest = gaussCItest, alpha = 0.01, labels = colnames(X),
+           skel.method = "stable.fast",      # compiled PC-stable
+           maj.rule = TRUE, solve.confl = TRUE) # order-independent v-structures
+# numCores = k only has an effect on OpenMP-enabled builds (Windows binaries per Makevars)
+
+# R — explicit multi-core PC-stable
+library(bnlearn); library(parallel)
+cl  &lt;- makeCluster(8); dag &lt;- pc.stable(as.data.frame(X), cluster = cl, alpha = 0.01); stopCluster(cl)
+
+# Python — Alg. 2 port (correct, but only worthwhile for expensive CI tests)
+from castle.algorithms import PC
+PC(variant="parallel", ci_test="fisherz", alpha=0.01, p_cores=8).learn(X)
+</pre>
+<p class="small">Review scripts (scratch, not committed): <code>bench.py</code>, <code>bench2.py</code>, <code>gc.py</code>.</p>
+
+<!-- ============================================================ -->
+<h2 id="s9">9. Recommendations</h2>
+<div class="tbl"><table>
+<thead><tr><th>Question</th><th>Answer</th></tr></thead>
+<tbody>
+<tr><td>Theoretically sound?</td><td><b>Yes.</b> It computes the PC-stable estimator exactly and inherits PC-stable's consistency and order-independence of the skeleton.</td></tr>
+<tr><td>Same CPDAG as standard PC?</td><td>With oracle tests, yes. With finite samples, it matches <b>PC-stable</b>, not original PC. The CPDAG can still change with variable order unless CPC or majority rule is used.</td></tr>
+<tr><td>Worthwhile in practice?</td><td><b>Only as a scheme, not as the ParallelPC package.</b> Use a compiled PC-stable first. Add edge-level parallelism when CI tests are expensive (kernel tests, large n). Use cuPC when the data are Gaussian and \(p\) is in the thousands.</td></tr>
+<tr><td>For this project (PC on drum PCA components)</td><td>The problem is small (tens of variables), so a parallel PC would be overhead-bound, as in our p = 120 test. Use <code>stable=True</code> (causal-learn) or <code>stable.fast</code> + <code>maj.rule</code> (pcalg) to get order-independent results. Parallelism is not needed. <span class="tag t-infer">Inference</span></td></tr>
+</tbody></table></div>
+
+<!-- ============================================================ -->
+<h2 id="refs">References</h2>
+<ol class="small">
+<li>T. D. Le, T. Hoang, J. Li, L. Liu, H. Liu, S. Hu. “A fast PC algorithm for high dimensional causal discovery with multi-core PCs.” <i>IEEE/ACM TCBB</i> 16(5):1483–1495, 2019 (online 2016). doi:10.1109/TCBB.2016.2591526. <a href="https://arxiv.org/abs/1502.02454">arXiv:1502.02454</a>. <b>Primary source.</b></li>
+<li>D. Colombo, M. H. Maathuis. “Order-independent constraint-based causal structure learning.” <i>JMLR</i> 15:3741–3782, 2014 (arXiv:1211.3295, 2012).</li>
+<li>M. Kalisch, P. Bühlmann. “Estimating high-dimensional directed acyclic graphs with the PC-algorithm.” <i>JMLR</i> 8:613–636, 2007.</li>
+<li>P. Spirtes, C. Glymour, R. Scheines. <i>Causation, Prediction, and Search</i>, 2nd ed. MIT Press, 2000.</li>
+<li>B. Zarebavani, F. Jafarinejad, M. Hashemi, S. Salehkaleybar. “cuPC: CUDA-based parallel PC algorithm for causal structure learning on GPU.” <i>IEEE TPDS</i> 31(3):530–542, 2020. <a href="https://arxiv.org/abs/1812.08491">arXiv:1812.08491</a>; code <a href="https://github.com/LIS-Laboratory/cupc">LIS-Laboratory/cupc</a>.</li>
+<li>M. Scutari. “Bayesian network constraint-based structure learning algorithms: parallel and optimized implementations in the bnlearn R package.” <i>J. Stat. Softw.</i> 77(2), 2017. doi:10.18637/jss.v077.i02.</li>
+<li>A. L. Madsen, F. Jensen, A. Salmerón, H. Langseth, T. D. Nielsen. “A parallel algorithm for Bayesian network structure learning from large data sets.” <i>Knowledge-Based Systems</i> 117:46–55, 2017 (earlier version 2015).</li>
+<li>A. Srivastava, S. P. Chockalingam, S. Aluru. “A parallel framework for constraint-based Bayesian network learning via Markov blanket discovery.” SC20; <i>IEEE TPDS</i> 2023.</li>
+<li>M. Kalisch et al. <code>pcalg</code> 2.7-12, CRAN (2024-09-12); source files <code>R/pcalg.R</code>, <code>src/constraint.cpp</code>, <code>src/gies.cpp</code>, <code>src/Makevars{,.win}</code> inspected.</li>
+<li>CRAN: <a href="https://cran.r-project.org/package=ParallelPC">ParallelPC</a> (archived 2025-12-17); archive tarballs 1.0–1.2; source <code>R/ParallelPC.R</code> inspected.</li>
+<li>Huawei Noah's Ark Lab, gCastle 1.0.4 (PyPI), <code>castle/algorithms/pc/pc.py</code>; causal-learn 0.1.4.8 (PyPI).</li>
+<li>Tetrad FAQ, Carnegie Mellon University, <a href="https://www.cmu.edu/dietrich/philosophy/tetrad/educational-materials/faq.html">parallelisation note</a>; J. Ramsey, B. Andrews, “A comparison of public causal search packages…”, arXiv:1709.04240.</li>
+<li>J. Ramsey, M. Glymour, R. Sanchez-Romero, C. Glymour. “A million variables and more: the Fast Greedy Equivalence Search algorithm…”. <i>Int. J. Data Sci. Anal.</i> 3:121–129, 2017.</li>
+</ol>
+</main>
+</body>
+</html>
