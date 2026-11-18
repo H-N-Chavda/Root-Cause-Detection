@@ -229,6 +229,7 @@ def main() -> None:
     if not standard_pc.STABLE:
         print("WARNING: standard_pc.STABLE is False; vectorized_pc implements PC-stable, so results can differ.")
     print(f"numba available: {vpc.HAVE_NUMBA}; compiling kernels ...")
+    vpc.set_threads()
     vpc.warmup()
     stages = [s.strip() for s in args.stages.split(",") if s.strip()]
     results = []

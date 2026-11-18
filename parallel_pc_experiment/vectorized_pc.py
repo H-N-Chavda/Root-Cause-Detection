@@ -69,22 +69,25 @@ _BLAS_VARS = ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS", "VEC
 # ----------------------------------------------------------------------------------------------------
 # threads
 # ----------------------------------------------------------------------------------------------------
-def set_threads(numba_threads: int | None = 12, blas_threads: int | None = 12) -> None:
-    """Thread setup for a 12-core / 16-thread CPU (use physical cores).
+def set_threads(numba_threads: int | None = 10, blas_threads: int | None = 10) -> None:
+    """Thread setup for a 10-core limit.
 
     The l >= 2 numba kernel is scalar code with no BLAS/LAPACK calls, and the Meek matmuls run after it,
-    so the numba pool and the BLAS pool are never busy at the same time: 12 numba + 12 BLAS threads do
-    not oversubscribe. With max_l <= 1 numba's thread pool is not used at all.
+    so the numba pool and the BLAS pool are never busy at the same time. With max_l <= 1 numba's thread
+    pool is not used at all.
 
-    BLAS reads its thread count when numpy is first imported, so blas_threads only takes effect in a
-    fresh process (e.g. a subprocess). For the current process export the variables before Python starts:
-        OMP_NUM_THREADS=12 MKL_NUM_THREADS=12 OPENBLAS_NUM_THREADS=12 VECLIB_MAXIMUM_THREADS=12 \\
-        NUMBA_NUM_THREADS=12 python compare.py ...
+    BLAS thread pools are limited in the current process; environment variables are also set for
+    subprocesses started later. For a fresh process, export the variables before Python starts:
+        OMP_NUM_THREADS=10 MKL_NUM_THREADS=10 OPENBLAS_NUM_THREADS=10 VECLIB_MAXIMUM_THREADS=10 \\
+        NUMBA_NUM_THREADS=10 python compare.py ...
     numba_threads is applied immediately (capped at NUMBA_NUM_THREADS).
     """
     if blas_threads is not None:
         for var in _BLAS_VARS:
             os.environ[var] = str(int(blas_threads))
+        from threadpoolctl import threadpool_limits
+
+        threadpool_limits(limits=max(1, int(blas_threads)))
     if numba_threads is not None and HAVE_NUMBA:
         numba.set_num_threads(max(1, min(int(numba_threads), numba.config.NUMBA_NUM_THREADS)))
 
