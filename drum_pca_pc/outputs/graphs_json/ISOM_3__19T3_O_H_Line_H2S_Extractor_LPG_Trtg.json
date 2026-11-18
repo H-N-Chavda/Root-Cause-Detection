@@ -1,0 +1,12 @@
+{
+ "unit": "ISOM_3",
+ "drum": "19T3 O/H Line (H2S Extractor) LPG Trtg",
+ "nodes": [
+  "19T3 O/H Line (H2S Extractor) LPG Trtg_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "19T3 O/H Line (H2S Extractor) LPG Trtg_PC1"
+ ]
+}

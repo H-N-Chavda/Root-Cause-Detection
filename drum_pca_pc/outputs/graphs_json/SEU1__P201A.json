@@ -1,0 +1,276 @@
+{
+ "unit": "SEU1",
+ "drum": "P201A",
+ "nodes": [
+  "P201A_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [
+  {
+   "source": "P201A_PC1",
+   "target": "T4207_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P201A_PC1",
+   "target": "D/S of PIC4501_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P201A_PC1",
+   "target": "D403_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P201A_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P201A_PC1",
+   "target": "T201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P201A_PC1",
+   "target": "D204_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P201A_PC1",
+   "target": "E207 to P205_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P201A_PC1",
+   "target": "D/S of C502 Recycle_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P201A_PC1",
+   "target": "D503_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P201A_PC1",
+   "target": "T203_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Tk201 N2 Line_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "D3201_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "T3201 Top_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "E3207 O/L_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "T3203 Vapour Line_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "D02 - Cold Separator_PC2",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "HYDROGENATION REACTOR FLASH DRUM ( 103-D-2004 )_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "HYDROGENATION REACTOR FLASH DRUM ( 103-D-2004 )_PC2",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FUEL GAS KNOCKOUT DRUM ( 103-D-3001 )_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P4121E balancing line_PC2",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "C4120 overhead_PC2",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "V4108 (N)_PC2",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "E4111C (E)_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "E4106_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P-4121A (W)_PC2",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C01A N2 to distance piece_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C01B_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C01B_PC2",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D08B_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D07B_PC2",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D09B_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E16_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D05_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C02A AOP discharge header_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Unstalibized Naphtha to OSBL_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99T08_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Rich amine to ARU_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU REACTOR_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SPLITTER POST CONDENSER_PC2",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FUEL GAS KNOCKOUT DRUM_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Dethaniser absorber (14T4)_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Dethaniser stripper (14T5)_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "14D5X overhead drum_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FGDS (20T1)_PC2",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Feed Surge Drum_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NHT RGC A Discharge_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor B Primary Oil Separator_PC2",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "LPG Vaporizer Overhead_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "98-D-0001 (FEED SURGE DRUM)_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "17T1 O/H Line_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  }
+ ],
+ "nodes_not_in_pc": []
+}

@@ -1,0 +1,12 @@
+{
+ "unit": "ISOM_3",
+ "drum": "19D4 O/H Line (caustic setller) LPG Trtg",
+ "nodes": [
+  "19D4 O/H Line (caustic setller) LPG Trtg_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "19D4 O/H Line (caustic setller) LPG Trtg_PC1"
+ ]
+}

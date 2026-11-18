@@ -1,0 +1,76 @@
+node,reason,partner,value
+V4101 overhead_PC1,collinear (|r| >= 0.999),P4121E balancing line_PC1,1.0
+P4121W balancing line_PC1,collinear (|r| >= 0.999),P4121E balancing line_PC1,1.0
+P-4122A (N)_PC1,collinear (|r| >= 0.999),V4102 overhead_PC1,1.0
+P-4122B (S)_PC1,collinear (|r| >= 0.999),V4102 overhead_PC1,1.0
+C4102 overhead_PC1,collinear (|r| >= 0.999),P4106 Dosing pump_PC1,1.0
+P4103A D/C_PC1,collinear (|r| >= 0.999),P4106 Dosing pump_PC1,1.0
+V4108 (S)_PC1,collinear (|r| >= 0.999),V4108 (N)_PC1,1.0
+P4103B D/C_PC1,collinear (|r| >= 0.999),P4106 Dosing pump_PC1,1.0
+E4117B SCW return header_PC2,collinear (|r| >= 0.999),E4117A SCW return header_PC2,1.0
+P-4120B (E)_PC1,collinear (|r| >= 0.999),P-4120A (W)_PC1,1.0
+P-4121B (E)_PC2,collinear (|r| >= 0.999),P-4121A (W)_PC2,1.0
+P-4121B (E)_PC1,collinear (|r| >= 0.999),P-4121A (W)_PC1,1.0
+19D3 O/H Line (amine settler) LPG Trtg_PC1,collinear (|r| >= 0.999),19T4 O/H Line (caustic Tower) LPG Trtg_PC1,1.0
+19T3 O/H Line (H2S Extractor) LPG Trtg_PC1,collinear (|r| >= 0.999),19T4 O/H Line (caustic Tower) LPG Trtg_PC1,1.0
+102FIL4054N Hydrogen Filter_PC1,collinear (|r| >= 0.999),102FIL4053N Hydrogen Filter_PC1,1.0
+Chiller 102E2007_PC1,collinear (|r| >= 0.999),Propane Make up_PC1,1.0
+19D4 O/H Line (caustic setller) LPG Trtg_PC1,collinear (|r| >= 0.999),19T4 O/H Line (caustic Tower) LPG Trtg_PC1,1.0
+K4101 (W) 2nd Stage_PC2,collinear (|r| >= 0.999),K4101 (E) 1st Stage_PC2,0.9999999999999998
+K4101 (E) 2nd Stage_PC2,collinear (|r| >= 0.999),K4101 (E) 1st Stage_PC2,0.9999999999999998
+K4101 (E) 2nd Stage_PC1,collinear (|r| >= 0.999),K4101 (W) 1st Stage_PC1,0.9999999999999998
+P201_PC1,collinear (|r| >= 0.999),P201A_PC1,0.9999999999999998
+T4207 North or South_PC1,collinear (|r| >= 0.999),T4207_PC1,0.9999999999999998
+D4503_PC1,collinear (|r| >= 0.999),C4502 discharge_PC1,0.9999999999999998
+D4208_PC1,collinear (|r| >= 0.999),D4207_PC1,0.9999999999999998
+P4103A D/C_PC2,collinear (|r| >= 0.999),P4103B D/C_PC2,0.9999999999999998
+V4108 (S)_PC2,collinear (|r| >= 0.999),V4108 (N)_PC2,0.9999999999999998
+E4111A SCW return header_PC1,collinear (|r| >= 0.999),E4111A inlet line_PC1,0.9999999999999998
+E4111B SCW return header_PC1,collinear (|r| >= 0.999),E4111A inlet line_PC1,0.9999999999999998
+E4111A SCW return header_PC2,collinear (|r| >= 0.999),E4111A inlet line_PC2,0.9999999999999998
+E4111B SCW return header_PC2,collinear (|r| >= 0.999),E4111A inlet line_PC2,0.9999999999999998
+P-4122B (S)_PC2,collinear (|r| >= 0.999),V4102 overhead_PC2,0.9999999999999998
+C4102 overhead_PC2,collinear (|r| >= 0.999),P4106 Dosing pump_PC2,0.9999999999999998
+P-4122A (N)_PC2,collinear (|r| >= 0.999),V4102 overhead_PC2,0.9999999999999998
+P4103B D/C_PC2,collinear (|r| >= 0.999),P4106 Dosing pump_PC2,0.9999999999999998
+Recontact Drum LFLF_PC1,collinear (|r| >= 0.999),Recontact Drum 102D2004 Net Gas_PC1,0.9999999999999998
+K4101 (W) 1st Stage_PC2,collinear (|r| >= 0.999),K4101 (E) 1st Stage_PC2,0.9999999999999998
+K4101 (W) 2nd Stage_PC1,collinear (|r| >= 0.999),K4101 (W) 1st Stage_PC1,0.9999999999999998
+D5204_PC1,collinear (|r| >= 0.999),D4502_PC1,0.9999999999999998
+V4101 overhead_PC2,collinear (|r| >= 0.999),P4121E balancing line_PC2,0.9999999999999998
+D3503_PC1,collinear (|r| >= 0.999),C3502 D/C_PC1,0.9999999999999998
+D3502_PC1,collinear (|r| >= 0.999),PIC3501 discharge_PC1,0.9999999999999998
+P4121W balancing line_PC2,collinear (|r| >= 0.999),P4121E balancing line_PC2,0.9999999999999998
+K4101 (W) 1st Stage_PC1,collinear (|r| >= 0.999),K4101 (E) 1st Stage_PC1,0.9999999999999998
+Adsorbent Chamber 102T4056R_PC1,collinear (|r| >= 0.999),Adsorbent Chamber 102T4053R_PC1,0.9999999999999998
+Tail Gas Drum 102D4051 inlet_PC1,collinear (|r| >= 0.999),Adsorbent Chamber 102T4053R_PC1,0.9999999999999998
+Adsorbent Chamber 102T4055R_PC1,collinear (|r| >= 0.999),Adsorbent Chamber 102T4054R_PC1,0.9999999999999998
+Adsorbent Chamber 102T4053R_PC1,collinear (|r| >= 0.999),Adsorbent Chamber 102T4052R_PC1,0.9999999999999998
+Adsorbent Chamber 102T4054R_PC1,collinear (|r| >= 0.999),Adsorbent Chamber 102T4052R_PC1,0.9999999999999998
+102FIL4054N Hydrogen Filter_PC2,collinear (|r| >= 0.999),102FIL4053N Hydrogen Filter_PC2,0.9999999999999998
+Lock Hopper D7003_PC1,collinear (|r| >= 0.999),Lock Hopper D7002_PC1,0.9999999999999998
+Net Gas Chloride Treater D-2005A_PC1,collinear (|r| >= 0.999),Recontact Drum 102D2004 Net Gas_PC1,0.9999999999999998
+Net Gas Chloride Treater D-2005B_PC1,collinear (|r| >= 0.999),Recontact Drum 102D2004 Net Gas_PC1,0.9999999999999998
+P-4120B (E)_PC2,collinear (|r| >= 0.999),P-4120A (W)_PC2,0.9999999999999998
+LPG Chloride Treater 102D2006B_PC1,collinear (|r| >= 0.999),LPG Chloride Treater 102D2006A_PC1,0.9999999999999998
+Adsorbent Chamber 102T4052R_PC1,collinear (|r| >= 0.999),Adsorbent Chamber 102T4051R_PC1,0.9999999999999998
+Stabilizer Condenser 102E2009 C/D inlet_PC1,collinear (|r| >= 0.999),Stabilizer Condenser 102E2009 A/B inlet_PC1,0.9999999999999998
+E4117B SCW return header_PC1,collinear (|r| >= 0.999),E4117A SCW return header_PC1,0.9999999999999998
+On 24-D-1001 FG KOD_PC1,collinear (|r| >= 0.999),On 24-STR-1008A/B Fuel gas strainer_PC1,0.9999999999999998
+HYDROGEN LINE_PC1,collinear (|r| >= 0.999),98-D-0001 (FEED SURGE DRUM)_PC1,0.99999994197702
+T202_PC1,collinear (|r| >= 0.999),T203_PC1,0.9999467242903848
+Reformate Rundown cooler B inlet_PC1,collinear (|r| >= 0.999),Reformate Rundown cooler A inlet_PC1,0.9996194824125064
+V4102 overhead_PC1,collinear (|r| >= 0.999),K4101 (E) 1st Stage_PC1,0.9993670484293359
+V4102 overhead_PC2,collinear (|r| >= 0.999),K4101 (E) 1st Stage_PC2,0.9992863796414172
+LPG Make up to C502_PC1,near-linear dependence (eigenvalue -9.78e-16 < 1e-06),,-9.777782920771844e-16
+E4117A SCW return header_PC1,near-linear dependence (eigenvalue -7.03e-16 < 1e-06),,-7.032608153088777e-16
+D4502_PC1,near-linear dependence (eigenvalue -8.22e-16 < 1e-06),,-8.221386890399761e-16
+E4111A inlet line_PC2,near-linear dependence (eigenvalue -7.11e-16 < 1e-06),,-7.11053266768584e-16
+E4108 SCW Return header_PC1,near-linear dependence (eigenvalue -3.06e-16 < 1e-06),,-3.055287449454696e-16
+Adsorbent Chamber 102T4051R_PC1,near-linear dependence (eigenvalue -2.07e-16 < 1e-06),,-2.0664260272814453e-16
+V4108 (N)_PC1,near-linear dependence (eigenvalue -2.82e-16 < 1e-06),,-2.8211260611250365e-16
+Fuel gas mixing drum overhead_PC1,near-linear dependence (eigenvalue -1.17e-16 < 1e-06),,-1.165463712772553e-16
+C4105 overhead_PC1,near-linear dependence (eigenvalue 1.63e-16 < 1e-06),,1.6332468689524153e-16
+E4111A inlet line_PC1,near-linear dependence (eigenvalue 1.18e-16 < 1e-06),,1.1816914151043682e-16
+Chiller Reciever D4092(R)_PC1,near-linear dependence (eigenvalue 4.72e-16 < 1e-06),,4.720560865769152e-16
+Chiller Reciever D4092(R)_PC2,near-linear dependence (eigenvalue 4.39e-16 < 1e-06),,4.3866784013212694e-16

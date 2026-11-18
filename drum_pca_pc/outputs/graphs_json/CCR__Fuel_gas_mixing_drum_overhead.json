@@ -1,0 +1,444 @@
+{
+ "unit": "CCR",
+ "drum": "Fuel gas mixing drum overhead",
+ "nodes": [
+  "Fuel gas mixing drum overhead_PC1",
+  "Fuel gas mixing drum overhead_PC2"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "D4201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "T4207_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "C4502 discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "V4301_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "K604 I stage_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "K604 II stage_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "T201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "D204_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "D/S of C502 Recycle_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "T203_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "Tk201 N2 Line_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "D3205_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "R3201 Top_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "D3213_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "FIL-01A/B Feed Filter_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "T02 - Stripper overhead_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "T03 - Stripped gas amine absorber_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "C02B - MUG Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "E23 - LP steam generator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "D19 - Flush oil drum_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "Stripper_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "MUG-A 1st stage discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "HYDROGENATION REACTOR ( 103-R-2001 (M) Inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "DRYERS REGENERANT DEGASSER ( 103-D-2015 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "FUEL GAS KNOCKOUT DRUM ( 103-D-3001 )_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "P4121E balancing line_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "K4101 (E) 1st Stage_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "K4101 (E) 1st Stage_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "V4121 overhead to atm_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "C4120 overhead_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "P4121 D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "P4110A/B D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "E4117A SCW return header_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "P-4121A (W)_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "99C01A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "99C01A_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "99D07A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "99C01A AOP LUBE OIL SYSTEM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "99D07B_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "99 C01B AOP LUBE OIL SYSTEM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "99D12_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "99T02_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "99E16_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "99T03_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "99C02B Suction_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "99C02A AOP discharge header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "99T06_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC3",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "SHU REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "GASOLINE SPLITTER_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "SPLITTER POST CONDENSER_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "SPLITTER REFLUX DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "SECOND STAGE HDS REACTOR_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "AMINE ABSORBER_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "STABILIZER COLUMN_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "FUEL GAS KNOCKOUT DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "Dethaniser absorber (14T4)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "Dethaniser stripper (14T5)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "Debutaniser (14T6)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "FGDS (20T1)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "FGDS (20T1)_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "NSU Feed Surge Drum_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "NHT RGC A Discharge_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "Propane Make up_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "NGC 2nd Stage Discharge cooler A inlet line_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "NGC 2nd Stage Discharge cooler B inlet line_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "Fuel Gas Coalescer_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "Chiller Condenser E4091A(N)_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "Chiller Surge Drum D4093(R)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "Chiller Surge Drum D4093(R)_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "Cyclemax Air Dryer Left Chamber_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "Cyclemax Air Dryer Right Chamber_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "LPG Vaporizer Overhead_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum to Header_PC1",
+   "target": "Fuel gas mixing drum overhead_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum to Header_PC2",
+   "target": "Fuel gas mixing drum overhead_PC2",
+   "type": "->"
+  },
+  {
+   "source": "98-D-0001 (FEED SURGE DRUM)_PC1",
+   "target": "Fuel gas mixing drum overhead_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Reflux Drum 11-D-1_PC1",
+   "target": "Fuel gas mixing drum overhead_PC2",
+   "type": "->"
+  },
+  {
+   "source": "On 24-STR-1008A/B Fuel gas strainer_PC1",
+   "target": "Fuel gas mixing drum overhead_PC2",
+   "type": "->"
+  }
+ ],
+ "nodes_not_in_pc": [
+  "Fuel gas mixing drum overhead_PC1"
+ ]
+}

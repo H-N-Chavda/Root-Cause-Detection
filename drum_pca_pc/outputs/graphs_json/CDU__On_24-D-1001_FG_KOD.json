@@ -1,0 +1,12 @@
+{
+ "unit": "CDU",
+ "drum": "On 24-D-1001 FG KOD",
+ "nodes": [
+  "On 24-D-1001 FG KOD_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "On 24-D-1001 FG KOD_PC1"
+ ]
+}

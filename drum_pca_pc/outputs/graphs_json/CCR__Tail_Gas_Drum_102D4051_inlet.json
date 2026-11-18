@@ -1,0 +1,12 @@
+{
+ "unit": "CCR",
+ "drum": "Tail Gas Drum 102D4051 inlet",
+ "nodes": [
+  "Tail Gas Drum 102D4051 inlet_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "Tail Gas Drum 102D4051 inlet_PC1"
+ ]
+}

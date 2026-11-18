@@ -1,0 +1,12 @@
+{
+ "unit": "CCR",
+ "drum": "Stabilizer Condenser 102E2009 C/D inlet",
+ "nodes": [
+  "Stabilizer Condenser 102E2009 C/D inlet_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "Stabilizer Condenser 102E2009 C/D inlet_PC1"
+ ]
+}

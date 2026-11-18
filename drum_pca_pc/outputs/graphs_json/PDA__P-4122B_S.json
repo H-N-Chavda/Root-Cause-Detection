@@ -1,0 +1,14 @@
+{
+ "unit": "PDA",
+ "drum": "P-4122B (S)",
+ "nodes": [
+  "P-4122B (S)_PC1",
+  "P-4122B (S)_PC2"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "P-4122B (S)_PC1",
+  "P-4122B (S)_PC2"
+ ]
+}

@@ -1,0 +1,14 @@
+{
+ "unit": "PDA",
+ "drum": "P4121W balancing line",
+ "nodes": [
+  "P4121W balancing line_PC1",
+  "P4121W balancing line_PC2"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "P4121W balancing line_PC1",
+  "P4121W balancing line_PC2"
+ ]
+}

@@ -1,0 +1,486 @@
+{
+ "unit": "CCR",
+ "drum": "NSU Reflux Drum",
+ "nodes": [
+  "NSU Reflux Drum_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "T4201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "T4207_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "T4202_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "V4301_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "D/S of PIC4501_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "D403_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "K604 II stage_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "D204_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "Tk201 N2 Line_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "D3205_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "D3205_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "FIL-01A/B Feed Filter_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "D01 - Feed surge drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "Product diesel coalescer_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "C02A - MUG Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "D19 - Flush oil drum_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "NHT FSD_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "RGC-A Discharge_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "Stripper_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "ISOM FSD_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "Dip reflux drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "103-E-2002 Tube side outlet (DIH recycle)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "103-E-2004 tube side inlet (MP Steam)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "103-E-2004 tube side inlet (MP Steam)_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "HYDROGENATION REACTOR ( 103-R-2001 (M) Inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "HYDROGENATION REACTOR FLASH DRUM ( 103-D-2004 )_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "DRYERS REGENERANT DEGASSER ( 103-D-2015 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "FUEL GAS KNOCKOUT DRUM ( 103-D-3001 )_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "P4106 Dosing pump_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "V4121 overhead to atm_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "C4103 overhead_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "C4103 overhead_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "C4104 overhead_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "C4120 overhead_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "P4110A/B D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "E4111C (E)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "E4106_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "E4114 SCW Return header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "P-4120A (W)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "99P02A LO header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "99C01A_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "99D07A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "99D07B_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "99D09B_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "99D12_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "99D05_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "99D05_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "99C02A Suction_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "99C02A Suction_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "99C02B Suction_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "99C02A AOP discharge header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "99C02B AOP discharge header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "SHU REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "SHU REACTOR_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "GASOLINE SPLITTER_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "SPLITTER POST CONDENSER_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "SPLITTER REFLUX DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "RECYCLE COMPRESSOR DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "STABILIZER COLUMN_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "FUEL GAS KNOCKOUT DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "14D1X overhead drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "Wet Gas compressor (14-C-2)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "14D4X Overhead drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "14D4X Overhead drum_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "FGDS (20T1)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "T-2000 VGO STRIPPER_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "NSU Feed Surge Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "NSU Feed Surge Drum_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "NSU Tower Overhead_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NGC 1st Stage Discharge cooler A inlet line_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NGC 1st Stage Discharge cooler B inlet line_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Propane Make up_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Stabilizer Condenser 102E2009 A/B inlet_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor B Primary Oil Separator_PC2",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Condenser E4091B(N)_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Condenser E4091A(N)_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Surge Drum D4093(R)_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "102FIL4053N Hydrogen Filter_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "LPG Vaporizer Overhead_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Main tower 11-T-1(N) Ovhd_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reflux Drum 11-D-1_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "11D6 LPG Reflux DRUM_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "On 24-STR-1008A/B Fuel gas strainer_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Ejector condensate drum 24-D-1004_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "17T1 O/H Line_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "17T2 O/H Line_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  }
+ ],
+ "nodes_not_in_pc": []
+}

@@ -1,0 +1,252 @@
+unit,drum,n_PCs,n_edges,edges_to_other_drums,left_out_of_pc
+SEU3,D4201,1,0,74,0
+SEU3,T4201,1,0,69,0
+SEU3,D4207,1,0,90,0
+SEU3,D4204,1,0,84,0
+SEU3,D4208,1,0,0,1
+SEU3,T4207,1,0,110,0
+SEU3,K4201 D/C,1,0,64,0
+SEU3,K5201 D/C,1,0,73,0
+SEU3,C4502 discharge,1,0,78,0
+SEU3,D4502,1,0,0,1
+SEU3,D4503,1,0,0,1
+SEU3,D5204,1,0,0,1
+SEU3,T4202,1,0,59,0
+SEU3,V4301,1,0,114,0
+SEU3,D/S of PIC4501,2,0,171,0
+SEU3,T4207 North or South,1,0,0,1
+SEU1,D403,1,0,97,0
+SEU1,K604 I stage,1,0,78,0
+SEU1,K604 II stage,1,0,75,0
+SEU1,D201,1,0,43,0
+SEU1,T201,1,0,59,0
+SEU1,D204,1,0,106,0
+SEU1,E207 to P205,1,0,53,0
+SEU1,LPG Make up to C502,1,0,0,1
+SEU1,D/S of C502 Recycle,1,0,77,0
+SEU1,D502,1,0,57,0
+SEU1,D503,1,0,58,0
+SEU1,T203,1,0,56,0
+SEU1,T202,1,0,0,1
+SEU1,P201A,1,0,53,0
+SEU1,P201,1,0,0,1
+SEU1,Tk201 N2 Line,1,0,73,0
+SEU2,D3209,1,0,74,0
+SEU2,D3201,1,0,64,0
+SEU2,T3201 Top,1,0,91,0
+SEU2,D3205,2,0,186,0
+SEU2,R3201 Top,1,0,79,0
+SEU2,E3207 O/L,1,0,76,0
+SEU2,D3213,1,0,93,0
+SEU2,PIC3501 discharge,1,0,93,0
+SEU2,C3502 D/C,1,0,77,0
+SEU2,D3502,1,0,0,1
+SEU2,D3503,1,0,0,1
+SEU2,T3203 Vapour Line,1,0,49,0
+SEU2,T3202 Vapour Line,1,0,44,0
+DIU,FIL-01A/B Feed Filter,1,0,92,0
+DIU,D01 - Feed surge drum,1,0,69,0
+DIU,R01 - Isotherming Reactor,1,0,65,0
+DIU,D02 - Cold Separator,2,0,185,0
+DIU,T02 - Stripper overhead,1,0,51,0
+DIU,T03 - Stripped gas amine absorber,1,0,95,0
+DIU,Product diesel coalescer,1,0,103,0
+DIU,D05 - Hydrogen KOD,1,0,55,0
+DIU,C02A - MUG Discharge,1,0,97,0
+DIU,C02B - MUG Discharge,1,0,82,0
+DIU,E23 - LP steam generator,1,0,95,0
+DIU,D19 - Flush oil drum,2,0,184,0
+ISOM,NHT FSD,1,0,80,0
+ISOM,Separator,1,0,118,0
+ISOM,RGC-A Discharge,2,0,171,0
+ISOM,RGC-B Discharge,2,0,171,0
+ISOM,Stripper,2,0,172,0
+ISOM,ISOM FSD,2,0,134,0
+ISOM,Dip reflux drum,1,0,100,0
+ISOM,Feed Dryer-A,1,0,52,0
+ISOM,Feed Dryer-B,1,0,51,0
+ISOM,MUG-A 2nd stage discharge,1,0,94,0
+ISOM,MUG-B 2nd stage discharge,1,0,83,0
+ISOM,MUG-A 1st stage discharge,1,0,85,0
+ISOM,MUG-B 1st stage discharge,1,0,87,0
+ISOM,103-E-2002 Tube side outlet (DIH recycle),1,0,96,0
+ISOM,103-E-2004 tube side inlet (MP Steam),2,0,188,0
+ISOM,HYDROGENATION REACTOR ( 103-R-2001 (M) Inlet,1,0,67,0
+ISOM,HYDROGENATION REACTOR FLASH DRUM ( 103-D-2004 ),2,0,169,0
+ISOM,ISOM Reactors Feed Line (D/s of UV-5703),1,0,58,0
+ISOM,ISOMERISATION REACTOR ( 103-R-2002 ) outlet,1,0,56,0
+ISOM,ISOMERISATION REACTOR ( 103-R-2003 ) Outlet,1,0,56,0
+ISOM,STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016),1,0,49,0
+ISOM,STABILIZER REFLUX DRUM ( 103-D-2005 ),1,0,86,0
+ISOM,DEISOHEXANIZER ( 103-T-2002 ),1,0,39,0
+ISOM,DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 ),1,0,73,0
+ISOM,CAUSTIC SCRUBBER ( 103-T-2004 ),1,0,46,0
+ISOM,DRYERS REGENERATION SUPERHEATER ( 103-F-2001 ) outlet,1,0,63,0
+ISOM,DRYERS REGENERANT VAPORIZER ( 103-E-2020 ),1,0,67,0
+ISOM,DRYERS REGENERANT DEGASSER ( 103-D-2015 ),1,0,79,0
+ISOM,FUEL GAS KNOCKOUT DRUM ( 103-D-3001 ),2,0,154,0
+PDA,P4121E balancing line,2,0,172,0
+PDA,P4121W balancing line,2,0,0,2
+PDA,K4101 (E) 1st Stage,2,0,174,0
+PDA,K4101 (W) 1st Stage,2,0,0,2
+PDA,P4106 Dosing pump,2,0,161,0
+PDA,V4121 overhead to atm,2,0,171,0
+PDA,C4103 overhead,2,0,166,0
+PDA,C4104 overhead,1,0,80,0
+PDA,V4102 overhead,2,0,0,2
+PDA,C4120 overhead,2,0,162,0
+PDA,P4121 D/C,1,0,85,0
+PDA,C4102 overhead,2,0,0,2
+PDA,C4105 overhead,2,0,66,1
+PDA,P4103B D/C,2,0,0,2
+PDA,P4103A D/C,2,0,0,2
+PDA,V4101 overhead,2,0,0,2
+PDA,V4108 (N),2,0,83,1
+PDA,V4108 (S),2,0,0,2
+PDA,P4110A/B D/C,1,0,96,0
+PDA,E4111A inlet line,2,0,0,2
+PDA,K4101 (E) 2nd Stage,2,0,0,2
+PDA,K4101 (W) 2nd Stage,2,0,0,2
+PDA,E4111A SCW return header,2,0,0,2
+PDA,E4111B SCW return header,2,0,0,2
+PDA,E4111C (E),1,0,116,0
+PDA,E4106,2,0,176,0
+PDA,E4108 SCW Return header,2,0,86,1
+PDA,E4114 SCW Return header,1,0,87,0
+PDA,E4117A SCW return header,2,0,107,1
+PDA,E4117B SCW return header,2,0,0,2
+PDA,P-4121A (W),2,0,161,0
+PDA,P-4121B (E),2,0,0,2
+PDA,P-4120A (W),2,0,189,0
+PDA,P-4120B (E),2,0,0,2
+PDA,P-4122A (N),2,0,0,2
+PDA,P-4122B (S),2,0,0,2
+LOUP,99P02A LO header,1,0,104,0
+LOUP,99P02B LO header,1,0,88,0
+LOUP,99C01A,2,0,183,0
+LOUP,99D07A,1,0,81,0
+LOUP,99C01A N2 to distance piece,1,0,91,0
+LOUP,99C01A AOP LUBE OIL SYSTEM,1,0,109,0
+LOUP,99C01B,2,0,139,0
+LOUP,99D08B,1,0,71,0
+LOUP,99D07B,2,0,169,0
+LOUP,99 C01B AOP LUBE OIL SYSTEM,1,0,83,0
+LOUP,99D09B,2,0,178,0
+LOUP,99D12,1,0,105,0
+LOUP,99D02,1,0,78,0
+LOUP,99T02,1,0,63,0
+LOUP,99E16,1,0,61,0
+LOUP,99P11A LO header,1,0,83,0
+LOUP,99T03,1,0,82,0
+LOUP,99D05,2,0,204,0
+LOUP,99C02A Discharge,1,0,85,0
+LOUP,99C02B Discharge,1,0,94,0
+LOUP,99C02A Suction,2,0,198,0
+LOUP,99C02B Suction,2,0,206,0
+LOUP,99C02A AOP discharge header,1,0,69,0
+LOUP,99C02B AOP discharge header,1,0,91,0
+LOUP,Unstalibized Naphtha to OSBL,1,0,99,0
+LOUP,99T06,1,0,58,0
+LOUP,99T08,1,0,69,0
+LOUP,99AFC03A/B/C/D,1,0,39,0
+LOUP,99E17,1,0,60,0
+LOUP,99E13,1,0,76,0
+LOUP,99AFC06A/B,1,0,58,0
+LOUP,Rich amine to ARU,1,0,54,0
+LOUP,Nitrogen tanker header,1,0,80,0
+PG,SHU FEED SURGE DRUM,2,0,150,0
+PG,SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG.,3,0,266,0
+PG,SHU REACTOR,2,0,196,0
+PG,GASOLINE SPLITTER,1,0,88,0
+PG,SPLITTER POST CONDENSER,2,0,172,0
+PG,SPLITTER REFLUX DRUM,2,0,181,0
+PG,FIRST STAGE HDS REACTOR,1,0,56,0
+PG,SECOND STAGE HDS REACTOR,2,0,153,0
+PG,FIRST STAGE COLD SEPARATOR DRUM,1,0,70,0
+PG,AMINE ABSORBER,2,0,154,0
+PG,RECYCLE COMPRESSOR DRUM,2,0,189,0
+PG,RECYCLE COMPRESSORS,1,0,105,0
+PG,H2S STRIPPER,2,0,146,0
+PG,SECOND STAGE HDS COLD SEPARATOR DRUM,3,0,243,0
+PG,STABILIZER COLUMN,1,0,87,0
+PG,FUEL GAS KNOCKOUT DRUM,2,0,172,0
+ISOM_3,14D1X overhead drum,1,0,126,0
+ISOM_3,Wet Gas compressor (14-C-2),1,0,81,0
+ISOM_3,Dethaniser absorber (14T4),1,0,90,0
+ISOM_3,Dethaniser stripper (14T5),1,0,61,0
+ISOM_3,Debutaniser (14T6),1,0,57,0
+ISOM_3,14D5X overhead drum,1,0,92,0
+ISOM_3,14D4X Overhead drum,2,0,186,0
+ISOM_3,FGDS (20T1),2,0,181,0
+ISOM_3,Debutaniser,1,0,71,0
+ISOM_3,Dethaniser,1,0,69,0
+ISOM_3,19T4 O/H Line (caustic Tower) LPG Trtg,1,0,91,0
+ISOM_3,19D3 O/H Line (amine settler) LPG Trtg,1,0,0,1
+ISOM_3,19T3 O/H Line (H2S Extractor) LPG Trtg,1,0,0,1
+ISOM_3,19D4 O/H Line (caustic setller) LPG Trtg,1,0,0,1
+DHT,T-2000 VGO STRIPPER,1,0,79,0
+DHT,T-2001 NAPHTHA STABILIZER,1,0,28,0
+CCR,NSU Feed Surge Drum,2,0,177,0
+CCR,NSU Tower Overhead,1,0,82,0
+CCR,NSU Reflux Drum,1,0,95,0
+CCR,NHT Feed Surge Drum,1,0,69,0
+CCR,NHT RGC A Discharge,2,0,186,0
+CCR,NHT RGC B Discharge,1,0,85,0
+CCR,NGC A 1st Stage Discharge,1,0,63,0
+CCR,NGC 2nd Stage Suction Drum 102D2003,1,0,55,0
+CCR,NGC 1st Stage Discharge cooler A inlet line,1,0,64,0
+CCR,NGC 1st Stage Discharge cooler B inlet line,1,0,55,0
+CCR,Recontact Drum 102D2004 Net Gas,1,0,58,0
+CCR,Propane Make up,1,0,48,0
+CCR,Chiller 102E2007,1,0,0,1
+CCR,Recontact Drum LFLF,1,0,0,1
+CCR,NGC 2nd Stage Discharge cooler A inlet line,1,0,37,0
+CCR,NGC 2nd Stage Discharge cooler B inlet line,1,0,43,0
+CCR,Net Gas Chloride Treater D-2005A,1,0,0,1
+CCR,Net Gas Chloride Treater D-2005B,1,0,0,1
+CCR,Reformate Rundown cooler A inlet,1,0,71,0
+CCR,Reformate Rundown cooler B inlet,1,0,0,1
+CCR,Stabilizer 102T2001(M) Overhead line,1,0,59,0
+CCR,Stabilizer Reciever Drum,2,0,157,0
+CCR,Stabilizer Condenser 102E2009 A/B inlet,1,0,52,0
+CCR,Stabilizer Condenser 102E2009 C/D inlet,1,0,0,1
+CCR,LPG Chloride Treater 102D2006A,1,0,101,0
+CCR,LPG Chloride Treater 102D2006B,1,0,0,1
+CCR,Fuel Gas Coalescer,2,0,120,0
+CCR,Chiller Compressor A Primary Oil Separator,1,0,96,0
+CCR,Chiller Compressor B Primary Oil Separator,2,0,204,0
+CCR,Chiller Condenser E4091B(N),2,0,185,0
+CCR,Chiller Condenser E4091A(N),2,0,172,0
+CCR,Chiller Reciever D4092(R),2,0,0,2
+CCR,Chiller Surge Drum D4093(R),2,0,200,0
+CCR,Adsorbent Chamber 102T4051R,1,0,0,1
+CCR,Adsorbent Chamber 102T4052R,1,0,0,1
+CCR,Adsorbent Chamber 102T4053R,1,0,0,1
+CCR,Adsorbent Chamber 102T4054R,1,0,0,1
+CCR,Adsorbent Chamber 102T4055R,1,0,0,1
+CCR,Adsorbent Chamber 102T4056R,1,0,0,1
+CCR,Tail Gas Drum 102D4051 inlet,1,0,0,1
+CCR,102FIL4053N Hydrogen Filter,2,0,179,0
+CCR,102FIL4054N Hydrogen Filter,2,0,0,2
+CCR,Dust collector Outlet Line,1,0,48,0
+CCR,Booster Gas Coialescer Outlet,1,0,50,0
+CCR,Cyclemax Air Dryer Left Chamber,1,0,33,0
+CCR,Cyclemax Air Dryer Right Chamber,1,0,34,0
+CCR,Lock Hopper D7002,1,0,61,0
+CCR,Lock Hopper D7003,1,0,0,1
+CCR,LPG Vaporizer Overhead,2,0,174,0
+CCR,Fuel gas mixing drum overhead,2,0,86,1
+CCR,Fuel gas mixing drum to Header,2,0,159,0
+DAK,98-D-0001 (FEED SURGE DRUM),1,0,90,0
+DAK,HYDROGEN LINE,1,0,0,1
+CDU,Main tower 11-T-1(N) Ovhd,1,0,98,0
+CDU,Reflux Drum 11-D-1,1,0,100,0
+CDU,Nap Stabilizer Ovhd,1,0,63,0
+CDU,11D6 LPG Reflux DRUM,1,0,92,0
+CDU,On 24-STR-1008A/B Fuel gas strainer,1,0,91,0
+CDU,On 24-D-1001 FG KOD,1,0,0,1
+CDU,Amine tower 24-T-1005 O/H (East),1,0,82,0
+CDU,Ejector condensate drum 24-D-1004,1,0,104,0
+CDU,17T1 O/H Line,1,0,89,0
+CDU,17T2 O/H Line,1,0,82,0
+CDU,THT3 O/H Line,1,0,85,0

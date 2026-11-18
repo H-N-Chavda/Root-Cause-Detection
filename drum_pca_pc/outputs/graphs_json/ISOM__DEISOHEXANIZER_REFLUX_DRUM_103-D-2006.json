@@ -1,0 +1,376 @@
+{
+ "unit": "ISOM",
+ "drum": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )",
+ "nodes": [
+  "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "D4207_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "K4201 D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "C4502 discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "T4202_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "K604 II stage_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "Tk201 N2 Line_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "D3209_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "D3205_PC2",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "C3502 D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "D01 - Feed surge drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "D02 - Cold Separator_PC2",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "T02 - Stripper overhead_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "E23 - LP steam generator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "D19 - Flush oil drum_PC2",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "NHT FSD_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "ISOM FSD_PC2",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "Dip reflux drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "Feed Dryer-B_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "MUG-A 2nd stage discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "MUG-A 1st stage discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "103-E-2002 Tube side outlet (DIH recycle)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "103-E-2004 tube side inlet (MP Steam)_PC2",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "ISOM Reactors Feed Line (D/s of UV-5703)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "ISOMERISATION REACTOR ( 103-R-2002 ) outlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DRYERS REGENERATION SUPERHEATER ( 103-F-2001 ) outlet_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DRYERS REGENERANT VAPORIZER ( 103-E-2020 )_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FUEL GAS KNOCKOUT DRUM ( 103-D-3001 )_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FUEL GAS KNOCKOUT DRUM ( 103-D-3001 )_PC2",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "C4103 overhead_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P4121 D/C_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "E4108 SCW Return header_PC2",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P-4120A (W)_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P-4120A (W)_PC2",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C01A_PC2",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D07A_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D07B_PC2",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D09B_PC2",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D12_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D02_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99P11A LO header_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C02B Suction_PC2",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C02B AOP discharge header_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E13_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nitrogen tanker header_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU REACTOR_PC2",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SPLITTER POST CONDENSER_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SPLITTER POST CONDENSER_PC2",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SPLITTER REFLUX DRUM_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "AMINE ABSORBER_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "RECYCLE COMPRESSOR DRUM_PC2",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "H2S STRIPPER_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC3",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FUEL GAS KNOCKOUT DRUM_PC2",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "14D5X overhead drum_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "T-2000 VGO STRIPPER_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Feed Surge Drum_PC2",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Tower Overhead_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NHT Feed Surge Drum_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel Gas Coalescer_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel Gas Coalescer_PC2",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Condenser E4091B(N)_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Condenser E4091B(N)_PC2",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Condenser E4091A(N)_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Surge Drum D4093(R)_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "102FIL4053N Hydrogen Filter_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "11D6 LPG Reflux DRUM_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Amine tower 24-T-1005 O/H (East)_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  }
+ ],
+ "nodes_not_in_pc": []
+}

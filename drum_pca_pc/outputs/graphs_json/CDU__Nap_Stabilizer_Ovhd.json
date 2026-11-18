@@ -1,0 +1,326 @@
+{
+ "unit": "CDU",
+ "drum": "Nap Stabilizer Ovhd",
+ "nodes": [
+  "Nap Stabilizer Ovhd_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "K4201 D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "E3207 O/L_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "R01 - Isotherming Reactor_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "D02 - Cold Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "T03 - Stripped gas amine absorber_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "Stripper_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "Stripper_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "Dip reflux drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "MUG-A 2nd stage discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "103-E-2002 Tube side outlet (DIH recycle)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "103-E-2004 tube side inlet (MP Steam)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "FUEL GAS KNOCKOUT DRUM ( 103-D-3001 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "P4121E balancing line_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "P4121E balancing line_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "P4106 Dosing pump_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "P4106 Dosing pump_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "V4121 overhead to atm_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "C4105 overhead_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "V4108 (N)_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "P4110A/B D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "E4106_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "E4114 SCW Return header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "P-4121A (W)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "P-4121A (W)_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "P-4120A (W)_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "99P02A LO header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "99P02B LO header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "99C01A N2 to distance piece_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "99 C01B AOP LUBE OIL SYSTEM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "99D09B_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "99P11A LO header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "SPLITTER REFLUX DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "SECOND STAGE HDS REACTOR_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "AMINE ABSORBER_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "RECYCLE COMPRESSOR DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "H2S STRIPPER_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC3",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "STABILIZER COLUMN_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "FUEL GAS KNOCKOUT DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "Dethaniser absorber (14T4)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "14D5X overhead drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "14D4X Overhead drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "14D4X Overhead drum_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "19T4 O/H Line (caustic Tower) LPG Trtg_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "NSU Feed Surge Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "NSU Feed Surge Drum_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "NHT RGC B Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "NGC 2nd Stage Suction Drum 102D2003_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "Recontact Drum 102D2004 Net Gas_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "Stabilizer Reciever Drum_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "LPG Chloride Treater 102D2006A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "102FIL4053N Hydrogen Filter_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "Main tower 11-T-1(N) Ovhd_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "Reflux Drum 11-D-1_PC1",
+   "type": "->"
+  },
+  {
+   "source": "11D6 LPG Reflux DRUM_PC1",
+   "target": "Nap Stabilizer Ovhd_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Amine tower 24-T-1005 O/H (East)_PC1",
+   "target": "Nap Stabilizer Ovhd_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "Ejector condensate drum 24-D-1004_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "17T1 O/H Line_PC1",
+   "type": "->"
+  },
+  {
+   "source": "THT3 O/H Line_PC1",
+   "target": "Nap Stabilizer Ovhd_PC1",
+   "type": "->"
+  }
+ ],
+ "nodes_not_in_pc": []
+}

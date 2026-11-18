@@ -1,0 +1,311 @@
+{
+ "unit": "LOUP",
+ "drum": "99E17",
+ "nodes": [
+  "99E17_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [
+  {
+   "source": "99E17_PC1",
+   "target": "D4204_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "T4207_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "D403_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "T201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "D204_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "E207 to P205_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "D502_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "T203_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "D3205_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "Product diesel coalescer_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "D19 - Flush oil drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "103-E-2002 Tube side outlet (DIH recycle)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "HYDROGENATION REACTOR FLASH DRUM ( 103-D-2004 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "FUEL GAS KNOCKOUT DRUM ( 103-D-3001 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "P4121E balancing line_PC2",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "V4121 overhead to atm_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "V4121 overhead to atm_PC2",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "C4120 overhead_PC2",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "E4108 SCW Return header_PC2",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "E4114 SCW Return header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "P-4120A (W)_PC2",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99P02A LO header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99C01A N2 to distance piece_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99C01B_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99D08B_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99D07B_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99D07B_PC2",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99D09B_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99D09B_PC2",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99T02_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99E16_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99P11A LO header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99T03_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99D05_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99D05_PC2",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99C02A Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99C02B Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99C02B Suction_PC2",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99C02A AOP discharge header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "Unstalibized Naphtha to OSBL_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99T06_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "99T08_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99AFC06A/B_PC1",
+   "target": "99E17_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Rich amine to ARU_PC1",
+   "target": "99E17_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC2",
+   "target": "99E17_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU REACTOR_PC1",
+   "target": "99E17_PC1",
+   "type": "->"
+  },
+  {
+   "source": "GASOLINE SPLITTER_PC1",
+   "target": "99E17_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SPLITTER POST CONDENSER_PC2",
+   "target": "99E17_PC1",
+   "type": "->"
+  },
+  {
+   "source": "RECYCLE COMPRESSOR DRUM_PC1",
+   "target": "99E17_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Dethaniser absorber (14T4)_PC1",
+   "target": "99E17_PC1",
+   "type": "->"
+  },
+  {
+   "source": "14D4X Overhead drum_PC1",
+   "target": "99E17_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FGDS (20T1)_PC2",
+   "target": "99E17_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NHT RGC A Discharge_PC1",
+   "target": "99E17_PC1",
+   "type": "->"
+  },
+  {
+   "source": "LPG Chloride Treater 102D2006A_PC1",
+   "target": "99E17_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor B Primary Oil Separator_PC2",
+   "target": "99E17_PC1",
+   "type": "->"
+  },
+  {
+   "source": "98-D-0001 (FEED SURGE DRUM)_PC1",
+   "target": "99E17_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Amine tower 24-T-1005 O/H (East)_PC1",
+   "target": "99E17_PC1",
+   "type": "->"
+  },
+  {
+   "source": "17T2 O/H Line_PC1",
+   "target": "99E17_PC1",
+   "type": "->"
+  }
+ ],
+ "nodes_not_in_pc": []
+}

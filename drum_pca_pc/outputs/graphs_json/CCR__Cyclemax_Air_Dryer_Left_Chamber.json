@@ -1,0 +1,176 @@
+{
+ "unit": "CCR",
+ "drum": "Cyclemax Air Dryer Left Chamber",
+ "nodes": [
+  "Cyclemax Air Dryer Left Chamber_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "D503_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "Tk201 N2 Line_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "D3205_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "PIC3501 discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "C02B - MUG Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "ISOM FSD_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "Dip reflux drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "99C01A_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "99D07A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "99C01A AOP LUBE OIL SYSTEM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "99D09B_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "99C02A Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "99C02B Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "99C02A Suction_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "99C02A AOP discharge header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "99C02B AOP discharge header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "SPLITTER REFLUX DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "AMINE ABSORBER_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "RECYCLE COMPRESSORS_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "H2S STRIPPER_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "STABILIZER COLUMN_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "14D4X Overhead drum_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "NSU Tower Overhead_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "Recontact Drum 102D2004 Net Gas_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "Fuel Gas Coalescer_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "102FIL4053N Hydrogen Filter_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Dust collector Outlet Line_PC1",
+   "target": "Cyclemax Air Dryer Left Chamber_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Left Chamber_PC1",
+   "target": "Booster Gas Coialescer Outlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Right Chamber_PC1",
+   "target": "Cyclemax Air Dryer Left Chamber_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Lock Hopper D7002_PC1",
+   "target": "Cyclemax Air Dryer Left Chamber_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "Cyclemax Air Dryer Left Chamber_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum to Header_PC1",
+   "target": "Cyclemax Air Dryer Left Chamber_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum to Header_PC2",
+   "target": "Cyclemax Air Dryer Left Chamber_PC1",
+   "type": "->"
+  }
+ ],
+ "nodes_not_in_pc": []
+}

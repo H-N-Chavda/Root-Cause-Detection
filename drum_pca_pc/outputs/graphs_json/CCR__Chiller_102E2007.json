@@ -1,0 +1,12 @@
+{
+ "unit": "CCR",
+ "drum": "Chiller 102E2007",
+ "nodes": [
+  "Chiller 102E2007_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "Chiller 102E2007_PC1"
+ ]
+}

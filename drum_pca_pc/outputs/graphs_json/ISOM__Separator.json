@@ -1,0 +1,601 @@
+{
+ "unit": "ISOM",
+ "drum": "Separator",
+ "nodes": [
+  "Separator_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [
+  {
+   "source": "Separator_PC1",
+   "target": "D4201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "T4201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "D4207_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "T4202_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "V4301_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "D/S of PIC4501_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "K604 I stage_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "K604 II stage_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "Tk201 N2 Line_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "T3201 Top_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "D3205_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "R3201 Top_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "C3502 D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "FIL-01A/B Feed Filter_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "D02 - Cold Separator_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "Product diesel coalescer_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "D05 - Hydrogen KOD_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "C02A - MUG Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "C02B - MUG Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "E23 - LP steam generator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Separator_PC1",
+   "target": "D19 - Flush oil drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "RGC-A Discharge_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "RGC-A Discharge_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "RGC-B Discharge_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Stripper_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Stripper_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "ISOM FSD_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "MUG-A 2nd stage discharge_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "MUG-B 2nd stage discharge_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "MUG-A 1st stage discharge_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "MUG-B 1st stage discharge_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "103-E-2002 Tube side outlet (DIH recycle)_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "ISOM Reactors Feed Line (D/s of UV-5703)_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "ISOMERISATION REACTOR ( 103-R-2002 ) outlet_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DRYERS REGENERANT DEGASSER ( 103-D-2015 )_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FUEL GAS KNOCKOUT DRUM ( 103-D-3001 )_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FUEL GAS KNOCKOUT DRUM ( 103-D-3001 )_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "K4101 (E) 1st Stage_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "K4101 (E) 1st Stage_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "C4103 overhead_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "C4104 overhead_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P4110A/B D/C_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "E4111C (E)_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "E4106_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "E4108 SCW Return header_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "E4114 SCW Return header_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "E4117A SCW return header_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P-4121A (W)_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P-4121A (W)_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P-4120A (W)_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P-4120A (W)_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99P02B LO header_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C01A_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D07A_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C01A AOP LUBE OIL SYSTEM_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C01B_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D07B_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D07B_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D09B_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D12_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99T02_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E16_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99T03_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D05_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C02A Discharge_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C02B Discharge_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C02A Suction_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C02B Suction_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C02B AOP discharge header_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Unstalibized Naphtha to OSBL_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E13_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99AFC06A/B_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nitrogen tanker header_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC3",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU REACTOR_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU REACTOR_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "GASOLINE SPLITTER_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SPLITTER POST CONDENSER_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SPLITTER POST CONDENSER_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SECOND STAGE HDS REACTOR_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE COLD SEPARATOR DRUM_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "AMINE ABSORBER_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "RECYCLE COMPRESSOR DRUM_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "RECYCLE COMPRESSORS_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "H2S STRIPPER_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FUEL GAS KNOCKOUT DRUM_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "14D1X overhead drum_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "14D4X Overhead drum_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "14D4X Overhead drum_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Debutaniser_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Dethaniser_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "19T4 O/H Line (caustic Tower) LPG Trtg_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Feed Surge Drum_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NGC 2nd Stage Suction Drum 102D2003_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Recontact Drum 102D2004 Net Gas_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Propane Make up_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Stabilizer Reciever Drum_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Stabilizer Condenser 102E2009 A/B inlet_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel Gas Coalescer_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel Gas Coalescer_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Condenser E4091A(N)_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Condenser E4091A(N)_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "102FIL4053N Hydrogen Filter_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Lock Hopper D7002_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "LPG Vaporizer Overhead_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum to Header_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum to Header_PC2",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Main tower 11-T-1(N) Ovhd_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reflux Drum 11-D-1_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Amine tower 24-T-1005 O/H (East)_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  }
+ ],
+ "nodes_not_in_pc": []
+}

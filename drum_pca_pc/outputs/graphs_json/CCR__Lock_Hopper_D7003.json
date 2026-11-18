@@ -1,0 +1,12 @@
+{
+ "unit": "CCR",
+ "drum": "Lock Hopper D7003",
+ "nodes": [
+  "Lock Hopper D7003_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "Lock Hopper D7003_PC1"
+ ]
+}

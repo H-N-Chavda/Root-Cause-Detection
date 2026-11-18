@@ -35,4 +35,4 @@ references/presentationspca_pc_t2/outputs/data/
 Dataset_HPCL
 
 # drum_pca_pc generated outputs (T2 files, checkpoints, plots)
-drum_pca_pc/outputs/
+# drum_pca_pc/outputs/

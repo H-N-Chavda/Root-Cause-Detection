@@ -1,0 +1,291 @@
+{
+ "unit": "PG",
+ "drum": "FIRST STAGE HDS REACTOR",
+ "nodes": [
+  "FIRST STAGE HDS REACTOR_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "T4207_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "T4202_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "V4301_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "D/S of PIC4501_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "D403_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "D204_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "D502_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "PIC3501 discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "NHT FSD_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "RGC-A Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "RGC-B Discharge_PC2",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "Stripper_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "103-E-2004 tube side inlet (MP Steam)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "HYDROGENATION REACTOR ( 103-R-2001 (M) Inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "HYDROGENATION REACTOR FLASH DRUM ( 103-D-2004 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "E4106_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "E4106_PC2",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "99C01A AOP LUBE OIL SYSTEM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "99T02_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "99E16_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "99D05_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "99C02A Suction_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "99T08_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "99AFC06A/B_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC2",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "SHU REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "SHU REACTOR_PC2",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "GASOLINE SPLITTER_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "SPLITTER POST CONDENSER_PC2",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "SPLITTER REFLUX DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "SPLITTER REFLUX DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SECOND STAGE HDS REACTOR_PC1",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "AMINE ABSORBER_PC2",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "RECYCLE COMPRESSOR DRUM_PC1",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "H2S STRIPPER_PC1",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "H2S STRIPPER_PC2",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC1",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC2",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC3",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER COLUMN_PC1",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "14D1X overhead drum_PC1",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FGDS (20T1)_PC1",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "19T4 O/H Line (caustic Tower) LPG Trtg_PC1",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Feed Surge Drum_PC2",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Tower Overhead_PC1",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Surge Drum D4093(R)_PC1",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Surge Drum D4093(R)_PC2",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "102FIL4053N Hydrogen Filter_PC2",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "LPG Vaporizer Overhead_PC2",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nap Stabilizer Ovhd_PC1",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "11D6 LPG Reflux DRUM_PC1",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Ejector condensate drum 24-D-1004_PC1",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "THT3 O/H Line_PC1",
+   "target": "FIRST STAGE HDS REACTOR_PC1",
+   "type": "->"
+  }
+ ],
+ "nodes_not_in_pc": []
+}

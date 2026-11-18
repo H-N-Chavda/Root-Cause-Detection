@@ -1,0 +1,12 @@
+{
+ "unit": "SEU2",
+ "drum": "D3503",
+ "nodes": [
+  "D3503_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "D3503_PC1"
+ ]
+}

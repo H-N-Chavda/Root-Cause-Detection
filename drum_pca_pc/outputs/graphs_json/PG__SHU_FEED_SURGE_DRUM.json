@@ -1,0 +1,762 @@
+{
+ "unit": "PG",
+ "drum": "SHU FEED SURGE DRUM",
+ "nodes": [
+  "SHU FEED SURGE DRUM_PC1",
+  "SHU FEED SURGE DRUM_PC2"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "D4201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "D4201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "D4207_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "D4204_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "T4207_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "T4207_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "K4201 D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "D/S of PIC4501_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "D403_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "D403_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "T201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "D204_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "D204_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "E207 to P205_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "D/S of C502 Recycle_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "D/S of C502 Recycle_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "P201A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "Tk201 N2 Line_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "T3201 Top_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "D3213_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "D3213_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "PIC3501 discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "PIC3501 discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "R01 - Isotherming Reactor_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "D02 - Cold Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "Product diesel coalescer_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "C02A - MUG Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "C02B - MUG Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "E23 - LP steam generator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "NHT FSD_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "RGC-A Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "RGC-A Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "RGC-B Discharge_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "Stripper_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "Stripper_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "Feed Dryer-B_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "HYDROGENATION REACTOR ( 103-R-2001 (M) Inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "HYDROGENATION REACTOR ( 103-R-2001 (M) Inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "HYDROGENATION REACTOR FLASH DRUM ( 103-D-2004 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "HYDROGENATION REACTOR FLASH DRUM ( 103-D-2004 )_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "ISOM Reactors Feed Line (D/s of UV-5703)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "ISOMERISATION REACTOR ( 103-R-2002 ) outlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "ISOMERISATION REACTOR ( 103-R-2003 ) Outlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "CAUSTIC SCRUBBER ( 103-T-2004 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "DRYERS REGENERATION SUPERHEATER ( 103-F-2001 ) outlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "P4121E balancing line_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "P4121E balancing line_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "P4121E balancing line_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "K4101 (E) 1st Stage_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "P4121 D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "V4108 (N)_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "E4108 SCW Return header_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "E4114 SCW Return header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "E4117A SCW return header_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "E4117A SCW return header_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "P-4121A (W)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "P-4121A (W)_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "P-4120A (W)_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "99P02A LO header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "99P02A LO header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "99P02B LO header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "99C01A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "99C01A_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "99C01A_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "99C01A N2 to distance piece_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "99C01A N2 to distance piece_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "99C01A AOP LUBE OIL SYSTEM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "99C01A AOP LUBE OIL SYSTEM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "99D12_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "99D12_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "99T02_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "99E16_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "99T03_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "99T03_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "99D05_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "99D05_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "99D05_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "99D05_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "99C02A Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "99C02A Suction_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "99C02A Suction_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "99C02A AOP discharge header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "99T06_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "99AFC03A/B/C/D_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "99E13_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC1",
+   "target": "99AFC06A/B_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC2",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC3",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU REACTOR_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "GASOLINE SPLITTER_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SPLITTER REFLUX DRUM_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SECOND STAGE HDS REACTOR_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE COLD SEPARATOR DRUM_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "RECYCLE COMPRESSOR DRUM_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC2",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER COLUMN_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FUEL GAS KNOCKOUT DRUM_PC2",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Wet Gas compressor (14-C-2)_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "14D4X Overhead drum_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "14D4X Overhead drum_PC2",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FGDS (20T1)_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Stabilizer Reciever Drum_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor B Primary Oil Separator_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor B Primary Oil Separator_PC2",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Condenser E4091A(N)_PC2",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Surge Drum D4093(R)_PC2",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum to Header_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "98-D-0001 (FEED SURGE DRUM)_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "On 24-STR-1008A/B Fuel gas strainer_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Ejector condensate drum 24-D-1004_PC1",
+   "target": "SHU FEED SURGE DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC2",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC3",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SHU REACTOR_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "GASOLINE SPLITTER_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SPLITTER POST CONDENSER_PC2",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "FIRST STAGE HDS REACTOR_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SECOND STAGE HDS REACTOR_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "H2S STRIPPER_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC3",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER COLUMN_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "FUEL GAS KNOCKOUT DRUM_PC2",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "14D1X overhead drum_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Wet Gas compressor (14-C-2)_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "14D4X Overhead drum_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "14D4X Overhead drum_PC2",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "FGDS (20T1)_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Debutaniser_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Dethaniser_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "19T4 O/H Line (caustic Tower) LPG Trtg_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "T-2000 VGO STRIPPER_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Feed Surge Drum_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Feed Surge Drum_PC2",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NSU Reflux Drum_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "NHT RGC A Discharge_PC2",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor B Primary Oil Separator_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor B Primary Oil Separator_PC2",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Condenser E4091B(N)_PC2",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Condenser E4091A(N)_PC2",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Surge Drum D4093(R)_PC2",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Dust collector Outlet Line_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "98-D-0001 (FEED SURGE DRUM)_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Ejector condensate drum 24-D-1004_PC1",
+   "target": "SHU FEED SURGE DRUM_PC2",
+   "type": "->"
+  }
+ ],
+ "nodes_not_in_pc": []
+}

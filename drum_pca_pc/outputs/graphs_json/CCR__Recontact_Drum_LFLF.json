@@ -1,0 +1,12 @@
+{
+ "unit": "CCR",
+ "drum": "Recontact Drum LFLF",
+ "nodes": [
+  "Recontact Drum LFLF_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "Recontact Drum LFLF_PC1"
+ ]
+}

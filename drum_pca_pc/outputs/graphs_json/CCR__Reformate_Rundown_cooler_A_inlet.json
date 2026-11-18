@@ -1,0 +1,366 @@
+{
+ "unit": "CCR",
+ "drum": "Reformate Rundown cooler A inlet",
+ "nodes": [
+  "Reformate Rundown cooler A inlet_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "T4201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "K4201 D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "K5201 D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "C4502 discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "T4202_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "D/S of PIC4501_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "D02 - Cold Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "D02 - Cold Separator_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "Product diesel coalescer_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "C02A - MUG Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "C02B - MUG Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "RGC-B Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "Dip reflux drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "103-E-2004 tube side inlet (MP Steam)_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "DRYERS REGENERANT VAPORIZER ( 103-E-2020 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "C4104 overhead_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "P4121 D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "P4110A/B D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "E4111C (E)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "P-4120A (W)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "99C01A_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "99P11A LO header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "99C02A Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "99C02B Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "99C02A Suction_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "99C02B Suction_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "99C02A AOP discharge header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "99C02B AOP discharge header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "SHU REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "SPLITTER REFLUX DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "AMINE ABSORBER_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "H2S STRIPPER_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "Wet Gas compressor (14-C-2)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "Dethaniser stripper (14T5)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "14D4X Overhead drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "FGDS (20T1)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "NSU Feed Surge Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "NHT RGC A Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "NHT RGC A Discharge_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "NHT RGC B Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "NGC A 1st Stage Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "NGC 2nd Stage Suction Drum 102D2003_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "NGC 1st Stage Discharge cooler A inlet line_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "NGC 1st Stage Discharge cooler B inlet line_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "Recontact Drum 102D2004 Net Gas_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "Propane Make up_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "NGC 2nd Stage Discharge cooler A inlet line_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reformate Rundown cooler A inlet_PC1",
+   "target": "NGC 2nd Stage Discharge cooler B inlet line_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Stabilizer 102T2001(M) Overhead line_PC1",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Stabilizer Reciever Drum_PC1",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Stabilizer Reciever Drum_PC2",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Stabilizer Condenser 102E2009 A/B inlet_PC1",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "LPG Chloride Treater 102D2006A_PC1",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor B Primary Oil Separator_PC2",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Condenser E4091B(N)_PC1",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Condenser E4091B(N)_PC2",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Surge Drum D4093(R)_PC1",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "102FIL4053N Hydrogen Filter_PC1",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "102FIL4053N Hydrogen Filter_PC2",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Dust collector Outlet Line_PC1",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Cyclemax Air Dryer Right Chamber_PC1",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Lock Hopper D7002_PC1",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum to Header_PC1",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum to Header_PC2",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Amine tower 24-T-1005 O/H (East)_PC1",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "17T1 O/H Line_PC1",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "17T2 O/H Line_PC1",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  }
+ ],
+ "nodes_not_in_pc": []
+}

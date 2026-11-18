@@ -1,0 +1,271 @@
+{
+ "unit": "ISOM",
+ "drum": "Feed Dryer-A",
+ "nodes": [
+  "Feed Dryer-A_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [
+  {
+   "source": "Feed Dryer-A_PC1",
+   "target": "D4201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Feed Dryer-A_PC1",
+   "target": "D4207_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Feed Dryer-A_PC1",
+   "target": "T4207_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Feed Dryer-A_PC1",
+   "target": "K4201 D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Feed Dryer-A_PC1",
+   "target": "C4502 discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Feed Dryer-A_PC1",
+   "target": "D/S of PIC4501_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Feed Dryer-A_PC1",
+   "target": "D/S of PIC4501_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Feed Dryer-A_PC1",
+   "target": "K604 I stage_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Feed Dryer-A_PC1",
+   "target": "D204_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Feed Dryer-A_PC1",
+   "target": "D3205_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Feed Dryer-A_PC1",
+   "target": "R3201 Top_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Feed Dryer-A_PC1",
+   "target": "E3207 O/L_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Feed Dryer-A_PC1",
+   "target": "D01 - Feed surge drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Feed Dryer-A_PC1",
+   "target": "R01 - Isotherming Reactor_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Feed Dryer-A_PC1",
+   "target": "E23 - LP steam generator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Feed Dryer-A_PC1",
+   "target": "D19 - Flush oil drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Feed Dryer-A_PC1",
+   "target": "D19 - Flush oil drum_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Feed Dryer-B_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "103-E-2004 tube side inlet (MP Steam)_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "103-E-2004 tube side inlet (MP Steam)_PC2",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "HYDROGENATION REACTOR ( 103-R-2001 (M) Inlet_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "HYDROGENATION REACTOR FLASH DRUM ( 103-D-2004 )_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "HYDROGENATION REACTOR FLASH DRUM ( 103-D-2004 )_PC2",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DRYERS REGENERANT VAPORIZER ( 103-E-2020 )_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DRYERS REGENERANT DEGASSER ( 103-D-2015 )_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P4106 Dosing pump_PC2",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "C4103 overhead_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "C4103 overhead_PC2",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P4121 D/C_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P4110A/B D/C_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P-4121A (W)_PC2",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C01B_PC2",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D09B_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99P11A LO header_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED SURGE DRUM_PC2",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU REACTOR_PC2",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "RECYCLE COMPRESSOR DRUM_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "RECYCLE COMPRESSOR DRUM_PC2",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "RECYCLE COMPRESSORS_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "H2S STRIPPER_PC2",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Wet Gas compressor (14-C-2)_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Dethaniser stripper (14T5)_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "14D5X overhead drum_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "14D4X Overhead drum_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FGDS (20T1)_PC2",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "T-2000 VGO STRIPPER_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "T-2001 NAPHTHA STABILIZER_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Feed Surge Drum_PC2",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reflux Drum 11-D-1_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Amine tower 24-T-1005 O/H (East)_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Ejector condensate drum 24-D-1004_PC1",
+   "target": "Feed Dryer-A_PC1",
+   "type": "->"
+  }
+ ],
+ "nodes_not_in_pc": []
+}

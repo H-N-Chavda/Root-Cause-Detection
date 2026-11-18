@@ -1,0 +1,14 @@
+{
+ "unit": "CCR",
+ "drum": "Chiller Reciever D4092(R)",
+ "nodes": [
+  "Chiller Reciever D4092(R)_PC1",
+  "Chiller Reciever D4092(R)_PC2"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "Chiller Reciever D4092(R)_PC1",
+  "Chiller Reciever D4092(R)_PC2"
+ ]
+}

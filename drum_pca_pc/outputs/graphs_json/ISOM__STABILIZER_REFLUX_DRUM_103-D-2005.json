@@ -1,0 +1,441 @@
+{
+ "unit": "ISOM",
+ "drum": "STABILIZER REFLUX DRUM ( 103-D-2005 )",
+ "nodes": [
+  "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "D4207_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "D4204_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "K4201 D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "K5201 D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "C4502 discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "K604 II stage_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "Tk201 N2 Line_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "D3209_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "D3205_PC2",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "D3213_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "C3502 D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "R01 - Isotherming Reactor_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "D02 - Cold Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "D02 - Cold Separator_PC2",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "RGC-A Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "RGC-B Discharge_PC2",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "Stripper_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "ISOM FSD_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "ISOM FSD_PC2",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "Dip reflux drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "103-E-2002 Tube side outlet (DIH recycle)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "target": "ISOMERISATION REACTOR ( 103-R-2003 ) Outlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DRYERS REGENERATION SUPERHEATER ( 103-F-2001 ) outlet_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DRYERS REGENERANT VAPORIZER ( 103-E-2020 )_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FUEL GAS KNOCKOUT DRUM ( 103-D-3001 )_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "K4101 (E) 1st Stage_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "K4101 (E) 1st Stage_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "V4121 overhead to atm_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "C4103 overhead_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "C4103 overhead_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P4121 D/C_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "V4108 (N)_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "E4111C (E)_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "E4106_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "E4108 SCW Return header_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "E4114 SCW Return header_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "E4117A SCW return header_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99P02A LO header_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D07A_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99 C01B AOP LUBE OIL SYSTEM_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D12_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99P11A LO header_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D05_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C02B Suction_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C02B Suction_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Nitrogen tanker header_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "GASOLINE SPLITTER_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SPLITTER POST CONDENSER_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "RECYCLE COMPRESSOR DRUM_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "H2S STRIPPER_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "14D1X overhead drum_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Dethaniser stripper (14T5)_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "14D5X overhead drum_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "14D4X Overhead drum_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "14D4X Overhead drum_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FGDS (20T1)_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Dethaniser_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "T-2001 NAPHTHA STABILIZER_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Feed Surge Drum_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Feed Surge Drum_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Tower Overhead_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NHT RGC A Discharge_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NHT RGC A Discharge_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NHT RGC B Discharge_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NGC A 1st Stage Discharge_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NGC 2nd Stage Suction Drum 102D2003_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NGC 1st Stage Discharge cooler A inlet line_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NGC 1st Stage Discharge cooler B inlet line_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Propane Make up_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Stabilizer 102T2001(M) Overhead line_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Stabilizer Reciever Drum_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Stabilizer Condenser 102E2009 A/B inlet_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "LPG Chloride Treater 102D2006A_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel Gas Coalescer_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel Gas Coalescer_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Condenser E4091A(N)_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Condenser E4091A(N)_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Surge Drum D4093(R)_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "102FIL4053N Hydrogen Filter_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Booster Gas Coialescer Outlet_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "LPG Vaporizer Overhead_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum to Header_PC2",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Main tower 11-T-1(N) Ovhd_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Amine tower 24-T-1005 O/H (East)_PC1",
+   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
+   "type": "->"
+  }
+ ],
+ "nodes_not_in_pc": []
+}

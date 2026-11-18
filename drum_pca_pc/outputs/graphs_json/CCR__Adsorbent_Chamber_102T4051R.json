@@ -1,0 +1,12 @@
+{
+ "unit": "CCR",
+ "drum": "Adsorbent Chamber 102T4051R",
+ "nodes": [
+  "Adsorbent Chamber 102T4051R_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "Adsorbent Chamber 102T4051R_PC1"
+ ]
+}

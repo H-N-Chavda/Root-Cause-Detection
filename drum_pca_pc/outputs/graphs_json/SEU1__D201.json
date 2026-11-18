@@ -1,0 +1,226 @@
+{
+ "unit": "SEU1",
+ "drum": "D201",
+ "nodes": [
+  "D201_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [
+  {
+   "source": "D201_PC1",
+   "target": "T4207_PC1",
+   "type": "->"
+  },
+  {
+   "source": "T201_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "E207 to P205_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "D/S of C502 Recycle_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "D502_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "D503_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "T203_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P201A_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "D3209_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "RGC-B Discharge_PC2",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Dip reflux drum_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "MUG-A 2nd stage discharge_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "103-E-2002 Tube side outlet (DIH recycle)_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "K4101 (E) 1st Stage_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "V4121 overhead to atm_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "C4103 overhead_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "C4104 overhead_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P4121 D/C_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "C4105 overhead_PC2",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P4110A/B D/C_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99P02B LO header_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C01A AOP LUBE OIL SYSTEM_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99C01B_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D07B_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99T02_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99T03_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99D05_PC2",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99T08_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E17_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "99E13_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Rich amine to ARU_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU REACTOR_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SPLITTER POST CONDENSER_PC2",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Dethaniser absorber (14T4)_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "FGDS (20T1)_PC2",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "T-2001 NAPHTHA STABILIZER_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NGC 1st Stage Discharge cooler A inlet line_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NGC 1st Stage Discharge cooler B inlet line_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Surge Drum D4093(R)_PC2",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "LPG Vaporizer Overhead_PC2",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Fuel gas mixing drum overhead_PC2",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "98-D-0001 (FEED SURGE DRUM)_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "17T1 O/H Line_PC1",
+   "target": "D201_PC1",
+   "type": "->"
+  }
+ ],
+ "nodes_not_in_pc": []
+}

@@ -1,0 +1,14 @@
+{
+ "unit": "PDA",
+ "drum": "K4101 (E) 2nd Stage",
+ "nodes": [
+  "K4101 (E) 2nd Stage_PC1",
+  "K4101 (E) 2nd Stage_PC2"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "K4101 (E) 2nd Stage_PC1",
+  "K4101 (E) 2nd Stage_PC2"
+ ]
+}

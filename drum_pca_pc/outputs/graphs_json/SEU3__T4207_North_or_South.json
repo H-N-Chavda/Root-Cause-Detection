@@ -1,0 +1,12 @@
+{
+ "unit": "SEU3",
+ "drum": "T4207 North or South",
+ "nodes": [
+  "T4207 North or South_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "T4207 North or South_PC1"
+ ]
+}

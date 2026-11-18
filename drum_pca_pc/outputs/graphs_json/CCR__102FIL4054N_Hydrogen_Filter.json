@@ -1,0 +1,14 @@
+{
+ "unit": "CCR",
+ "drum": "102FIL4054N Hydrogen Filter",
+ "nodes": [
+  "102FIL4054N Hydrogen Filter_PC1",
+  "102FIL4054N Hydrogen Filter_PC2"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "102FIL4054N Hydrogen Filter_PC1",
+  "102FIL4054N Hydrogen Filter_PC2"
+ ]
+}

@@ -1,0 +1,206 @@
+{
+ "unit": "ISOM",
+ "drum": "DEISOHEXANIZER ( 103-T-2002 )",
+ "nodes": [
+  "DEISOHEXANIZER ( 103-T-2002 )_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "D4201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "D4204_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "C4502 discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "T4202_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "D403_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "D02 - Cold Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "D02 - Cold Separator_PC2",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "T03 - Stripped gas amine absorber_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "C02B - MUG Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "E23 - LP steam generator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "RGC-A Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "RGC-B Discharge_PC2",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "Stripper_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "Stripper_PC2",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "ISOM FSD_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "Dip reflux drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "103-E-2002 Tube side outlet (DIH recycle)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "103-E-2004 tube side inlet (MP Steam)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "103-E-2004 tube side inlet (MP Steam)_PC2",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "HYDROGENATION REACTOR ( 103-R-2001 (M) Inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "HYDROGENATION REACTOR FLASH DRUM ( 103-D-2004 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "ISOM Reactors Feed Line (D/s of UV-5703)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "ISOMERISATION REACTOR ( 103-R-2002 ) outlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "ISOMERISATION REACTOR ( 103-R-2003 ) Outlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
+   "target": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "CAUSTIC SCRUBBER ( 103-T-2004 )_PC1",
+   "target": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "DRYERS REGENERANT VAPORIZER ( 103-E-2020 )_PC1",
+   "target": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "C4104 overhead_PC1",
+   "target": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P4121 D/C_PC1",
+   "target": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "P-4121A (W)_PC2",
+   "target": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "SHU REACTOR_PC1",
+   "target": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NSU Tower Overhead_PC1",
+   "target": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "NHT Feed Surge Drum_PC1",
+   "target": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Propane Make up_PC1",
+   "target": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Stabilizer Reciever Drum_PC2",
+   "target": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "LPG Vaporizer Overhead_PC2",
+   "target": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Main tower 11-T-1(N) Ovhd_PC1",
+   "target": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
+   "type": "->"
+  }
+ ],
+ "nodes_not_in_pc": []
+}

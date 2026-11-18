@@ -1,0 +1,12 @@
+{
+ "unit": "CCR",
+ "drum": "LPG Chloride Treater 102D2006B",
+ "nodes": [
+  "LPG Chloride Treater 102D2006B_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "LPG Chloride Treater 102D2006B_PC1"
+ ]
+}

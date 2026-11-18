@@ -1,0 +1,491 @@
+{
+ "unit": "CCR",
+ "drum": "Chiller Compressor A Primary Oil Separator",
+ "nodes": [
+  "Chiller Compressor A Primary Oil Separator_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "D4201_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "D4204_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "T4207_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "V4301_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "D/S of PIC4501_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "D/S of PIC4501_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "D403_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "K604 I stage_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "D204_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "D502_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "D3209_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "T3201 Top_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "D3205_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "D3213_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "PIC3501 discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "R01 - Isotherming Reactor_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "D02 - Cold Separator_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "C02A - MUG Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "C02B - MUG Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "D19 - Flush oil drum_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "RGC-A Discharge_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "RGC-B Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "MUG-A 2nd stage discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "MUG-B 2nd stage discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "MUG-B 1st stage discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "103-E-2004 tube side inlet (MP Steam)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "103-E-2004 tube side inlet (MP Steam)_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "HYDROGENATION REACTOR ( 103-R-2001 (M) Inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "HYDROGENATION REACTOR FLASH DRUM ( 103-D-2004 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "HYDROGENATION REACTOR FLASH DRUM ( 103-D-2004 )_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "ISOMERISATION REACTOR ( 103-R-2002 ) outlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "ISOMERISATION REACTOR ( 103-R-2003 ) Outlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "DRYERS REGENERATION SUPERHEATER ( 103-F-2001 ) outlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "DRYERS REGENERANT VAPORIZER ( 103-E-2020 )_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "P4121E balancing line_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "P4106 Dosing pump_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "C4103 overhead_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "C4104 overhead_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "C4120 overhead_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "C4105 overhead_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "P4110A/B D/C_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "E4111C (E)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "E4106_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "E4117A SCW return header_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "P-4121A (W)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "P-4120A (W)_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "99C01A N2 to distance piece_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "99D12_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "99D02_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "99D05_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "99D05_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "99C02A Suction_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "99C02B Suction_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "99C02A AOP discharge header_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "Unstalibized Naphtha to OSBL_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "99AFC06A/B_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "Rich amine to ARU_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC3",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "SHU REACTOR_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "GASOLINE SPLITTER_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "SPLITTER REFLUX DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "SECOND STAGE HDS REACTOR_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "FIRST STAGE COLD SEPARATOR DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "AMINE ABSORBER_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "RECYCLE COMPRESSOR DRUM_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "H2S STRIPPER_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "STABILIZER COLUMN_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "FUEL GAS KNOCKOUT DRUM_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "14D1X overhead drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "14D4X Overhead drum_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "FGDS (20T1)_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "NSU Feed Surge Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "NSU Tower Overhead_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "NSU Reflux Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "NHT Feed Surge Drum_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "NHT RGC A Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "NHT RGC B Discharge_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "NGC 2nd Stage Suction Drum 102D2003_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "Reformate Rundown cooler A inlet_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor A Primary Oil Separator_PC1",
+   "target": "Stabilizer Reciever Drum_PC2",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Compressor B Primary Oil Separator_PC1",
+   "target": "Chiller Compressor A Primary Oil Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Chiller Surge Drum D4093(R)_PC1",
+   "target": "Chiller Compressor A Primary Oil Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "102FIL4053N Hydrogen Filter_PC1",
+   "target": "Chiller Compressor A Primary Oil Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "102FIL4053N Hydrogen Filter_PC2",
+   "target": "Chiller Compressor A Primary Oil Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Booster Gas Coialescer Outlet_PC1",
+   "target": "Chiller Compressor A Primary Oil Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Lock Hopper D7002_PC1",
+   "target": "Chiller Compressor A Primary Oil Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "LPG Vaporizer Overhead_PC2",
+   "target": "Chiller Compressor A Primary Oil Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Main tower 11-T-1(N) Ovhd_PC1",
+   "target": "Chiller Compressor A Primary Oil Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Reflux Drum 11-D-1_PC1",
+   "target": "Chiller Compressor A Primary Oil Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "11D6 LPG Reflux DRUM_PC1",
+   "target": "Chiller Compressor A Primary Oil Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "On 24-STR-1008A/B Fuel gas strainer_PC1",
+   "target": "Chiller Compressor A Primary Oil Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "Ejector condensate drum 24-D-1004_PC1",
+   "target": "Chiller Compressor A Primary Oil Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "17T2 O/H Line_PC1",
+   "target": "Chiller Compressor A Primary Oil Separator_PC1",
+   "type": "->"
+  },
+  {
+   "source": "THT3 O/H Line_PC1",
+   "target": "Chiller Compressor A Primary Oil Separator_PC1",
+   "type": "->"
+  }
+ ],
+ "nodes_not_in_pc": []
+}

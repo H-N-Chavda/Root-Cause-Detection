@@ -1,0 +1,14 @@
+{
+ "unit": "PDA",
+ "drum": "E4111A SCW return header",
+ "nodes": [
+  "E4111A SCW return header_PC1",
+  "E4111A SCW return header_PC2"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "E4111A SCW return header_PC1",
+  "E4111A SCW return header_PC2"
+ ]
+}

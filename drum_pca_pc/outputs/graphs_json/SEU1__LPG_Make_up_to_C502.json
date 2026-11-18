@@ -1,0 +1,12 @@
+{
+ "unit": "SEU1",
+ "drum": "LPG Make up to C502",
+ "nodes": [
+  "LPG Make up to C502_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "LPG Make up to C502_PC1"
+ ]
+}

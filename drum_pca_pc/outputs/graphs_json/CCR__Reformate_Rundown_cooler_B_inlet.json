@@ -1,0 +1,12 @@
+{
+ "unit": "CCR",
+ "drum": "Reformate Rundown cooler B inlet",
+ "nodes": [
+  "Reformate Rundown cooler B inlet_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "Reformate Rundown cooler B inlet_PC1"
+ ]
+}

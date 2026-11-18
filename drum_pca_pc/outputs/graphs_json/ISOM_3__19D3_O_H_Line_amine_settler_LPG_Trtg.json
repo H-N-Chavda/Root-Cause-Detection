@@ -1,0 +1,12 @@
+{
+ "unit": "ISOM_3",
+ "drum": "19D3 O/H Line (amine settler) LPG Trtg",
+ "nodes": [
+  "19D3 O/H Line (amine settler) LPG Trtg_PC1"
+ ],
+ "edges": [],
+ "edges_to_other_drums": [],
+ "nodes_not_in_pc": [
+  "19D3 O/H Line (amine settler) LPG Trtg_PC1"
+ ]
+}
