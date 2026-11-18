@@ -15,23 +15,29 @@ SEED, P, N, P_EDGE = 42, 40, 300, 0.2
 OUT = Path(__file__).parent / "outputs"
 
 
-def main() -> None:
-    rng = np.random.default_rng(SEED)
-    order = rng.permutation(P)                          # causal order
-    B = np.zeros((P, P))
-    for a in range(P):
-        for b in range(a + 1, P):
-            if rng.random() < P_EDGE:
+def simulate(p: int = P, n: int = N, p_edge: float = P_EDGE, seed: int = SEED):
+    """Return (X, true_dag) without writing files; main() uses the module constants."""
+    rng = np.random.default_rng(seed)
+    order = rng.permutation(p)                          # causal order
+    B = np.zeros((p, p))
+    for a in range(p):
+        for b in range(a + 1, p):
+            if rng.random() < p_edge:
                 B[order[a], order[b]] = rng.uniform(0.5, 1.5) * rng.choice([-1, 1])
-    X = np.zeros((N, P))
+    X = np.zeros((n, p))
     for j in order:                                     # sample in causal order
-        X[:, j] = X @ B[:, j] + rng.normal(size=N)
+        X[:, j] = X @ B[:, j] + rng.normal(size=n)
     X = (X - X.mean(0)) / X.std(0)                      # standardise (Fisher-z is scale-free anyway)
+    return X, (B != 0).astype(int)
+
+
+def main() -> None:
+    X, true_dag = simulate()
     OUT.mkdir(exist_ok=True)
     np.savetxt(OUT / "data.csv", X, delimiter=",", header=",".join(f"X{i}" for i in range(P)),
                comments="")
-    np.save(OUT / "true_dag.npy", (B != 0).astype(int))
-    print(f"data: n={N}, p={P}, true edges={(B != 0).sum()}, seed={SEED}")
+    np.save(OUT / "true_dag.npy", true_dag)
+    print(f"data: n={N}, p={P}, true edges={true_dag.sum()}, seed={SEED}")
 
 
 if __name__ == "__main__":
