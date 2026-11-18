@@ -85,9 +85,12 @@ def set_threads(numba_threads: int | None = 10, blas_threads: int | None = 10) -
     if blas_threads is not None:
         for var in _BLAS_VARS:
             os.environ[var] = str(int(blas_threads))
-        from threadpoolctl import threadpool_limits
+        try:
+            from threadpoolctl import threadpool_limits
 
-        threadpool_limits(limits=max(1, int(blas_threads)))
+            threadpool_limits(limits=max(1, int(blas_threads)))
+        except ImportError:
+            pass
     if numba_threads is not None and HAVE_NUMBA:
         numba.set_num_threads(max(1, min(int(numba_threads), numba.config.NUMBA_NUM_THREADS)))
 
