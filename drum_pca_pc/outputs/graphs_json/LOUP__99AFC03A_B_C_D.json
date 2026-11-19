@@ -8,107 +8,7 @@
  "edges_to_other_drums": [
   {
    "source": "99AFC03A/B/C/D_PC1",
-   "target": "D4204_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "T4207_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "T201_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "D/S of C502 Recycle_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "D502_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "D503_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
    "target": "D3209_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "D3201_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "C3502 D/C_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "RGC-A Discharge_PC2",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "Feed Dryer-B_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "103-E-2004 tube side inlet (MP Steam)_PC2",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "V4108 (N)_PC2",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "E4106_PC2",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "P-4120A (W)_PC2",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "99D07A_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "99C01A N2 to distance piece_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "99C01B_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "99D07B_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "99E16_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99AFC03A/B/C/D_PC1",
-   "target": "99T03_PC1",
    "type": "->"
   },
   {
@@ -117,57 +17,7 @@
    "type": "->"
   },
   {
-   "source": "99AFC06A/B_PC1",
-   "target": "99AFC03A/B/C/D_PC1",
-   "type": "->"
-  },
-  {
-   "source": "SHU FEED SURGE DRUM_PC1",
-   "target": "99AFC03A/B/C/D_PC1",
-   "type": "->"
-  },
-  {
    "source": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC3",
-   "target": "99AFC03A/B/C/D_PC1",
-   "type": "->"
-  },
-  {
-   "source": "14D1X overhead drum_PC1",
-   "target": "99AFC03A/B/C/D_PC1",
-   "type": "->"
-  },
-  {
-   "source": "14D4X Overhead drum_PC2",
-   "target": "99AFC03A/B/C/D_PC1",
-   "type": "->"
-  },
-  {
-   "source": "FGDS (20T1)_PC2",
-   "target": "99AFC03A/B/C/D_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Debutaniser_PC1",
-   "target": "99AFC03A/B/C/D_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser_PC1",
-   "target": "99AFC03A/B/C/D_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99AFC03A/B/C/D_PC1",
-   "type": "->"
-  },
-  {
-   "source": "NSU Feed Surge Drum_PC1",
-   "target": "99AFC03A/B/C/D_PC1",
-   "type": "->"
-  },
-  {
-   "source": "NSU Feed Surge Drum_PC2",
    "target": "99AFC03A/B/C/D_PC1",
    "type": "->"
   },
@@ -177,27 +27,7 @@
    "type": "->"
   },
   {
-   "source": "NHT RGC B Discharge_PC1",
-   "target": "99AFC03A/B/C/D_PC1",
-   "type": "->"
-  },
-  {
    "source": "Chiller Compressor B Primary Oil Separator_PC2",
-   "target": "99AFC03A/B/C/D_PC1",
-   "type": "->"
-  },
-  {
-   "source": "LPG Vaporizer Overhead_PC1",
-   "target": "99AFC03A/B/C/D_PC1",
-   "type": "->"
-  },
-  {
-   "source": "98-D-0001 (FEED SURGE DRUM)_PC1",
-   "target": "99AFC03A/B/C/D_PC1",
-   "type": "->"
-  },
-  {
-   "source": "17T2 O/H Line_PC1",
    "target": "99AFC03A/B/C/D_PC1",
    "type": "->"
   }

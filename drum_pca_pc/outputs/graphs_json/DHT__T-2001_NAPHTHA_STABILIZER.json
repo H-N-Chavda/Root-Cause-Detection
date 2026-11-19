@@ -8,47 +8,7 @@
  "edges_to_other_drums": [
   {
    "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "D201_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "D204_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "E207 to P205_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "D/S of C502 Recycle_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
    "target": "T203_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "D3209_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "D3201_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "RGC-A Discharge_PC1",
    "type": "->"
   },
   {
@@ -63,87 +23,12 @@
   },
   {
    "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "Feed Dryer-A_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
    "target": "Feed Dryer-B_PC1",
    "type": "->"
   },
   {
    "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "STABILIZER REFLUX DRUM ( 103-D-2005 )_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "K4101 (E) 1st Stage_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "C4103 overhead_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "C4120 overhead_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "V4108 (N)_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "E4108 SCW Return header_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "E4114 SCW Return header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "P-4120A (W)_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "99P02B LO header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "99C01A_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "99C01A AOP LUBE OIL SYSTEM_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "99T02_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "99D05_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
    "target": "STABILIZER COLUMN_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "Stabilizer 102T2001(M) Overhead line_PC1",
    "type": "->"
   }
  ],

@@ -8,47 +8,7 @@
  "edges_to_other_drums": [
   {
    "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "D4201_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "K604 II stage_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "P201A_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "D3209_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
    "target": "R3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "T03 - Stripped gas amine absorber_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "NHT FSD_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "RGC-B Discharge_PC2",
    "type": "->"
   },
   {
@@ -58,27 +18,7 @@
   },
   {
    "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "Feed Dryer-A_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "103-E-2002 Tube side outlet (DIH recycle)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "ISOM Reactors Feed Line (D/s of UV-5703)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
    "target": "ISOMERISATION REACTOR ( 103-R-2002 ) outlet_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "ISOMERISATION REACTOR ( 103-R-2003 ) Outlet_PC1",
    "type": "->"
   },
   {
@@ -88,227 +28,17 @@
   },
   {
    "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "DRYERS REGENERANT VAPORIZER ( 103-E-2020 )_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "V4121 overhead to atm_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "V4121 overhead to atm_PC2",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "C4103 overhead_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "V4108 (N)_PC2",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "E4106_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "P-4121A (W)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "99P02B LO header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "99P11A LO header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "99D05_PC2",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "99C02A Suction_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "99C02B Suction_PC2",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "99AFC06A/B_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "Rich amine to ARU_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC2",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "SHU REACTOR_PC2",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "SPLITTER POST CONDENSER_PC2",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "SPLITTER REFLUX DRUM_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "SPLITTER REFLUX DRUM_PC2",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "AMINE ABSORBER_PC2",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "RECYCLE COMPRESSOR DRUM_PC2",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "H2S STRIPPER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "Wet Gas compressor (14-C-2)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
    "target": "Dethaniser absorber (14T4)_PC1",
    "type": "->"
   },
   {
-   "source": "Debutaniser (14T6)_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
+   "source": "Dethaniser stripper (14T5)_PC1",
+   "target": "Debutaniser (14T6)_PC1",
    "type": "->"
   },
   {
-   "source": "14D5X overhead drum_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "14D4X Overhead drum_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "14D4X Overhead drum_PC2",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "FGDS (20T1)_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "FGDS (20T1)_PC2",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "NHT RGC A Discharge_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Propane Make up_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Reformate Rundown cooler A inlet_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Chiller Condenser E4091B(N)_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Chiller Condenser E4091A(N)_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Chiller Surge Drum D4093(R)_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "102FIL4053N Hydrogen Filter_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Fuel gas mixing drum overhead_PC2",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "98-D-0001 (FEED SURGE DRUM)_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Main tower 11-T-1(N) Ovhd_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Reflux Drum 11-D-1_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "17T1 O/H Line_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "THT3 O/H Line_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
+   "source": "Dethaniser stripper (14T5)_PC1",
+   "target": "14D4X Overhead drum_PC1",
    "type": "->"
   }
  ],

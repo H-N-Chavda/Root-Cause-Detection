@@ -62,15 +62,15 @@ T202_PC1,collinear (|r| >= 0.999),T203_PC1,0.9999467242903848
 Reformate Rundown cooler B inlet_PC1,collinear (|r| >= 0.999),Reformate Rundown cooler A inlet_PC1,0.9996194824125064
 V4102 overhead_PC1,collinear (|r| >= 0.999),K4101 (E) 1st Stage_PC1,0.9993670484293359
 V4102 overhead_PC2,collinear (|r| >= 0.999),K4101 (E) 1st Stage_PC2,0.9992863796414172
-LPG Make up to C502_PC1,near-linear dependence (eigenvalue -9.78e-16 < 1e-06),,-9.777782920771844e-16
+LPG Make up to C502_PC1,near-linear dependence (eigenvalue -9.78e-16 < 1e-06),,-9.777782922947281e-16
 E4117A SCW return header_PC1,near-linear dependence (eigenvalue -7.03e-16 < 1e-06),,-7.032608153088777e-16
 D4502_PC1,near-linear dependence (eigenvalue -8.22e-16 < 1e-06),,-8.221386890399761e-16
 E4111A inlet line_PC2,near-linear dependence (eigenvalue -7.11e-16 < 1e-06),,-7.11053266768584e-16
 E4108 SCW Return header_PC1,near-linear dependence (eigenvalue -3.06e-16 < 1e-06),,-3.055287449454696e-16
-Adsorbent Chamber 102T4051R_PC1,near-linear dependence (eigenvalue -2.07e-16 < 1e-06),,-2.0664260272814453e-16
+Adsorbent Chamber 102T4051R_PC1,near-linear dependence (eigenvalue -2.07e-16 < 1e-06),,-2.066426027403549e-16
 V4108 (N)_PC1,near-linear dependence (eigenvalue -2.82e-16 < 1e-06),,-2.8211260611250365e-16
 Fuel gas mixing drum overhead_PC1,near-linear dependence (eigenvalue -1.17e-16 < 1e-06),,-1.165463712772553e-16
 C4105 overhead_PC1,near-linear dependence (eigenvalue 1.63e-16 < 1e-06),,1.6332468689524153e-16
-E4111A inlet line_PC1,near-linear dependence (eigenvalue 1.18e-16 < 1e-06),,1.1816914151043682e-16
-Chiller Reciever D4092(R)_PC1,near-linear dependence (eigenvalue 4.72e-16 < 1e-06),,4.720560865769152e-16
-Chiller Reciever D4092(R)_PC2,near-linear dependence (eigenvalue 4.39e-16 < 1e-06),,4.3866784013212694e-16
+E4111A inlet line_PC1,near-linear dependence (eigenvalue 1.18e-16 < 1e-06),,1.181691414906909e-16
+Chiller Reciever D4092(R)_PC1,near-linear dependence (eigenvalue 4.72e-16 < 1e-06),,4.720560865751409e-16
+Chiller Reciever D4092(R)_PC2,near-linear dependence (eigenvalue 4.39e-16 < 1e-06),,4.3866784012704445e-16

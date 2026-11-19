@@ -7,52 +7,7 @@
  "edges": [],
  "edges_to_other_drums": [
   {
-   "source": "T3201 Top_PC1",
-   "target": "T4201_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T3201 Top_PC1",
-   "target": "D4207_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T3201 Top_PC1",
-   "target": "K5201 D/C_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T3201 Top_PC1",
-   "target": "V4301_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T3201 Top_PC1",
-   "target": "D/S of C502 Recycle_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T3201 Top_PC1",
-   "target": "P201A_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T3201 Top_PC1",
-   "target": "D3209_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T3201 Top_PC1",
-   "target": "D3201_PC1",
-   "type": "->"
-  },
-  {
    "source": "D3205_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "D3205_PC2",
    "target": "T3201 Top_PC1",
    "type": "->"
   },
@@ -62,87 +17,7 @@
    "type": "->"
   },
   {
-   "source": "PIC3501 discharge_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "C3502 D/C_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T3203 Vapour Line_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T3202 Vapour Line_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "FIL-01A/B Feed Filter_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "R01 - Isotherming Reactor_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "D02 - Cold Separator_PC2",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T03 - Stripped gas amine absorber_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Product diesel coalescer_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "D05 - Hydrogen KOD_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
    "source": "C02A - MUG Discharge_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "C02B - MUG Discharge_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "E23 - LP steam generator_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "D19 - Flush oil drum_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "D19 - Flush oil drum_PC2",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Separator_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "RGC-B Discharge_PC1",
    "target": "T3201 Top_PC1",
    "type": "->"
   },
@@ -152,72 +27,12 @@
    "type": "->"
   },
   {
-   "source": "Stripper_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "ISOM FSD_PC2",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
    "source": "Dip reflux drum_PC1",
    "target": "T3201 Top_PC1",
    "type": "->"
   },
   {
-   "source": "MUG-A 2nd stage discharge_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "MUG-B 2nd stage discharge_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "103-E-2002 Tube side outlet (DIH recycle)_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
    "source": "103-E-2004 tube side inlet (MP Steam)_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "DRYERS REGENERANT DEGASSER ( 103-D-2015 )_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "P4121E balancing line_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "P4121E balancing line_PC2",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "K4101 (E) 1st Stage_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "K4101 (E) 1st Stage_PC2",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "V4121 overhead to atm_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "V4121 overhead to atm_PC2",
    "target": "T3201 Top_PC1",
    "type": "->"
   },
@@ -232,107 +47,7 @@
    "type": "->"
   },
   {
-   "source": "C4105 overhead_PC2",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "E4106_PC2",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "E4108 SCW Return header_PC2",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "P-4120A (W)_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99P02A LO header_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
    "source": "99C01A_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99C01A N2 to distance piece_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99C01A AOP LUBE OIL SYSTEM_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99D07B_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99D09B_PC2",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99D02_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99P11A LO header_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99T03_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99D05_PC2",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99C02A Discharge_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99C02A Suction_PC2",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99C02B Suction_PC2",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99C02A AOP discharge header_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99T06_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99T08_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99E13_PC1",
    "target": "T3201 Top_PC1",
    "type": "->"
   },
@@ -342,122 +57,7 @@
    "type": "->"
   },
   {
-   "source": "Rich amine to ARU_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "SHU FEED SURGE DRUM_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC3",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "SPLITTER POST CONDENSER_PC2",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "AMINE ABSORBER_PC2",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "RECYCLE COMPRESSORS_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "H2S STRIPPER_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC3",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "FUEL GAS KNOCKOUT DRUM_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser absorber (14T4)_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser stripper (14T5)_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
    "source": "14D5X overhead drum_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2001 NAPHTHA STABILIZER_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "NSU Tower Overhead_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Stabilizer 102T2001(M) Overhead line_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Stabilizer Reciever Drum_PC2",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "LPG Chloride Treater 102D2006A_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Chiller Compressor A Primary Oil Separator_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Chiller Condenser E4091B(N)_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Chiller Surge Drum D4093(R)_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "102FIL4053N Hydrogen Filter_PC2",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "LPG Vaporizer Overhead_PC2",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Main tower 11-T-1(N) Ovhd_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Reflux Drum 11-D-1_PC1",
    "target": "T3201 Top_PC1",
    "type": "->"
   }

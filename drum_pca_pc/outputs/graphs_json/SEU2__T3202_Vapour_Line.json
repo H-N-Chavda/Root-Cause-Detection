@@ -8,31 +8,6 @@
  "edges_to_other_drums": [
   {
    "source": "T3202 Vapour Line_PC1",
-   "target": "D/S of PIC4501_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T3202 Vapour Line_PC1",
-   "target": "K604 I stage_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T3202 Vapour Line_PC1",
-   "target": "T201_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T3202 Vapour Line_PC1",
-   "target": "D/S of C502 Recycle_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T3202 Vapour Line_PC1",
-   "target": "D503_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T3202 Vapour Line_PC1",
    "target": "D3209_PC1",
    "type": "->"
   },
@@ -43,17 +18,7 @@
   },
   {
    "source": "T3202 Vapour Line_PC1",
-   "target": "T3201 Top_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T3202 Vapour Line_PC1",
    "target": "E3207 O/L_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T3202 Vapour Line_PC1",
-   "target": "PIC3501 discharge_PC1",
    "type": "->"
   },
   {
@@ -62,167 +27,12 @@
    "type": "->"
   },
   {
-   "source": "T3202 Vapour Line_PC1",
-   "target": "T3203 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T02 - Stripper overhead_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Product diesel coalescer_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "D05 - Hydrogen KOD_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "C02A - MUG Discharge_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "D19 - Flush oil drum_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dip reflux drum_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "MUG-A 2nd stage discharge_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "MUG-A 1st stage discharge_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "MUG-B 1st stage discharge_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "103-E-2004 tube side inlet (MP Steam)_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "DRYERS REGENERATION SUPERHEATER ( 103-F-2001 ) outlet_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "P4106 Dosing pump_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "C4105 overhead_PC2",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "V4108 (N)_PC2",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "E4106_PC2",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "P-4121A (W)_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "P-4120A (W)_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "P-4120A (W)_PC2",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99C01B_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99D09B_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99P11A LO header_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99C02B Discharge_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99C02A Suction_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99C02B Suction_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Unstalibized Naphtha to OSBL_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "NSU Feed Surge Drum_PC2",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Chiller Compressor B Primary Oil Separator_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Chiller Compressor B Primary Oil Separator_PC2",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "102FIL4053N Hydrogen Filter_PC2",
+   "source": "T3203 Vapour Line_PC1",
    "target": "T3202 Vapour Line_PC1",
    "type": "->"
   },
   {
    "source": "LPG Vaporizer Overhead_PC1",
-   "target": "T3202 Vapour Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Main tower 11-T-1(N) Ovhd_PC1",
    "target": "T3202 Vapour Line_PC1",
    "type": "->"
   }

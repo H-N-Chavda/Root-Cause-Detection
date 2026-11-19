@@ -8,67 +8,12 @@
  "edges_to_other_drums": [
   {
    "source": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "target": "T4207_PC1",
-   "type": "->"
-  },
-  {
-   "source": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "target": "C4502 discharge_PC1",
-   "type": "->"
-  },
-  {
-   "source": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "target": "Tk201 N2 Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "target": "D3205_PC2",
-   "type": "->"
-  },
-  {
-   "source": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "target": "E23 - LP steam generator_PC1",
-   "type": "->"
-  },
-  {
-   "source": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "target": "RGC-A Discharge_PC1",
-   "type": "->"
-  },
-  {
-   "source": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "target": "RGC-B Discharge_PC2",
-   "type": "->"
-  },
-  {
-   "source": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "target": "ISOM FSD_PC1",
-   "type": "->"
-  },
-  {
-   "source": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "target": "ISOM FSD_PC2",
-   "type": "->"
-  },
-  {
-   "source": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "target": "Dip reflux drum_PC1",
-   "type": "->"
-  },
-  {
-   "source": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
    "target": "103-E-2002 Tube side outlet (DIH recycle)_PC1",
    "type": "->"
   },
   {
-   "source": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "target": "103-E-2004 tube side inlet (MP Steam)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "target": "HYDROGENATION REACTOR ( 103-R-2001 (M) Inlet_PC1",
+   "source": "HYDROGENATION REACTOR ( 103-R-2001 (M) Inlet_PC1",
+   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
    "type": "->"
   },
   {
@@ -77,177 +22,17 @@
    "type": "->"
   },
   {
-   "source": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "target": "ISOM Reactors Feed Line (D/s of UV-5703)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "target": "ISOMERISATION REACTOR ( 103-R-2002 ) outlet_PC1",
-   "type": "->"
-  },
-  {
-   "source": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "target": "ISOMERISATION REACTOR ( 103-R-2003 ) Outlet_PC1",
-   "type": "->"
-  },
-  {
    "source": "DEISOHEXANIZER ( 103-T-2002 )_PC1",
    "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
    "type": "->"
   },
   {
-   "source": "CAUSTIC SCRUBBER ( 103-T-2004 )_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "V4121 overhead to atm_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "C4103 overhead_PC2",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "C4120 overhead_PC2",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "E4106_PC2",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "P-4120A (W)_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99C01A N2 to distance piece_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99D07B_PC2",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99D12_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99T03_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "99C02A Suction_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "SHU FEED SURGE DRUM_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "SHU FEED SURGE DRUM_PC2",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC2",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC3",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "GASOLINE SPLITTER_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "SPLITTER POST CONDENSER_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "SPLITTER REFLUX DRUM_PC2",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "H2S STRIPPER_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC3",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "STABILIZER COLUMN_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "FUEL GAS KNOCKOUT DRUM_PC2",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Wet Gas compressor (14-C-2)_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "FGDS (20T1)_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
+   "source": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
+   "target": "CAUSTIC SCRUBBER ( 103-T-2004 )_PC1",
    "type": "->"
   },
   {
    "source": "Debutaniser_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dethaniser_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "NSU Feed Surge Drum_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "NSU Reflux Drum_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Chiller Surge Drum D4093(R)_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
    "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
    "type": "->"
   }

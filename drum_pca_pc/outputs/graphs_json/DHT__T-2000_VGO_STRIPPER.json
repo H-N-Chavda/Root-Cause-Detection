@@ -8,57 +8,7 @@
  "edges_to_other_drums": [
   {
    "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "D/S of PIC4501_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "D/S of PIC4501_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "D204_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "E207 to P205_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
    "target": "D503_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "Tk201 N2 Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "D3209_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "D3201_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "D3205_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "E3207 O/L_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "T3202 Vapour Line_PC1",
    "type": "->"
   },
   {
@@ -68,22 +18,7 @@
   },
   {
    "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "D02 - Cold Separator_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
    "target": "Product diesel coalescer_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "D05 - Hydrogen KOD_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "C02B - MUG Discharge_PC1",
    "type": "->"
   },
   {
@@ -93,182 +28,7 @@
   },
   {
    "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "Stripper_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "Dip reflux drum_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "Feed Dryer-A_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "MUG-B 2nd stage discharge_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "MUG-B 1st stage discharge_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "103-E-2004 tube side inlet (MP Steam)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "K4101 (E) 1st Stage_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "P4106 Dosing pump_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "V4121 overhead to atm_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "C4120 overhead_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "C4105 overhead_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "P4110A/B D/C_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
    "target": "P-4120A (W)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "P-4120A (W)_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99P02A LO header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99P02B LO header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99C01A_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99C01A AOP LUBE OIL SYSTEM_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99C01B_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99D07B_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99D09B_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99D09B_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99D02_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99P11A LO header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99D05_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99C02B Discharge_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99C02A Suction_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99C02B Suction_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99C02B Suction_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99C02A AOP discharge header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "Unstalibized Naphtha to OSBL_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99AFC03A/B/C/D_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "99E13_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "SHU FEED SURGE DRUM_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC2",
    "type": "->"
   },
   {
@@ -283,32 +43,7 @@
   },
   {
    "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "RECYCLE COMPRESSOR DRUM_PC2",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
    "target": "RECYCLE COMPRESSORS_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "H2S STRIPPER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "SECOND STAGE HDS COLD SEPARATOR DRUM_PC3",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "14D1X overhead drum_PC1",
-   "type": "->"
-  },
-  {
-   "source": "T-2000 VGO STRIPPER_PC1",
-   "target": "Debutaniser (14T6)_PC1",
    "type": "->"
   },
   {
@@ -317,22 +52,7 @@
    "type": "->"
   },
   {
-   "source": "NSU Feed Surge Drum_PC1",
-   "target": "T-2000 VGO STRIPPER_PC1",
-   "type": "->"
-  },
-  {
    "source": "NSU Feed Surge Drum_PC2",
-   "target": "T-2000 VGO STRIPPER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "NSU Reflux Drum_PC1",
-   "target": "T-2000 VGO STRIPPER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "NGC A 1st Stage Discharge_PC1",
    "target": "T-2000 VGO STRIPPER_PC1",
    "type": "->"
   },
@@ -343,61 +63,6 @@
   },
   {
    "source": "Chiller Compressor B Primary Oil Separator_PC2",
-   "target": "T-2000 VGO STRIPPER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Chiller Condenser E4091B(N)_PC1",
-   "target": "T-2000 VGO STRIPPER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Chiller Condenser E4091A(N)_PC1",
-   "target": "T-2000 VGO STRIPPER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Chiller Surge Drum D4093(R)_PC1",
-   "target": "T-2000 VGO STRIPPER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "T-2000 VGO STRIPPER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Cyclemax Air Dryer Right Chamber_PC1",
-   "target": "T-2000 VGO STRIPPER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "LPG Vaporizer Overhead_PC1",
-   "target": "T-2000 VGO STRIPPER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Fuel gas mixing drum to Header_PC1",
-   "target": "T-2000 VGO STRIPPER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Fuel gas mixing drum to Header_PC2",
-   "target": "T-2000 VGO STRIPPER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "98-D-0001 (FEED SURGE DRUM)_PC1",
-   "target": "T-2000 VGO STRIPPER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Main tower 11-T-1(N) Ovhd_PC1",
-   "target": "T-2000 VGO STRIPPER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Ejector condensate drum 24-D-1004_PC1",
    "target": "T-2000 VGO STRIPPER_PC1",
    "type": "->"
   }

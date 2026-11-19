@@ -8,42 +8,7 @@
  "edges_to_other_drums": [
   {
    "source": "Dust collector Outlet Line_PC1",
-   "target": "D3205_PC2",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "E3207 O/L_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "T03 - Stripped gas amine absorber_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
    "target": "Product diesel coalescer_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "D05 - Hydrogen KOD_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "NHT FSD_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "Stripper_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "Dip reflux drum_PC1",
    "type": "->"
   },
   {
@@ -53,82 +18,7 @@
   },
   {
    "source": "Dust collector Outlet Line_PC1",
-   "target": "HYDROGENATION REACTOR FLASH DRUM ( 103-D-2004 )_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "E4114 SCW Return header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "99P02B LO header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "99D07A_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "99C02A Discharge_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "99C02B Discharge_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "99C02A Suction_PC2",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "99C02B Suction_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "99C02A AOP discharge header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "99C02B AOP discharge header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "Nitrogen tanker header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "SHU FEED SURGE DRUM_PC2",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "SHU REACTOR_PC2",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "RECYCLE COMPRESSORS_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
    "target": "H2S STRIPPER_PC2",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "STABILIZER COLUMN_PC1",
    "type": "->"
   },
   {
@@ -138,42 +28,12 @@
   },
   {
    "source": "Dust collector Outlet Line_PC1",
-   "target": "Dethaniser stripper (14T5)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
    "target": "Debutaniser (14T6)_PC1",
    "type": "->"
   },
   {
    "source": "Dust collector Outlet Line_PC1",
-   "target": "FGDS (20T1)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "Debutaniser_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "Dethaniser_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "T-2000 VGO STRIPPER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
    "target": "NSU Tower Overhead_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "NHT Feed Surge Drum_PC1",
    "type": "->"
   },
   {
@@ -188,62 +48,12 @@
   },
   {
    "source": "Dust collector Outlet Line_PC1",
-   "target": "NGC 2nd Stage Discharge cooler B inlet line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "Reformate Rundown cooler A inlet_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "Stabilizer 102T2001(M) Overhead line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "Stabilizer Reciever Drum_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "Stabilizer Reciever Drum_PC2",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "Fuel Gas Coalescer_PC2",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
-   "target": "102FIL4053N Hydrogen Filter_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Dust collector Outlet Line_PC1",
    "target": "Cyclemax Air Dryer Left Chamber_PC1",
    "type": "->"
   },
   {
-   "source": "Cyclemax Air Dryer Right Chamber_PC1",
-   "target": "Dust collector Outlet Line_PC1",
-   "type": "->"
-  },
-  {
    "source": "Dust collector Outlet Line_PC1",
-   "target": "Lock Hopper D7002_PC1",
-   "type": "->"
-  },
-  {
-   "source": "LPG Vaporizer Overhead_PC2",
-   "target": "Dust collector Outlet Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "Fuel gas mixing drum to Header_PC1",
-   "target": "Dust collector Outlet Line_PC1",
+   "target": "Cyclemax Air Dryer Right Chamber_PC1",
    "type": "->"
   }
  ],

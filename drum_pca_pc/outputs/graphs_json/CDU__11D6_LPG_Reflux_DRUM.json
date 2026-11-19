@@ -8,77 +8,7 @@
  "edges_to_other_drums": [
   {
    "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "D4207_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "D4204_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "K5201 D/C_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "T4202_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "V4301_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
    "target": "D/S of PIC4501_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "D403_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "K604 II stage_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "C3502 D/C_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "D02 - Cold Separator_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "T02 - Stripper overhead_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "C02A - MUG Discharge_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "E23 - LP steam generator_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "D19 - Flush oil drum_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "RGC-B Discharge_PC1",
    "type": "->"
   },
   {
@@ -88,117 +18,7 @@
   },
   {
    "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "Stripper_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "Feed Dryer-B_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "MUG-A 2nd stage discharge_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "103-E-2004 tube side inlet (MP Steam)_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "STABILIZER BOTTOM CHLORIDE GUARD BED ( 103-D-2016)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "DEISOHEXANIZER REFLUX DRUM ( 103-D-2006 )_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "DRYERS REGENERANT VAPORIZER ( 103-E-2020 )_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "DRYERS REGENERANT DEGASSER ( 103-D-2015 )_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "FUEL GAS KNOCKOUT DRUM ( 103-D-3001 )_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "P4106 Dosing pump_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "V4121 overhead to atm_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "C4103 overhead_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
    "target": "C4120 overhead_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "C4105 overhead_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "P4110A/B D/C_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "E4114 SCW Return header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "P-4120A (W)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "P-4120A (W)_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "99P02A LO header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "99P02B LO header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "99D07B_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "99D09B_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "99D12_PC1",
    "type": "->"
   },
   {
@@ -208,97 +28,7 @@
   },
   {
    "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "99D05_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "99C02B Discharge_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "99C02A Suction_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "99C02B Suction_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "99C02A AOP discharge header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "99C02B AOP discharge header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "99E13_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "Nitrogen tanker header_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "SHU FEED FIRST STAGE/HDS EFFLUENT EXCHG._PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "SHU REACTOR_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "SHU REACTOR_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "GASOLINE SPLITTER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "SPLITTER POST CONDENSER_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "SPLITTER REFLUX DRUM_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "SPLITTER REFLUX DRUM_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
    "target": "FIRST STAGE HDS REACTOR_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "SECOND STAGE HDS REACTOR_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "AMINE ABSORBER_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "H2S STRIPPER_PC1",
    "type": "->"
   },
   {
@@ -308,32 +38,7 @@
   },
   {
    "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "STABILIZER COLUMN_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "FUEL GAS KNOCKOUT DRUM_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
    "target": "14D1X overhead drum_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "Debutaniser (14T6)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "FGDS (20T1)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "Debutaniser_PC1",
    "type": "->"
   },
   {
@@ -348,17 +53,7 @@
   },
   {
    "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "NSU Feed Surge Drum_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
    "target": "NSU Feed Surge Drum_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "NSU Tower Overhead_PC1",
    "type": "->"
   },
   {
@@ -368,102 +63,7 @@
   },
   {
    "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "NHT Feed Surge Drum_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "NGC 1st Stage Discharge cooler B inlet line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "NGC 2nd Stage Discharge cooler A inlet line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "NGC 2nd Stage Discharge cooler B inlet line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "Stabilizer Reciever Drum_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "LPG Chloride Treater 102D2006A_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "Chiller Compressor A Primary Oil Separator_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "Chiller Compressor B Primary Oil Separator_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "Chiller Condenser E4091B(N)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "Chiller Condenser E4091B(N)_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "Chiller Surge Drum D4093(R)_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "102FIL4053N Hydrogen Filter_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "102FIL4053N Hydrogen Filter_PC2",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "Main tower 11-T-1(N) Ovhd_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
    "target": "Reflux Drum 11-D-1_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "Nap Stabilizer Ovhd_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "Ejector condensate drum 24-D-1004_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "17T1 O/H Line_PC1",
-   "type": "->"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "17T2 O/H Line_PC1",
-   "type": "--"
-  },
-  {
-   "source": "11D6 LPG Reflux DRUM_PC1",
-   "target": "THT3 O/H Line_PC1",
    "type": "->"
   }
  ],
