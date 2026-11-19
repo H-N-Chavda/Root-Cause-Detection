@@ -1,0 +1,31 @@
+# python parallel_pc_experiment/compare.py --stages small,medium ; causal-learn 0.1.4.8 vs vectorized_pc; Apple M1, 8 cores; 19 Nov 2026
+numba available: True; compiling kernels ...
+
+=== small: n=20, N=1000, seeds (0, 1, 2, 3, 4), alphas (0.01, 0.05, 0.1), max_l=None ===
+[small seed=0 alpha=0.01 max_l=None] N=1000 n=20 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 0.16s vectorized 0.00s speedup 51.2x | Meek path matrix, exact re-tests 0+0 edges
+[small seed=0 alpha=0.05 max_l=None] N=1000 n=20 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 0.18s vectorized 0.00s speedup 83.3x | Meek path matrix, exact re-tests 0+0 edges
+[small seed=0 alpha=0.1 max_l=None] N=1000 n=20 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 0.20s vectorized 0.00s speedup 81.3x | Meek path matrix, exact re-tests 0+0 edges
+[small seed=1 alpha=0.01 max_l=None] N=1000 n=20 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 0.14s vectorized 0.00s speedup 74.2x | Meek path matrix, exact re-tests 0+0 edges
+[small seed=1 alpha=0.05 max_l=None] N=1000 n=20 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 0.15s vectorized 0.00s speedup 81.7x | Meek path matrix, exact re-tests 0+0 edges
+[small seed=1 alpha=0.1 max_l=None] N=1000 n=20 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 0.17s vectorized 0.00s speedup 94.0x | Meek path matrix, exact re-tests 0+0 edges
+[small seed=2 alpha=0.01 max_l=None] N=1000 n=20 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 0.09s vectorized 0.00s speedup 45.4x | Meek path sequential, exact re-tests 0+0 edges
+[small seed=2 alpha=0.05 max_l=None] N=1000 n=20 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 0.10s vectorized 0.00s speedup 53.8x | Meek path sequential, exact re-tests 0+0 edges
+[small seed=2 alpha=0.1 max_l=None] N=1000 n=20 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 0.11s vectorized 0.00s speedup 55.6x | Meek path sequential, exact re-tests 0+0 edges
+[small seed=3 alpha=0.01 max_l=None] N=1000 n=20 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 0.05s vectorized 0.00s speedup 34.5x | Meek path matrix, exact re-tests 0+0 edges
+[small seed=3 alpha=0.05 max_l=None] N=1000 n=20 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 0.06s vectorized 0.00s speedup 39.1x | Meek path matrix, exact re-tests 0+0 edges
+[small seed=3 alpha=0.1 max_l=None] N=1000 n=20 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 0.07s vectorized 0.00s speedup 48.6x | Meek path matrix, exact re-tests 0+0 edges
+[small seed=4 alpha=0.01 max_l=None] N=1000 n=20 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 0.07s vectorized 0.00s speedup 49.2x | Meek path matrix, exact re-tests 0+0 edges
+[small seed=4 alpha=0.05 max_l=None] N=1000 n=20 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 0.08s vectorized 0.00s speedup 52.5x | Meek path matrix, exact re-tests 0+0 edges
+[small seed=4 alpha=0.1 max_l=None] N=1000 n=20 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 0.09s vectorized 0.00s speedup 54.5x | Meek path matrix, exact re-tests 0+0 edges
+
+=== medium: n=80, N=5000, seeds (0, 1), alphas (0.01, 0.05, 0.1), max_l=None ===
+[medium seed=0 alpha=0.01 max_l=None] N=5000 n=80 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 6.08s vectorized 0.02s speedup 346.5x | Meek path sequential, exact re-tests 0+0 edges
+[medium seed=0 alpha=0.05 max_l=None] N=5000 n=80 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 7.03s vectorized 0.02s speedup 404.0x | Meek path matrix, exact re-tests 0+0 edges
+[medium seed=0 alpha=0.1 max_l=None] N=5000 n=80 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 9.22s vectorized 0.02s speedup 546.8x | Meek path matrix, exact re-tests 1+0 edges
+[medium seed=1 alpha=0.01 max_l=None] N=5000 n=80 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 3.79s vectorized 0.01s speedup 335.9x | Meek path matrix, exact re-tests 0+0 edges
+[medium seed=1 alpha=0.05 max_l=None] N=5000 n=80 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 4.77s vectorized 0.01s speedup 361.1x | Meek path sequential, exact re-tests 0+0 edges
+[medium seed=1 alpha=0.1 max_l=None] N=5000 n=80 | skeleton equal: Y (0 differing) | sepsets equal in effect: Y (0 triples; unions identical: Y, 0 pairs) | CPDAG equal: Y (0 differing) | standard 5.43s vectorized 0.01s speedup 384.8x | Meek path sequential, exact re-tests 0+0 edges
+
+21/21 runs identical
+
+[exited with code 0]
