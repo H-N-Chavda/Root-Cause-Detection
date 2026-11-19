@@ -1,0 +1,6 @@
+# python presentations/week11/evidence/order_test.py ; Apple M1; 19 Nov 2026
+reversed: skeleton_identical=True edges=10155 flipped=10113 pct=99.6 meek_path=sequential
+random 1: skeleton_identical=True edges=10155 flipped=5246 pct=51.7 meek_path=sequential
+random 2: skeleton_identical=True edges=10155 flipped=5171 pct=50.9 meek_path=sequential
+random 3: skeleton_identical=True edges=10155 flipped=5018 pct=49.4 meek_path=matrix
+random 4: skeleton_identical=True edges=10155 flipped=4801 pct=47.3 meek_path=sequential

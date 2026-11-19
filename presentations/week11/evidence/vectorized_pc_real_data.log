@@ -1,0 +1,9 @@
+# vectorized_pc on drum_pca_pc/outputs/Dk.npy (31,044 x 254), alpha 0.05, max_l 1; Apple M1, 8 cores, 8 GB; numba 0.68.1, numpy 2.5.5; 19 Nov 2026; numba compile excluded (warmup)
+Dk (31044, 254)
+[vectorized_pc] after l=0: mean degree 235.26, max degree 248, edges 29878
+[vectorized_pc] after l=1: mean degree 79.96, max degree 126, edges 10155
+[vectorized_pc] time: corr 0.041s | l=0 0.002s | l=1 0.473s | l>=2 0.000s | v-structures 0.098s | meek 0.730s  (Meek path: sequential; exact re-tests: 4 tests, 0 edges)
+TOTAL 1.36 s {'times': {'corr': 0.04116025002440438, 'l=0': 0.0018454579985700548, 'l=1': 0.47284424997633323, 'l>=2': 0.0, 'v-structures': 0.09808162500848994, 'meek': 0.7301917500444688}, 'meek_path': 'sequential', 'exact_tests': 4, 'exact_edges': 0}
+edges 10155 directed 10154 undirected 1 src>tgt 10128 src<tgt 26
+
+[exited with code 0]
