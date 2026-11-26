@@ -41,4 +41,5 @@ Dataset_HPCL
 drum_pca_pc/outputs/t2/
 drum_pca_pc/outputs/checkpoints/
 drum_pca_pc/outputs/t2_plots/
+drum_pca_pc/outputs/graphs_json/
 
